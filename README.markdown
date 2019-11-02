@@ -16,7 +16,7 @@ User experience
 Editor experience
 - [ ] Content can be created with a simple language like markdown
 - [ ] Content can be added, edited and removed using a simple mechanism like files and folders
-- [ ] The gallery can be hosted anywhere and kept private, if desired
+- [x] The gallery can be hosted anywhere and kept private, if desired
 
 Developer experience
 - [x] The application’s logic is easy to understand and reason about (thanks to the [XState Visualizer](
