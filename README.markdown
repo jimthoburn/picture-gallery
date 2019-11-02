@@ -11,7 +11,7 @@ User experience
 - [x] First page renders as quickly as static HTML
 - [x] Templates can be used on the client or server side
 - [x] Large features can be broken up into smaller components and modules
-- [x] Fancy things like animated transitions between pages can be added
+- [x] Gesture-driven animations and transitions between pages can be added
 
 Editor experience
 - [ ] Content can be created with a simple language like markdown
