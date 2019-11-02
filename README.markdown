@@ -19,7 +19,8 @@ Editor experience
 - [ ] The gallery can be hosted anywhere and kept private, if desired
 
 Developer experience
-- [x] The application’s logic is easy to understand and reason about (thanks to [XState](https://xstate.js.org/)!)
+- [x] The application’s logic is easy to understand and reason about (thanks to the [XState Visualizer](
+https://xstate.js.org/viz/?gist=18995ef2fca6c1949991f21b1b68c6d0)!)
 - [ ] New features can be added with confidence that things won’t break
 - [ ] The code is easy to read
 - [ ] The app can be ported to another framework without too much rework
@@ -118,3 +119,9 @@ $ git lfs migrate import --everything --include="*.jpg,*.png,*.zip"
 $ git status
 $ git push --force-with-lease
 ```
+
+## XState visualization
+
+https://xstate.js.org/viz/?gist=18995ef2fca6c1949991f21b1b68c6d0
+
+[![xstate](https://user-images.githubusercontent.com/926616/68065699-40ba2a80-fcea-11e9-889f-3fee08ea35a0.png)](https://xstate.js.org/viz/?gist=18995ef2fca6c1949991f21b1b68c6d0)
