@@ -34,6 +34,10 @@ SOFTWARE.
 import { useState, useRef, useEffect } from '../web_modules/preact/hooks.js';
 import { interpret } from '../web_modules/xstate.js';
 
+let lastDispatch;
+export const getLastDispatch = function() {
+  return lastDispatch;
+}
 
 const defaultOptions = {
     immediate: false
@@ -91,7 +95,13 @@ export function useMachine(machine, options = defaultOptions) {
             service.stop();
         };
     }, []);
-    return [current, service.send, service];
+    return [current, function() {
+      console.log("📮 Dispatch");
+      lastDispatch = arguments[0];
+      console.log(lastDispatch);
+      service.start();
+      service.send.apply(service.send, arguments);
+    }, service];
 }
 export function useService(service) {
     const [current, setCurrent] = useState(service.state);
