@@ -1,13 +1,13 @@
 
 # Picture Gallery
 
-This project is an experiment to see if it’s possible to achieve the following goals in a modern web app–providing a good experience for users, editors and developers…
+This project is an experiment to see if it’s possible to achieve the following goals in a [reactive](https://en.wikipedia.org/wiki/Reactive_programming) web application…
 
 User experience
 - [x] Essential content/features are available in any web browser
 - [x] Browser features (like forward/back and bookmarks) are supported
 - [x] Site is just as accessible as it would be with static HTML and page refreshes
-- [x] Site is just as findable by search engines and the web archive as it would be if was made of static HTML pages
+- [x] Site is just as findable by search engines and the web archive as it would be if it was made of static HTML pages
 - [x] First page renders as quickly as static HTML
 - [ ] The application works well on a slow network
 - [x] The application is still usable when things go wrong, like if a CSS file doesn’t load or a JavaScript error happens
