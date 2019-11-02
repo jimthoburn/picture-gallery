@@ -121,8 +121,8 @@ $ git status
 $ git push --force-with-lease
 ```
 
-## XState visualization
+## State machine visualization
 
 https://xstate.js.org/viz/?gist=18995ef2fca6c1949991f21b1b68c6d0
 
-[![xstate](https://user-images.githubusercontent.com/926616/68065699-40ba2a80-fcea-11e9-889f-3fee08ea35a0.png)](https://xstate.js.org/viz/?gist=18995ef2fca6c1949991f21b1b68c6d0)
+<a href="https://xstate.js.org/viz/?gist=18995ef2fca6c1949991f21b1b68c6d0" rel="nofollow"><img src="https://user-images.githubusercontent.com/926616/68065699-40ba2a80-fcea-11e9-889f-3fee08ea35a0.png" alt="xstate" width="400"></a>
