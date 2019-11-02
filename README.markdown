@@ -85,7 +85,7 @@ You may see an error message like this one:
 [] Did you forget to signal async completion?
 ```
 
-_This is okay._
+This is _probably_ okay. The images should still be generated.
 
 7. Generate gallery files and start the server
 
