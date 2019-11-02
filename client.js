@@ -12,48 +12,62 @@ class Catcher extends Component {
   state = { errored: false }
 
   componentDidCatch(error) {
-    console.log("😿 Something went wrong");
-    console.error(error);
+    try {
 
-    // 1) Get the last known state
-    const [state, dispatch, service] = getMachine();
+      console.log("😿 Something went wrong");
+      console.error(error);
 
-    // 2) Get the last message sent to the machine
-    const lastDispatch = getLastDispatch();
-    console.log("lastDispatch");
-    console.log(lastDispatch);
+      // Assume client-side rendering is out of service and
+      // attempt to load HTML for the next state from the server.
 
-    if (state && lastDispatch) {
-      
-      // 3) Ask the machine for the next state (what should have rendered)
-      const nextState = service.send(lastDispatch);
-      console.log(nextState.value);
+      // 1) Get the last known state of the machine
+      const [lastKnownState, dispatch, service] = getMachine();
 
-      // 4) Visit the URL for that state
-      if ((nextState.matches("transitioning_to_details") || 
-           nextState.matches("showing_details")) && 
-           nextState.context.selectedPictureIndex != null) {
-        const nextURL = document.querySelector(
-          `.picture-list li:nth-child(${nextState.context.selectedPictureIndex + 1}) a`
-        ).href;
+      // 2) Get the last message sent to the machine
+      const lastDispatch = getLastDispatch();
+      console.log("Last dispatch received was...");
+      console.log(lastDispatch);
 
-        if (nextURL) {
+      if (service && lastDispatch) {
+        console.log(
+          `Finding the next state...`
+        );
+        
+        // 3) Ask the machine for the next state
+        const nextState = service.send(lastDispatch);
+        console.log(nextState.value);
+
+        // 4) Visit the URL for that state
+        if ((nextState.matches("transitioning_to_details") || 
+             nextState.matches("showing_details")) && 
+             nextState.context.selectedPictureIndex != null) {
+          const nextURL = document.querySelector(
+            `.picture-list li:nth-child(${nextState.context.selectedPictureIndex + 1}) a`
+          ).getAttribute("href");
+          
           console.log(`nextURL: ${nextURL}`);
-          window.location = nextURL;
+          if (nextURL != null && nextURL != "") {
+            window.location = nextURL;
+          }
+        } else {
+          const nextURL = document.querySelector(
+            ".picture-details .all a"
+          ).getAttribute("href");
+          
+          console.log(`nextURL: ${nextURL}`);
+          if (nextURL != null && nextURL != "") {
+            window.location = nextURL;
+          }
         }
+
       } else {
-        const nextURL = document.querySelector(
-          ".picture-details .all a"
-        ).href;
-
-        if (nextURL) {
-          console.log(`nextURL: ${nextURL}`);
-          window.location = nextURL;
-        }
+        console.log(
+          `The next state isn’t known. It’s likely that the error happened during
+           the initial render, and before any actions by the user.`
+        );
       }
-
-    } else {
-      console.log("The next state couldn’t be determined.");
+    } catch (e) {
+      console.error(e);
     }
 
     this.setState({ errored: true });
@@ -61,10 +75,30 @@ class Catcher extends Component {
 
   render(props, state) {
     if (state.errored) {
-      console.log("😺 Catcher is restoring the original server-side rendered HTML");
-      document.body.innerHTML = originalBodyInnerHTML;
-      return html``;
+      try {
+
+        // Assume client-side rendering is out of service and that the 
+        // the original source HTML for this page is still good
+        console.log("😺 Catcher is restoring the original server-side rendered HTML");
+        document.body.innerHTML = originalBodyInnerHTML;
+  
+        return html``;
+
+      } catch (e) {
+        console.error(e);
+        return html`
+        <section>
+
+          <h1>Uh oh!</h1>
+
+          <p>Something went wrong on this page.</p>
+
+          <p>You may want to visit the <a href="/">home page</a> instead.</p>
+
+        </section>`;
+      }
     }
+
     return props.children;
   }
 }

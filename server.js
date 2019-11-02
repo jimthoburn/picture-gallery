@@ -1,6 +1,11 @@
 
 import fs from "fs";
 
+// https://stackoverflow.com/questions/46745014/alternative-for-dirname-in-node-when-using-the-experimental-modules-flag
+import { dirname } from 'path';
+import { fileURLToPath } from 'url';
+const __dirname = dirname(fileURLToPath(import.meta.url));
+
 import express from "express";
 import slashes from "connect-slashes";
 import fetch from "node-fetch";
@@ -65,14 +70,10 @@ function servePage(req, res) {
     const content = render(IndexPage({ getPageURL, album, pictures: album.pictures }));
 
     res.send(DefaultLayout({ title, content }));
-  })
-}
-
-function serveClientJS(req, res) {
-  const clientJS = fs.readFileSync("./client.js", 'utf8');
-
-  res.setHeader("Content-Type", "application/javascript");
-  res.send(clientJS);
+  }).catch(function(err) {
+    console.error(err.stack);
+    res.status(500).sendFile("500.html", { root: __dirname });
+  });
 }
 
 const staticFolders = [
@@ -90,7 +91,9 @@ for (let folder of staticFolders) {
   server.use( `/${folder}`, express.static( `./${folder}` ) );
 }
 
-server.get("/client.js", serveClientJS);
+server.get("/client.js", function(req, res) {
+  res.sendFile("client.js", { root: __dirname });
+});
 
 // TODO: Redirect to canonical URL:
 // https://expressjs.com/en/api.html#res.redirect
@@ -101,6 +104,15 @@ for (let album of albums) {
 
 // Add trailing slashes to URLs: /wildflowers => /wildflowers/
 server.use(slashes());
+
+server.use(function (req, res, next) {
+  res.status(404).sendFile("404.html", { root: __dirname });
+});
+
+server.use(function (err, req, res, next) {
+  console.error(err.stack);
+  res.status(500).sendFile("500.html", { root: __dirname });
+})
 
 server.listen(port, err => {
   if (err) throw err;
