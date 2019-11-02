@@ -127,4 +127,5 @@ $ git push --force-with-lease
 
 https://xstate.js.org/viz/?gist=18995ef2fca6c1949991f21b1b68c6d0
 
-<a href="https://xstate.js.org/viz/?gist=18995ef2fca6c1949991f21b1b68c6d0" rel="nofollow"><img src="https://user-images.githubusercontent.com/926616/68065699-40ba2a80-fcea-11e9-889f-3fee08ea35a0.png" alt="xstate" width="400"></a>
+<a href="https://xstate.js.org/viz/?gist=18995ef2fca6c1949991f21b1b68c6d0" rel="nofollow"><img width="544" alt="xstate" src="https://user-images.githubusercontent.com/926616/68066254-8bd83b80-fcf2-11e9-8c77-6427061b98a9.png">
+</a>
