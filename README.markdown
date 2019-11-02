@@ -32,13 +32,13 @@ https://xstate.js.org/viz/?gist=18995ef2fca6c1949991f21b1b68c6d0)!)
 
 ## See an example on Glitch
 
-https://universal-picture-gallery.glitch.me/wildflowers/
+https://picture-gallery.glitch.me/wildflowers/
 
 
 ## How to make your own gallery
 
 You can remix this project on Glitch:  
-https://glitch.com/edit/#!/universal-picture-gallery
+https://glitch.com/edit/#!/picture-gallery
 
 Or follow these steps...
 
