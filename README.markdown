@@ -1,7 +1,7 @@
 
 # Picture Gallery
 
-This project is an experiment to see if it’s possible to achieve the following goals in a [reactive](https://en.wikipedia.org/wiki/Reactive_programming) web application…
+This project is an experiment to see if it’s possible to achieve the following goals in a [reactive](https://en.wikipedia.org/wiki/Reactive_programming) [single-page](https://en.wikipedia.org/wiki/Single-page_application) application on the web…
 
 User experience
 - [x] Essential content/features are available in any web browser
@@ -19,7 +19,7 @@ Editor experience
 - [x] The gallery can be hosted anywhere and kept private, if desired
 
 Developer experience
-- [x] The application’s logic is easy to understand and reason about (thanks to the [XState Visualizer](
+- [x] The application’s logic is easy to understand and reason about (thanks, [XState](
 https://xstate.js.org/viz/?gist=18995ef2fca6c1949991f21b1b68c6d0)!)
 - [x] Large features can be broken up into smaller components and modules
 - [x] Templates can be used on the client or server side
