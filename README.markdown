@@ -10,7 +10,7 @@ User experience
 - [x] Site is just as findable by search engines and the web archive as it would be if was made of static HTML pages
 - [x] First page renders as quickly as static HTML
 - [ ] The application works well on a slow network
-- [ ] The application is still usable when things go wrong, like if a CSS file doesn’t load or a JavaScript error happens
+- [x] The application is still usable when things go wrong, like if a CSS file doesn’t load or a JavaScript error happens
 - [x] Gesture-driven animations and transitions between pages can be added
 
 Editor experience
