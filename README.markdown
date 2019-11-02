@@ -19,9 +19,10 @@ Editor experience
 - [ ] The gallery can be hosted anywhere and kept private, if desired
 
 Developer experience
-- [x] The application’s logic is easy to understand and reason about (thanks, XState!)
+- [x] The application’s logic is easy to understand and reason about (thanks to [XState](https://xstate.js.org/)!)
 - [ ] New features can be added with confidence that things won’t break
 - [ ] The code is easy to read
+- [ ] The app can be ported to another framework without too much rework
 
 
 ## How to create a gallery
