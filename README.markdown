@@ -30,7 +30,17 @@ https://xstate.js.org/viz/?gist=18995ef2fca6c1949991f21b1b68c6d0)!)
 - [ ] The app can be ported to another framework without too much rework
 
 
-## How to create a gallery
+## See an example on Glitch
+
+https://universal-picture-gallery.glitch.me/wildflowers/
+
+
+## How to make your own gallery
+
+You can remix this project on Glitch:  
+https://glitch.com/edit/#!/universal-picture-gallery
+
+Or follow these steps...
 
 1. Install Node 12.13.0 LTS or newer
 https://nodejs.org/en/
