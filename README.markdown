@@ -1,6 +1,8 @@
 
 # Picture Gallery
 
+## How to create a gallery
+
 1. Install Node 12.13.0 LTS  
 https://nodejs.org/en/
 
@@ -67,6 +69,22 @@ npm start
 
 8. Visit `http://localhost:5000/your-album-name/`
 
+
+## How to publish a gallery
+
+The above steps will create a `_site` folder that can be published on any server.
+
+For example, you can auto-deploy a GitHub repo to Netlify and use these deploy settings:
+
+Build command  
+`npm run build`
+
+Publish directory  
+`_site/`
+
+You may also want to use Git LFS:  
+https://git-lfs.github.com/  
+https://www.netlify.com/products/large-media/
 
 
 ## How to move existing files into Git LFS
