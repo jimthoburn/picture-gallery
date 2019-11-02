@@ -78,7 +78,7 @@ $ npm install
 $ npm run create:images
 ```
 
-You may see some some an error message like this one:
+You may see an error message like this one:
 
 ```
 [] The following tasks did not complete: default
