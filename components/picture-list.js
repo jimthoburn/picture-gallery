@@ -1,0 +1,125 @@
+
+import { createElement }      from "../web_modules/preact.js";
+import { useRef,
+         useEffect,
+         useContext }         from "../web_modules/preact/hooks.js";
+import   htm                  from "../web_modules/htm.js";
+const    html = htm.bind(createElement);
+import { isBrowser,
+         usingKeyboard,
+         onKeyboardDetected } from "../helpers/environment.js";
+import { closest }            from "../helpers/closest.js";
+import { GalleryDispatch }    from "../components/picture-gallery.js";
+
+
+let getSelectedPicture = function() {
+  return null;
+}
+
+
+function PictureList({ album, pictures, state }) {
+  const dispatch = useContext(GalleryDispatch);
+
+  const selectedPicture = useRef(null);
+
+
+  // ⌨️ If the list view just appeared, move focus to the current selected picture
+  useEffect(() => {
+    if (usingKeyboard() && 
+        state.matches("showing_list") && 
+        state.context.selectedPictureIndex != null) {
+      closest(selectedPicture.current, "a").focus();
+    }
+  }, [state.value, state.context.selectedPictureIndex, selectedPicture]);
+
+
+  // Scroll list photo into view, if needed
+  useEffect(() => {
+    if (isBrowser() &&
+        state.context.selectedPictureIndex != null) {
+      const picture = selectedPicture.current
+      if (picture.getBoundingClientRect().y > window.innerHeight ||
+          picture.getBoundingClientRect().y + picture.offsetHeight < 0) {
+        picture.scrollIntoView();
+      }
+    }
+  }, [state.context.selectedPictureIndex, selectedPicture]);
+
+  
+  // 📣 Announce click events
+  function onListImageClick(e, index) {
+
+    // ⌨️ If the a modifier key is pressed, let the browser handle it
+    if (e.metaKey || e.ctrlKey || e.shiftKey) return;
+
+    dispatch({ type: "PICTURE_SELECTED", selectedPictureIndex: index });
+
+    e.preventDefault();
+  }
+
+
+  getSelectedPicture = function() {
+    return selectedPicture.current;
+  }
+
+  let stateStrings = state.toStrings();
+  return html`
+    <section class="picture-list"
+             data-state="${stateStrings[stateStrings.length - 1]}">
+      <h1>
+        ${ album.title }
+        ${ (album.parent)
+            ? html` / <a href="/${ album.parent.uri }/">${ album.parent.title }</a>`
+            : "" }
+      </h1>
+      ${ (album.date)
+         ? html`<p>${ album.date }</p>`
+         : "" }
+
+      <ol>
+        ${pictures.map((picture, index) => {
+          return html`
+          <li>
+            <a href="/${album.uri}/${picture.uri}/"
+               onClick="${ e => onListImageClick(e, index) }"
+               onKeyUp="${onKeyboardDetected}">
+              <responsive-image aspect-ratio="2/1">
+                <img src="/pictures/${ album.uri }/384-wide/${ picture.filename }"
+                     srcset="/pictures/${ album.uri }/384-wide/${ picture.filename } 384w,
+                             /pictures/${ album.uri }/512-wide/${ picture.filename } 512w,
+                             /pictures/${ album.uri }/768-wide/${ picture.filename } 768w,
+                             /pictures/${ album.uri }/1024-wide/${ picture.filename } 1024w,
+                             /pictures/${ album.uri }/1536-wide/${ picture.filename } 1536w,
+                             /pictures/${ album.uri }/2048-wide/${ picture.filename } 2048w"
+                     sizes="320px"
+                     width="320"
+                     alt="${
+                       (picture.description)
+                       ? html`${picture.description}`
+                       : html`Picture ${index + 1}`
+                     }"
+                     ref="${state.context.selectedPictureIndex === index ? selectedPicture : null}"
+                     data-selected="${(state.context.selectedPictureIndex === index) ? "true" : ""}" />
+                ${""/*<span class="caption">${ picture.title }</span>*/}
+              </responsive-image>
+            </a>
+          </li>
+          `
+        })}
+      </ol>
+
+      ${ (album.zip_file_size)
+         ? html`<p>
+                  <a href="/archives/${ album.uri }.zip">Download All Pictures</a><br />
+                  <small>ZIP file / ${ album.zip_file_size }</small>
+                </p>`
+         : "" }
+    </section>
+
+  `;
+
+}
+
+
+export { PictureList, getSelectedPicture };
+

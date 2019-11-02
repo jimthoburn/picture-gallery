@@ -1,0 +1,108 @@
+
+
+/* Position the details above the list */
+.picture-list {
+  position: relative;
+  z-index: 1;
+}
+.picture-details {
+  position: relative;
+  z-index: 2;
+
+  /* Defaults */
+  --transition-duration: 0.4s;
+  --translateX: 0;
+  --translateY: 0;
+  --scale: 1;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .picture-details {
+    --transition-duration: 0s !important;
+  }
+}
+
+/* If both the details and list are visible at the same time */
+.picture-list ~ .picture-details {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+}
+
+
+.picture-list[data-state="transitioning_to_details.transitioning"] [data-selected="true"],
+.picture-list[data-state*="showing_details" ] [data-selected="true"],
+.picture-list[data-state="transitioning_to_list" ] [data-selected="true"] {
+  opacity: 0;
+}
+
+
+/* Make the details elements invisible */
+.picture-details[data-state="transitioning_to_details.loading_picture"],
+.picture-details[data-state="transitioning_to_details.preparing_transition"] {
+  visibility: hidden;
+}
+.picture-details[data-state="transitioning_to_details.loading_picture"],
+.picture-details[data-state="transitioning_to_details.preparing_transition"],
+.picture-details[data-state="transitioning_to_list"] {
+  background-color: transparent;
+}
+.picture-details[data-state="transitioning_to_details.loading_picture"] header,
+.picture-details[data-state="transitioning_to_details.preparing_transition"] header,
+.picture-details[data-state="showing_details.moving_picture"] header,
+.picture-details[data-state="showing_details.gesturing"] header,
+.picture-details[data-state="transitioning_to_list"] header {
+  opacity: 0;
+}
+
+
+/* Make the details image the same aspect ratio as the list media (141/103) */
+/* .picture-details[data-state="transitioning_to_details.loading_picture"] figure,
+.picture-details[data-state="transitioning_to_details.preparing_transition"] figure,
+.picture-details[data-state="showing_details.gesturing"] figure,
+.picture-details[data-state="transitioning_to_list"] figure {
+  padding-bottom: calc(103/141 * 100%);
+  position: relative;
+  width: 100%;
+}
+.picture-details[data-state="transitioning_to_details.loading_picture"] figure img,
+.picture-details[data-state="transitioning_to_details.preparing_transition"] figure img,
+.picture-details[data-state="showing_details.gesturing"] figure img,
+.picture-details[data-state="transitioning_to_list"] figure img {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+} */
+
+
+/* Make the details elements animatable */
+.picture-details[data-state="transitioning_to_details.transitioning"],
+.picture-details[data-state="showing_details.gesturing"],
+.picture-details[data-state="transitioning_to_list"] {
+  transition: background-color var(--transition-duration);
+}
+.picture-details[data-state="transitioning_to_details.transitioning"] header,
+.picture-details[data-state="showing_details.moving_picture"] header,
+.picture-details[data-state="showing_details.gesturing"] header,
+.picture-details[data-state="transitioning_to_list"] header {
+  transition: opacity var(--transition-duration);
+}
+.picture-details[data-state="transitioning_to_details.transitioning"] figure img,
+.picture-details[data-state="transitioning_to_list"] figure img {
+  transition: transform var(--transition-duration);
+}
+
+
+/* Animate the background and image, based on touch position */
+.picture-details[data-state="showing_details.gesturing"] {
+  background-color: hsla(0, 0%, 0%, calc(var(--scale) / 1.5));
+}
+.picture-details[data-state] figure img {
+  transform: translate(calc(var(--translateX) * 1px), calc(var(--translateY) * 1px)) scale(var(--scale));
+}
+
