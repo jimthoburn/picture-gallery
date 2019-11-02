@@ -3,7 +3,7 @@
 
 ## How to create a gallery
 
-1. Install Node 12.13.0 LTS  
+1. Install Node 12.13.0 LTS or newer
 https://nodejs.org/en/
 
 2. Add albums and pictures to the `/pictures/` folder
