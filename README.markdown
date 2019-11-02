@@ -1,7 +1,7 @@
 
 # Picture Gallery
 
-Some of the goals of this project are...
+This project is an experiment to see if it’s possible to achieve the following goals in a modern web app–providing a good experience for users, editors and developers…
 
 User experience
 - [x] Essential content/features are available in any web browser
@@ -21,6 +21,7 @@ Editor experience
 Developer experience
 - [x] The application’s logic is easy to understand and reason about (thanks to the [XState Visualizer](
 https://xstate.js.org/viz/?gist=18995ef2fca6c1949991f21b1b68c6d0)!)
+- [ ] The application can be easily deployed in a way that is reliable, scalable and secure
 - [ ] New features can be added with confidence that things won’t break
 - [ ] The code is easy to read
 - [ ] The app can be ported to another framework without too much rework
