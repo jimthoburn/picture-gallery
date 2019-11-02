@@ -21,7 +21,7 @@ Editor experience
 Developer experience
 - [x] The application’s logic is easy to understand and reason about (thanks to the [XState Visualizer](
 https://xstate.js.org/viz/?gist=18995ef2fca6c1949991f21b1b68c6d0)!)
-- [ ] The application can be easily deployed in a way that is reliable, scalable and secure
+- [x] The application can be easily deployed in a way that is reliable, scalable and secure
 - [ ] New features can be added with confidence that things won’t break
 - [ ] The code is easy to read
 - [ ] The app can be ported to another framework without too much rework
