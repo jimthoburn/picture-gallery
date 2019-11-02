@@ -14,26 +14,36 @@ import { PictureDetails } from "../components/picture-details.js";
 const GalleryDispatch = createContext(null);
 
 
+let getMachine = function() {
+  return null;
+} 
+
+
 function PictureGallery({ album, pictures, getPageURL }) {
 
   if (isBrowser()) {
-    console.log(`🖼 ✨`);
+    console.log(`🖼 ✨ Render`);
     // console.log(`PictureGallery()`);
   }
 
   const selectedPictureIndex = getSelectedPictureIndexFromURL({ album, pictures, getPageURL });
 
-  const [state, dispatch] = useMachine(galleryMachine, { context: { selectedPictureIndex } });
+  const [state, dispatch, service] = useMachine(galleryMachine, { context: { selectedPictureIndex } });
   if (isBrowser()) {
-    console.log(state.event);
+    //console.log(state.event);
     console.log(state.value);
     // console.log(state);
+  }
+
+  getMachine = function() {
+    return [state, dispatch, service];
   }
 
 
   // 💡 TBD: Should this code be called more directly, from the gallery machine?
   //         https://xstate.js.org/docs/guides/communication.html
   useEffect(() => {
+    
     if (isBrowser()) {
       if (state.event.type === "PICTURE_SELECTED") {
         const selectedPicture = pictures[state.context.selectedPictureIndex];
@@ -124,5 +134,5 @@ function getInitialPageTitle({ album, pictures, getPageURL }) {
 }
 
 
-export { PictureGallery, GalleryDispatch, getInitialPageTitle };
+export { PictureGallery, GalleryDispatch, getInitialPageTitle, getMachine };
 
