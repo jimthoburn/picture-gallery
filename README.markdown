@@ -9,8 +9,8 @@ User experience
 - [x] Site is just as accessible as it would be with static HTML and page refreshes
 - [x] Site is just as findable by search engines and the web archive as it would be if was made of static HTML pages
 - [x] First page renders as quickly as static HTML
-- [x] Templates can be used on the client or server side
-- [x] Large features can be broken up into smaller components and modules
+- [ ] The application works well on a slow network
+- [ ] The application is still usable when things go wrong, like if a CSS file doesn’t load or a JavaScript error happens
 - [x] Gesture-driven animations and transitions between pages can be added
 
 Editor experience
@@ -21,6 +21,8 @@ Editor experience
 Developer experience
 - [x] The application’s logic is easy to understand and reason about (thanks to the [XState Visualizer](
 https://xstate.js.org/viz/?gist=18995ef2fca6c1949991f21b1b68c6d0)!)
+- [x] Large features can be broken up into smaller components and modules
+- [x] Templates can be used on the client or server side
 - [x] The application can be easily deployed in a way that is reliable, scalable and secure
 - [ ] New features can be added with confidence that things won’t break
 - [ ] The code is easy to read
