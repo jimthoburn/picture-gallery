@@ -35,17 +35,17 @@ https://nodejs.org/en/
 2. Add albums and pictures to the `/pictures/` folder
 
 ```
-| /pictures/
-|-- /your-album-name/
-|--|-- /original/
-|--|--|-- /1.jpg
-|--|--|-- /2.jpg
-|--|--|-- /3.jpg
-|-- /your-other-album-name/
-|--|-- /original/
-|--|--|-- /1.jpg
-|--|--|-- /2.jpg
-|--|--|-- /3.jpg
+/pictures/
+    /your-album-name/
+        /original/
+            /1.jpg
+            /2.jpg
+            /3.jpg
+    /your-other-album-name/
+        /original/
+            /1.jpg
+            /2.jpg
+            /3.jpg
 ```
 
 3. Add your album names to `albums.js`
