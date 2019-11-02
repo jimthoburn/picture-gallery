@@ -1,0 +1,29 @@
+
+body {
+  margin: 0;
+  padding: 0;
+  background: rgb(250, 250, 250);
+  color: rgb(51, 51, 51);
+  font-family: "Fredericka the Great", "Helvetica Neue", Helvetica, sans-serif;
+  font-size: 100%;
+  line-height: 1.5;
+  font-size: calc(0.75em + 1vmin);
+}
+
+/* Make page content fit the size of the viewport */
+body {
+  display: grid;
+}
+body > section {
+  grid-column: 1 / -1;
+  grid-row: 1 / -1;
+  align-self: stretch;
+}
+
+/* KUDOS: https://stackoverflow.com/questions/17555682/height-100-or-min-height-100-for-html-and-body-elements */
+html {
+  height: 100%;
+}
+body {
+  min-height: 100%;
+}
