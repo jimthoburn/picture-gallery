@@ -1,6 +1,29 @@
 
 # Picture Gallery
 
+Some of the goals of this project are...
+
+User experience
+- [x] Essential content/features are available in any web browser
+- [x] Browser features (like forward/back and bookmarks) are supported
+- [x] Site is just as accessible as it would be with static HTML and page refreshes
+- [x] Site is just as findable by search engines and the web archive as it would be if was made of static HTML pages
+- [x] First page renders as quickly as static HTML
+- [x] Templates can be used on the client or server side
+- [x] Large features can be broken up into smaller components and modules
+- [x] Fancy things like animated transitions between pages can be added
+
+Editor experience
+- [ ] Content can be created with a simple language like markdown
+- [ ] Content can be added, edited and removed using a simple mechanism like files and folders
+- [ ] The gallery can be hosted anywhere and kept private, if desired
+
+Developer experience
+- [x] The application’s logic is easy to understand and reason about (thanks, XState!)
+- [ ] New features can be added with confidence that things won’t break
+- [ ] The code is easy to read
+
+
 ## How to create a gallery
 
 1. Install Node 12.13.0 LTS or newer
