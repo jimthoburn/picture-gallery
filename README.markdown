@@ -1,5 +1,5 @@
 
-# Picture Gallery
+# Picture Gallery (Beta)
 
 This project is an experiment to see if it’s possible to achieve the following goals in a [reactive](https://en.wikipedia.org/wiki/Reactive_programming) [single-page](https://en.wikipedia.org/wiki/Single-page_application) application on the web…
 
@@ -10,6 +10,7 @@ User experience
 - [x] Site is just as findable by search engines and the web archive as it would be if it was made of static HTML pages
 - [x] First page renders as quickly as static HTML
 - [ ] The application works well on a slow network
+- [ ] The application has cues that are equivalent to a normal browsing experience, like a page loading indicator
 - [x] The application is still usable when things go wrong, like if a CSS file doesn’t load or a JavaScript error happens
 - [x] Gesture-driven animations and transitions between pages can be added
 
@@ -22,7 +23,7 @@ Developer experience
 - [x] The application’s logic is easy to understand and reason about (thanks, [XState](
 https://xstate.js.org/viz/?gist=18995ef2fca6c1949991f21b1b68c6d0)!)
 - [x] Large features can be broken up into smaller components and modules
-- [x] Templates can be used on the client or server side
+- [x] Code for templates and logic can be used on the client or server side
 - [x] The application can be easily deployed in a way that is reliable, scalable and secure
 - [ ] New features can be added with confidence that things won’t break
 - [ ] The code is easy to read
