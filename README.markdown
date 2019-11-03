@@ -52,7 +52,7 @@ https://nodejs.org
 
 2. Clone this project with Git (or download it)
 
-3. Add albums and pictures to the `/pictures/` folder
+3. Add your pictures to the `/pictures/` folder, grouped by album name
 
 ```
 /pictures/
@@ -77,43 +77,19 @@ export const albums = [
 ];
 ```
 
-5. Repeat step 4 with `albums-cjs.js`
-
-```
-module.exports = [
-  "your-album-name",
-  "your-other-album-name"
-]
-```
-
-6. Open a terminal and install dependencies:
+5. Open a terminal, open your project folder and install dependencies:
 
 ```
 $ npm install
 ```
 
-7. Generate responsive images
-
-```
-$ npm run create:images
-```
-
-You may see an error message like this one:
-
-```
-[] The following tasks did not complete: default
-[] Did you forget to signal async completion?
-```
-
-This is _probably_ okay. The images should still be generated.
-
-8. Generate gallery files and start the server
+6. Generate gallery files and start the server
 
 ```
 npm start
 ```
 
-9. Visit `http://localhost:5000/your-album-name/`
+7. Visit `http://localhost:5000/your-album-name/`
 
 
 ### How to publish your gallery
