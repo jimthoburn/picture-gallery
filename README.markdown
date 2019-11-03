@@ -13,12 +13,6 @@
 
 * 📚 Helpful [resources](#resources)
 
-## How to make your own gallery
-
-[Remix this Glitch](https://glitch.com/edit/#!/picture-gallery) 🎏
-
-_See instructions in the [README file](https://glitch.com/edit/#!/picture-gallery?path=README.markdown:1:0)_
-
 ## <span id="automation"></span> Automatically creating and publishing albums
 
 If you have a lot of images, you can automatically generate different image sizes and data for your albums and then publish them as a static web site.
