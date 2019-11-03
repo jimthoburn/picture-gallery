@@ -42,14 +42,16 @@ https://picture-gallery.glitch.me/wildflowers/
 You can remix this project on Glitch:
 https://glitch.com/edit/#!/picture-gallery-with-local-images
 
-### Automation 🤖
+### Running locally 🤖
 
 To run the project locally on your computer, you can follow these steps:
 
 1. Install Node 12.13.0 LTS or newer
 https://nodejs.org/en/
 
-2. Add albums and pictures to the `/pictures/` folder
+2. Clone this project with Git (or download it)
+
+3. Add albums and pictures to the `/pictures/` folder
 
 ```
 /pictures/
@@ -65,7 +67,7 @@ https://nodejs.org/en/
             /3.jpg
 ```
 
-3. Add your album names to `albums.js`
+4. Add your album names to `albums.js`
 
 ```
 export const albums = [
@@ -74,7 +76,7 @@ export const albums = [
 ];
 ```
 
-4. Repeat step 3 with `albums-cjs.js`
+5. Repeat step 4 with `albums-cjs.js`
 
 ```
 module.exports = [
@@ -83,13 +85,13 @@ module.exports = [
 ]
 ```
 
-5. Open a terminal and install dependencies:
+6. Open a terminal and install dependencies:
 
 ```
 $ npm install
 ```
 
-6. Generate responsive images
+7. Generate responsive images
 
 ```
 $ npm run create:images
@@ -104,16 +106,16 @@ You may see an error message like this one:
 
 This is _probably_ okay. The images should still be generated.
 
-7. Generate gallery files and start the server
+8. Generate gallery files and start the server
 
 ```
 npm start
 ```
 
-8. Visit `http://localhost:5000/your-album-name/`
+9. Visit `http://localhost:5000/your-album-name/`
 
 
-### How to publish your gallery
+### How to publish your gallery 🖼 ✨ 
 
 The above steps will create a `_site` folder that can be published on any server.
 
