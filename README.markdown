@@ -41,9 +41,9 @@ https://picture-gallery.glitch.me
 You can remix this project on Glitch 🎏  
 https://glitch.com/edit/#!/picture-gallery
 
-### Generating images and albums
+### Automatically creating and publishing albums
 
-If you have a lot of images, you can run the project locally and automatically generate data for the albums.
+If you have a lot of images, you can automatically generate different image sizes and data for your albums and then publish them as a static web site.
 
 Here are the basic steps:
 
@@ -120,7 +120,7 @@ npm start
 
 The above steps will create a `_site` folder that can be published on any server.
 
-For example, you can auto-deploy a GitHub repo to Netlify and use these deploy settings:
+For example, you can auto-deploy a GitHub repository to [Netlify](https://www.netlify.com/) and use these deploy settings:
 
 Build command  
 `npm run build`
@@ -128,9 +128,10 @@ Build command
 Publish directory  
 `_site/`
 
-You may also want to use Git LFS:  
-https://git-lfs.github.com/  
-https://www.netlify.com/products/large-media/
+You may also want to use Git LFS, if your repository is getting close to 1 GB in size. See [GitHub disk quota](https://help.github.com/en/github/managing-large-files/what-is-my-disk-quota)
+
+* https://git-lfs.github.com/  
+* https://www.netlify.com/products/large-media/
 
 
 ### How to move existing files into Git LFS
