@@ -41,9 +41,11 @@ https://picture-gallery.glitch.me
 You can remix this project on Glitch 🎏  
 https://glitch.com/edit/#!/picture-gallery
 
-### Running locally
+### Generating images and albums
 
-To run the project locally on your computer, you can follow these steps:
+If you have a lot of images, you can run the project locally and automatically generate data for the albums.
+
+Here are the basic steps:
 
 1. Install Node 12.13.0 LTS or newer  
 https://nodejs.org
