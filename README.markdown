@@ -77,13 +77,13 @@ export const albums = [
 ];
 ```
 
-5. Open a terminal, open your project folder and install dependencies:
+5. Open your project folder in a terminal and install dependencies:
 
 ```
-$ npm install
+npm install
 ```
 
-6. Generate gallery files and start the server
+6. Generate files and start the server
 
 ```
 npm start
@@ -94,7 +94,7 @@ npm start
 
 ### How to publish your gallery
 
-The above steps will create a `_site` folder that can be published on any server.
+The above steps will create a `_site` folder that can be published on any web server.
 
 For example, you can auto-deploy a GitHub repository to [Netlify](https://www.netlify.com/) and use these deploy settings:
 
