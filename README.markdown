@@ -1,13 +1,13 @@
 
 # Picture Gallery (Beta)
 
-This project is an experiment to see if it’s possible to achieve the following goals in a [reactive](https://en.wikipedia.org/wiki/Reactive_programming) [single-page](https://en.wikipedia.org/wiki/Single-page_application) application on the web…
+This project is an experiment to see how easily the following goals can be achieved in a [reactive](https://en.wikipedia.org/wiki/Reactive_programming) [single-page](https://en.wikipedia.org/wiki/Single-page_application) application on the web…
 
 User experience
-- [x] Essential content/features are available in any web browser
+- [ ] Essential content/features are available in any web browser
 - [x] Browser features (like forward/back and bookmarks) are supported
-- [x] Site is just as accessible as it would be with static HTML and page refreshes
-- [x] Site is just as findable by search engines and the web archive as it would be if it was made of static HTML pages
+- [ ] Site is just as accessible as it would be with static HTML and page refreshes
+- [ ] Site is just as findable by search engines and [archivable](https://archive.org/) as it would be if it were made of static HTML pages
 - [x] First page renders as quickly as static HTML
 - [ ] The application works well on a slow network
 - [ ] The application has cues that are equivalent to a normal browsing experience, like a page loading indicator
@@ -20,11 +20,10 @@ Editor experience
 - [x] The gallery can be hosted anywhere and kept private, if desired
 
 Developer experience
-- [x] The application’s logic is easy to understand and reason about (thanks, [XState](
-https://xstate.js.org/viz/?gist=18995ef2fca6c1949991f21b1b68c6d0)!)
+- [ ] The application’s logic is easy to understand and reason about
 - [x] Large features can be broken up into smaller components and modules
 - [x] Code for templates and logic can be used on the client or server side
-- [x] The application can be easily deployed in a way that is reliable, scalable and secure
+- [x] The application can be continuously deployed in a way that is reliable, scalable and secure
 - [ ] New features can be added with confidence that things won’t break
 - [ ] The code is easy to read
 - [ ] The app can be ported to another framework without too much rework
