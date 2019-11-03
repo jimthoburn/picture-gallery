@@ -1,5 +1,5 @@
 
-# Picture Gallery (Beta)
+# Picture Gallery _Beta_
 
 This project is an experiment to see how easily the following goals can be achieved in a [reactive](https://en.wikipedia.org/wiki/Reactive_programming) [single-page](https://en.wikipedia.org/wiki/Single-page_application) application on the web…
 
@@ -114,7 +114,7 @@ npm start
 9. Visit `http://localhost:5000/your-album-name/`
 
 
-### How to publish your gallery 🖼 ✨ 
+### How to publish your gallery 
 
 The above steps will create a `_site` folder that can be published on any server.
 
