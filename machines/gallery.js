@@ -1,20 +1,11 @@
+// See a visualization of this machine at:
+// https://xstate.js.org/viz/?gist=18995ef2fca6c1949991f21b1b68c6d0
 
 import { Machine, assign } from "../web_modules/xstate.js";
 
-// Available variables:
-// - Machine
-// - interpret
-// - assign
-// - send
-// - sendParent
-// - spawn
-// - raise
-// - actions
-// - XState (all XState exports)
-
 const LOADING_PICTURE_TIMEOUT_SECONDS = 0.5;
 const TRANSITION_TIMEOUT_SECONDS = 1;
-const PICTURE_MOVE_THRESHOLD = 25; // pixels
+const PICTURE_MOVE_THRESHOLD_PIXELS = 25;
 
 const setSelectedImageIndex = assign({
   selectedPictureIndex: (context, event) => event.selectedPictureIndex
@@ -22,11 +13,17 @@ const setSelectedImageIndex = assign({
 
 const hasSelectedPictureIndex = function(context) {
   return context.selectedPictureIndex != null;
-}
+};
 
 const setBoundingClientRect = assign({
-  fromBoundingClientRect: (context, event) => event.fromBoundingClientRect ? event.fromBoundingClientRect : context.fromBoundingClientRect,
-  toBoundingClientRect:   (context, event) => event.toBoundingClientRect   ? event.toBoundingClientRect   : context.toBoundingClientRect
+  fromBoundingClientRect: (context, event) =>
+    event.fromBoundingClientRect
+      ? event.fromBoundingClientRect
+      : context.fromBoundingClientRect,
+  toBoundingClientRect: (context, event) =>
+    event.toBoundingClientRect
+      ? event.toBoundingClientRect
+      : context.toBoundingClientRect
 });
 
 const setInitialTouch = assign({
@@ -34,19 +31,29 @@ const setInitialTouch = assign({
 });
 
 const movedPictureFarEnough = function(context, event) {
-  if (!event.touch   || !context.initialTouch || 
-      !event.touch.y || !context.initialTouch.y) {
+  if (
+    !event.touch ||
+    !context.initialTouch ||
+    !event.touch.y ||
+    !context.initialTouch.y
+  ) {
     return false;
   }
 
-  return (Math.abs(event.touch.y - context.initialTouch.y) > PICTURE_MOVE_THRESHOLD) ||
-         (Math.abs(event.touch.x - context.initialTouch.x) > PICTURE_MOVE_THRESHOLD);
-}
+  return (
+    Math.abs(event.touch.y - context.initialTouch.y) > PICTURE_MOVE_THRESHOLD_PIXELS ||
+    Math.abs(event.touch.x - context.initialTouch.x) > PICTURE_MOVE_THRESHOLD_PIXELS
+  );
+};
 
 const setMoveTransform = assign({
   transform: (context, event) => {
-    if (!event.touch   || !context.initialTouch || 
-        !event.touch.y || !context.initialTouch.y) {
+    if (
+      !event.touch ||
+      !context.initialTouch ||
+      !event.touch.y ||
+      !context.initialTouch.y
+    ) {
       return context.transform;
     }
 
@@ -54,10 +61,11 @@ const setMoveTransform = assign({
     const translateY = event.touch.y - context.initialTouch.y;
 
     // Base the scale on how far the user has pushed the picture, relative to the viewport
-    const nextScale = 1.0 - (Math.abs(translateY) / event.viewportHeight);
+    const nextScale = 1.0 - Math.abs(translateY) / event.viewportHeight;
 
     // Only allow the scale to get smaller over time
-    const scale = (nextScale < context.transform.scale) ? nextScale : context.transform.scale;
+    const scale =
+      nextScale < context.transform.scale ? nextScale : context.transform.scale;
 
     return {
       translateX,
@@ -69,7 +77,6 @@ const setMoveTransform = assign({
 
 const setShrinkTransform = assign({
   transform: (context, event) => {
-
     // https://developer.mozilla.org/en-US/docs/Web/API/Element/getBoundingClientRect
 
     // From
@@ -77,9 +84,8 @@ const setShrinkTransform = assign({
 
     // To
     const rectB = context.toBoundingClientRect;
-    
-    if (!rectA   || !rectB || 
-        !rectA.y || !rectB.y) {
+
+    if (!rectA || !rectB || !rectA.y || !rectB.y) {
       return context.transform;
     }
 
@@ -88,7 +94,7 @@ const setShrinkTransform = assign({
     let scale = rectB.width / rectA.width;
 
     // Compensate for the transform origin being set to “center” (instead of “top left”)
-    translateX += (rectB.width  - rectA.width) / 2;
+    translateX += (rectB.width - rectA.width) / 2;
     translateY += (rectB.height - rectA.height) / 2;
 
     return {
@@ -146,23 +152,29 @@ const galleryMachine = Machine(
       transitioning_to_details: {
         entry: "setSelectedImageIndex",
         on: {
-          DETAILS_CLOSED: [{
-            target: "transitioning_to_list"
-          }]
+          DETAILS_CLOSED: [
+            {
+              target: "transitioning_to_list"
+            }
+          ]
         },
         onDone: "showing_details",
         initial: "loading_picture",
         states: {
           loading_picture: {
             on: {
-              PICTURE_LOADED: [{
-                target: "preparing_transition"
-              }]
+              PICTURE_LOADED: [
+                {
+                  target: "preparing_transition"
+                }
+              ]
             },
-            after: [{
-              delay: LOADING_PICTURE_TIMEOUT_SECONDS * 1000,
-              target: "preparing_transition"
-            }]
+            after: [
+              {
+                delay: LOADING_PICTURE_TIMEOUT_SECONDS * 1000,
+                target: "preparing_transition"
+              }
+            ]
           },
           preparing_transition: {
             entry: ["setBoundingClientRect", "setShrinkTransform"],
@@ -175,10 +187,12 @@ const galleryMachine = Machine(
             on: {
               TRANSITION_END: "done"
             },
-            after: [{
-              delay: TRANSITION_TIMEOUT_SECONDS * 1000,
-              target: "done"
-            }]
+            after: [
+              {
+                delay: TRANSITION_TIMEOUT_SECONDS * 1000,
+                target: "done"
+              }
+            ]
           },
           done: {
             type: "final"
@@ -187,9 +201,11 @@ const galleryMachine = Machine(
       },
       showing_details: {
         on: {
-          DETAILS_CLOSED: [{
-            target: "transitioning_to_list"
-          }],
+          DETAILS_CLOSED: [
+            {
+              target: "transitioning_to_list"
+            }
+          ],
           PICTURE_SELECTED: {
             target: "showing_details",
             actions: ["setSelectedImageIndex"]
@@ -200,30 +216,40 @@ const galleryMachine = Machine(
         states: {
           idle: {
             on: {
-              MOVE_START: [{
-                target: "moving_picture",
-                actions: ["setInitialTouch", "setBoundingClientRect"]
-              }]
+              MOVE_START: [
+                {
+                  target: "moving_picture",
+                  actions: ["setInitialTouch", "setBoundingClientRect"]
+                }
+              ]
             }
           },
           moving_picture: {
             on: {
               MOVE_PICTURE: [
-                { target: "gesturing",    actions: "setMoveTransform", cond: "movedPictureFarEnough" },
+                {
+                  target: "gesturing",
+                  actions: "setMoveTransform",
+                  cond: "movedPictureFarEnough"
+                },
                 { target: "moving_picture", actions: "setMoveTransform" }
               ],
-              LET_GO_OF_PICTURE: [{
-                target: "idle",
-                actions: "resetTransform",
-              }]
+              LET_GO_OF_PICTURE: [
+                {
+                  target: "idle",
+                  actions: "resetTransform"
+                }
+              ]
             }
           },
           gesturing: {
             on: {
-              MOVE_PICTURE: [{
-                target: "gesturing",
-                actions: "setMoveTransform"
-              }],
+              MOVE_PICTURE: [
+                {
+                  target: "gesturing",
+                  actions: "setMoveTransform"
+                }
+              ],
               LET_GO_OF_PICTURE: "done"
             }
           },
@@ -239,10 +265,12 @@ const galleryMachine = Machine(
           TRANSITION_END: "showing_list",
           PICTURE_SELECTED: "transitioning_to_details"
         },
-        after: [{
-          delay: TRANSITION_TIMEOUT_SECONDS * 1000,
-          target: "showing_list"
-        }]
+        after: [
+          {
+            delay: TRANSITION_TIMEOUT_SECONDS * 1000,
+            target: "showing_list"
+          }
+        ]
       }
     }
   },
@@ -263,4 +291,3 @@ const galleryMachine = Machine(
 );
 
 export { galleryMachine };
-
