@@ -51,7 +51,7 @@ function CloseButton({ state, album }) {
        onClick="${onCloseButtonClick}"
        onKeyUp="${onKeyboardDetected}"
        ref="${closeButton}">
-      All Pictures
+      ${album.title}
     </a>
   `;
 }

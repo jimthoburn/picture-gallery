@@ -62,15 +62,11 @@ function PictureImage({ album, picture, state }) {
   useEffect(() => {
     if (isBrowser()) {
 
-      // console.log(`prefersReducedMotion ${prefersReducedMotion}`);
-      
-
       function onTransitionEnd() {
         dispatch({
           type: "TRANSITION_END"
         });
       }
-
 
       // If the user prefers reduced motion, announce transitions right away
       if (prefersReducedMotion &&
@@ -92,21 +88,9 @@ function PictureImage({ album, picture, state }) {
     }
   }, [prefersReducedMotion, state.value, image]);
 
-
-  // return html`
-  //   <figure>
-  //     <responsive-image aspect-ratio="1/1">
-  //       <img src="${picture.uri}"
-  //            alt="${picture.description}"
-  //            onLoad="${onImageLoaded}"
-  //            ref="${image}" />
-  //     </responsive-image>
-  //   </figure>
-  // `;
-
   return html`
     <figure>
-      <responsive-image aspect-ratio="2/1">
+      <responsive-image>
         <img
           src="/pictures/${ album.uri }/384-wide/${ picture.filename }"
           srcset="/pictures/${ album.uri }/384-wide/${ picture.filename } 384w,

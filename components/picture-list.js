@@ -83,7 +83,7 @@ function PictureList({ album, pictures, state }) {
             <a href="/${album.uri}/${picture.uri}/"
                onClick="${ e => onListImageClick(e, index) }"
                onKeyUp="${onKeyboardDetected}">
-              <responsive-image aspect-ratio="2/1">
+              <responsive-image>
                 <img src="/pictures/${ album.uri }/384-wide/${ picture.filename }"
                      srcset="/pictures/${ album.uri }/384-wide/${ picture.filename } 384w,
                              /pictures/${ album.uri }/512-wide/${ picture.filename } 512w,
