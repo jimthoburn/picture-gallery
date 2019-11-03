@@ -6,21 +6,21 @@ This project is an experiment to see how easily the following goals can be achie
 User experience
 - [x] Essential content/features are available in any web browser
 - [x] Browser features (like forward/back and bookmarks) are supported
-- [ ] Site is just as accessible as it would be with static HTML and page refreshes
-- [ ] Site is just as findable by search engines and [archivable](https://archive.org/) as it would be if it were made of static HTML pages
+- [x] Site is just as accessible as it would be with static HTML and page refreshes
+- [x] Site is just as findable by search engines and [archivable](https://archive.org/) as it would be if it were made of static HTML pages
 - [x] First page renders as quickly as static HTML
-- [ ] The application works well on a slow network
+- [x] The application works well on a slow network
 - [ ] The application has cues that are equivalent to a normal browsing experience, like a page loading indicator
 - [x] The application is still usable when things go wrong, like if a CSS file doesn’t load or a JavaScript error happens
 - [x] Gesture-driven animations and transitions between pages can be added
 
 Editor experience
 - [ ] Content can be created with a simple language like markdown
-- [ ] Content can be added, edited and removed using a simple mechanism like files and folders
+- [x] Content can be added, edited and removed using a simple mechanism like files and folders
 - [x] The gallery can be hosted anywhere and kept private, if desired
 
 Developer experience
-- [ ] The application’s logic is easy to understand and reason about
+- [x] The application’s logic is easy to understand and reason about ([Thanks XState!](https://xstate.js.org/viz/?gist=18995ef2fca6c1949991f21b1b68c6d0))
 - [x] Large features can be broken up into smaller components and modules
 - [x] Code for templates and logic can be used on the client or server side
 - [x] The application can be continuously deployed in a way that is reliable, scalable and secure
