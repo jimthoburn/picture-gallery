@@ -128,13 +128,15 @@ Build command
 Publish directory  
 `_site/`
 
+### Image file storage
+
 You may also want to use Git LFS, if your repository is getting close to 1 GB in size. See [GitHub disk quota](https://help.github.com/en/github/managing-large-files/what-is-my-disk-quota)
 
 * https://git-lfs.github.com/  
 * https://www.netlify.com/products/large-media/
 
 
-### How to move existing files into Git LFS
+#### How to move existing files into Git LFS
 
 ```
 $ git lfs migrate import --everything --include="*.jpg,*.png,*.zip"
