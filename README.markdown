@@ -11,7 +11,7 @@
 
 * 📚 Helpful [resources](#resources)
 
-## <span id="automation"></span> Automatically creating and publishing albums 🤖
+## <span id="automation"></span> Automatically creating and publishing albums
 
 If you have a lot of images, you can automatically generate different image sizes and data for your albums and then publish them as a static web site.
 
