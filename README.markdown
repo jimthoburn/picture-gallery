@@ -7,13 +7,11 @@
 
 * 🎏 You can [remix this Glitch](https://glitch.com/edit/#!/picture-gallery) to make your own gallery
 
-* 🤖 If you have a lot of images, this [README file](#automation) has instructions for automatically generating responsive image sizes & API files, and publishing them as a static site
-
 * 📈 Here’s a [visualization of the gallery’s state machine](https://xstate.js.org/viz/?gist=18995ef2fca6c1949991f21b1b68c6d0)
 
 * 📚 Helpful [resources](#resources)
 
-## <span id="automation"></span> Automatically creating and publishing albums
+## <span id="automation"></span> Automatically creating and publishing albums 🤖
 
 If you have a lot of images, you can automatically generate different image sizes and data for your albums and then publish them as a static web site.
 
