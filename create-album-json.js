@@ -1,10 +1,14 @@
 
-'use strict'
+import fs from "fs";
 
-let fs = require('fs')
-let mkdirp = require('mkdirp')
+// https://stackoverflow.com/questions/46745014/alternative-for-dirname-in-node-when-using-the-experimental-modules-flag
+import { dirname } from 'path';
+import { fileURLToPath } from 'url';
+const __dirname = dirname(fileURLToPath(import.meta.url));
 
-const albums = require("./albums-cjs.js")
+import mkdirp from "mkdirp";
+
+import { albums } from "./albums.js";
 
 function createAlbumJSON({ source, destination, album }) {
   const files = getAllFilesFromFolder(source)
@@ -39,13 +43,12 @@ function createAlbumJSON({ source, destination, album }) {
 // https://stackoverflow.com/questions/20822273/best-way-to-get-folder-and-file-list-in-javascript#21459809
 function getAllFilesFromFolder(dir) {
 
-  let filesystem = require("fs")
   let results = []
 
-  filesystem.readdirSync(dir).forEach(function(file) {
+  fs.readdirSync(dir).forEach(function(file) {
 
     file = dir+'/'+file
-    let stat = filesystem.statSync(file)
+    let stat = fs.statSync(file)
 
     if (stat && stat.isDirectory()) {
       results = results.concat(getAllFilesFromFolder(file))

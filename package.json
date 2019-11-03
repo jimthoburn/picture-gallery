@@ -2,14 +2,14 @@
   "type": "module",
   "scripts": {
     "prepare": "pika-web",
-    "create:images": "gulp",
-    "create:albums": "node create-album-json.js",
-    "create:zip": "node create-zip.js",
+    "create:images": "node --experimental-modules create-images.js",
+    "create:albums": "node --experimental-modules create-album-json.js",
+    "create:zip": "node --experimental-modules create-zip.js",
     "build": "node --experimental-modules build.js",
     "build:watch": "node --experimental-modules build.js --watch",
     "serve": "serve ./_site/",
     "serve:dynamic": "node --experimental-modules server.js",
-    "start": "npm run create:albums && mkdir archives && npm run create:zip && npm run build && npm run serve"
+    "start": "npm run create:images && npm run create:albums && npm run create:zip && npm run build && npm run serve"
   },
   "dependencies": {
     "htm": "^2.2.1",

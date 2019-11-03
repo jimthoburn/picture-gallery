@@ -1,8 +1,16 @@
-// require modules 
-var fs = require('fs')
-var archiver = require('archiver')
 
-const albums = require("./albums-cjs.js")
+import fs from "fs";
+
+// https://stackoverflow.com/questions/46745014/alternative-for-dirname-in-node-when-using-the-experimental-modules-flag
+import { dirname } from 'path';
+import { fileURLToPath } from 'url';
+const __dirname = dirname(fileURLToPath(import.meta.url));
+
+import mkdirp from "mkdirp";
+
+import archiver from "archiver";
+
+import { albums } from "./albums.js";
 
 // KUDOS: https://www.npmjs.com/package/archiver
 function createZip(source, destination, callback) {
@@ -46,7 +54,13 @@ function createZip(source, destination, callback) {
 
 }
 
-albums.forEach(album => {
-  createZip(`pictures/${album}/6000-wide/`, `/archives/${album}.zip`)
+mkdirp("archives", function (err) {
+  if (err) {
+    console.error(err)
+  } else {
+    albums.forEach(album => {
+      createZip(`pictures/${album}/6000-wide/`, `/archives/${album}.zip`)
+    })
+  }
 })
 
