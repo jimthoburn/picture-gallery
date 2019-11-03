@@ -7,7 +7,7 @@ import { render } from "./web_modules/preact-render-to-string.js";
 
 import { DefaultLayout } from "./layouts/default.js";
 import { WithoutClientLayout } from "./layouts/without-client.js";
-import { IndexPage } from "./pages/index.js";
+import { AlbumPage } from "./pages/album.js";
 import { ParentAlbumPage } from "./pages/parent-album.js";
 import { getInitialPageTitle } from "./components/picture-gallery.js";
 
@@ -102,7 +102,7 @@ function generateAlbum({ album }) {
     }
 
     const title   = getInitialPageTitle({ getPageURL, pictures: album.pictures, album });
-    const content = render(IndexPage({ getPageURL, pictures: album.pictures, album }));
+    const content = render(AlbumPage({ getPageURL, pictures: album.pictures, album }));
 
     const renderedHTML = DefaultLayout({ title, content });
     const beautifiedHTML = jsBeautify.html_beautify(renderedHTML);
@@ -174,10 +174,10 @@ function copyAll() {
 
   }
 
-  const extras = ["client.js", "404.html"];
+  const extras = ["client.js", "pages/404.html"];
 
   for (let source of extras) {
-    const destination = `${GENERATED_FILES_FOLDER}/${source}`;
+    const destination = `${GENERATED_FILES_FOLDER}/${source.replace("pages/", "")}`;
     copy({ source, destination });
 
     // if (watch) {
