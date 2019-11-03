@@ -39,7 +39,7 @@ https://picture-gallery.glitch.me
 ### Quick start
 
 You can remix this project on Glitch 🎏  
-https://glitch.com/edit/#!/picture-gallery-with-local-images
+https://glitch.com/edit/#!/picture-gallery
 
 ### Running locally
 
