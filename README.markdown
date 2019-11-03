@@ -61,6 +61,29 @@ npm start
 
 7. Visit `http://localhost:5000/your-album-name/`
 
+To stop the server, press “control C”
+
+To start the server again, without re-building everything:
+
+```
+npm run serve
+```
+
+### Editing
+
+You’ll likely want to edit the files that were generated for you in the `api` folder.
+For example, you can change the album names and add dates.
+
+```
+"title": "Japan in Winter",
+"date": "February & March, 2016",
+```
+
+As you make changes, you can rebuild the site with:
+
+```
+npm run build
+```
 
 ### How to publish your gallery
 
