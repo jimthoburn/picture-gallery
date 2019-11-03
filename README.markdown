@@ -4,7 +4,7 @@
 This project is an experiment to see how easily the following goals can be achieved in a [reactive](https://en.wikipedia.org/wiki/Reactive_programming) [single-page](https://en.wikipedia.org/wiki/Single-page_application) application on the web…
 
 User experience
-- [ ] Essential content/features are available in any web browser
+- [x] Essential content/features are available in any web browser
 - [x] Browser features (like forward/back and bookmarks) are supported
 - [ ] Site is just as accessible as it would be with static HTML and page refreshes
 - [ ] Site is just as findable by search engines and [archivable](https://archive.org/) as it would be if it were made of static HTML pages
