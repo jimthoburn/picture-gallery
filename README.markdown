@@ -37,10 +37,14 @@ https://picture-gallery.glitch.me/wildflowers/
 
 ## How to make your own gallery
 
-You can remix this project on Glitch:  
-https://glitch.com/edit/#!/picture-gallery
+### Quick start 🎏
 
-Or follow these steps...
+You can remix this project on Glitch:
+https://glitch.com/edit/#!/picture-gallery-with-local-images
+
+### Automation 🤖
+
+To run the project locally on your computer, you can follow these steps:
 
 1. Install Node 12.13.0 LTS or newer
 https://nodejs.org/en/
@@ -109,7 +113,7 @@ npm start
 8. Visit `http://localhost:5000/your-album-name/`
 
 
-## How to publish a gallery
+### How to publish your gallery
 
 The above steps will create a `_site` folder that can be published on any server.
 
@@ -126,7 +130,7 @@ https://git-lfs.github.com/
 https://www.netlify.com/products/large-media/
 
 
-## How to move existing files into Git LFS
+### How to move existing files into Git LFS
 
 ```
 $ git lfs migrate import --everything --include="*.jpg,*.png,*.zip"
