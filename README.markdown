@@ -1,47 +1,34 @@
 
-# Picture Gallery _Beta_
+# Picture Gallery _beta_
 
-This project is an experiment to see how easily the following goals can be achieved in a [reactive](https://en.wikipedia.org/wiki/Reactive_programming) [single-page](https://en.wikipedia.org/wiki/Single-page_application) application on the web…
+* 📝 [Project goals](#goals)
 
-User experience
-- [x] Essential content/features are available in any web browser
-- [x] Browser features (like forward/back and bookmarks) are supported
-- [x] Site is just as accessible as it would be with static HTML and page refreshes
-- [x] Site is just as findable by search engines and [archivable](https://archive.org/) as it would be if it were made of static HTML pages
-- [x] First page renders as quickly as static HTML
-- [x] The application works well on a slow network
-- [ ] The application has cues that are equivalent to a normal browsing experience, like a page loading indicator
-- [x] The application is still usable when things go wrong, like if a CSS file doesn’t load or a JavaScript error happens
-- [x] Gesture-driven animations and transitions between pages can be added
+* 🖼 See [a live demo](https://picture-gallery.glitch.me)
 
-Editor experience
-- [ ] Content can be created with a simple language like markdown
-- [x] Content can be added, edited and removed using a simple mechanism like files and folders
-- [x] The gallery can be hosted anywhere and kept private, if desired
+* 🎏 You can [remix this Glitch](https://glitch.com/edit/#!/picture-gallery) to make your own gallery
 
-Developer experience
-- [x] The application’s logic is easy to understand and reason about ([Thanks XState!](https://xstate.js.org/viz/?gist=18995ef2fca6c1949991f21b1b68c6d0))
-- [x] Large features can be broken up into smaller components and modules
-- [x] Code for templates and logic can be used on the client or server side
-- [x] The application can be continuously deployed in a way that is reliable, scalable and secure
-- [ ] New features can be added with confidence that things won’t break
-- [ ] The code is easy to read
-- [ ] The app can be ported to another framework without too much rework
+* 🤖 If you have a lot of images, this [README file](#automation) has instructions for automatically generating responsive image sizes & API files, and publishing them as a static site
 
-
-## See a running example
-
-https://picture-gallery.glitch.me/
-
+* 📈 Here’s a [visualization of the gallery’s state machine](https://xstate.js.org/viz/?gist=18995ef2fca6c1949991f21b1b68c6d0)
 
 ## How to make your own gallery
 
-### Quick start
+1. [Remix this Glitch](https://glitch.com/edit/#!/picture-gallery) 🎏
 
-You can remix this project on Glitch 🎏  
-https://glitch.com/edit/#!/picture-gallery
+2. Upload your photos to the `assets` folder.
 
-### Automatically creating and publishing albums
+3. Change the album information in the `_data` folder.
+
+```
+index.json
+japan.json
+wildflowers.json
+```
+
+4. Update (or delete) the `LICENSE` file in the `_data` folder:  
+[https://creativecommons.org/share-your-work/](https://creativecommons.org/share-your-work/)
+
+## <span id="automation"></span> Automatically creating and publishing albums
 
 If you have a lot of images, you can automatically generate different image sizes and data for your albums and then publish them as a static web site.
 
@@ -128,3 +115,45 @@ https://xstate.js.org/viz/?gist=18995ef2fca6c1949991f21b1b68c6d0
 
 <a href="https://xstate.js.org/viz/?gist=18995ef2fca6c1949991f21b1b68c6d0" rel="nofollow"><img width="544" alt="xstate" src="https://user-images.githubusercontent.com/926616/68066254-8bd83b80-fcf2-11e9-8c77-6427061b98a9.png">
 </a>
+
+## Project goals
+
+This project is an experiment to see how easily the following goals can be achieved in a [reactive](https://en.wikipedia.org/wiki/Reactive_programming) single-page application on the web…
+
+User experience
+- [x] Essential content/features are available in any web browser
+- [x] Browser features (like forward/back and bookmarks) are supported
+- [x] Site is just as accessible as it would be with static HTML and page refreshes
+- [x] Site is just as findable by search engines and [archivable](https://archive.org/) as it would be if it were made of static HTML pages
+- [x] First page renders as quickly as static HTML
+- [x] The application works well on a slow network
+- [ ] The application has cues that are equivalent to a normal browsing experience, like a page loading indicator
+- [x] The application is still usable when things go wrong, like if a CSS file doesn’t load or a JavaScript error happens
+- [x] Gesture-driven animations and transitions between pages can be added
+
+Editor experience
+- [ ] Content can be created with a simple language like markdown
+- [x] Content can be added, edited and removed using a simple mechanism like files and folders
+- [x] The gallery can be hosted anywhere and kept private, if desired
+
+Developer experience
+- [x] The application’s logic is easy to understand and reason about ([Thanks XState!](https://xstate.js.org/viz/?gist=18995ef2fca6c1949991f21b1b68c6d0))
+- [x] Large features can be broken up into smaller components and modules
+- [x] Code for templates and logic can be used on the client or server side
+- [x] The application can be continuously deployed in a way that is reliable, scalable and secure
+- [ ] New features can be added with confidence that things won’t break
+- [ ] The code is easy to read
+- [ ] The app can be ported to another framework without too much rework
+
+## Helpful resources
+
+These projects and guides were super helpful to me while working on the gallery…
+
+* https://barrgroup.com/Embedded-Systems/How-To/State-Machines-Event-Driven-Systems
+* https://barrgroup.com/Embedded-Systems/How-To/Introduction-Hierarchical-State-Machines
+* https://xstate.js.org
+* https://overreacted.io/a-complete-guide-to-useeffect/
+* https://developers.google.com/web/fundamentals/web-components/
+* https://hacks.mozilla.org/category/es6-in-depth/
+* https://github.com/developit/htm
+* https://www.pika.dev/
