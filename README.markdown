@@ -11,22 +11,13 @@
 
 * 📈 Here’s a [visualization of the gallery’s state machine](https://xstate.js.org/viz/?gist=18995ef2fca6c1949991f21b1b68c6d0)
 
+* 📚 Helpful [resources](#resources)
+
 ## How to make your own gallery
 
-1. [Remix this Glitch](https://glitch.com/edit/#!/picture-gallery) 🎏
+[Remix this Glitch](https://glitch.com/edit/#!/picture-gallery) 🎏
 
-2. Upload your photos to the `assets` folder.
-
-3. Change the album information in the `_data` folder.
-
-```
-index.json
-japan.json
-wildflowers.json
-```
-
-4. Update (or delete) the `LICENSE` file in the `_data` folder:  
-[https://creativecommons.org/share-your-work/](https://creativecommons.org/share-your-work/)
+_See instructions in the [README file](https://glitch.com/edit/#!/picture-gallery?path=README.markdown:1:0)_
 
 ## <span id="automation"></span> Automatically creating and publishing albums
 
@@ -116,7 +107,7 @@ https://xstate.js.org/viz/?gist=18995ef2fca6c1949991f21b1b68c6d0
 <a href="https://xstate.js.org/viz/?gist=18995ef2fca6c1949991f21b1b68c6d0" rel="nofollow"><img width="544" alt="xstate" src="https://user-images.githubusercontent.com/926616/68066254-8bd83b80-fcf2-11e9-8c77-6427061b98a9.png">
 </a>
 
-## Project goals
+## <span id="goals"></span> Project goals
 
 This project is an experiment to see how easily the following goals can be achieved in a [reactive](https://en.wikipedia.org/wiki/Reactive_programming) single-page application on the web…
 
@@ -145,7 +136,7 @@ Developer experience
 - [ ] The code is easy to read
 - [ ] The app can be ported to another framework without too much rework
 
-## Helpful resources
+## <span id="resources"></span> Helpful resources
 
 These projects and guides were super helpful to me while working on the gallery…
 
