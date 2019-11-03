@@ -7,7 +7,6 @@ import { fileURLToPath } from 'url';
 const __dirname = dirname(fileURLToPath(import.meta.url));
 
 import mkdirp from "mkdirp";
-
 import archiver from "archiver";
 
 import { albums } from "./albums.js";

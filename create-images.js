@@ -42,8 +42,8 @@ function generateImages(size, imagePath) {
     .on('end', generateNext);
 }
 
-var nextCursor = 0;
-var nextImagePath;
+let nextCursor = 0;
+let nextImagePath;
 function generateNext() {
   if (nextCursor < SIZES.length) {
     console.log('generateNext: ' + nextCursor + ' :: ' + SIZES[nextCursor] + ' :: ' + nextImagePath);
@@ -54,7 +54,7 @@ function generateNext() {
   }
 }
 
-var nextFolderCursor = 0;
+let nextFolderCursor = 0;
 function generateNextFolder() {
   if (nextFolderCursor < FOLDER_NAMES.length) {
     console.log('generateNextFolder: ' + nextFolderCursor + ' :: ' + FOLDER_NAMES[nextFolderCursor]);
@@ -67,12 +67,7 @@ function generateNextFolder() {
   }
 }
 
-//gulp.task("default", function() {
+// Generate images
+nextFolderCursor = 0;
+generateNextFolder();
 
-  console.log("gulp default task is starting")
-
-  // Generate images
-  nextFolderCursor = 0;
-  generateNextFolder();
-
-//});

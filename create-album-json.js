@@ -84,7 +84,7 @@ albums.forEach(album => {
     destination: `./api`,
     album: {
       uri: album.split("/").pop(),
-      title: album.split("/").pop().toUpperCase(),
+      title: album.split("/").pop(),
       date: null,
       zip_file_size: null
     }
