@@ -81,12 +81,13 @@ function saveJSON({ destination, fileName, data }) {
 albums.forEach(album => {
   createAlbumJSON({
     source: `./pictures/${album}/original`,
-    destination: `./api`,
+    destination: `./_data`,
     album: {
       uri: album.split("/").pop(),
       title: album.split("/").pop(),
       date: null,
-      zip_file_size: null
+      zip_file_size: null,
+      cover_picture_filename: null
     }
   })
 })
