@@ -11,6 +11,9 @@
     "serve:dynamic": "node --experimental-modules server.js",
     "start": "npm run create:images && npm run create:albums && npm run create:zip && npm run build && npm run serve"
   },
+  "engines": {
+    "node": "12.13.x"
+  },
   "dependencies": {
     "htm": "^2.2.1",
     "lit-element": "^2.2.1",
