@@ -138,6 +138,8 @@ You may also want to use Git LFS, if your repository is getting close to 1 GB in
 
 #### How to move existing files into Git LFS
 
+Here are some commands that I used to migrate large files to Git LFS, when they were already in my Git commit history.
+
 ```
 $ git lfs migrate import --everything --include="*.jpg,*.png,*.zip"
 $ git status
