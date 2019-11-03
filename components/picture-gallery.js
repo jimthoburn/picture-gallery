@@ -23,16 +23,13 @@ function PictureGallery({ album, pictures, getPageURL }) {
 
   if (isBrowser()) {
     console.log(`🖼 ✨ Render`);
-    // console.log(`PictureGallery()`);
   }
 
   const selectedPictureIndex = getSelectedPictureIndexFromURL({ album, pictures, getPageURL });
 
   const [state, dispatch, service] = useMachine(galleryMachine, { context: { selectedPictureIndex } });
   if (isBrowser()) {
-    //console.log(state.event);
     console.log(state.value);
-    // console.log(state);
   }
 
   getMachine = function() {
@@ -118,7 +115,7 @@ function getSelectedPictureIndexFromURL({ album, pictures, getPageURL }) {
   const pageURL = `/${urlArray.join("/")}`;
 
   for (let index = 0; index < pictures.length; index++) {
-    if (`/${album.uri}/${pictures[index].uri}/` === pageURL) {
+    if (`/${encodeURIComponent(album.uri)}/${encodeURIComponent(pictures[index].uri)}/` === pageURL) {
       return index;
     }
   }

@@ -74,15 +74,12 @@ function PictureDetails({ pictures, album, state }) {
              ref="${detailsElement}">
       <header>
         <p class="all">
-          <${CloseButton} album="${album}" state="${state}" /> / Picture ${ state.context.selectedPictureIndex + 1 }
+          <${CloseButton} album="${album}" state="${state}" /> / ${ picture.caption ? picture.caption : `Picture ${ state.context.selectedPictureIndex + 1 }` }
         </p>
-
         <p class="download">
           <a href="/pictures/${ album.uri }/6000-wide/${ picture.filename }">
-            <svg width="25" height="30"><use xlink:href="#download"></use></svg>
-            Original Size</a>
-          <br />
-          <small>to save or download</small>
+            Download
+          </a>
         </p>
       </header>
 

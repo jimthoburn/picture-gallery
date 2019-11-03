@@ -6,7 +6,7 @@ import jsBeautify from "js-beautify";
 import { render } from "./web_modules/preact-render-to-string.js";
 
 import { DefaultLayout } from "./layouts/default.js";
-import { ParentAlbumLayout } from "./layouts/parent-album.js";
+import { WithoutClientLayout } from "./layouts/without-client.js";
 import { IndexPage } from "./pages/index.js";
 import { ParentAlbumPage } from "./pages/parent-album.js";
 import { getInitialPageTitle } from "./components/picture-gallery.js";
@@ -16,14 +16,14 @@ import { albums } from "./albums.js";
 
 const GENERATED_FILES_FOLDER = "./_site";
 
-let watch = false;
-
-
-process.argv.forEach((val, index) => {
-  if (val === "--watch") {
-    watch = true;
-  }
-});
+// let watch = false;
+// 
+// 
+// process.argv.forEach((val, index) => {
+//   if (val === "--watch") {
+//     watch = true;
+//   }
+// });
 
 
 const staticFolders = [
@@ -128,7 +128,7 @@ function generateAll() {
         const title   = album.title;
         const content = render(ParentAlbumPage({ parent: album, children: album.albums }));
 
-        const renderedHTML = ParentAlbumLayout({ title, content });
+        const renderedHTML = WithoutClientLayout({ title, content });
         const beautifiedHTML = jsBeautify.html_beautify(renderedHTML);
 
         createFile({ pageURL, html: beautifiedHTML });
