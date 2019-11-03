@@ -3,7 +3,7 @@ import fs from "fs";
 
 const whenDefined = fs.readFileSync("helpers/when-defined.js", 'utf8');
 
-export const ParentAlbumLayout = ({ title, content }) => {
+export const WithoutClientLayout = ({ title, content }) => {
   return `
     <!DOCTYPE html>
     <html lang="en" dir="ltr">
