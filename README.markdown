@@ -38,15 +38,15 @@ https://picture-gallery.glitch.me
 
 ### Quick start
 
-You can remix this project on Glitch 🎏
+You can remix this project on Glitch 🎏  
 https://glitch.com/edit/#!/picture-gallery-with-local-images
 
 ### Running locally
 
 To run the project locally on your computer, you can follow these steps:
 
-1. Install Node 12.13.0 LTS or newer
-https://nodejs.org/en/
+1. Install Node 12.13.0 LTS or newer  
+https://nodejs.org
 
 2. Clone this project with Git (or download it)
 
