@@ -29,19 +29,19 @@ Developer experience
 - [ ] The app can be ported to another framework without too much rework
 
 
-## See an example on Glitch
+## See a running example
 
-https://picture-gallery.glitch.me/wildflowers/
+https://picture-gallery.glitch.me
 
 
 ## How to make your own gallery
 
-### Quick start 🎏
+### Quick start
 
-You can remix this project on Glitch:
+You can remix this project on Glitch 🎏
 https://glitch.com/edit/#!/picture-gallery-with-local-images
 
-### Running locally 🤖
+### Running locally
 
 To run the project locally on your computer, you can follow these steps:
 
@@ -114,7 +114,7 @@ npm start
 9. Visit `http://localhost:5000/your-album-name/`
 
 
-### How to publish your gallery 
+### How to publish your gallery
 
 The above steps will create a `_site` folder that can be published on any server.
 
