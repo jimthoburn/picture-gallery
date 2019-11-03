@@ -22,8 +22,15 @@ function IndexPage({ title, date, albums }) {
           <li>
             <a href="/${album.uri}/">
               <responsive-image>
-                <img src="${ picture.source }"
-                     width="320" />
+              <img src="/pictures/${ album.uri }/384-wide/${ picture.filename }"
+                   srcset="/pictures/${ album.uri }/384-wide/${ picture.filename } 384w,
+                           /pictures/${ album.uri }/512-wide/${ picture.filename } 512w,
+                           /pictures/${ album.uri }/768-wide/${ picture.filename } 768w,
+                           /pictures/${ album.uri }/1024-wide/${ picture.filename } 1024w,
+                           /pictures/${ album.uri }/1536-wide/${ picture.filename } 1536w,
+                           /pictures/${ album.uri }/2048-wide/${ picture.filename } 2048w"
+                   sizes="320px"
+                   width="320" />
                 <span class="caption">${ album.title }</span>
               </responsive-image>
             </a>

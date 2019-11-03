@@ -8,9 +8,11 @@ import { render } from "./web_modules/preact-render-to-string.js";
 import { DefaultLayout } from "./layouts/default.js";
 import { WithoutClientLayout } from "./layouts/without-client.js";
 import { AlbumPage } from "./pages/album.js";
+import { IndexPage } from "./pages/index.js";
 import { ParentAlbumPage } from "./pages/parent-album.js";
 import { getInitialPageTitle } from "./components/picture-gallery.js";
 
+const galleryData = JSON.parse(fs.readFileSync("./_data/index.json", 'utf8'));
 
 import { albums } from "./albums.js";
 
@@ -27,7 +29,6 @@ const GENERATED_FILES_FOLDER = "./_site";
 
 
 const staticFolders = [
-  "api",
   "archives",
   "components",
   "css",
@@ -38,7 +39,6 @@ const staticFolders = [
 ];
 
 const rebuildOnChange = [
-  "api",
   "layouts",
   "pages",
   "components",
@@ -112,10 +112,23 @@ function generateAlbum({ album }) {
 }
 
 
+function generateIndexPage() {
+  console.log(`Generating index page`);
+  const albums = galleryData.albums.map(
+    albumURI => JSON.parse(fs.readFileSync(`./_data/${albumURI}.json`, 'utf8'))
+  );
+  const title   = galleryData.title;
+  const content = render(IndexPage({ ...galleryData, albums }));
+
+  const beautifiedHTML = jsBeautify.html_beautify(WithoutClientLayout({ title, content }));
+  createFile({ pageURL: `/`, html: beautifiedHTML });
+}
+
+
 function generateAll() {
   for (let nextAlbumName of albums) {
 
-    const album = JSON.parse(fs.readFileSync(`./api/${nextAlbumName}.json`, "utf8"));
+    const album = JSON.parse(fs.readFileSync(`./_data/${nextAlbumName}.json`, "utf8"));
 
     if (album.albums) {
       const urlsToGenerate = [`/${ album.uri }/`];
@@ -174,6 +187,9 @@ function copyAll() {
 
   }
 
+  // Copy _data as /api
+  copy({source: "./_data", destination: `${GENERATED_FILES_FOLDER}/api`});
+
   const extras = ["client.js", "pages/404.html"];
 
   for (let source of extras) {
@@ -220,6 +236,8 @@ function build() {
   //     });
   //   }
   // }
+
+  if (galleryData) generateIndexPage();
 
   copyAll();
 
