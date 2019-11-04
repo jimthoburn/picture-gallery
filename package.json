@@ -2,14 +2,13 @@
   "type": "module",
   "scripts": {
     "prepare": "pika-web",
-    "create:images": "node --experimental-modules create-images.js",
-    "create:albums": "node --experimental-modules create-album-json.js",
-    "create:zip": "node --experimental-modules create-zip.js",
+    "prepare:albums": "node --experimental-modules prepare/albums.js",
+    "prepare:images": "node --experimental-modules prepare/images.js",
+    "prepare:archives": "node --experimental-modules prepare/archives.js",
     "build": "node --experimental-modules build.js",
-    "build:watch": "node --experimental-modules build.js --watch",
     "serve": "serve ./_site/",
     "serve:dynamic": "node --experimental-modules server.js",
-    "start": "npm run create:images && npm run create:albums && npm run create:zip && npm run build && npm run serve"
+    "start": "npm run prepare:albums && npm run prepare:images && npm run prepare:archives && npm run build && npm run serve"
   },
   "engines": {
     "node": "12.13.x"
