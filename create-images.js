@@ -1,19 +1,19 @@
 
 // https://github.com/gulpjs/gulp
-// var gulp = require('gulp');
 import gulp from "gulp";
 
 // https://www.npmjs.com/package/gulp-image-resize
-// var imageResize = require('gulp-image-resize');
 import imageResize from "gulp-image-resize";
 
-// var parallel = require("concurrent-transform");
 import parallel from "concurrent-transform";
 
-// var os = require("os");
 import os from "os";
 
-import { albums as FOLDER_NAMES } from "./albums.js";
+const galleryData = JSON.parse(fs.readFileSync("./_data/index.json", 'utf8'));
+
+const albums = fs.existsSync("./albums.json")
+  ? JSON.parse(fs.readFileSync("./albums.json", 'utf8'))
+  : galleryData.albums;
 
 const SIZES = [
   384,
@@ -56,11 +56,11 @@ function generateNext() {
 
 let nextFolderCursor = 0;
 function generateNextFolder() {
-  if (nextFolderCursor < FOLDER_NAMES.length) {
-    console.log('generateNextFolder: ' + nextFolderCursor + ' :: ' + FOLDER_NAMES[nextFolderCursor]);
+  if (nextFolderCursor < albums.length) {
+    console.log('generateNextFolder: ' + nextFolderCursor + ' :: ' + albums[nextFolderCursor]);
 
     nextCursor = 0;
-    nextImagePath = `pictures/${ FOLDER_NAMES[nextFolderCursor] }`;
+    nextImagePath = `pictures/${ albums[nextFolderCursor] }`;
     generateNext();
 
     nextFolderCursor++;
