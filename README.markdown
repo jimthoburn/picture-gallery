@@ -42,24 +42,37 @@ https://nodejs.org
 
 ```
 export const albums = [
-  "your-album-name",
-  "your-other-album-name"
+  "wildflowers",
+  "japan"
 ];
 ```
 
-5. Open your project folder in a terminal and install dependencies:
+5. Add information about your gallery and featured albums to `_data/index.json`
+
+```
+{
+  "title": "Travel pictures",
+  "date": "2016 to 2019",
+  "albums": [
+    "japan",
+    "wildflowers"
+  ]
+}
+```
+
+6. Open your project folder in a terminal and install dependencies:
 
 ```
 npm install
 ```
 
-6. Generate files and start the server
+7. Generate files and start the server
 
 ```
 npm start
 ```
 
-7. Visit `http://localhost:5000/your-album-name/`
+8. Visit `http://localhost:5000`
 
 To stop the server, press “control C”
 
