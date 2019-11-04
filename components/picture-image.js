@@ -10,6 +10,9 @@ import { isBrowser,
          prefersReducedMotion } from "../helpers/environment.js";
 import { GalleryDispatch }      from "../components/picture-gallery.js";
 import { getSelectedPicture as getListPicture } from "../components/picture-list.js";
+import { getSource,
+         getSourceSet,
+         IMAGE_DETAILS_SIZES }  from "../helpers/image-source-set.js";
 
 
 let getPicture = function() {
@@ -88,23 +91,19 @@ function PictureImage({ album, picture, state }) {
     }
   }, [prefersReducedMotion, state.value, image]);
 
+  const alt = (picture.description)
+    ? html`${picture.description}`
+    : html`Picture ${state.context.selectedPictureIndex + 1}`
+
   return html`
     <figure>
       <responsive-image>
         <img
-          src="/pictures/${ album.uri }/384-wide/${ picture.filename }"
-          srcset="/pictures/${ album.uri }/384-wide/${ picture.filename } 384w,
-                  /pictures/${ album.uri }/512-wide/${ picture.filename } 512w,
-                  /pictures/${ album.uri }/768-wide/${ picture.filename } 768w,
-                  /pictures/${ album.uri }/1024-wide/${ picture.filename } 1024w,
-                  /pictures/${ album.uri }/1536-wide/${ picture.filename } 1536w,
-                  /pictures/${ album.uri }/2048-wide/${ picture.filename } 2048w"
-          sizes="100vw"
-          alt="${
-            (picture.description)
-            ? html`${picture.description}`
-            : html`Picture ${state.context.selectedPictureIndex + 1}`
-          }"
+          src="${getSource({album, picture})}"
+          srcset="${getSourceSet({album, picture})}"
+          sizes="${getSourceSet({album, picture}) ? IMAGE_DETAILS_SIZES : null}"
+          alt="${alt}"
+          width="320"
           onLoad="${onImageLoaded}"
           ref="${image}" />
       </responsive-image>

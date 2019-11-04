@@ -10,6 +10,9 @@ import { isBrowser,
          onKeyboardDetected } from "../helpers/environment.js";
 import { closest }            from "../helpers/closest.js";
 import { GalleryDispatch }    from "../components/picture-gallery.js";
+import { getSource,
+         getSourceSet,
+         IMAGE_LIST_SIZES }   from "../helpers/image-source-set.js";
 
 
 let getSelectedPicture = function() {
@@ -62,7 +65,8 @@ function PictureList({ album, pictures, state }) {
     return selectedPicture.current;
   }
 
-  let stateStrings = state.toStrings();
+  const stateStrings = state.toStrings();
+
   return html`
     <section class="picture-list"
              data-state="${stateStrings[stateStrings.length - 1]}">
@@ -84,14 +88,9 @@ function PictureList({ album, pictures, state }) {
                onClick="${ e => onListImageClick(e, index) }"
                onKeyUp="${onKeyboardDetected}">
               <responsive-image>
-                <img src="/pictures/${ album.uri }/384-wide/${ picture.filename }"
-                     srcset="/pictures/${ album.uri }/384-wide/${ picture.filename } 384w,
-                             /pictures/${ album.uri }/512-wide/${ picture.filename } 512w,
-                             /pictures/${ album.uri }/768-wide/${ picture.filename } 768w,
-                             /pictures/${ album.uri }/1024-wide/${ picture.filename } 1024w,
-                             /pictures/${ album.uri }/1536-wide/${ picture.filename } 1536w,
-                             /pictures/${ album.uri }/2048-wide/${ picture.filename } 2048w"
-                     sizes="320px"
+                <img src="${getSource({album, picture})}"
+                     srcset="${getSourceSet({album, picture})}"
+                     sizes="${getSourceSet({album, picture}) ? IMAGE_LIST_SIZES : null}"
                      width="320"
                      alt="${
                        (picture.description)
