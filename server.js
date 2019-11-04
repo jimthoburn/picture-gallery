@@ -1,4 +1,3 @@
-
 import fs from "fs";
 
 // https://stackoverflow.com/questions/46745014/alternative-for-dirname-in-node-when-using-the-experimental-modules-flag
@@ -9,14 +8,16 @@ const __dirname = dirname(fileURLToPath(import.meta.url));
 import express from "express";
 import slashes from "connect-slashes";
 import fetch from "node-fetch";
+import jsBeautify from "js-beautify";
 
 import { render } from "./web_modules/preact-render-to-string.js";
 
 import { DefaultLayout } from "./layouts/default.js";
-import { ParentAlbumLayout } from "./layouts/parent-album.js";
 import { IndexPage } from "./pages/index.js";
-import { ParentAlbumPage } from "./pages/parent-album.js";
+import { AlbumPage } from "./pages/album.js";
 import { getInitialPageTitle} from "./components/picture-gallery.js";
+
+const galleryData = JSON.parse(fs.readFileSync("./_data/index.json", 'utf8'));
 
 import { albums } from "./albums.js";
 
@@ -28,7 +29,22 @@ async function getData(url) {
   return response.json();
 }
 
-function servePage(req, res) {
+function serveIndexPage(req, res) {
+  Promise.all(galleryData.albums.map(
+    albumURI => getData(`${req.protocol}://${req.get("host")}/api/${albumURI}.json`)
+  )).then(albums => {
+    const title   = galleryData.title;
+    const content = render(IndexPage({ ...galleryData, albums }));
+
+    const beautifiedHTML = jsBeautify.html_beautify(DefaultLayout({ title, content }));
+    res.send(beautifiedHTML);
+  }).catch(function(err) {
+    console.error(err.stack);
+    res.status(500).sendFile("pages/500.html", { root: __dirname });
+  });
+}
+
+function serveAlbumPage(req, res) {
 
   function getPageURL() {
     // https://stackoverflow.com/questions/10183291/how-to-get-the-full-url-in-express
@@ -67,13 +83,21 @@ function servePage(req, res) {
     }
 
     const title   = getInitialPageTitle({ getPageURL, album, pictures: album.pictures });
-    const content = render(IndexPage({ getPageURL, album, pictures: album.pictures }));
-
-    res.send(DefaultLayout({ title, content }));
+    const content = render(AlbumPage({ getPageURL, album, pictures: album.pictures }));
+    
+    const beautifiedHTML = jsBeautify.html_beautify(DefaultLayout({ title, content }));
+    res.send(beautifiedHTML);
   }).catch(function(err) {
     console.error(err.stack);
-    res.status(500).sendFile("500.html", { root: __dirname });
+    res.status(500).sendFile("pages/500.html", { root: __dirname });
   });
+}
+
+server.get("/", serveIndexPage);
+
+for (let album of albums) {
+  server.get(`/${album}/$`, serveAlbumPage); // Albums
+  server.get(`/${album}/*/$`, serveAlbumPage); // Pictures
 }
 
 const staticFolders = [
