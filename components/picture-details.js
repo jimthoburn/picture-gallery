@@ -8,6 +8,9 @@ const    html = htm.bind(createElement);
 import { GalleryDispatch }      from "../components/picture-gallery.js";
 import { PictureImage }         from "../components/picture-image.js";
 import { CloseButton }          from "../components/close-button.js";
+import { getSource,
+         getSourceSet,
+         IMAGE_DETAILS_SIZES }  from "../helpers/image-source-set.js";
 
 
 function PictureDetails({ pictures, album, state }) {
@@ -64,7 +67,12 @@ function PictureDetails({ pictures, album, state }) {
     e.preventDefault();
   }
 
-  let stateStrings = state.toStrings();
+  const downloadURL = picture.filename
+    ? `/pictures/${ album.uri }/6000-wide/${ picture.filename }`
+    : picture.source;
+
+  const stateStrings = state.toStrings();
+
   return html`
     <section class="picture-details"
              data-state="${stateStrings[stateStrings.length - 1]}"
@@ -77,13 +85,13 @@ function PictureDetails({ pictures, album, state }) {
           <${CloseButton} album="${album}" state="${state}" /> / ${ picture.caption ? picture.caption : `Picture ${ state.context.selectedPictureIndex + 1 }` }
         </p>
         <p class="download">
-          <a href="/pictures/${ album.uri }/6000-wide/${ picture.filename }">
+          <a href="${ downloadURL }">
             Download
           </a>
         </p>
       </header>
 
-      <a href="/pictures/${ album.uri }/6000-wide/${ picture.filename }">
+      <a href="${ downloadURL }">
         <${PictureImage} album="${album}" picture="${picture}" state="${state}" />
       </a>
 
@@ -116,11 +124,19 @@ function PictureDetails({ pictures, album, state }) {
 
         ${"" /* Preload next & previous images */ }
         <div style="width: 0; height: 0; overflow: hidden; position: absolute; opacity: 0;">
-          <img src="/pictures/${ album.uri }/384-wide/${ next_data.filename }" srcset="/pictures/${ album.uri }/384-wide/${ next_data.filename } 384w, /pictures/${ album.uri }/512-wide/${ next_data.filename } 512w, /pictures/${ album.uri }/768-wide/${ next_data.filename } 768w, /pictures/${ album.uri }/1024-wide/${ next_data.filename } 1024w, /pictures/${ album.uri }/1536-wide/${ next_data.filename } 1536w, /pictures/${ album.uri }/2048-wide/${ next_data.filename } 2048w" sizes="100vw" alt="" />
-          <img src="/pictures/${ album.uri }/384-wide/${ previous_data.filename }" srcset="/pictures/${ album.uri }/384-wide/${ previous_data.filename } 384w, /pictures/${ album.uri }/512-wide/${ previous_data.filename } 512w, /pictures/${ album.uri }/768-wide/${ previous_data.filename } 768w, /pictures/${ album.uri }/1024-wide/${ previous_data.filename } 1024w, /pictures/${ album.uri }/1536-wide/${ previous_data.filename } 1536w, /pictures/${ album.uri }/2048-wide/${ previous_data.filename } 2048w" sizes="100vw" alt="" />
+
+          <img src="   ${getSource(   {album, picture: next_data})}"
+               srcset="${getSourceSet({album, picture: next_data})}"
+               sizes=" ${getSourceSet({album, picture: next_data}) 
+                          ? IMAGE_DETAILS_SIZES : null}" alt="" />
+
+          <img src="   ${getSource(   {album, picture: previous_data})}"
+               srcset="${getSourceSet({album, picture: previous_data})}"
+               sizes=" ${getSourceSet({album, picture: previous_data})
+                          ? IMAGE_DETAILS_SIZES : null}" alt="" />
         </div>
 
-    ` : ""}
+      ` : ""}
     </section>
   `;
 }

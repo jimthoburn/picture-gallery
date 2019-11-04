@@ -26,9 +26,10 @@ function createAlbumJSON({ source, destination, album }) {
     const photoFileName = filePath.split("/").pop()
 
     pictures.push({
-      filename: encodeURIComponent(photoFileName), // `${photoNumber}.jpg`,
-      description: photoFileName.split(".").shift(),
-      uri: photoFileName.split(".").shift()
+      filename: encodeURIComponent(photoFileName),
+      description: null,
+      caption: null,
+      uri: encodeURIComponent(photoFileName.split(".").shift())
     });
   })
 
@@ -87,7 +88,10 @@ albums.forEach(album => {
       title: album.split("/").pop(),
       date: null,
       zip_file_size: null,
-      cover_picture_filename: null
+      cover_picture: null // source:
+                          //   https://cdn.com/els9-234-sdf.jpg
+                          // OR filename:
+                          //   my-image-file.jpg
     }
   });
 });

@@ -13,6 +13,7 @@ import jsBeautify from "js-beautify";
 import { render } from "./web_modules/preact-render-to-string.js";
 
 import { DefaultLayout } from "./layouts/default.js";
+import { WithoutClientLayout } from "./layouts/without-client.js";
 import { IndexPage } from "./pages/index.js";
 import { AlbumPage } from "./pages/album.js";
 import { getInitialPageTitle} from "./components/picture-gallery.js";
@@ -36,7 +37,7 @@ function serveIndexPage(req, res) {
     const title   = galleryData.title;
     const content = render(IndexPage({ ...galleryData, albums }));
 
-    const beautifiedHTML = jsBeautify.html_beautify(DefaultLayout({ title, content }));
+    const beautifiedHTML = jsBeautify.html_beautify(WithoutClientLayout({ title, content }));
     res.send(beautifiedHTML);
   }).catch(function(err) {
     console.error(err.stack);
