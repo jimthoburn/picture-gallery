@@ -20,7 +20,7 @@ function createZip(source, destination, callback) {
   console.log(`Creating zip from ${source} to ${destination}`)
 
   // create a file to stream archive data to. 
-  var output = fs.createWriteStream(__dirname + destination)
+  var output = fs.createWriteStream(destination)
   var archive = archiver('zip', {
       zlib: { level: 9 } // Sets the compression level. 
   })
@@ -62,7 +62,7 @@ mkdirp("archives", function (err) {
     console.error(err)
   } else {
     albums.forEach(album => {
-      createZip(`pictures/${album}/6000-wide/`, `/archives/${album}.zip`)
+      createZip(`./pictures/${album}/6000-wide/`, `./archives/${album}.zip`)
     })
   }
 })
