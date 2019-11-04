@@ -94,11 +94,21 @@ As you make changes, you can rebuild the site with:
 npm run build
 ```
 
+It’s okay to commit the generated files in these folders:
+
+```
+_data
+archives
+pictures
+```
+
+These files are your data and will only change if you re-run the `npm start` script or edit them yourself.
+
 ### How to publish your gallery
 
 The above steps will create a `_site` folder that can be published on any web server.
 
-For example, you can auto-deploy a GitHub repository to [Netlify](https://www.netlify.com/) and use these deploy settings:
+You can automatically deploy your copy of this project to [Netlify](https://www.netlify.com/) using these settings:
 
 Build command  
 `npm run build`
