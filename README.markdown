@@ -80,7 +80,7 @@ npm run serve
 
 ### Editing
 
-You can edit the files that were generated for you in the `api` folder.
+You can edit the files that were generated for you in the `_data` folder.
 For example, you may want to change the album names and add dates.
 
 ```
