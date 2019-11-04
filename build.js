@@ -15,7 +15,9 @@ import { getInitialPageTitle } from "./components/picture-gallery.js";
 
 const galleryData = JSON.parse(fs.readFileSync("./_data/index.json", 'utf8'));
 
-import { albums } from "./albums.js";
+const albums = fs.existsSync("./albums.json")
+  ? JSON.parse(fs.readFileSync("./albums.json", 'utf8'))
+  : galleryData.albums;
 
 const GENERATED_FILES_FOLDER = "./_site";
 
