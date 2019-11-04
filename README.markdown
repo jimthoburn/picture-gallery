@@ -143,16 +143,16 @@ User experience
 - [x] Essential content/features are available in any web browser
 - [x] Browser features (like forward/back and bookmarks) are supported
 - [x] Site is just as accessible as it would be with static HTML and page refreshes
-- [x] Site is just as findable by search engines and [archivable](https://archive.org/) as it would be if it were made of static HTML pages
-- [x] First page renders as quickly as static HTML
-- [x] The application works well on a slow network
+- [ ] Site is just as findable by search engines and [archivable](https://archive.org/) as it would be if it were made of static HTML pages
+- [ ] First page renders as quickly as static HTML
+- [ ] The application works well on a slow network
 - [ ] The application has cues that are equivalent to a normal browsing experience, like a page loading indicator
 - [x] The application is still usable when things go wrong, like if a CSS file doesn’t load or a JavaScript error happens
 - [x] Gesture-driven animations and transitions between pages can be added
 
 Editor experience
 - [ ] Content can be created with a simple language like markdown
-- [x] Content can be added, edited and removed using a simple mechanism like files and folders
+- [ ] Content can be added, edited and removed using a simple mechanism like files and folders
 - [x] The gallery can be hosted anywhere and kept private, if desired
 
 Developer experience
