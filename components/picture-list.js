@@ -107,10 +107,10 @@ function PictureList({ album, pictures, state }) {
         })}
       </ol>
 
-      ${ (album.zip_file_size)
+      ${ (album.zipFileSize)
          ? html`<p>
                   <a href="/archives/${ album.uri }.zip">Download All Pictures</a><br />
-                  <small>ZIP file / ${ album.zip_file_size }</small>
+                  <small>ZIP file / ${ album.zipFileSize }</small>
                 </p>`
          : "" }
     </section>

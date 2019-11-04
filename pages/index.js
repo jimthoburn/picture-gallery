@@ -20,8 +20,8 @@ function IndexPage({ title, date, albums }) {
       <ol>
         ${albums.map((album, index) => {
           const match = album.pictures.filter(picture =>
-            picture.filename === album.cover_picture || 
-            picture.source   === album.cover_picture
+            picture.filename === album.coverPicture || 
+            picture.source   === album.coverPicture
           );
           const picture = match.length > 0 ? match[0] : album.pictures[0];
 

@@ -87,11 +87,12 @@ albums.forEach(album => {
       uri: album.split("/").pop(),
       title: album.split("/").pop(),
       date: null,
-      zip_file_size: null,
-      cover_picture: null // source:
+      zipFileSize: null,
+      coverPicture: null, // source:
                           //   https://cdn.com/els9-234-sdf.jpg
                           // OR filename:
                           //   my-image-file.jpg
+      hideFromSearchEngines: null
     }
   });
 });
