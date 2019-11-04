@@ -99,8 +99,8 @@ function PictureList({ album, pictures, state }) {
                      }"
                      ref="${state.context.selectedPictureIndex === index ? selectedPicture : null}"
                      data-selected="${(state.context.selectedPictureIndex === index) ? "true" : ""}" />
-                ${""/*<span class="caption">${ picture.title }</span>*/}
               </responsive-image>
+              ${""/*<span class="caption">${ picture.title }</span>*/}
             </a>
           </li>
           `

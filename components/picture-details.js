@@ -81,9 +81,10 @@ function PictureDetails({ pictures, album, state }) {
                     --translateY: ${state.context.transform.translateY};"
              ref="${detailsElement}">
       <header>
-        <p class="all">
-          <${CloseButton} album="${album}" state="${state}" /> / ${ picture.caption ? picture.caption : `Picture ${ state.context.selectedPictureIndex + 1 }` }
-        </p>
+        <div class="all">
+          <h1>${ picture.caption ? picture.caption : `Picture ${ state.context.selectedPictureIndex + 1 }` }</h1>
+          <p><${CloseButton} album="${album}" state="${state}" /></p>
+        </div>
         <p class="download">
           <a href="${ downloadURL }">
             Download
