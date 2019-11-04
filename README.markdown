@@ -3,7 +3,7 @@
 
 This is an experimental work in progress 🚧 🏗️
 
-I’m using it to learn new tools and also to share photos with friends 🧰 🦊 🐶
+I’m using it to practice with new tools 🧰 and to share photos with friends 🦊 🐶
 
 * [Project goals](#goals)
 * See [a live demo](https://picture-gallery.glitch.me)
@@ -11,9 +11,9 @@ I’m using it to learn new tools and also to share photos with friends 🧰 �
 * Here’s a [visualization of the gallery’s state machine](https://xstate.js.org/viz/?gist=18995ef2fca6c1949991f21b1b68c6d0)
 * Helpful [resources](#resources)
 
-## <span id="automation"></span> Automatically creating and publishing albums
+## How to make your own gallery
 
-If you have a lot of images, you can automatically generate different image sizes and data for your albums and then publish them as a static web site.
+You can use this project to automatically generate different image sizes and data for your albums and then publish them as a static web site.
 
 Here are the basic steps:
 
@@ -38,16 +38,7 @@ https://nodejs.org
             /3.jpg
 ```
 
-4. Add your album names to `albums.js`
-
-```
-export const albums = [
-  "wildflowers",
-  "japan"
-];
-```
-
-5. Add information about your gallery and featured albums to `_data/index.json`
+4. Add information about your gallery and featured albums to `_data/index.json`
 
 ```
 {
@@ -60,19 +51,19 @@ export const albums = [
 }
 ```
 
-6. Open your project folder in a terminal and install dependencies:
+5. Open your project folder in a terminal and install dependencies:
 
 ```
 npm install
 ```
 
-7. Generate files and start the server
+6. Generate files and start the server
 
 ```
 npm start
 ```
 
-8. Visit `http://localhost:5000`
+7. Visit `http://localhost:5000`
 
 To stop the server, press “control C”
 
@@ -84,8 +75,8 @@ npm run serve
 
 ### Editing
 
-You’ll likely want to edit the files that were generated for you in the `api` folder.
-For example, you can change the album names and add dates.
+You can edit the files that were generated for you in the `api` folder.
+For example, you may want to change the album names and add dates.
 
 ```
 "title": "Japan in Winter",
