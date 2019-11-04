@@ -1,4 +1,6 @@
 
+import fs from "fs";
+
 // https://github.com/gulpjs/gulp
 import gulp from "gulp";
 
