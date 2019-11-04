@@ -1,19 +1,15 @@
 
 # Picture Gallery _beta_
 
-🚧 This is an experimental work in progress 🏗️
+This is an experimental work in progress 🚧 🏗️
 
-🧰 I’m using it to learn new tools and also to share photos with friends 🦊 🐶
+I’m using it to learn new tools and also to share photos with friends 🧰 🦊 🐶
 
-* 📝 [Project goals](#goals)
-
-* 🖼 See [a live demo](https://picture-gallery.glitch.me)
-
-* 🎏 You can [remix this Glitch](https://glitch.com/edit/#!/picture-gallery) to make your own gallery
-
-* 📈 Here’s a [visualization of the gallery’s state machine](https://xstate.js.org/viz/?gist=18995ef2fca6c1949991f21b1b68c6d0)
-
-* 📚 Helpful [resources](#resources)
+* [Project goals](#goals)
+* See [a live demo](https://picture-gallery.glitch.me)
+* You can [remix this Glitch](https://glitch.com/edit/#!/picture-gallery) to make your own gallery
+* Here’s a [visualization of the gallery’s state machine](https://xstate.js.org/viz/?gist=18995ef2fca6c1949991f21b1b68c6d0)
+* Helpful [resources](#resources)
 
 ## <span id="automation"></span> Automatically creating and publishing albums
 
