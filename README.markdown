@@ -3,7 +3,7 @@
 
 🚧 This is an experimental work in progress 🏗️
 
-🧰 I’m using it to learn new tools and also to share photos with close friends 🦊 🐶
+🧰 I’m using it to learn new tools and also to share photos with friends 🦊 🐶
 
 * 📝 [Project goals](#goals)
 
