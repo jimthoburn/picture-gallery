@@ -2,8 +2,6 @@
 import { createElement, hydrate, Component } from "./web_modules/preact.js";
 import htm from "./web_modules/htm.js"; const html = htm.bind(createElement);
 
-import { render } from "./web_modules/preact-render-to-string.js";
-
 import { PictureGallery, getInitialPageTitle, getMachine } from "./components/picture-gallery.js";
 
 import { getLastDispatch }     from "../helpers/xstate-preact.js";
