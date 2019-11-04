@@ -9,7 +9,13 @@ import { PictureGallery, getInitialPageTitle, getMachine } from "./components/pi
 import { getLastDispatch }     from "../helpers/xstate-preact.js";
 
 class Catcher extends Component {
-  state = { errored: false }
+  
+  constructor(props) {
+    super(props);
+    this.state = {
+      errored: false
+    }
+  }
 
   componentDidCatch(error) {
     try {
