@@ -6,14 +6,19 @@ This is an experimental work in progress 🚧 🏗️
 I’m using it to practice with new tools 🧰 and to share photos with friends 🦊 🐶
 
 * [Project goals](#goals)
-* See [a live demo](https://picture-gallery.glitch.me)
-* You can [remix this Glitch](https://glitch.com/edit/#!/picture-gallery) to make your own gallery
+* See [an example gallery](https://picture-gallery.glitch.me)
 * Here’s a [visualization of the gallery’s state machine](https://xstate.js.org/viz/?gist=18995ef2fca6c1949991f21b1b68c6d0)
 * Helpful [resources](#resources)
 
 ## How to make your own gallery
 
-You can use this project to automatically generate different image sizes and data for your albums and then publish them as a static web site.
+### Quick start
+
+You can [remix this Glitch](https://glitch.com/edit/#!/picture-gallery) to make your own gallery 🎏
+
+### Automation
+
+If you have a lot of images, you can use this GitHub project to automatically generate different image sizes and data for your albums and then publish them as a static web site.
 
 Here are the basic steps:
 
