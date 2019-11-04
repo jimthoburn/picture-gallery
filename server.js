@@ -106,13 +106,13 @@ for (let album of albums) {
 server.use(slashes());
 
 server.use(function (req, res, next) {
-  res.status(404).sendFile("404.html", { root: __dirname });
+  res.status(404).sendFile("pages/404.html", { root: __dirname });
 });
 
 server.use(function (err, req, res, next) {
   console.error(err.stack);
-  res.status(500).sendFile("500.html", { root: __dirname });
-})
+  res.status(500).sendFile("pages/500.html", { root: __dirname });
+});
 
 server.listen(port, err => {
   if (err) throw err;

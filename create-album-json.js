@@ -89,6 +89,6 @@ albums.forEach(album => {
       zip_file_size: null,
       cover_picture_filename: null
     }
-  })
-})
+  });
+});
 
