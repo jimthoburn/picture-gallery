@@ -77,7 +77,6 @@ function servePage(req, res) {
 }
 
 const staticFolders = [
-  "api",
   "archives",
   "components",
   "css",
@@ -91,16 +90,11 @@ for (let folder of staticFolders) {
   server.use( `/${folder}`, express.static( `./${folder}` ) );
 }
 
+server.use( "/api", express.static( "./_data") );
+
 server.get("/client.js", function(req, res) {
   res.sendFile("client.js", { root: __dirname });
 });
-
-// TODO: Redirect to canonical URL:
-// https://expressjs.com/en/api.html#res.redirect
-for (let album of albums) {
-  server.get(`/${album}/$`, servePage); // Albums
-  server.get(`/${album}/*/$`, servePage); // Pictures or child albums
-}
 
 // Add trailing slashes to URLs: /wildflowers => /wildflowers/
 server.use(slashes());
