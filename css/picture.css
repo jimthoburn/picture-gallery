@@ -6,16 +6,20 @@
   justify-content: center;
   align-items: center;
 }
+.picture-details h1,
 .picture-details p {
-  margin-left: 1.5em;
-  margin-right: 1.5em;
+  margin: 0;
   text-align: left;
+}
+.picture-details h1 {
+  font-size: inherit;
+  font-weight: inherit;
 }
 @media (min-width: 20em) {
   .picture-details .download {
-    text-align: center;
+    /* text-align: center; */
     position: absolute;
-    top: 0;
+    bottom: 0;
     right: 0;
     z-index: 1;
   }
@@ -30,23 +34,31 @@
   color: hsl(193, 70%, 60%); /* @aqua */
 }
 .picture-details .all {
-  position: relative;
+  position: absolute;
   z-index: 1;
+  top: 0;
+  left: 0;
+  display: flex;
+  justify-content: flex-end;
+  flex-wrap: wrap;
+  flex-direction: row-reverse;
+  padding: 1em 1.5em;
+}
+.picture-details .all p::after {
+  content: "/";
+  margin: 0 0.375em;
 }
 /* .picture-details .download a {
   color: inherit;
 } */
-.picture-details .close {
-  position: absolute;
-  top: 0;
-  right: 0;
-  display: none;
-}
 .picture-details svg {
   width: 1em;
   height: 1em;
   vertical-align: middle;
   fill: currentColor;
+}
+.picture-details .download {
+  padding: 1em 1.5em;
 }
 .picture-details .download svg {
   width: 0.75em;
@@ -102,11 +114,11 @@
 }
 */
 .picture-details header {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  z-index: 1;
+  /* position: absolute; */
+  /* top: 0; */
+  /* left: 0; */
+  /* width: 100%; */
+  /* z-index: 1; */
 }
 .picture-details figure {
   margin: 0 auto;

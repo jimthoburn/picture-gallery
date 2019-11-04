@@ -32,8 +32,8 @@ function ParentAlbumPage({ parent, children }) {
                   sizes="${getSourceSet({parent, album, picture}) ? IMAGE_LIST_SIZES : null}"
                   alt=""
                   width="320" />
-                <span class="caption">${ child.title }</span>
               </responsive-image>
+              <span class="caption">${ child.title }</span>
             </a>
           </li>
           `
