@@ -1,6 +1,10 @@
 
 # Picture Gallery _beta_
 
+🚧 This is an experimental work in progress 🏗️
+
+🧰 I’m using it to learn new tools and also to share photos with close friends 🦊 🐶
+
 * 📝 [Project goals](#goals)
 
 * 🖼 See [a live demo](https://picture-gallery.glitch.me)

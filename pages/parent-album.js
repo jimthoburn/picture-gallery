@@ -14,13 +14,12 @@ function ParentAlbumPage({ parent, children }) {
       <p>${ parent.date }</p>
 
       <ol>
-        ${children.map((child, index) => {
+        ${children.map((album, index) => {
           const match = album.pictures.filter(picture =>
-            picture.filename === album.cover_picture || 
-            picture.source   === album.cover_picture
+            picture.filename === album.coverPicture || 
+            picture.source   === album.coverPicture
           );
-          const picture = match.length > 0 ? match[0] : child.pictures[0];
-          const album = child;
+          const picture = match.length > 0 ? match[0] : album.pictures[0];
 
           return html`
           <li>
@@ -33,7 +32,7 @@ function ParentAlbumPage({ parent, children }) {
                   alt=""
                   width="320" />
               </responsive-image>
-              <span class="caption">${ child.title }</span>
+              <span class="caption">${ album.title }</span>
             </a>
           </li>
           `

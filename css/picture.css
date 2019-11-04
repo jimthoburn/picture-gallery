@@ -29,6 +29,14 @@
   color: rgb(101, 156, 247); /* @boysenberry */
   color: hsl(193, 70%, 60%); /* @aqua */
 }
+.picture-details .all a {
+  /* SHIM: Make close button easier to press */
+  display: inline-block;
+  padding: 3em;
+  margin: -3em;
+  position: relative;
+  z-index: 1;
+}
 .picture-details .disabled a:visited {
   color: rgb(101, 156, 247); /* @boysenberry */
   color: hsl(193, 70%, 60%); /* @aqua */
@@ -124,6 +132,10 @@
   margin: 0 auto;
   height: 100vmin;
   width: 100vmin
+}
+.picture-details figure img {
+  /* Attempt to avoid overlapping the header if the image doesn’t load */
+  
 }
 /* .picture-details video,
 .picture-details img {

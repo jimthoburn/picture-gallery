@@ -10,6 +10,7 @@ import { WithoutClientLayout } from "./layouts/without-client.js";
 import { AlbumPage } from "./pages/album.js";
 import { IndexPage } from "./pages/index.js";
 import { ParentAlbumPage } from "./pages/parent-album.js";
+import { Error404Page, error404PageTitle } from "./pages/404.js";
 import { getInitialPageTitle } from "./components/picture-gallery.js";
 
 const galleryData = JSON.parse(fs.readFileSync("./_data/index.json", 'utf8'));
@@ -17,16 +18,6 @@ const galleryData = JSON.parse(fs.readFileSync("./_data/index.json", 'utf8'));
 import { albums } from "./albums.js";
 
 const GENERATED_FILES_FOLDER = "./_site";
-
-// let watch = false;
-// 
-// 
-// process.argv.forEach((val, index) => {
-//   if (val === "--watch") {
-//     watch = true;
-//   }
-// });
-
 
 const staticFolders = [
   "archives",
@@ -38,23 +29,13 @@ const staticFolders = [
   "web_modules"
 ];
 
-const rebuildOnChange = [
-  "layouts",
-  "pages",
-  "components",
-  "helpers",
-  "web_modules"
-];
 
-
-function createFile({ pageURL, html }) {
+function createFile({ pageURL, filename, html }) {
   // console.log('**** ');
   // console.log('createFile for ' + pageURL);
   // console.log('html ' + html);
 
   let writePath = GENERATED_FILES_FOLDER + pageURL;
-
-  let filename = "index.html";
 
   let output = html;
 
@@ -62,7 +43,7 @@ function createFile({ pageURL, html }) {
     if (err) {
       console.error(err);
     } else {
-      fs.writeFileSync(writePath + '/' +  filename, output, 'utf8', (err) => {
+      fs.writeFileSync(`${writePath}/${filename ? filename : "index.html"}`, output, 'utf8', (err) => {
         if (err) {
           console.log(err);
         }
@@ -86,7 +67,7 @@ function copy({source, destination}) {
 }
 
 
-function generateAlbum({ album }) {
+function generateAlbum({ album, hideFromSearchEngines }) {
 
   const urlsToGenerate = [`/${album.uri}/`].concat(
                            album.pictures.map(picture => `/${album.uri}/${picture.uri}/`)
@@ -104,7 +85,7 @@ function generateAlbum({ album }) {
     const title   = getInitialPageTitle({ getPageURL, pictures: album.pictures, album });
     const content = render(AlbumPage({ getPageURL, pictures: album.pictures, album }));
 
-    const renderedHTML = DefaultLayout({ title, content });
+    const renderedHTML = DefaultLayout({ title, content, hideFromSearchEngines });
     const beautifiedHTML = jsBeautify.html_beautify(renderedHTML);
 
     createFile({ pageURL, html: beautifiedHTML });
@@ -117,35 +98,43 @@ function generateIndexPage() {
   const albums = galleryData.albums.map(
     albumURI => JSON.parse(fs.readFileSync(`./_data/${albumURI}.json`, 'utf8'))
   );
-  const title   = galleryData.title;
+  const { title, hideFromSearchEngines } = galleryData;
   const content = render(IndexPage({ ...galleryData, albums }));
 
-  const beautifiedHTML = jsBeautify.html_beautify(WithoutClientLayout({ title, content }));
-  createFile({ pageURL: `/`, html: beautifiedHTML });
+  const beautifiedHTML = jsBeautify.html_beautify(WithoutClientLayout({ title, content, hideFromSearchEngines }));
+  createFile({ pageURL: "/", filename: "index.html", html: beautifiedHTML });
 }
 
 
-function generateAll() {
+function generateError404Page() {
+  console.log(`Generating error 404 page`);
+  const title   = error404PageTitle;
+  const content = render(Error404Page());
+
+  const beautifiedHTML = jsBeautify.html_beautify(WithoutClientLayout({ title, content }));
+  createFile({ pageURL: "/", filename: "404.html", html: beautifiedHTML });
+}
+
+
+function generateAllAlbums() {
   for (let nextAlbumName of albums) {
 
     const album = JSON.parse(fs.readFileSync(`./_data/${nextAlbumName}.json`, "utf8"));
 
     if (album.albums) {
-      const urlsToGenerate = [`/${ album.uri }/`];
       console.log(`Generating group album for: ${ album.title }`);
 
-      for (let pageURL of urlsToGenerate) {
+      const pageURL = `/${ album.uri }/`;
 
-        console.log(`Generating page for: ${pageURL}`);
+      console.log(`Generating page for: ${ pageURL }`);
 
-        const title   = album.title;
-        const content = render(ParentAlbumPage({ parent: album, children: album.albums }));
+      const { title, hideFromSearchEngines } = album;
+      const content = render(ParentAlbumPage({ parent: album, children: album.albums }));
 
-        const renderedHTML = WithoutClientLayout({ title, content });
-        const beautifiedHTML = jsBeautify.html_beautify(renderedHTML);
+      const renderedHTML = WithoutClientLayout({ title, content, hideFromSearchEngines });
+      const beautifiedHTML = jsBeautify.html_beautify(renderedHTML);
 
-        createFile({ pageURL, html: beautifiedHTML });
-      }
+      createFile({ pageURL, html: beautifiedHTML });
 
       for (let childAlbum of album.albums) {
         generateAlbum({ 
@@ -153,35 +142,22 @@ function generateAll() {
             ...childAlbum,
             uri: `${album.uri}/${childAlbum.uri}`,
             parent: album
-          }
+          },
+          hideFromSearchEngines: album.hideFromSearchEngines
         });
       }
     } else {
-      generateAlbum({ album });
+      generateAlbum({ album, hideFromSearchEngines: album.hideFromSearchEngines });
     }
   }
 }
 
 
-function copyAll() {
+function copyAllStaticFiles() {
   for (let folder of staticFolders) {
 
     const source      = `./${folder}`;
     const destination = `${GENERATED_FILES_FOLDER}/${folder}`;
-
-    // if (watch) {
-    //   fs.watch(source, (eventType, filename) => {
-    //     console.log(`event type is: ${eventType}`);
-    //     if (filename) {
-    //       console.log(`filename provided: ${filename}`);
-    //     } else {
-    //       console.log('filename not provided');
-    //     }
-    //     console.log(`Change detected in ${source}`);
-    //     console.log(`Copying files…`);
-    //     copy({source, destination});
-    //   });
-    // }
 
     copy({source, destination});
 
@@ -190,25 +166,11 @@ function copyAll() {
   // Copy _data as /api
   copy({source: "./_data", destination: `${GENERATED_FILES_FOLDER}/api`});
 
-  const extras = ["client.js", "pages/404.html"];
+  const extras = ["client.js"];
 
   for (let source of extras) {
-    const destination = `${GENERATED_FILES_FOLDER}/${source.replace("pages/", "")}`;
+    const destination = `${GENERATED_FILES_FOLDER}/${source}`;
     copy({ source, destination });
-
-    // if (watch) {
-    //   fs.watch(source, (eventType, filename) => {
-    //     console.log(`event type is: ${eventType}`);
-    //     if (filename) {
-    //       console.log(`filename provided: ${filename}`);
-    //     } else {
-    //       console.log('filename not provided');
-    //     }
-    //     console.log(`Change detected in ${source}`);
-    //     console.log(`Copying files…`);
-    //     copy({source, destination});
-    //   });
-    // }
   }
 
 }
@@ -216,38 +178,16 @@ function copyAll() {
 
 function build() {
 
-  // fs.removeSync(GENERATED_FILES_FOLDER);
-
-  generateAll();
-
-  // if (watch) {
-  //   for (let folder of rebuildOnChange) {
-  //     const source      = `./${folder}`;
-  //     fs.watch(source, (eventType, filename) => {
-  //       console.log(`event type is: ${eventType}`);
-  //       if (filename) {
-  //         console.log(`filename provided: ${filename}`);
-  //       } else {
-  //         console.log('filename not provided');
-  //       }
-  //       console.log(`Change detected in ${source}`);
-  //       console.log(`Regenerating…`);
-  //       generateAll();
-  //     });
-  //   }
-  // }
-
   if (galleryData) generateIndexPage();
 
-  copyAll();
+  generateAllAlbums();
+
+  copyAllStaticFiles();
+
+  generateError404Page();
 
   console.log(`Build files saved to: ${GENERATED_FILES_FOLDER}`);
 
-  // if (watch) {
-  //   console.log("Watching files…");
-  // } else {
-  //   console.log("Not watching files. Enable with `--watch`");
-  // }
 }
 
 

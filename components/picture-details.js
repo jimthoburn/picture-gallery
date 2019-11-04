@@ -82,7 +82,7 @@ function PictureDetails({ pictures, album, state }) {
              ref="${detailsElement}">
       <header>
         <div class="all">
-          <h1>${ picture.caption ? picture.caption : `Picture ${ state.context.selectedPictureIndex + 1 }` }</h1>
+          <h1>${ picture.caption ? picture.caption : picture.description ? picture.description : `Picture ${ state.context.selectedPictureIndex + 1 }` }</h1>
           <p><${CloseButton} album="${album}" state="${state}" /></p>
         </div>
         <p class="download">

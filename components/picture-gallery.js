@@ -27,6 +27,13 @@ function PictureGallery({ album, pictures, getPageURL }) {
 
   const selectedPictureIndex = getSelectedPictureIndexFromURL({ album, pictures, getPageURL });
 
+  // if (getPageURL().includes("tenryū-ji-temple") ||
+  //     getPageURL().includes(encodeURIComponent("tenryū-ji-temple"))) {
+  //   console.log("tenryū-ji-temple");
+  //   console.log("selectedPictureIndex: ");
+  //   console.log(selectedPictureIndex);
+  // }
+
   const [state, dispatch, service] = useMachine(galleryMachine, { context: { selectedPictureIndex } });
   if (isBrowser()) {
     console.log(state.value);
@@ -44,12 +51,13 @@ function PictureGallery({ album, pictures, getPageURL }) {
     if (isBrowser()) {
       if (state.event.type === "PICTURE_SELECTED") {
         const selectedPicture = pictures[state.context.selectedPictureIndex];
-        document.title = selectedPicture.description
+        const selectedPictureTitle = selectedPicture.caption || selectedPicture.description || `Picture ${ state.context.selectedPictureIndex + 1 }`;
+        document.title = selectedPictureTitle;
 
         if (!state.event.didPopHistoryState) {
           window.history.pushState(
             { selectedPictureIndex: state.context.selectedPictureIndex },
-            selectedPicture.description,
+            selectedPictureTitle,
             `/${album.uri}/${selectedPicture.uri}/`
           );
         }
@@ -115,7 +123,12 @@ function getSelectedPictureIndexFromURL({ album, pictures, getPageURL }) {
   const pageURL = `/${urlArray.join("/")}`;
 
   for (let index = 0; index < pictures.length; index++) {
-    if (`/${encodeURIComponent(album.uri)}/${encodeURIComponent(pictures[index].uri)}/` === pageURL) {
+    if (
+      // TRICKY:
+      // for server.js 
+      `/${encodeURIComponent(album.uri)}/${encodeURIComponent(pictures[index].uri)}/` === pageURL ||
+      // for build.js 
+      `/${album.uri}/${pictures[index].uri}/` === pageURL) {
       return index;
     }
   }
@@ -124,7 +137,7 @@ function getSelectedPictureIndexFromURL({ album, pictures, getPageURL }) {
 function getInitialPageTitle({ album, pictures, getPageURL }) {
   let selectedPictureIndex = getSelectedPictureIndexFromURL({ album, pictures, getPageURL });
   if (selectedPictureIndex) {
-    return pictures[selectedPictureIndex].description;
+    return pictures[selectedPictureIndex].caption || `Picture ${ selectedPictureIndex + 1 }`;
   } else {
     return album.title;
   }
