@@ -62,7 +62,13 @@ https://nodejs.org
 npm install
 ```
 
-6. Generate files and start the server
+6. Create data and images files
+
+```
+npm run create
+```
+
+7. Start the server
 
 ```
 npm start
@@ -72,15 +78,9 @@ npm start
 
 To stop the server, press “control C”
 
-To start the server again, without re-building everything:
-
-```
-npm run serve
-```
-
 ### Editing
 
-You can edit the files that were generated for you in the `_data` folder.
+You can edit the `.json` files that were created for you in the `_data` folder.
 For example, you may want to change the album names and add dates.
 
 ```
@@ -88,11 +88,7 @@ For example, you may want to change the album names and add dates.
 "date": "February & March, 2016",
 ```
 
-As you make changes, you can rebuild the site with:
-
-```
-npm run build
-```
+After you make changes, you may need to stop (press “control C”) and restart the dev server `npm run dev`.
 
 It’s okay to commit the generated files in these folders:
 
@@ -102,19 +98,33 @@ archives
 pictures
 ```
 
-These files are your data and will only change if you re-run the `npm start` script or edit them yourself.
+These files are your data and will only change if you re-run the `npm run create` script or edit them yourself.
 
 ### How to publish your gallery
 
-The above steps will create a `_site` folder that can be published on any web server.
+The `build` command will create a `_site` folder that can be published on any web server.
 
-You can automatically deploy your copy of this project to [Netlify](https://www.netlify.com/) using these settings:
+```
+npm run build
+```
+
+You can browse the static site with this command:
+
+```
+npm run serve
+```
+
+And then visit `http://localhost:5000`
+
+You can publish your copy of this project to a static host like [Netlify](https://www.netlify.com/) using these settings:
 
 Build command  
 `npm run build`
 
 Publish directory  
 `_site/`
+
+This will automatically rebuild and publish your site as you push changes to your copy of this GitHub repository.
 
 ### Image file storage
 
