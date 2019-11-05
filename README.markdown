@@ -1,7 +1,7 @@
 
 # Picture Gallery _beta_
 
-This is an experimental work in progress 🚧 
+This is a work in progress 🚧 
 
 I’m using it to practice with new tools and to share photos with friends 🦊 🐶
 
