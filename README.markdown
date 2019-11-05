@@ -88,7 +88,7 @@ For example, you may want to change the album names and add dates.
 "date": "February & March, 2016",
 ```
 
-After you make changes, you may need to stop (press “control C”) and restart the dev server `npm run dev`.
+After you make changes, you may need to stop (press “control C”) and restart the server `npm start`.
 
 It’s okay to commit the generated files in these folders:
 
