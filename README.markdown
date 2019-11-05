@@ -74,7 +74,7 @@ npm run create
 npm start
 ```
 
-7. Visit `http://localhost:5000`
+8. Visit `http://localhost:5000`
 
 To stop the server, press “control C”
 
