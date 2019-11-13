@@ -37,8 +37,12 @@ function PictureImage({ album, picture, state }) {
     onMoveStart: touch => dispatch({
       type:"MOVE_START",
       touch,
-      fromBoundingClientRect: image.current.getBoundingClientRect(),
-      toBoundingClientRect: getListPicture().getBoundingClientRect()
+      fromBoundingClientRect: (image.current != null)
+                                ? image.current.getBoundingClientRect()
+                                : null,
+      toBoundingClientRect:   (getListPicture() != null)
+                                ? getListPicture().getBoundingClientRect()
+                                : null
     }),
     onMove: touch => dispatch({
       type:"MOVE_PICTURE",
@@ -55,8 +59,12 @@ function PictureImage({ album, picture, state }) {
   function onImageLoaded() {
     dispatch({
       type: "PICTURE_LOADED",
-      fromBoundingClientRect: image.current.getBoundingClientRect(),
-      toBoundingClientRect: getListPicture().getBoundingClientRect()
+      fromBoundingClientRect: (image.current != null)
+                                ? image.current.getBoundingClientRect()
+                                : null,
+      toBoundingClientRect:   (getListPicture() != null)
+                                ? getListPicture().getBoundingClientRect()
+                                : null
     });
   }
 

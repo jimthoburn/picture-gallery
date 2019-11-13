@@ -24,7 +24,7 @@ function PictureDetails({ pictures, album, state }) {
   // 📣 📚 SHIM: Announce that the preparation step has rendered
   useEffect(() => {
     if (state.matches("transitioning_to_details.preparing_transition")) {
-      dispatch("RENDERED");
+      dispatch({ type: "RENDERED" });
     }
   }, [state.value]);
 
