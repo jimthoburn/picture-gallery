@@ -27,13 +27,6 @@ function PictureGallery({ album, pictures, getPageURL }) {
 
   const selectedPictureIndex = getSelectedPictureIndexFromURL({ album, pictures, getPageURL });
 
-  // if (getPageURL().includes("tenryū-ji-temple") ||
-  //     getPageURL().includes(encodeURIComponent("tenryū-ji-temple"))) {
-  //   console.log("tenryū-ji-temple");
-  //   console.log("selectedPictureIndex: ");
-  //   console.log(selectedPictureIndex);
-  // }
-
   const [state, dispatch, service] = useMachine(galleryMachine, { context: { selectedPictureIndex } });
   if (isBrowser()) {
     console.log(state.value);
@@ -43,15 +36,23 @@ function PictureGallery({ album, pictures, getPageURL }) {
     return [state, dispatch, service];
   }
 
-
-  // 💡 TBD: Should this code be called more directly, from the gallery machine?
-  //         https://xstate.js.org/docs/guides/communication.html
+  
+  // 🎉 Update the page URL and title to match the current state
   useEffect(() => {
-    
+
+    // 💡 TBD: Should this code be called more directly, from the gallery machine?
+    //         https://xstate.js.org/docs/guides/communication.html
+
+    //         "PICTURE_SELECTED" and "transitioning_to_list" are currently the
+    //         best events to watch for but aren’t super intuitive and could stop
+    //         working if the machine is updated.
+
     if (isBrowser()) {
       if (state.event.type === "PICTURE_SELECTED") {
         const selectedPicture = pictures[state.context.selectedPictureIndex];
-        const selectedPictureTitle = selectedPicture.caption || selectedPicture.description || `Picture ${ state.context.selectedPictureIndex + 1 }`;
+        const selectedPictureTitle = selectedPicture.caption 
+                                  || selectedPicture.description
+                                  || `Picture ${ state.context.selectedPictureIndex + 1 }`;
         document.title = selectedPictureTitle;
 
         if (!state.event.didPopHistoryState) {
@@ -61,7 +62,6 @@ function PictureGallery({ album, pictures, getPageURL }) {
             `/${album.uri}/${selectedPicture.uri}/`
           );
         }
-
       } else if (state.matches("transitioning_to_list")) {
         document.title = album.title;
 
