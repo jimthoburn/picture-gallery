@@ -3,7 +3,7 @@
 
 import { Machine, assign } from "../web_modules/xstate.js";
 
-const LOADING_PICTURE_TIMEOUT_SECONDS = 0.5;
+const LOADING_PICTURE_TIMEOUT_SECONDS = 2;
 const TRANSITION_TIMEOUT_SECONDS = 1;
 const PICTURE_MOVE_THRESHOLD_PIXELS = 25;
 
