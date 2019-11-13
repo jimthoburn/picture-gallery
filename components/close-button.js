@@ -38,8 +38,12 @@ function CloseButton({ state, album }) {
     // (Or more likely, when the forward/backward buttons are pressed)
     dispatch({
       type: "DETAILS_CLOSED",
-      fromBoundingClientRect: getDetailsPicture().getBoundingClientRect(),
-      toBoundingClientRect: getListPicture().getBoundingClientRect()
+      fromBoundingClientRect: (getDetailsPicture() != null)
+                                ? getDetailsPicture().getBoundingClientRect()
+                                : null,
+      toBoundingClientRect:   (getListPicture() != null)
+                                ? getListPicture().getBoundingClientRect()
+                                : null
     });
 
     e.preventDefault();
