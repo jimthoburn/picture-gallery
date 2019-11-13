@@ -98,10 +98,13 @@ function PictureGallery({ album, pictures, getPageURL }) {
 
   return html`
     <${GalleryDispatch.Provider} value="${dispatch}">
-      <${PictureList}
-        album="${album}"
-        pictures="${pictures}"
-        state="${state}" />
+      ${!state.matches("showing_details.idle")
+        ? html`
+          <${PictureList}
+            album="${album}"
+            pictures="${pictures}"
+            state="${state}" />`
+        : ""}
       ${!state.matches("showing_list")
         ? html`
           <${PictureDetails}
