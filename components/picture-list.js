@@ -49,7 +49,7 @@ function PictureList({ album, pictures, state }) {
   }, [state.context.selectedPictureIndex, selectedPicture]);
 
   
-  // 📣 Announce click events
+  // 📣 Announce selection events
   function onListImageClick(e, index) {
 
     // ⌨️ If the a modifier key is pressed, let the browser handle it
@@ -58,6 +58,14 @@ function PictureList({ album, pictures, state }) {
     dispatch({ type: "PICTURE_SELECTED", selectedPictureIndex: index });
 
     e.preventDefault();
+  }
+
+  
+  // 📣 📚 SHIM: Handle the case where a list item gains focus when the list is hidden
+  function onListImageFocus(e, index) {
+    if (state.matches("showing_details")) {
+      dispatch({ type: "DETAILS_CLOSED" });
+    }
   }
 
 
@@ -86,7 +94,8 @@ function PictureList({ album, pictures, state }) {
           <li>
             <a href="/${album.uri}/${picture.uri}/"
                onClick="${ e => onListImageClick(e, index) }"
-               onKeyUp="${onKeyboardDetected}">
+               onKeyUp="${onKeyboardDetected}"
+               onFocus="${onListImageFocus}">
               <responsive-image>
                 <img src="${getSource({album, picture})}"
                      srcset="${getSourceSet({album, picture})}"
