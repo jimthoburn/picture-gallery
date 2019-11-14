@@ -36,6 +36,7 @@ function PictureGallery({ album, pictures, getPageURL }) {
   });
   if (isBrowser()) {
     console.log(state.value);
+    // console.log(state);
   }
 
   getMachine = function() {
@@ -74,7 +75,7 @@ function PictureGallery({ album, pictures, getPageURL }) {
         document.title = selectedPictureTitle;
 
         if (state.context.didPopHistoryState != true) {
-          console.log("💎 pushState");
+          console.log("🎉 Pushing state to browser history");
           console.log([
             { selectedPictureIndex: state.context.selectedPictureIndex },
             selectedPictureTitle,
@@ -90,7 +91,7 @@ function PictureGallery({ album, pictures, getPageURL }) {
         document.title = album.title;
 
         if (state.context.didPopHistoryState != true) {
-          console.log("💎 pushState");
+          console.log("🎉 Pushing state to browser history");
           console.log([
             { },
             album.title,
@@ -110,7 +111,7 @@ function PictureGallery({ album, pictures, getPageURL }) {
   // 🎉 Respond to the browser’s forward & backward feature
   useEffect(() => {
     function onPopState(e) {
-      console.log("onPopState")
+      console.log("🎉 Browser history state popped")
       console.log(e.state);
       const selectedPictureIndex = e.state ? e.state.selectedPictureIndex : null;
       if (selectedPictureIndex != null) {

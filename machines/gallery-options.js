@@ -10,7 +10,7 @@ const PICTURE_MOVE_THRESHOLD_PIXELS = 25;
 
 const setDidPopHistoryState = assign({
   didPopHistoryState: (context, event) => {
-    console.log("setDidPopHistoryState: " + event.didPopHistoryState);
+    // console.log("setDidPopHistoryState: " + event.didPopHistoryState);
     return event.didPopHistoryState;
   }
 });
