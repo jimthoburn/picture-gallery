@@ -61,7 +61,11 @@ function PictureList({ album, pictures, state }) {
   }
 
   
-  // 📣 📚 SHIM: Handle the case where a list item gains focus when the list is hidden
+  // ⌨️ 📚 SHIM: Handle the case where a list item gains focus when the list is hidden
+  //            (to avoid a hidden focus state)
+  //
+  //            A better solution might be to prevent the list from gaining focus,
+  //            ideally by removing it from the DOM.
   function onListImageFocus(e, index) {
     if (state.matches("showing_details")) {
       dispatch({ type: "DETAILS_CLOSED" });
