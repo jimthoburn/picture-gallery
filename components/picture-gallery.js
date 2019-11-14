@@ -130,7 +130,7 @@ function PictureGallery({ album, pictures, getPageURL }) {
 
   return html`
     <${GalleryDispatch.Provider} value="${dispatch}">
-      ${!state.matches("showing_details.idle")
+      ${!state.matches("showing_details.idle") || isBrowser() && state.history
         ? html`
           <${PictureList}
             album="${album}"
