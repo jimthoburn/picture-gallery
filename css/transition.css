@@ -34,7 +34,7 @@
 
 .picture-list[data-state="transitioning_to_details.transitioning"] [data-selected="true"],
 .picture-list[data-state*="showing_details" ] [data-selected="true"],
-.picture-list[data-state="transitioning_to_list" ] [data-selected="true"] {
+.picture-list[data-state*="transitioning_to_list" ] [data-selected="true"] {
   opacity: 0;
 }
 
@@ -46,14 +46,14 @@
 }
 .picture-details[data-state="transitioning_to_details.loading_picture"],
 .picture-details[data-state="transitioning_to_details.preparing_transition"],
-.picture-details[data-state="transitioning_to_list"] {
+.picture-details[data-state*="transitioning_to_list"] {
   background-color: transparent;
 }
 .picture-details[data-state="transitioning_to_details.loading_picture"] header,
 .picture-details[data-state="transitioning_to_details.preparing_transition"] header,
 .picture-details[data-state="showing_details.moving_picture"] header,
 .picture-details[data-state="showing_details.gesturing"] header,
-.picture-details[data-state="transitioning_to_list"] header {
+.picture-details[data-state*="transitioning_to_list"] header {
   opacity: 0;
 }
 
@@ -62,7 +62,7 @@
 /* .picture-details[data-state="transitioning_to_details.loading_picture"] figure,
 .picture-details[data-state="transitioning_to_details.preparing_transition"] figure,
 .picture-details[data-state="showing_details.gesturing"] figure,
-.picture-details[data-state="transitioning_to_list"] figure {
+.picture-details[data-state*="transitioning_to_list"] figure {
   padding-bottom: calc(103/141 * 100%);
   position: relative;
   width: 100%;
@@ -70,7 +70,7 @@
 .picture-details[data-state="transitioning_to_details.loading_picture"] figure img,
 .picture-details[data-state="transitioning_to_details.preparing_transition"] figure img,
 .picture-details[data-state="showing_details.gesturing"] figure img,
-.picture-details[data-state="transitioning_to_list"] figure img {
+.picture-details[data-state*="transitioning_to_list"] figure img {
   position: absolute;
   top: 0;
   left: 0;
@@ -83,17 +83,17 @@
 /* Make the details elements animatable */
 .picture-details[data-state="transitioning_to_details.transitioning"],
 .picture-details[data-state="showing_details.gesturing"],
-.picture-details[data-state="transitioning_to_list"] {
+.picture-details[data-state*="transitioning_to_list"] {
   transition: background-color var(--transition-duration);
 }
 .picture-details[data-state="transitioning_to_details.transitioning"] header,
 .picture-details[data-state="showing_details.moving_picture"] header,
 .picture-details[data-state="showing_details.gesturing"] header,
-.picture-details[data-state="transitioning_to_list"] header {
+.picture-details[data-state*="transitioning_to_list"] header {
   transition: opacity var(--transition-duration);
 }
 .picture-details[data-state="transitioning_to_details.transitioning"] figure img,
-.picture-details[data-state="transitioning_to_list"] figure img {
+.picture-details[data-state*="transitioning_to_list"] figure img {
   transition: transform var(--transition-duration);
 }
 

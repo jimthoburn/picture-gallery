@@ -9,6 +9,8 @@ import { useMachine }     from "../helpers/xstate-preact.js";
 import { galleryMachine } from "../machines/gallery.js";
 import { PictureList }    from "../components/picture-list.js";
 import { PictureDetails } from "../components/picture-details.js";
+import { actions,
+         guards }         from "../machines/gallery-options.js";
 
 
 const GalleryDispatch = createContext(null);
@@ -27,7 +29,11 @@ function PictureGallery({ album, pictures, getPageURL }) {
 
   const selectedPictureIndex = getSelectedPictureIndexFromURL({ album, pictures, getPageURL });
 
-  const [state, dispatch, service] = useMachine(galleryMachine, { context: { selectedPictureIndex } });
+  const [state, dispatch, service] = useMachine(galleryMachine, {
+    context: { selectedPictureIndex },
+    actions: actions,
+    guards: guards
+  });
   if (isBrowser()) {
     console.log(state.value);
   }
@@ -35,6 +41,18 @@ function PictureGallery({ album, pictures, getPageURL }) {
   getMachine = function() {
     return [state, dispatch, service];
   }
+
+
+  // 📣 📚 SHIM: Announce that the next state has rendered
+  useEffect(() => {
+    if (state.matches("transitioning_to_details.preparing_transition") ||
+        state.matches("transitioning_to_list.rendering_list") ||
+        state.matches("showing_details.rendering_list")) {
+      dispatch({
+        type: "RENDERED"
+      });
+    }
+  }, [state.value]);
 
   
   // 🎉 Update the page URL and title to match the current state
@@ -62,7 +80,7 @@ function PictureGallery({ album, pictures, getPageURL }) {
             `/${album.uri}/${selectedPicture.uri}/`
           );
         }
-      } else if (state.matches("transitioning_to_list")) {
+      } else if (state.matches("showing_list")) {
         document.title = album.title;
 
         if (!state.event.didPopHistoryState) {
@@ -80,6 +98,8 @@ function PictureGallery({ album, pictures, getPageURL }) {
   // 🎉 Respond to the browser’s forward & backward feature
   useEffect(() => {
     function onPopState(e) {
+      console.log("onPopState")
+      console.log(e.state);
       const selectedPictureIndex = e.state ? e.state.selectedPictureIndex : null;
       if (selectedPictureIndex != null) {
         dispatch({ type: "PICTURE_SELECTED", selectedPictureIndex, didPopHistoryState: true });

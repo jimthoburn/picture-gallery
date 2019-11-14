@@ -8,8 +8,6 @@ const    html = htm.bind(createElement);
 import { usingKeyboard,
          onKeyboardDetected }   from "../helpers/environment.js";
 import { GalleryDispatch }       from "../components/picture-gallery.js";
-import { getSelectedPicture as getListPicture } from "../components/picture-list.js";
-import { getPicture as getDetailsPicture }      from "../components/picture-image.js";
 
 
 function CloseButton({ state, album }) {
@@ -37,13 +35,7 @@ function CloseButton({ state, album }) {
     // TODO: Handle case where the details are transitioning in when this event happens
     // (Or more likely, when the forward/backward buttons are pressed)
     dispatch({
-      type: "DETAILS_CLOSED",
-      fromBoundingClientRect: (getDetailsPicture() != null)
-                                ? getDetailsPicture().getBoundingClientRect()
-                                : null,
-      toBoundingClientRect:   (getListPicture() != null)
-                                ? getListPicture().getBoundingClientRect()
-                                : null
+      type: "DETAILS_CLOSED"
     });
 
     e.preventDefault();
