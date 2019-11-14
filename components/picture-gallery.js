@@ -66,24 +66,36 @@ function PictureGallery({ album, pictures, getPageURL }) {
     //         working if the machine is updated.
 
     if (isBrowser()) {
-      if (state.event.type === "PICTURE_SELECTED") {
+      if (state.matches("showing_details.idle")) {
         const selectedPicture = pictures[state.context.selectedPictureIndex];
         const selectedPictureTitle = selectedPicture.caption 
                                   || selectedPicture.description
                                   || `Picture ${ state.context.selectedPictureIndex + 1 }`;
         document.title = selectedPictureTitle;
 
-        if (!state.event.didPopHistoryState) {
+        if (state.context.didPopHistoryState != true) {
+          console.log("💎 pushState");
+          console.log([
+            { selectedPictureIndex: state.context.selectedPictureIndex },
+            selectedPictureTitle,
+            `/${album.uri}/${selectedPicture.uri}/`
+          ])
           window.history.pushState(
             { selectedPictureIndex: state.context.selectedPictureIndex },
             selectedPictureTitle,
             `/${album.uri}/${selectedPicture.uri}/`
           );
         }
-      } else if (state.matches("showing_list")) {
+      } else if (state.matches("transitioning_to_list.rendering_list")) {
         document.title = album.title;
 
-        if (!state.event.didPopHistoryState) {
+        if (state.context.didPopHistoryState != true) {
+          console.log("💎 pushState");
+          console.log([
+            { },
+            album.title,
+            `/${album.uri}/`
+          ])
           window.history.pushState(
             { },
             album.title,

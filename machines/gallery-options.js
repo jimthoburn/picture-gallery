@@ -8,6 +8,13 @@ import { getPicture as getDetailsPicture }      from "../components/picture-imag
 const PICTURE_MOVE_THRESHOLD_PIXELS = 25;
 
 
+const setDidPopHistoryState = assign({
+  didPopHistoryState: (context, event) => {
+    console.log("setDidPopHistoryState: " + event.didPopHistoryState);
+    return event.didPopHistoryState;
+  }
+});
+
 const setSelectedImageIndex = assign({
   selectedPictureIndex: (context, event) => event.selectedPictureIndex
 });
@@ -138,6 +145,7 @@ const resetTransform = assign({
 
 
 const actions = {
+  setDidPopHistoryState,
   setSelectedImageIndex,
   setBoundingClientRect,
   setInitialTouch,

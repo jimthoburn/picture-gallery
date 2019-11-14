@@ -10,6 +10,7 @@ const galleryMachine = Machine(
   {
     id: "gallery",
     context: {
+      didPopHistoryState: null,
       selectedPictureIndex: null,
       fromBoundingClientRect: null,
       toBoundingClientRect: null,
@@ -36,7 +37,8 @@ const galleryMachine = Machine(
       showing_list: {
         on: {
           PICTURE_SELECTED: {
-            target: "transitioning_to_details"
+            target: "transitioning_to_details",
+            actions: ["setDidPopHistoryState"]
           }
         }
       },
@@ -45,7 +47,8 @@ const galleryMachine = Machine(
         on: {
           DETAILS_CLOSED: [
             {
-              target: "transitioning_to_list"
+              target: "transitioning_to_list",
+              actions: ["setDidPopHistoryState"]
             }
           ]
         },
@@ -94,12 +97,13 @@ const galleryMachine = Machine(
         on: {
           DETAILS_CLOSED: [
             {
-              target: "transitioning_to_list"
+              target: "transitioning_to_list",
+              actions: ["setDidPopHistoryState"]
             }
           ],
           PICTURE_SELECTED: {
             target: "showing_details",
-            actions: ["setSelectedImageIndex"]
+            actions: ["setSelectedImageIndex", "setDidPopHistoryState"]
           }
         },
         onDone: "transitioning_to_list",
@@ -162,7 +166,10 @@ const galleryMachine = Machine(
       transitioning_to_list: {
         exit: "resetTransform",
         on: {
-          PICTURE_SELECTED: "transitioning_to_details"
+          PICTURE_SELECTED: {
+            target: "transitioning_to_details",
+            actions: ["setDidPopHistoryState"]
+          }
         },
         onDone: "showing_list",
         initial: "rendering_list",
@@ -193,6 +200,7 @@ const galleryMachine = Machine(
   },
   {
     actions: {
+      setDidPopHistoryState: function() {},
       setSelectedImageIndex: function() {},
       setBoundingClientRect: function() {},
       setInitialTouch: function() {},
