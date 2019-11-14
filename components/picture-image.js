@@ -36,13 +36,7 @@ function PictureImage({ album, picture, state }) {
     targetRef: image,
     onMoveStart: touch => dispatch({
       type:"MOVE_START",
-      touch,
-      fromBoundingClientRect: (image.current != null)
-                                ? image.current.getBoundingClientRect()
-                                : null,
-      toBoundingClientRect:   (getListPicture() != null)
-                                ? getListPicture().getBoundingClientRect()
-                                : null
+      touch
     }),
     onMove: touch => dispatch({
       type:"MOVE_PICTURE",

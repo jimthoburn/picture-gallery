@@ -21,14 +21,6 @@ function PictureDetails({ pictures, album, state }) {
   const picture = pictures[state.context.selectedPictureIndex];
 
 
-  // 📣 📚 SHIM: Announce that the preparation step has rendered
-  useEffect(() => {
-    if (state.matches("transitioning_to_details.preparing_transition")) {
-      dispatch({ type: "RENDERED" });
-    }
-  }, [state.value]);
-
-
   const selectedIndex = state.context.selectedPictureIndex;
   const firstIndex    = 0;
   const lastIndex     = pictures.length - 1;
