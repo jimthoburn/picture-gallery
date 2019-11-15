@@ -9,7 +9,7 @@ import { getSource,
 function ParentAlbumPage({ parent, children }) {
 
   return html`
-    <section class="picture-list">
+    <section class="picture-list picture-list__has-captions">
       <h1>${ parent.title }</h1>
       <p>${ parent.date }</p>
 
