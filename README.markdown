@@ -5,7 +5,6 @@ This is a work in progress 🚧
 
 I’m using it to practice with new tools and to share photos with friends 🦊 🐶
 
-* [Project goals](#goals)
 * See [an example gallery](https://picture-gallery.glitch.me)
 * Here’s a [visualization of the gallery’s state machine](https://xstate.js.org/viz/?gist=18995ef2fca6c1949991f21b1b68c6d0)
 * [Project goals](#goals)
