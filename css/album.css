@@ -64,9 +64,15 @@
 }
 .picture-list li {
   margin: 3vw;
-  flex-basis: calc(100vw / 2 - 3vw * 3);
+  flex-basis: calc(100vw / 1 - 3vw * 3);
 }
-@media (min-width: 40em) {
+@media (min-width: 30em) {
+  .picture-list li {
+    margin: 3vw;
+    flex-basis: calc(100vw / 2 - 3vw * 3);
+  }
+}
+@media (min-width: 60em) {
   .picture-list__has-captions li {
     flex-basis: calc(100vw / 3 - 3vw * 3);
   }
@@ -127,8 +133,8 @@
   padding: 0.525em 0.875em 0.5em 0.875em;
   /* transform: rotate(-5deg); */
 
-  background-color: white;
-  color: hsl(193, 70%, 60%);
+  /* background-color: white;
+  color: hsl(193, 70%, 60%); */
 }
 @media (max-width: calc(320px + 0.75em)) {
   .picture-list .caption {
