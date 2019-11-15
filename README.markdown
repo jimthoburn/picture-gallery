@@ -62,7 +62,7 @@ https://nodejs.org
 npm install
 ```
 
-6. Create data and images files
+6. Create data and [responsive images](https://developer.mozilla.org/en-US/docs/Learn/HTML/Multimedia_and_embedding/Responsive_images)
 
 ```
 npm run create
