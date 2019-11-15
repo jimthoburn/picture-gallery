@@ -10,7 +10,7 @@ import { getSource,
 function IndexPage({ title, date, albums }) {
 
   return html`
-    <section class="picture-list">
+    <section class="picture-list picture-list__has-captions">
       <h1>${ title }</h1>
       
       ${ (date)

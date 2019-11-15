@@ -6,8 +6,8 @@
 
 @media (min-width: 40em) {
   .picture-list {
-    padding-top: 3em;
-    padding-bottom: 3em;
+    padding-top: 7.5em;
+    padding-bottom: 7.5em;
   }
 }
 .picture-list h1 {
@@ -54,7 +54,7 @@
   padding-left: 0;
 }
 .picture-list ol {
-  margin: 3em 0;
+  margin: 4.5em 0;
   display: flex;
   flex-wrap: wrap;
   flex-direction: row;
@@ -63,12 +63,12 @@
   align-items: center;
 }
 .picture-list li {
-  margin: 0 0 3em 0;
-  flex-basis: 44vw;
+  margin: 3vw;
+  flex-basis: calc(100vw / 2 - 3vw * 3);
 }
-@media (min-width: 900px) {
-  .picture-list li {
-    flex-basis: 320px;
+@media (min-width: 40em) {
+  .picture-list__has-captions li {
+    flex-basis: calc(100vw / 3 - 3vw * 3);
   }
 }
 .picture-list li a {
@@ -76,6 +76,7 @@
   box-sizing: border-box;
   transition: opacity 0.2s;
   text-decoration: none;
+  position: relative;
 }
 /* .picture-list li a {
   position: relative;
@@ -106,25 +107,28 @@
 .picture-list li a:focus {
   opacity: 0.85;
 }
-.picture-list li {
-  margin: 1.5em 0.375em;
-}
-@media (min-width: 900px) {
-  .picture-list ol {
-    margin: 6em 0;
-  }
-  .picture-list li {
-    margin: 1.5em;
-  }
-}
 
 
 .picture-list .caption {
   display: block;
   text-align: left;
   text-decoration: underline;
-  position: relative;
+  position: absolute;
+  top: 0;
+  left: 0;
   z-index: 1;
+  background-color: hsl(193, 70%, 60%);
+  color: white;
+  text-decoration: none;
+  padding: 0 0.375em;
+
+
+  margin: 2.25em 0.75em;
+  padding: 0.525em 0.875em 0.5em 0.875em;
+  /* transform: rotate(-5deg); */
+
+  background-color: white;
+  color: hsl(193, 70%, 60%);
 }
 @media (max-width: calc(320px + 0.75em)) {
   .picture-list .caption {
