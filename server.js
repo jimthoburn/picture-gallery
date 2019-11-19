@@ -21,10 +21,10 @@ import { Error404Page, error404PageTitle } from "./pages/404.js";
 import { Error500Page, error500PageTitle } from "./pages/500.js";
 import { getInitialPageTitle} from "./components/picture-gallery.js";
 
-const galleryData = JSON.parse(fs.readFileSync("./_data/index.json", 'utf8'));
+const galleryData = JSON.parse(fs.readFileSync("./_api/index.json", 'utf8'));
 
-const albums = fs.existsSync("./albums.json")
-  ? JSON.parse(fs.readFileSync("./albums.json", 'utf8'))
+const albums = fs.existsSync("./_albums.json")
+  ? JSON.parse(fs.readFileSync("./_albums.json", 'utf8'))
   : galleryData.albums;
 
 const port = parseInt(process.env.PORT, 10) || 5000;
@@ -133,20 +133,21 @@ for (let album of albums) {
 }
 
 const staticFolders = [
-  "archives",
+  "_archives",
+  "_pictures",
   "components",
   "css",
   "helpers",
   "machines",
-  "pictures",
   "web_modules"
 ];
 
 for (let folder of staticFolders) {
-  server.use( `/${folder}`, express.static( `./${folder}` ) );
+  const folderWithoutLeadingUnderscore = folder.replace(/^_/, "");
+  server.use( `/${folderWithoutLeadingUnderscore}`, express.static( `./${folder}` ) );
 }
 
-server.use( "/api", express.static( "./_data") );
+server.use( "/api", express.static( "./_api") );
 
 server.get("/client.js", function(req, res) {
   res.sendFile("client.js", { root: __dirname });

@@ -1,7 +1,7 @@
 
 import fs from "fs";
 
-import { config } from "../config.js";
+import { config } from "../_config.js";
 
 const whenDefined = fs.readFileSync("helpers/when-defined.js", 'utf8');
 
@@ -21,6 +21,9 @@ export const WithoutClientLayout = ({ title, content, hideFromSearchEngines }) =
         <link rel="stylesheet" href="/css/album.css" />
         <link rel="stylesheet" href="/css/picture.css" />
         <link rel="stylesheet" href="/css/transition.css" />
+
+        <!-- https://dev.to/pickleat/add-an-emoji-favicon-to-your-site-co2 -->
+        <link rel="icon" href="https://emojipedia-us.s3.dualstack.us-west-1.amazonaws.com/thumbs/120/twitter/233/frame-with-picture_1f5bc.png">
 
         <script type="module" src="/components/responsive-image.js"></script>
       </head>
