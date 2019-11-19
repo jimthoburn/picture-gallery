@@ -27,10 +27,10 @@ https://nodejs.org
 
 2. Clone this project with Git (or download it)
 
-3. Add your pictures to the `/pictures/` folder, grouped by album name
+3. Add your pictures to the `/_pictures/` folder, grouped by album name
 
 ```
-/pictures/
+/_pictures/
     /your-album-name/
         /original/
             /1.jpg
@@ -94,8 +94,8 @@ It’s okay to commit the generated files in these folders:
 
 ```
 _api
-archives
-pictures
+_archives
+_pictures
 ```
 
 These files are your data and will only change if you re-run the `npm run create` script or edit them yourself.
@@ -125,6 +125,38 @@ Publish directory
 `_site/`
 
 This will automatically rebuild and publish your site as you push changes to your copy of this GitHub repository.
+
+### Secret albums
+
+If you want to publish an album to share with friends without making it public,
+you can add the album name to the `_secret_albums.json` file (instead of the `index.json` file). That way, it won’t appear on the home page of your picture gallery site.
+
+```
+[
+  "my-secret-album-name"
+]
+```
+
+To make the album name hard to guess, you may want to include a [UUID](https://duckduckgo.com/?q=UUID+generator&t=ffab&ia=answer) as part of the name. For example:
+
+```
+[
+  "my-secret-album-name-0c64f7ea-ad3d-4101-b379-fb5098aed301"
+]
+```
+
+You can also ask search engines not to index your album by setting `hideFromSearchEngines` to `true` in the `JSON` file for your album.
+
+```
+{
+  "uri": "my-secret-album-name-0c64f7ea-ad3d-4101-b379-fb5098aed301",
+  "title": "My Secret Album",
+  "date": "February & March, 2016",
+  "hideFromSearchEngines": true,
+}
+```
+
+This will add a [noindex](https://support.google.com/webmasters/answer/93710?hl=en) meta element to your page.
 
 ### Image file storage
 

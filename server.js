@@ -21,11 +21,13 @@ import { Error404Page, error404PageTitle } from "./pages/404.js";
 import { Error500Page, error500PageTitle } from "./pages/500.js";
 import { getInitialPageTitle} from "./components/picture-gallery.js";
 
-const galleryData = JSON.parse(fs.readFileSync("./_api/index.json", 'utf8'));
+const galleryData = JSON.parse(fs.readFileSync("./_api/index.json", "utf8"));
 
-const albums = fs.existsSync("./_albums.json")
-  ? JSON.parse(fs.readFileSync("./_albums.json", 'utf8'))
-  : galleryData.albums;
+const secretAlbums = fs.existsSync("./_secret_albums.json")
+  ? JSON.parse(fs.readFileSync("./_secret_albums.json", "utf8"))
+  : [];
+
+const albums = galleryData.albums.concat(secretAlbums);
 
 const port = parseInt(process.env.PORT, 10) || 5000;
 const server = express();
