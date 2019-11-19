@@ -87,7 +87,7 @@ function saveJSON({ destination, fileName, data }) {
 
 albums.forEach(album => {
   createAlbumJSON({
-    source: `./pictures/${album}/original`,
+    source: `./_pictures/${album}/original`,
     destination: `./_api`,
     album: {
       uri: album.split("/").pop(),

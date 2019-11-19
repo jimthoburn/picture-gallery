@@ -64,7 +64,7 @@ mkdirp("_archives", function (err) {
     console.error(err)
   } else {
     albums.forEach(album => {
-      createZip(`./pictures/${album}/6000-wide/`, `./_archives/${album}.zip`)
+      createZip(`./_pictures/${album}/6000-wide/`, `./_archives/${album}.zip`)
     })
   }
 })
