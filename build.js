@@ -13,15 +13,18 @@ import { ParentAlbumPage } from "./pages/parent-album.js";
 import { Error404Page, error404PageTitle } from "./pages/404.js";
 import { getInitialPageTitle } from "./components/picture-gallery.js";
 
-const galleryData = JSON.parse(fs.readFileSync("./_api/index.json", 'utf8'));
+const galleryData = JSON.parse(fs.readFileSync("./_api/index.json", "utf8"));
 
-const albums = fs.existsSync("./_albums.json")
-  ? JSON.parse(fs.readFileSync("./_albums.json", 'utf8'))
-  : galleryData.albums;
+const secretAlbums = fs.existsSync("./_secret_albums.json")
+  ? JSON.parse(fs.readFileSync("./_secret_albums.json", "utf8"))
+  : [];
+
+const albums = galleryData.albums.concat(secretAlbums);
 
 const GENERATED_FILES_FOLDER = "./_site";
 
 const staticFolders = [
+  "_api",
   "_archives",
   "_pictures",
   "components",
@@ -167,16 +170,12 @@ function copyAllStaticFiles() {
 
   }
 
-  // Copy _api as /api
-  copy({source: "./_api", destination: `${GENERATED_FILES_FOLDER}/api`});
-
   const extras = ["client.js"];
 
   for (let source of extras) {
     const destination = `${GENERATED_FILES_FOLDER}/${source}`;
     copy({ source, destination });
   }
-
 }
 
 

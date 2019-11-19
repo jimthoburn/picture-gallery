@@ -9,11 +9,13 @@ const __dirname = dirname(fileURLToPath(import.meta.url));
 import mkdirp from "mkdirp";
 import archiver from "archiver";
 
-const galleryData = JSON.parse(fs.readFileSync("./_api/index.json", 'utf8'));
+const galleryData = JSON.parse(fs.readFileSync("./_api/index.json", "utf8"));
 
-const albums = fs.existsSync("./_albums.json")
-  ? JSON.parse(fs.readFileSync("./_albums.json", 'utf8'))
-  : galleryData.albums;
+const secretAlbums = fs.existsSync("./_secret_albums.json")
+  ? JSON.parse(fs.readFileSync("./_secret_albums.json", "utf8"))
+  : [];
+
+const albums = galleryData.albums.concat(secretAlbums);
 
 // KUDOS: https://www.npmjs.com/package/archiver
 function createZip(source, destination, callback) {
