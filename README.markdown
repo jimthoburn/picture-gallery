@@ -129,7 +129,7 @@ This will automatically rebuild and publish your site as you push changes to you
 ### Secret albums
 
 If you want to publish an album to share with friends without making it public,
-you can add the album name to the `_secret_albums.json` file (instead of the `index.json` file). That way, it won’t appear on the home page of your picture gallery site.
+create a file called `_secret_albums.json` and add your album name to it (instead of adding it to the `index.json` file). That way, it won’t appear on the home page of your picture gallery site.
 
 ```
 [
