@@ -13,21 +13,21 @@ import { ParentAlbumPage } from "./pages/parent-album.js";
 import { Error404Page, error404PageTitle } from "./pages/404.js";
 import { getInitialPageTitle } from "./components/picture-gallery.js";
 
-const galleryData = JSON.parse(fs.readFileSync("./_data/index.json", 'utf8'));
+const galleryData = JSON.parse(fs.readFileSync("./_api/index.json", 'utf8'));
 
-const albums = fs.existsSync("./albums.json")
-  ? JSON.parse(fs.readFileSync("./albums.json", 'utf8'))
+const albums = fs.existsSync("./_albums.json")
+  ? JSON.parse(fs.readFileSync("./_albums.json", 'utf8'))
   : galleryData.albums;
 
 const GENERATED_FILES_FOLDER = "./_site";
 
 const staticFolders = [
-  "archives",
+  "_archives",
+  "_pictures",
   "components",
   "css",
   "helpers",
   "machines",
-  "pictures",
   "web_modules"
 ];
 
@@ -98,7 +98,7 @@ function generateAlbum({ album, hideFromSearchEngines }) {
 function generateIndexPage() {
   console.log(`Generating index page`);
   const albums = galleryData.albums.map(
-    albumURI => JSON.parse(fs.readFileSync(`./_data/${albumURI}.json`, 'utf8'))
+    albumURI => JSON.parse(fs.readFileSync(`./_api/${albumURI}.json`, 'utf8'))
   );
   const { title, hideFromSearchEngines } = galleryData;
   const content = render(IndexPage({ ...galleryData, albums }));
@@ -121,7 +121,7 @@ function generateError404Page() {
 function generateAllAlbums() {
   for (let nextAlbumName of albums) {
 
-    const album = JSON.parse(fs.readFileSync(`./_data/${nextAlbumName}.json`, "utf8"));
+    const album = JSON.parse(fs.readFileSync(`./_api/${nextAlbumName}.json`, "utf8"));
 
     if (album.albums) {
       console.log(`Generating group album for: ${ album.title }`);
@@ -158,15 +158,17 @@ function generateAllAlbums() {
 function copyAllStaticFiles() {
   for (let folder of staticFolders) {
 
+    const folderWithoutLeadingUnderscore = folder.replace(/^_/, "");
+
     const source      = `./${folder}`;
-    const destination = `${GENERATED_FILES_FOLDER}/${folder}`;
+    const destination = `${GENERATED_FILES_FOLDER}/${folderWithoutLeadingUnderscore}`;
 
     copy({source, destination});
 
   }
 
-  // Copy _data as /api
-  copy({source: "./_data", destination: `${GENERATED_FILES_FOLDER}/api`});
+  // Copy _api as /api
+  copy({source: "./_api", destination: `${GENERATED_FILES_FOLDER}/api`});
 
   const extras = ["client.js"];
 

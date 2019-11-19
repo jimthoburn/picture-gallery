@@ -9,10 +9,10 @@ const __dirname = dirname(fileURLToPath(import.meta.url));
 import mkdirp from "mkdirp";
 import archiver from "archiver";
 
-const galleryData = JSON.parse(fs.readFileSync("./_data/index.json", 'utf8'));
+const galleryData = JSON.parse(fs.readFileSync("./_api/index.json", 'utf8'));
 
-const albums = fs.existsSync("./albums.json")
-  ? JSON.parse(fs.readFileSync("./albums.json", 'utf8'))
+const albums = fs.existsSync("./_albums.json")
+  ? JSON.parse(fs.readFileSync("./_albums.json", 'utf8'))
   : galleryData.albums;
 
 // KUDOS: https://www.npmjs.com/package/archiver
@@ -57,12 +57,12 @@ function createZip(source, destination, callback) {
 
 }
 
-mkdirp("archives", function (err) {
+mkdirp("_archives", function (err) {
   if (err) {
     console.error(err)
   } else {
     albums.forEach(album => {
-      createZip(`./pictures/${album}/6000-wide/`, `./archives/${album}.zip`)
+      createZip(`./pictures/${album}/6000-wide/`, `./_archives/${album}.zip`)
     })
   }
 })

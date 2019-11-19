@@ -125,16 +125,14 @@
   z-index: 1;
   background-color: hsl(193, 70%, 60%);
   color: white;
-  text-decoration: none;
   padding: 0 0.375em;
-
 
   margin: 2.25em 0.75em;
   padding: 0.525em 0.875em 0.5em 0.875em;
   /* transform: rotate(-5deg); */
 
-  /* background-color: white;
-  color: hsl(193, 70%, 60%); */
+  background-color: white;
+  color: hsl(193, 70%, 60%);
 }
 @media (max-width: calc(320px + 0.75em)) {
   .picture-list .caption {

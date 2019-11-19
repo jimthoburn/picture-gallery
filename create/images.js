@@ -11,10 +11,10 @@ import parallel from "concurrent-transform";
 
 import os from "os";
 
-const galleryData = JSON.parse(fs.readFileSync("./_data/index.json", 'utf8'));
+const galleryData = JSON.parse(fs.readFileSync("./_api/index.json", 'utf8'));
 
-const albums = fs.existsSync("./albums.json")
-  ? JSON.parse(fs.readFileSync("./albums.json", 'utf8'))
+const albums = fs.existsSync("./_albums.json")
+  ? JSON.parse(fs.readFileSync("./_albums.json", 'utf8'))
   : galleryData.albums;
 
 const SIZES = [

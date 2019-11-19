@@ -8,10 +8,10 @@ const __dirname = dirname(fileURLToPath(import.meta.url));
 
 import mkdirp from "mkdirp";
 
-const galleryData = JSON.parse(fs.readFileSync("./_data/index.json", 'utf8'));
+const galleryData = JSON.parse(fs.readFileSync("./_api/index.json", 'utf8'));
 
-const albums = fs.existsSync("./albums.json")
-  ? JSON.parse(fs.readFileSync("./albums.json", 'utf8'))
+const albums = fs.existsSync("./_albums.json")
+  ? JSON.parse(fs.readFileSync("./_albums.json", 'utf8'))
   : galleryData.albums;
 
 function createAlbumJSON({ source, destination, album }) {
@@ -86,7 +86,7 @@ function saveJSON({ destination, fileName, data }) {
 albums.forEach(album => {
   createAlbumJSON({
     source: `./pictures/${album}/original`,
-    destination: `./_data`,
+    destination: `./_api`,
     album: {
       uri: album.split("/").pop(),
       title: album.split("/").pop(),

@@ -8,7 +8,7 @@ I’m using it to practice with new tools and to share photos with friends 🦊 
 * See [an example gallery](https://picture-gallery.glitch.me)
 * Here’s a [visualization of the gallery’s state machine](https://xstate.js.org/viz/?gist=18995ef2fca6c1949991f21b1b68c6d0)
 * [Project goals](#goals)
-* [Helpful resources](#resources)
+* Helpful [resources](#resources)
 
 ## How to make your own gallery
 
@@ -43,7 +43,7 @@ https://nodejs.org
             /3.jpg
 ```
 
-4. Add information about your gallery and featured albums to `_data/index.json`
+4. Add information about your gallery and featured albums to `_api/index.json`
 
 ```
 {
@@ -80,7 +80,7 @@ To stop the server, press “control C”
 
 ### Editing
 
-You can edit the `.json` files that were created for you in the `_data` folder.
+You can edit the `.json` files that were created for you in the `_api` folder.
 For example, you may want to change the album names and add dates.
 
 ```
@@ -93,7 +93,7 @@ After you make changes, you may need to stop (press “control C”) and restart
 It’s okay to commit the generated files in these folders:
 
 ```
-_data
+_api
 archives
 pictures
 ```
@@ -159,8 +159,8 @@ User experience
 - [x] Essential content/features are available in any web browser
 - [x] Browser features (like forward/back and bookmarks) are supported
 - [x] Site is just as accessible as it would be with static HTML and page refreshes
-- [x] Site is just as findable by search engines and [archivable](https://archive.org/) as it would be if it were made of static HTML pages
-- [x] First page renders as quickly as static HTML
+- [ ] Site is just as findable by search engines and [archivable](https://archive.org/) as it would be if it were made of static HTML pages
+- [ ] First page renders as quickly as static HTML
 - [ ] The application works well on a slow network
 - [ ] The application has cues that are equivalent to a normal browsing experience, like a page loading indicator
 - [x] The application is still usable when things go wrong, like if a CSS file doesn’t load or a JavaScript error happens
