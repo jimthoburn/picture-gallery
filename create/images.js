@@ -64,7 +64,7 @@ function generateNextFolder() {
     console.log('generateNextFolder: ' + nextFolderCursor + ' :: ' + albums[nextFolderCursor]);
 
     nextCursor = 0;
-    nextImagePath = `pictures/${ albums[nextFolderCursor] }`;
+    nextImagePath = `_pictures/${ albums[nextFolderCursor] }`;
     generateNext();
 
     nextFolderCursor++;
