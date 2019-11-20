@@ -107,8 +107,8 @@ function PictureList({ album, pictures, state }) {
                      width="320"
                      alt="${
                        (picture.description)
-                       ? html`${picture.description}`
-                       : html`Picture ${index + 1}`
+                       ? picture.description
+                       : `Picture ${index + 1}`
                      }"
                      ref="${state.context.selectedPictureIndex === index ? selectedPicture : null}"
                      data-selected="${(state.context.selectedPictureIndex === index) ? "true" : ""}" />

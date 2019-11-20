@@ -94,8 +94,8 @@ function PictureImage({ album, picture, state }) {
   }, [prefersReducedMotion, state.value, image]);
 
   const alt = (picture.description)
-    ? html`${picture.description}`
-    : html`Picture ${state.context.selectedPictureIndex + 1}`
+    ? picture.description
+    : `Picture ${state.context.selectedPictureIndex + 1}`
 
   return html`
     <figure>
