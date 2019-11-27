@@ -30,17 +30,17 @@ https://nodejs.org
 3. Add your pictures to the `/_pictures/` folder, grouped by album name
 
 ```
-/_pictures/
-    /your-album-name/
-        /original/
-            /1.jpg
-            /2.jpg
-            /3.jpg
-    /your-other-album-name/
-        /original/
-            /1.jpg
-            /2.jpg
-            /3.jpg
+_pictures/
+    your-album-name/
+        original/
+            1.jpg
+            2.jpg
+            3.jpg
+    your-other-album-name/
+        original/
+            1.jpg
+            2.jpg
+            3.jpg
 ```
 
 4. Add information about your gallery and featured albums to `_api/index.json`
@@ -191,8 +191,8 @@ User experience
 - [x] Essential content/features are available in any web browser
 - [x] Browser features (like forward/back and bookmarks) are supported
 - [x] Site is just as accessible as it would be with static HTML and page refreshes
-- [ ] Site is just as findable by search engines and [archivable](https://archive.org/) as it would be if it were made of static HTML pages
-- [ ] First page renders as quickly as static HTML
+- [x] Site is just as findable by search engines and [archivable](https://archive.org/) as it would be if it were made of static HTML pages
+- [x] First page renders as quickly as static HTML
 - [ ] The application works well on a slow network
 - [ ] The application has cues that are equivalent to a normal browsing experience, like a page loading indicator
 - [x] The application is still usable when things go wrong, like if a CSS file doesn’t load or a JavaScript error happens
