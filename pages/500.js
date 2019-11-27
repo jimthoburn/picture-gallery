@@ -17,7 +17,7 @@ function Error500Page({ errorMessage }) {
     <p>Something went wrong on this page.</p>
     <p>You may want to visit the <a href="/">home page</a> instead.</p>
     
-    <p><small>Error details:<br />{ errorMessage }</small></p>
+    <p><small>Error details:<br /><pre><code>${ errorMessage }</code></pre></small></p>
   </section>
   `;
 }
