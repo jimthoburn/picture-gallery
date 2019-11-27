@@ -13,17 +13,18 @@ export const WithoutClientLayout = ({ title, content, hideFromSearchEngines }) =
         <meta charset="utf-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
         ${ hideFromSearchEngines || config.hideFromSearchEngines 
-          ? `<meta name="robots" content="noindex">`
+          ? `<meta name="robots" content="noindex" />`
           : ""}
         <title>${title}</title>
-        <link href="https://fonts.googleapis.com/css?family=Fredericka+the+Great&display=swap" rel="stylesheet" />
+        <link href="https://fonts.googleapis.com/css?family=Fredericka+the+Great&amp;display=swap" rel="stylesheet" />
         <link rel="stylesheet" href="/css/shared.css" />
         <link rel="stylesheet" href="/css/album.css" />
         <link rel="stylesheet" href="/css/picture.css" />
         <link rel="stylesheet" href="/css/transition.css" />
 
         <!-- https://dev.to/pickleat/add-an-emoji-favicon-to-your-site-co2 -->
-        <link rel="icon" href="https://emojipedia-us.s3.dualstack.us-west-1.amazonaws.com/thumbs/120/twitter/233/frame-with-picture_1f5bc.png">
+        <!-- https://emojipedia-us.s3.dualstack.us-west-1.amazonaws.com/thumbs/120/twitter/233/frame-with-picture_1f5bc.png -->
+        <link rel="icon" href="/favicon/emojipedia-us.s3.dualstack.us-west-1.amazonaws.com-thumbs-120-twitter-233-frame-with-picture_1f5bc.png" />
 
         <script type="module" src="/components/responsive-image.js"></script>
       </head>
