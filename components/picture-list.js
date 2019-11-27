@@ -121,6 +121,7 @@ function PictureList({ album, pictures, state }) {
                      width="${ 320 * (picture.width  > picture.height ? 1 : picture.width/picture.height) }"
                      height="${320 * (picture.height > picture.width  ? 1 : picture.height/picture.width) }"
                      data-style="background-color: ${picture.primaryColor}"
+                     loading="lazy"
                      alt="${
                        (picture.description)
                        ? picture.description
