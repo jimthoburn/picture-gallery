@@ -93,21 +93,30 @@ function PictureImage({ album, picture, state }) {
     }
   }, [prefersReducedMotion, state.value, image]);
 
+
   const alt = (picture.description)
     ? picture.description
-    : `Picture ${state.context.selectedPictureIndex + 1}`
+    : `Picture ${state.context.selectedPictureIndex + 1}`;
 
   return html`
     <figure>
-      <responsive-image>
+      <responsive-image
+        aspect-ratio="${picture.width}/${picture.height}"
+        max-width="100vw"
+        max-height="100vh"
+        ref="${image}">
+        <img
+          class="preview"
+          src="data:image/jpeg;base64,${picture.previewBase64}" alt="" />
         <img
           src="${getSource({album, picture})}"
           srcset="${getSourceSet({album, picture})}"
           sizes="${getSourceSet({album, picture}) ? IMAGE_DETAILS_SIZES : null}"
           alt="${alt}"
-          width="320"
-          onLoad="${onImageLoaded}"
-          ref="${image}" />
+          width="${ 320 * (picture.width  > picture.height ? 1 : picture.width/picture.height) }"
+          height="${320 * (picture.height > picture.width  ? 1 : picture.height/picture.width) }"
+          data-style="background-color: ${picture.primaryColor}"
+          onLoad="${onImageLoaded}" />
       </responsive-image>
     </figure>
   `;
