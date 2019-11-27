@@ -176,6 +176,12 @@ function copyAllStaticFiles() {
     const destination = `${GENERATED_FILES_FOLDER}/${source}`;
     copy({ source, destination });
   }
+
+  // _public is a general folder for any static file to be served from “/”
+  const source      = `./_public`;
+  const destination = `${GENERATED_FILES_FOLDER}`;
+
+  copy({source, destination});
 }
 
 

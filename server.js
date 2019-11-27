@@ -135,6 +135,7 @@ for (let album of albums) {
 }
 
 const staticFolders = [
+  "_api",
   "_archives",
   "_pictures",
   "components",
@@ -149,7 +150,8 @@ for (let folder of staticFolders) {
   server.use( `/${folderWithoutLeadingUnderscore}`, express.static( `./${folder}` ) );
 }
 
-server.use( "/api", express.static( "./_api") );
+// _public is a general folder for any static file to be served from “/”
+server.use(express.static("./_public"));
 
 server.get("/client.js", function(req, res) {
   res.sendFile("client.js", { root: __dirname });
