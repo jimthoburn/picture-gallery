@@ -101,13 +101,20 @@ function PictureImage({ album, picture, state }) {
   return html`
     <figure>
       <responsive-image
-        aspect-ratio="${picture.width}/${picture.height}"
+        aspect-ratio="${
+          (picture.width && picture.height)
+          ? `${picture.width}/${picture.height}`
+          : "1/1"
+        }"
         max-width="100vw"
         max-height="100vh"
         ref="${image}">
-        <img
-          class="preview"
-          src="data:image/jpeg;base64,${picture.previewBase64}" alt="" />
+        ${ (picture.previewBase64)
+           ? html`
+          <img
+            class="preview"
+            src="data:image/jpeg;base64,${picture.previewBase64}" alt="" />`
+           : "" }
         <img
           src="${getSource({album, picture})}"
           srcset="${getSourceSet({album, picture})}"
