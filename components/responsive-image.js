@@ -33,8 +33,7 @@ class ResponsiveImage extends LitElement {
         left: 0;
         width: 100%;
         height: 100%;
-        /* object-fit: contain; */
-        /* border: 1px solid green; */
+        object-fit: contain;
       }
 
       ::slotted(img.preview) {
@@ -90,7 +89,14 @@ class ResponsiveImage extends LitElement {
 
 
   render() {
-    const [width, height] = this["aspect-ratio"].split("/");
+    let aspectRatio = this["aspect-ratio"];
+
+    // Handle the case where aspect ratio is not valid
+    if (isNaN(aspectRatio.split("/")[0]) || isNaN(aspectRatio.split("/")[1])) {
+      aspectRatio = "1/1";
+    }
+
+    const [width, height] = aspectRatio.split("/");
     const maxWidth  = this["max-width"];
     const maxHeight = this["max-height"];
 
@@ -103,7 +109,7 @@ class ResponsiveImage extends LitElement {
             --height: calc(${height / width} * ${maxWidth});
           }
 
-          @media (min-aspect-ratio: ${this["aspect-ratio"]}) {
+          @media (min-aspect-ratio: ${aspectRatio}) {
             :host {
               --width: calc(${width / height} * ${maxHeight});
               --height: ${maxHeight};

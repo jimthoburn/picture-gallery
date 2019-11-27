@@ -28,9 +28,12 @@ function ParentAlbumPage({ parent, children }) {
                 aspect-ratio="${picture.width}/${picture.height}"
                 max-width="100%"
                 max-height="100%">
-                <img
-                  class="preview"
-                  src="data:image/jpeg;base64,${picture.previewBase64}" alt="" />
+                ${ (picture.previewBase64)
+                   ? html`
+                  <img
+                    class="preview"
+                    src="data:image/jpeg;base64,${picture.previewBase64}" alt="" />`
+                   : "" }
                 <img
                   src="${getSource({parent, album, picture})}"
                   srcset="${getSourceSet({parent, album, picture})}"

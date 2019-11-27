@@ -101,13 +101,20 @@ function PictureList({ album, pictures, state }) {
                onKeyUp="${onKeyboardDetected}"
                onFocus="${onListImageFocus}">
               <responsive-image
-                aspect-ratio="${picture.width}/${picture.height}"
+                aspect-ratio="${
+                  (picture.width && picture.height)
+                  ? `${picture.width}/${picture.height}`
+                  : "1/1"
+                }"
                 max-width="100%"
                 max-height="100%"
                 ref="${state.context.selectedPictureIndex === index ? selectedPicture : null}">
-                <img
-                  class="preview"
-                  src="data:image/jpeg;base64,${picture.previewBase64}" alt="" />
+                ${ (picture.previewBase64)
+                   ? html`
+                  <img
+                    class="preview"
+                    src="data:image/jpeg;base64,${picture.previewBase64}" alt="" />`
+                   : "" }
                 <img src="${getSource({album, picture})}"
                      srcset="${getSourceSet({album, picture})}"
                      sizes="${getSourceSet({album, picture}) ? IMAGE_LIST_SIZES : null}"
