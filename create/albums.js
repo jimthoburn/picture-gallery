@@ -19,6 +19,8 @@ const secretAlbums = fs.existsSync("./_secret_albums.json")
   ? JSON.parse(fs.readFileSync("./_secret_albums.json", "utf8"))
   : [];
 
+const albums = galleryData.albums.concat(secretAlbums);
+
 
 // https://www.npmjs.com/package/exif
 function getImageMetadata(imageFilePath) { 
@@ -170,12 +172,13 @@ function saveJSON({ destination, fileName, data }) {
 
 const destination = "./_api";
 
-albums.forEach(album => {
+albums.forEach(async (album) => {
   let uri = album.split("/").pop();
-  let data = createAlbumJSON({
+  let data = await createAlbumJSON({
     source: `./_pictures/${album}/original`,
     sourceForPreviewBase64: `./_pictures/${album}/16-wide`,
     album: {
+      uri,
       title: uri,
       date: null,
       zipFileSize: null,
