@@ -24,13 +24,21 @@ function ParentAlbumPage({ parent, children }) {
           return html`
           <li>
             <a href="/${parent.uri}/${album.uri}/">
-              <responsive-image aspect-ratio="2/1">
+              <responsive-image
+                aspect-ratio="${picture.width}/${picture.height}"
+                max-width="100%"
+                max-height="100%">
+                <img
+                  class="preview"
+                  src="data:image/jpeg;base64,${picture.previewBase64}" alt="" />
                 <img
                   src="${getSource({parent, album, picture})}"
                   srcset="${getSourceSet({parent, album, picture})}"
                   sizes="${getSourceSet({parent, album, picture}) ? IMAGE_LIST_SIZES : null}"
                   alt=""
-                  width="320" />
+                  width="${ 320 * (picture.width  > picture.height ? 1 : picture.width/picture.height) }"
+                  height="${320 * (picture.height > picture.width  ? 1 : picture.height/picture.width) }"
+                  data-style="background-color: ${picture.primaryColor}" />
               </responsive-image>
               <span class="caption">${ album.title }</span>
             </a>

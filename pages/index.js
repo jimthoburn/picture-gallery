@@ -28,13 +28,21 @@ function IndexPage({ title, date, albums }) {
           return html`
             <li>
               <a href="/${album.uri}/">
-                <responsive-image>
+                <responsive-image
+                  aspect-ratio="${picture.width}/${picture.height}"
+                  max-width="100%"
+                  max-height="100%">
+                  <img
+                    class="preview"
+                    src="data:image/jpeg;base64,${picture.previewBase64}" alt="" />
                   <img
                     src="${getSource({album, picture})}"
                     srcset="${getSourceSet({album, picture})}"
                     sizes="${getSourceSet({album, picture}) ? IMAGE_LIST_SIZES : null}"
                     alt=""
-                    width="320" />
+                    width="${ 320 * (picture.width  > picture.height ? 1 : picture.width/picture.height) }"
+                    height="${320 * (picture.height > picture.width  ? 1 : picture.height/picture.width) }"
+                    data-style="background-color: ${picture.primaryColor}" />
                 </responsive-image>
                 <span class="caption">${ album.title }</span>
               </a>

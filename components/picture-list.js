@@ -66,7 +66,7 @@ function PictureList({ album, pictures, state }) {
   //
   //            A better solution might be to prevent the list from gaining focus,
   //            ideally by removing it from the DOM.
-  function onListImageFocus(e, index) {
+  function onListImageFocus(e) {
     if (state.matches("showing_details")) {
       dispatch({ type: "DETAILS_CLOSED" });
     }
@@ -100,17 +100,25 @@ function PictureList({ album, pictures, state }) {
                onClick="${ e => onListImageClick(e, index) }"
                onKeyUp="${onKeyboardDetected}"
                onFocus="${onListImageFocus}">
-              <responsive-image>
+              <responsive-image
+                aspect-ratio="${picture.width}/${picture.height}"
+                max-width="100%"
+                max-height="100%"
+                ref="${state.context.selectedPictureIndex === index ? selectedPicture : null}">
+                <img
+                  class="preview"
+                  src="data:image/jpeg;base64,${picture.previewBase64}" alt="" />
                 <img src="${getSource({album, picture})}"
                      srcset="${getSourceSet({album, picture})}"
                      sizes="${getSourceSet({album, picture}) ? IMAGE_LIST_SIZES : null}"
-                     width="320"
+                     width="${ 320 * (picture.width  > picture.height ? 1 : picture.width/picture.height) }"
+                     height="${320 * (picture.height > picture.width  ? 1 : picture.height/picture.width) }"
+                     data-style="background-color: ${picture.primaryColor}"
                      alt="${
                        (picture.description)
                        ? picture.description
                        : `Picture ${index + 1}`
                      }"
-                     ref="${state.context.selectedPictureIndex === index ? selectedPicture : null}"
                      data-selected="${(state.context.selectedPictureIndex === index) ? "true" : ""}" />
               </responsive-image>
               ${""/*<span class="caption">${ picture.title }</span>*/}

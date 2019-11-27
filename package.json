@@ -2,10 +2,10 @@
   "type": "module",
   "scripts": {
     "prepare": "pika-web",
-    "create:albums": "node --experimental-modules create/albums.js",
     "create:images": "node --experimental-modules create/images.js",
+    "create:albums": "node --experimental-modules create/albums.js",
     "create:archives": "node --experimental-modules create/archives.js",
-    "create": "npm run create:albums && npm run create:images && npm run create:archives",
+    "create": "npm run create:images && npm run create:albums && npm run create:archives",
     "build": "node --experimental-modules build.js",
     "serve": "serve ./_site/",
     "start": "node --experimental-modules server.js"
@@ -23,13 +23,17 @@
   "devDependencies": {
     "@pika/web": "^0.6.1",
     "archiver": "^3.1.1",
+    "color-thief": "^2.2.5",
     "concurrent-transform": "^1.0.0",
     "connect-slashes": "^1.4.0",
+    "exif": "^0.6.0",
     "express": "^4.17.1",
     "fs-extra": "^8.1.0",
     "gulp": "^4.0.2",
     "gulp-image-resize": "^0.13.1",
+    "imageoptim-cli": "^3.0.2",
     "js-beautify": "^1.10.2",
+    "node-base64-image": "^1.0.6",
     "node-fetch": "^2.6.0",
     "serve": "^11.2.0"
   },

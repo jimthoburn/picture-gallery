@@ -92,8 +92,8 @@
 .picture-details[data-state*="transitioning_to_list"] header {
   transition: opacity var(--transition-duration);
 }
-.picture-details[data-state="transitioning_to_details.transitioning"] figure img,
-.picture-details[data-state*="transitioning_to_list"] figure img {
+.picture-details[data-state="transitioning_to_details.transitioning"] responsive-image,
+.picture-details[data-state*="transitioning_to_list"] responsive-image {
   transition: transform var(--transition-duration);
 }
 
@@ -102,7 +102,7 @@
 .picture-details[data-state="showing_details.gesturing"] {
   background-color: hsla(0, 0%, 0%, calc(var(--scale) / 1.5));
 }
-.picture-details[data-state] figure img {
+.picture-details[data-state] responsive-image {
   transform: translate(calc(var(--translateX) * 1px), calc(var(--translateY) * 1px)) scale(var(--scale));
 }
 
