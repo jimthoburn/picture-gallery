@@ -42,6 +42,7 @@ function IndexPage({ title, date, albums }) {
                     src="${getSource({album, picture})}"
                     srcset="${getSourceSet({album, picture})}"
                     sizes="${getSourceSet({album, picture}) ? IMAGE_LIST_SIZES : null}"
+                    loading="lazy"
                     alt=""
                     width="${ 320 * (picture.width  > picture.height ? 1 : picture.width/picture.height) }"
                     height="${320 * (picture.height > picture.width  ? 1 : picture.height/picture.width) }"

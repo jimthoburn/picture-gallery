@@ -38,6 +38,7 @@ function ParentAlbumPage({ parent, children }) {
                   src="${getSource({parent, album, picture})}"
                   srcset="${getSourceSet({parent, album, picture})}"
                   sizes="${getSourceSet({parent, album, picture}) ? IMAGE_LIST_SIZES : null}"
+                  loading="lazy"
                   alt=""
                   width="${ 320 * (picture.width  > picture.height ? 1 : picture.width/picture.height) }"
                   height="${320 * (picture.height > picture.width  ? 1 : picture.height/picture.width) }"
