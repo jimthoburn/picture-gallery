@@ -33,8 +33,9 @@
     "gulp-image-resize": "^0.13.1",
     "imageoptim-cli": "^3.0.2",
     "js-beautify": "^1.10.2",
-    "node-base64-image": "^1.0.6",
+    "lodash": "^4.17.15",
     "node-fetch": "^2.6.0",
+    "request": "^2.88.0",
     "serve": "^11.2.0"
   },
   "@pika/web": {
