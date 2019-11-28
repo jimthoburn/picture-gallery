@@ -98,6 +98,10 @@ function PictureImage({ album, picture, state }) {
     ? picture.description
     : `Picture ${state.context.selectedPictureIndex + 1}`;
 
+  const sizes = (picture.width && picture.height)
+    ? `(min-aspect-ratio: ${picture.width}/${picture.height}) calc(${picture.width / picture.height} * 100vh), 100vw`
+    : `100vw`;
+
   return html`
     <figure>
       <responsive-image
@@ -118,7 +122,7 @@ function PictureImage({ album, picture, state }) {
         <img
           src="${getSource({album, picture})}"
           srcset="${getSourceSet({album, picture})}"
-          sizes="${getSourceSet({album, picture}) ? IMAGE_DETAILS_SIZES : null}"
+          sizes="${getSourceSet({album, picture}) ? sizes : null}"
           alt="${alt}"
           width="${ 320 * (picture.width  > picture.height ? 1 : picture.width/picture.height) }"
           height="${320 * (picture.height > picture.width  ? 1 : picture.height/picture.width) }"

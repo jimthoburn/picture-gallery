@@ -25,6 +25,10 @@ function IndexPage({ title, date, albums }) {
           );
           const picture = match.length > 0 ? match[0] : album.pictures[0];
 
+          const sizes = (picture.width && picture.height)
+            ? `(min-width: 60em) 33vw, (min-width: 30em) 50vw, 100vw`
+            : `100vw`;
+
           return html`
             <li>
               <a href="/${album.uri}/">
@@ -41,7 +45,7 @@ function IndexPage({ title, date, albums }) {
                   <img
                     src="${getSource({album, picture})}"
                     srcset="${getSourceSet({album, picture})}"
-                    sizes="${getSourceSet({album, picture}) ? IMAGE_LIST_SIZES : null}"
+                    sizes="${getSourceSet({album, picture}) ? sizes : null}"
                     loading="lazy"
                     alt=""
                     width="${ 320 * (picture.width  > picture.height ? 1 : picture.width/picture.height) }"

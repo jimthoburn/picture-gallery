@@ -21,6 +21,10 @@ function ParentAlbumPage({ parent, children }) {
           );
           const picture = match.length > 0 ? match[0] : album.pictures[0];
 
+          const sizes = (picture.width && picture.height)
+            ? `(min-width: 60em) 33vw, (min-width: 30em) 50vw, 100vw`
+            : `100vw`;
+
           return html`
           <li>
             <a href="/${parent.uri}/${album.uri}/">
@@ -37,7 +41,7 @@ function ParentAlbumPage({ parent, children }) {
                 <img
                   src="${getSource({parent, album, picture})}"
                   srcset="${getSourceSet({parent, album, picture})}"
-                  sizes="${getSourceSet({parent, album, picture}) ? IMAGE_LIST_SIZES : null}"
+                  sizes="${getSourceSet({parent, album, picture}) ? sizes : null}"
                   loading="lazy"
                   alt=""
                   width="${ 320 * (picture.width  > picture.height ? 1 : picture.width/picture.height) }"
