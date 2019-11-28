@@ -94,6 +94,11 @@ function PictureList({ album, pictures, state }) {
 
       <ol>
         ${pictures.map((picture, index) => {
+
+          const sizes = (picture.width && picture.height)
+            ? `(min-width: 30em) 50vw, 100vw`
+            : `100vw`;
+
           return html`
           <li>
             <a href="/${album.uri}/${picture.uri}/"
@@ -117,7 +122,7 @@ function PictureList({ album, pictures, state }) {
                    : "" }
                 <img src="${getSource({album, picture})}"
                      srcset="${getSourceSet({album, picture})}"
-                     sizes="${getSourceSet({album, picture}) ? IMAGE_LIST_SIZES : null}"
+                     sizes="${getSourceSet({album, picture}) ? sizes : null}"
                      width="${ 320 * (picture.width  > picture.height ? 1 : picture.width/picture.height) }"
                      height="${320 * (picture.height > picture.width  ? 1 : picture.height/picture.width) }"
                      data-style="background-color: ${picture.primaryColor}"
