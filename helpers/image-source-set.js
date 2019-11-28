@@ -17,6 +17,7 @@ export function getSourceSet({parent, album, picture}) {
        /pictures/${ albumURI }/768-wide/${ picture.filename } 768w,
        /pictures/${ albumURI }/1024-wide/${ picture.filename } 1024w,
        /pictures/${ albumURI }/1536-wide/${ picture.filename } 1536w,
-       /pictures/${ albumURI }/2048-wide/${ picture.filename } 2048w`
+       /pictures/${ albumURI }/2048-wide/${ picture.filename } 2048w,
+       /pictures/${ albumURI }/6000-wide/${ picture.filename } 6000w`
     : null;
 }
