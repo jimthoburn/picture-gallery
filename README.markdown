@@ -22,12 +22,15 @@ If you have a lot of images, you can use this GitHub project to automatically ge
 
 Here are the basic steps:
 
-1. Install Node 12.13.0 LTS or newer  
+1. Install Node 12.13.1 LTS or newer  
 https://nodejs.org
 
-2. Clone this project with Git (or download it)
+2. Install GraphicsMagick
+http://www.graphicsmagick.org
 
-3. Add your pictures to the `/_pictures/` folder, grouped by album name
+3. [Clone this project](https://help.github.com/en/github/creating-cloning-and-archiving-repositories/cloning-a-repository) with Git (or download it)
+
+4. Add your pictures to the `/_pictures/` folder, grouped by album name
 
 ```
 _pictures/
@@ -43,7 +46,7 @@ _pictures/
             3.jpg
 ```
 
-4. Add information about your gallery and featured albums to `_api/index.json`
+5. Add information about your gallery and featured albums to `_api/index.json`
 
 ```
 {
@@ -56,25 +59,25 @@ _pictures/
 }
 ```
 
-5. Open your project folder in a terminal and install dependencies:
+6. Open your project folder in a terminal and install dependencies:
 
 ```
 npm install
 ```
 
-6. Create data and [responsive images](https://developer.mozilla.org/en-US/docs/Learn/HTML/Multimedia_and_embedding/Responsive_images)
+7. Create data and [responsive images](https://developer.mozilla.org/en-US/docs/Learn/HTML/Multimedia_and_embedding/Responsive_images)
 
 ```
 npm run create
 ```
 
-7. Start the server
+8. Start the server
 
 ```
 npm start
 ```
 
-8. Visit `http://localhost:5000`
+9. Visit `http://localhost:5000`
 
 To stop the server, press “control C”
 
