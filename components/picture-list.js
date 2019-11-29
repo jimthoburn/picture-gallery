@@ -100,7 +100,7 @@ function PictureList({ album, pictures, state }) {
             : `100vw`;
 
           return html`
-          <li>
+          <li key="${picture.uri}">
             <a href="/${album.uri}/${picture.uri}/"
                onClick="${ e => onListImageClick(e, index) }"
                onKeyUp="${onKeyboardDetected}"

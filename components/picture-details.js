@@ -85,7 +85,15 @@ function PictureDetails({ pictures, album, state }) {
       </header>
 
       <a href="${ downloadURL }">
-        <${PictureImage} album="${album}" picture="${picture}" state="${state}" />
+        ${// 📚 SHIM: Use an array and a key, even though there’s only one item
+          //         so that the image element will be removed and re-added to
+          //         the DOM when the data changes (to prevent the browser from
+          //         continuing to show the old image while the new image loads).
+          [""].map(item => {
+          return html`
+          <${PictureImage} key="${picture.uri}" album="${album}" picture="${picture}" state="${state}" />
+          `
+        })}
       </a>
 
       ${ (next_data && previous_data) ? html`
@@ -121,12 +129,18 @@ function PictureDetails({ pictures, album, state }) {
           <img src="   ${getSource(   {album, picture: next_data})}"
                srcset="${getSourceSet({album, picture: next_data})}"
                sizes=" ${getSourceSet({album, picture: next_data}) 
-                          ? IMAGE_DETAILS_SIZES : null}" alt="" />
+                          ? (next_data.width && next_data.height)
+                            ? `(min-aspect-ratio: ${next_data.width}/${next_data.height}) calc(${next_data.width / next_data.height} * 100vh), 100vw`
+                            : `100vw`
+                          : null}" alt="" />
 
           <img src="   ${getSource(   {album, picture: previous_data})}"
                srcset="${getSourceSet({album, picture: previous_data})}"
                sizes=" ${getSourceSet({album, picture: previous_data})
-                          ? IMAGE_DETAILS_SIZES : null}" alt="" />
+                          ? (previous_data.width && previous_data.height)
+                            ? `(min-aspect-ratio: ${previous_data.width}/${previous_data.height}) calc(${previous_data.width / previous_data.height} * 100vh), 100vw`
+                            : `100vw`
+                          : null}" alt="" />
         </div>
 
       ` : ""}
