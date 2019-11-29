@@ -6,7 +6,7 @@
     "optimize:images": "node --experimental-modules create/images-optimize.js",
     "create:albums": "node --experimental-modules create/albums.js",
     "create:archives": "node --experimental-modules create/archives.js",
-    "create": "npm run create:images && optimize:images && npm run create:albums && npm run create:archives",
+    "create": "npm run create:images && npm run optimize:images && npm run create:albums && npm run create:archives",
     "build": "node --experimental-modules build.js",
     "serve": "serve ./_site/",
     "start": "node --experimental-modules server.js"
