@@ -10,6 +10,7 @@ export const DefaultLayout = ({ title, content, hideFromSearchEngines }) => {
     <!DOCTYPE html>
     <html lang="en" dir="ltr">
       <head>
+        <script>if (customElements.whenDefined) document.documentElement.style.opacity = "0";</script>
         <meta charset="utf-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
         ${ hideFromSearchEngines || config.hideFromSearchEngines 
