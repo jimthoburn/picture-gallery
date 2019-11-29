@@ -3,7 +3,7 @@
 
 import { Machine } from "../web_modules/xstate.js";
 
-const LOADING_PICTURE_TIMEOUT_SECONDS = 0.4;
+const LOADING_PICTURE_TIMEOUT_SECONDS = 0.01;
 const TRANSITION_TIMEOUT_SECONDS = 1;
 
 const galleryMachine = Machine(
