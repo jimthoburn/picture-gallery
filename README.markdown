@@ -33,7 +33,7 @@ https://imageoptim.com
 
 4. [Clone this project](https://help.github.com/en/github/creating-cloning-and-archiving-repositories/cloning-a-repository) with Git (or download it)
 
-5. Add your pictures to the `/_pictures/` folder, grouped by album name
+5. Add your pictures to the `_pictures` folder, grouped by album name
 
 ```
 _pictures/
@@ -56,8 +56,8 @@ _pictures/
   "title": "Travel pictures",
   "date": "2016 to 2019",
   "albums": [
-    "japan",
-    "wildflowers"
+    "your-album-name",
+    "your-other-album-name"
   ]
 }
 ```
@@ -130,7 +130,9 @@ Build command
 Publish directory  
 `_site/`
 
-This will automatically rebuild and publish your site as you push changes to your copy of this GitHub repository.
+This will [automatically rebuild and publish your site](https://docs.netlify.com/site-deploys/create-deploys/#deploy-with-git) as you push changes to your copy of this GitHub repository.
+
+[![Deploy to Netlify](https://www.netlify.com/img/deploy/button.svg)](https://app.netlify.com/start/deploy?repository=https://github.com/netlify/netlify-statuskit&amp;_ga=2.176167525.1910432112.1575582452-129954090.1574890702)
 
 ### Secret albums
 
@@ -163,6 +165,8 @@ You can also ask search engines not to index your album by setting `hideFromSear
 ```
 
 This will add a [noindex](https://support.google.com/webmasters/answer/93710?hl=en) meta element to your page.
+
+You may also want to make your repository [private](https://help.github.com/en/github/creating-cloning-and-archiving-repositories/about-repositories), if your gallery is stored in a public place like GitHub.
 
 ### Image file storage
 
