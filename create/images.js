@@ -7,8 +7,6 @@ import gulp from "gulp";
 // https://www.npmjs.com/package/gulp-image-resize
 import imageResize from "gulp-image-resize";
 
-import { exec } from "child_process";
-
 import parallel from "concurrent-transform";
 
 import os from "os";
@@ -38,6 +36,7 @@ function generateImages(size, imagePath) {
   let options = {
     upscale: false,
     width: size
+    // interlace: "Line" // Make the image “progressive” // https://fettblog.eu/snippets/node.js/progressive-jpegs-gm/
   }
 
   gulp.src(imagePath + "/original/*.{jpg,png}")

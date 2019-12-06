@@ -20,7 +20,6 @@ function PictureDetails({ pictures, album, state }) {
 
   const picture = pictures[state.context.selectedPictureIndex];
 
-
   const selectedIndex = state.context.selectedPictureIndex;
   const firstIndex    = 0;
   const lastIndex     = pictures.length - 1;
@@ -124,24 +123,26 @@ function PictureDetails({ pictures, album, state }) {
         </nav>
 
         ${"" /* Preload next & previous images */ }
-        <div style="width: 0; height: 0; overflow: hidden; position: absolute; opacity: 0;">
+        ${state.context.detailsPictureLoaded ? html`
+          <div style="width: 0; height: 0; overflow: hidden; position: absolute; opacity: 0;">
 
-          <img src="   ${getSource(   {album, picture: next_data})}"
-               srcset="${getSourceSet({album, picture: next_data})}"
-               sizes=" ${getSourceSet({album, picture: next_data}) 
-                          ? (next_data.width && next_data.height)
-                            ? `(min-aspect-ratio: ${next_data.width}/${next_data.height}) calc(${next_data.width / next_data.height} * 100vh), 100vw`
-                            : `100vw`
-                          : null}" alt="" />
+            <img src="   ${getSource(   {album, picture: next_data})}"
+                 srcset="${getSourceSet({album, picture: next_data})}"
+                 sizes=" ${getSourceSet({album, picture: next_data}) 
+                            ? (next_data.width && next_data.height)
+                              ? `(min-aspect-ratio: ${next_data.width}/${next_data.height}) calc(${next_data.width / next_data.height} * 100vh), 100vw`
+                              : `100vw`
+                            : null}" alt="" />
 
-          <img src="   ${getSource(   {album, picture: previous_data})}"
-               srcset="${getSourceSet({album, picture: previous_data})}"
-               sizes=" ${getSourceSet({album, picture: previous_data})
-                          ? (previous_data.width && previous_data.height)
-                            ? `(min-aspect-ratio: ${previous_data.width}/${previous_data.height}) calc(${previous_data.width / previous_data.height} * 100vh), 100vw`
-                            : `100vw`
-                          : null}" alt="" />
-        </div>
+            <img src="   ${getSource(   {album, picture: previous_data})}"
+                 srcset="${getSourceSet({album, picture: previous_data})}"
+                 sizes=" ${getSourceSet({album, picture: previous_data})
+                            ? (previous_data.width && previous_data.height)
+                              ? `(min-aspect-ratio: ${previous_data.width}/${previous_data.height}) calc(${previous_data.width / previous_data.height} * 100vh), 100vw`
+                              : `100vw`
+                            : null}" alt="" />
+          </div>
+        ` : ""}
 
       ` : ""}
     </section>
