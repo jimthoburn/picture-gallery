@@ -1,0 +1,334 @@
+{
+  "uri": "wildflowers",
+  "title": "Wildflowers of Joshua Tree",
+  "date": "Spring 2019",
+  "zipFileSize": null,
+  "cover_picture": "https://cdn.glitch.com/0066dc23-cee2-4973-ae99-075586a1eded%2F44.jpg?v=1572802609520",
+  "hideFromSearchEngines": null,
+  "pictures": [
+    {
+      "source": "https://cdn.glitch.com/0066dc23-cee2-4973-ae99-075586a1eded%2F44.jpg?v=1572802609520",
+      "description": "Tiny plant with purple flowers surrounded by stones",
+      "caption": "Mastodon Peak in Joshua Tree National Park",
+      "uri": "mastodon-peak-1"
+    },
+    {
+      "source": "https://cdn.glitch.com/0066dc23-cee2-4973-ae99-075586a1eded%2F51.jpg?v=1572804799654",
+      "description": "A lush group of plants with purple flowers, growing in the sunshine",
+      "caption": "Mastodon Peak in Joshua Tree National Park",
+      "uri": "mastodon-peak-2"
+    },
+    {
+      "source": "https://cdn.glitch.com/0066dc23-cee2-4973-ae99-075586a1eded%2F57.jpg?v=1572804934013",
+      "description": "Purple flowers growing in front of a majestic stone",
+      "caption": "Mastodon Peak in Joshua Tree National Park",
+      "uri": "mastodon-peak-3"
+    },
+    {
+      "filename": "18.jpg",
+      "description": null,
+      "caption": null,
+      "uri": "18",
+      "width": 6000,
+      "height": 4000,
+      "primaryColor": "rgb(63, 58, 45)",
+      "previewBase64": "/9j/4AAQSkZJRgABAQEASABIAAD/2wCEAAgGBgcGBQgHBwcJCQgKDBQNDAsLDBkSEw8UHRofHh0aHBwgJC4nICIsIxwcKDcpLDAxNDQ0Hyc5PTgyPC4zNDIBCQkJDAsMGA0NGDIhHCEyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMv/AABEIAAsAEAMBIgACEQEDEQH/xABeAAEBAAAAAAAAAAAAAAAAAAAGBBAAAgIBAwMFAAAAAAAAAAAAAQIDBAAFEVESIkEVITGBsQEBAQAAAAAAAAAAAAAAAAAAAwQRAAMBAAAAAAAAAAAAAAAAAAABAjH/2gAMAwEAAhEDEQA/AChjahrlihbnIgPazOOoEH4PIy2nds1LvpzsihZOgbAso3Hn94w1YnltSizPK8k0xYu7MdydwPr24xLWkebT9MuSMWsPGAz+T3ZNbFxH/9k=",
+      "meta": {
+        "image": {
+          "ImageDescription": "                               ",
+          "Make": "Canon",
+          "Model": "Canon EOS M3",
+          "XResolution": 72,
+          "YResolution": 72,
+          "ResolutionUnit": 2,
+          "Software": "Photos 4.0",
+          "ModifyDate": "2019:03:31 15:17:42",
+          "ExifOffset": 222
+        },
+        "thumbnail": {},
+        "exif": {
+          "ExposureTime": 0.00125,
+          "FNumber": 5.6,
+          "ExposureProgram": 2,
+          "ISO": 200,
+          "SensitivityType": 2,
+          "RecommendedExposureIndex": 200,
+          "ExifVersion": {
+            "type": "Buffer",
+            "data": [
+              48,
+              50,
+              51,
+              48
+            ]
+          },
+          "DateTimeOriginal": "2019:03:31 15:17:42",
+          "CreateDate": "2019:03:31 15:17:42",
+          "ComponentsConfiguration": {
+            "type": "Buffer",
+            "data": [
+              1,
+              2,
+              3,
+              0
+            ]
+          },
+          "CompressedBitsPerPixel": 3,
+          "ShutterSpeedValue": 9.65625,
+          "ApertureValue": 4.96875,
+          "ExposureCompensation": 0,
+          "MaxApertureValue": 5.595918691440368,
+          "MeteringMode": 5,
+          "Flash": 16,
+          "FocalLength": 55,
+          "SubSecTime": "54",
+          "SubSecTimeOriginal": "54",
+          "SubSecTimeDigitized": "54",
+          "FlashpixVersion": {
+            "type": "Buffer",
+            "data": [
+              48,
+              49,
+              48,
+              48
+            ]
+          },
+          "ColorSpace": 1,
+          "ExifImageWidth": 6000,
+          "ExifImageHeight": 4000,
+          "FocalPlaneXResolution": 6825.938566552901,
+          "FocalPlaneYResolution": 6825.938566552901,
+          "FocalPlaneResolutionUnit": 2,
+          "SensingMethod": 2,
+          "FileSource": {
+            "type": "Buffer",
+            "data": [
+              3
+            ]
+          },
+          "CustomRendered": 0,
+          "ExposureMode": 0,
+          "WhiteBalance": 0,
+          "DigitalZoomRatio": 1,
+          "SceneCaptureType": 0,
+          "SerialNumber": "092043000050",
+          "LensInfo": [
+            18,
+            55,
+            0,
+            0
+          ],
+          "LensModel": "EF-M18-55mm f/3.5-5.6 IS STM",
+          "LensSerialNumber": "00004594bc"
+        },
+        "gps": {},
+        "interoperability": {},
+        "makernote": {}
+      }
+    },
+    {
+      "filename": "22.jpg",
+      "description": null,
+      "caption": null,
+      "uri": "22",
+      "width": 6000,
+      "height": 4000,
+      "primaryColor": "rgb(75, 69, 63)",
+      "previewBase64": "/9j/4AAQSkZJRgABAQEASABIAAD/2wCEAAgGBgcGBQgHBwcJCQgKDBQNDAsLDBkSEw8UHRofHh0aHBwgJC4nICIsIxwcKDcpLDAxNDQ0Hyc5PTgyPC4zNDIBCQkJDAsMGA0NGDIhHCEyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMv/AABEIAAsAEAMBIgACEQEDEQH/xABjAAEBAQAAAAAAAAAAAAAAAAAGBQcQAAIBAwMCBwAAAAAAAAAAAAECAwAEBRIhQRETBgciIyQxsQEBAAAAAAAAAAAAAAAAAAAAAREAAgIDAAAAAAAAAAAAAAAAAQIABBESMf/aAAwDAQACEQMRAD8AR43xNjsFire5MivPKvtwoNTA8FhwKPZjzM72TZbm3kaAkg6Ix1A/dqzqyyV4jQ6Z2X1rsNuRVO2+R32mJdlPUEn6pay4Ac9iK641E//Z",
+      "meta": {
+        "image": {
+          "ImageDescription": "                               ",
+          "Make": "Canon",
+          "Model": "Canon EOS M3",
+          "XResolution": 72,
+          "YResolution": 72,
+          "ResolutionUnit": 2,
+          "Software": "Photos 4.0",
+          "ModifyDate": "2019:03:31 15:28:05",
+          "ExifOffset": 222
+        },
+        "thumbnail": {},
+        "exif": {
+          "ExposureTime": 0.0008,
+          "FNumber": 5.6,
+          "ExposureProgram": 2,
+          "ISO": 200,
+          "SensitivityType": 2,
+          "RecommendedExposureIndex": 200,
+          "ExifVersion": {
+            "type": "Buffer",
+            "data": [
+              48,
+              50,
+              51,
+              48
+            ]
+          },
+          "DateTimeOriginal": "2019:03:31 15:28:05",
+          "CreateDate": "2019:03:31 15:28:05",
+          "ComponentsConfiguration": {
+            "type": "Buffer",
+            "data": [
+              1,
+              2,
+              3,
+              0
+            ]
+          },
+          "CompressedBitsPerPixel": 3,
+          "ShutterSpeedValue": 10.28125,
+          "ApertureValue": 4.96875,
+          "ExposureCompensation": 0,
+          "MaxApertureValue": 3.5635948721390696,
+          "MeteringMode": 5,
+          "Flash": 16,
+          "FocalLength": 18,
+          "SubSecTime": "22",
+          "SubSecTimeOriginal": "22",
+          "SubSecTimeDigitized": "22",
+          "FlashpixVersion": {
+            "type": "Buffer",
+            "data": [
+              48,
+              49,
+              48,
+              48
+            ]
+          },
+          "ColorSpace": 1,
+          "ExifImageWidth": 6000,
+          "ExifImageHeight": 4000,
+          "FocalPlaneXResolution": 6825.938566552901,
+          "FocalPlaneYResolution": 6825.938566552901,
+          "FocalPlaneResolutionUnit": 2,
+          "SensingMethod": 2,
+          "FileSource": {
+            "type": "Buffer",
+            "data": [
+              3
+            ]
+          },
+          "CustomRendered": 0,
+          "ExposureMode": 0,
+          "WhiteBalance": 0,
+          "DigitalZoomRatio": 1,
+          "SceneCaptureType": 0,
+          "SerialNumber": "092043000050",
+          "LensInfo": [
+            18,
+            55,
+            0,
+            0
+          ],
+          "LensModel": "EF-M18-55mm f/3.5-5.6 IS STM",
+          "LensSerialNumber": "00004594bc"
+        },
+        "gps": {},
+        "interoperability": {},
+        "makernote": {}
+      }
+    },
+    {
+      "filename": "23.jpg",
+      "description": null,
+      "caption": null,
+      "uri": "23",
+      "width": 6000,
+      "height": 4000,
+      "primaryColor": "rgb(149, 130, 94)",
+      "previewBase64": "/9j/4AAQSkZJRgABAQEASABIAAD/2wCEAAgGBgcGBQgHBwcJCQgKDBQNDAsLDBkSEw8UHRofHh0aHBwgJC4nICIsIxwcKDcpLDAxNDQ0Hyc5PTgyPC4zNDIBCQkJDAsMGA0NGDIhHCEyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMv/AABEIAAsAEAMBIgACEQEDEQH/xABiAAEBAAAAAAAAAAAAAAAAAAAFBhAAAQMDBAIDAAAAAAAAAAAAAQIDBAUREgAhIjEGE0FhkQEBAQAAAAAAAAAAAAAAAAAABAURAAICAwEAAAAAAAAAAAAAAAECAAMREiIy/9oADAMBAAIRAxEAPwB6o+UlJSxIq7CHAOSI0c5E/e+37qQpXk1NmVP1SlT3ml75hGeCrnoC/ED5GmH4cVxyM25FYWklQ5tJJsEkjci/ek4FHp0XKZHhstSA2oBaE2sLW2HQ1PezcdkmLWkL5GJ//9k=",
+      "meta": {
+        "image": {
+          "ImageDescription": "                               ",
+          "Make": "Canon",
+          "Model": "Canon EOS M3",
+          "XResolution": 72,
+          "YResolution": 72,
+          "ResolutionUnit": 2,
+          "Software": "Photos 4.0",
+          "ModifyDate": "2019:03:31 15:29:10",
+          "ExifOffset": 222
+        },
+        "thumbnail": {},
+        "exif": {
+          "ExposureTime": 0.00125,
+          "FNumber": 5.6,
+          "ExposureProgram": 2,
+          "ISO": 200,
+          "SensitivityType": 2,
+          "RecommendedExposureIndex": 200,
+          "ExifVersion": {
+            "type": "Buffer",
+            "data": [
+              48,
+              50,
+              51,
+              48
+            ]
+          },
+          "DateTimeOriginal": "2019:03:31 15:29:10",
+          "CreateDate": "2019:03:31 15:29:10",
+          "ComponentsConfiguration": {
+            "type": "Buffer",
+            "data": [
+              1,
+              2,
+              3,
+              0
+            ]
+          },
+          "CompressedBitsPerPixel": 3,
+          "ShutterSpeedValue": 9.65625,
+          "ApertureValue": 4.96875,
+          "ExposureCompensation": 0,
+          "MaxApertureValue": 3.5635948721390696,
+          "MeteringMode": 5,
+          "Flash": 16,
+          "FocalLength": 18,
+          "SubSecTime": "45",
+          "SubSecTimeOriginal": "45",
+          "SubSecTimeDigitized": "45",
+          "FlashpixVersion": {
+            "type": "Buffer",
+            "data": [
+              48,
+              49,
+              48,
+              48
+            ]
+          },
+          "ColorSpace": 1,
+          "ExifImageWidth": 6000,
+          "ExifImageHeight": 4000,
+          "FocalPlaneXResolution": 6825.938566552901,
+          "FocalPlaneYResolution": 6825.938566552901,
+          "FocalPlaneResolutionUnit": 2,
+          "SensingMethod": 2,
+          "FileSource": {
+            "type": "Buffer",
+            "data": [
+              3
+            ]
+          },
+          "CustomRendered": 0,
+          "ExposureMode": 0,
+          "WhiteBalance": 0,
+          "DigitalZoomRatio": 1,
+          "SceneCaptureType": 0,
+          "SerialNumber": "092043000050",
+          "LensInfo": [
+            18,
+            55,
+            0,
+            0
+          ],
+          "LensModel": "EF-M18-55mm f/3.5-5.6 IS STM",
+          "LensSerialNumber": "00004594bc"
+        },
+        "gps": {},
+        "interoperability": {},
+        "makernote": {}
+      }
+    }
+  ]
+}
