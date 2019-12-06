@@ -35,3 +35,15 @@ h1, h2, h3, h4, h5, h6 {
 body > section:not([class]) {
   padding: 1.5em;
 }
+
+/*
+responsive-image .preview {
+  transition: opacity 0.2s;
+}
+
+.custom-elements-loading responsive-image .preview {
+  opacity: 0;
+}
+*/
+
+

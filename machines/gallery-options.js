@@ -15,6 +15,13 @@ const setDidPopHistoryState = assign({
   }
 });
 
+const setDetailsPictureLoaded = assign({
+  detailsPictureLoaded: (context, event) => {
+    console.log("setDetailsPictureLoaded: " + (event.type === "PICTURE_LOADED"));
+    return event.type === "PICTURE_LOADED";
+  }
+});
+
 const setSelectedImageIndex = assign({
   selectedPictureIndex: (context, event) => event.selectedPictureIndex
 });
@@ -146,6 +153,7 @@ const resetTransform = assign({
 
 const actions = {
   setDidPopHistoryState,
+  setDetailsPictureLoaded,
   setSelectedImageIndex,
   setBoundingClientRect,
   setInitialTouch,

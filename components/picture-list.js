@@ -118,6 +118,8 @@ function PictureList({ album, pictures, state }) {
                    ? html`
                   <img
                     class="preview"
+                    width="${ 320 * (picture.width  > picture.height ? 1 : picture.width/picture.height) }"
+                    height="${320 * (picture.height > picture.width  ? 1 : picture.height/picture.width) }"
                     src="data:image/jpeg;base64,${picture.previewBase64}" alt="" />`
                    : "" }
                 <img src="${getSource({album, picture})}"

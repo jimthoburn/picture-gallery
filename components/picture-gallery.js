@@ -1,7 +1,8 @@
 
 import { createElement,
          createContext }  from "../web_modules/preact.js";
-import { useEffect }      from "../web_modules/preact/hooks.js";
+import { useState,
+         useEffect }      from "../web_modules/preact/hooks.js";
 import   htm              from "../web_modules/htm.js";
 const    html = htm.bind(createElement);
 import { isBrowser }      from "../helpers/environment.js";
@@ -29,6 +30,8 @@ function PictureGallery({ album, pictures, getPageURL }) {
 
   const selectedPictureIndex = getSelectedPictureIndexFromURL({ album, pictures, getPageURL });
 
+  const [pictureListShouldRender, setPictureListShouldRender] = useState(false);
+
   const [state, dispatch, service] = useMachine(galleryMachine, {
     context: { selectedPictureIndex },
     actions: actions,
@@ -36,21 +39,27 @@ function PictureGallery({ album, pictures, getPageURL }) {
   });
   if (isBrowser()) {
     console.log(state.value);
-    // console.log(state);
+    console.log(state.context.detailsPictureLoaded);
   }
-
+  
+  // 💡 TBD: Is there a better way to make the machine available outside of this component?
   getMachine = function() {
     return [state, dispatch, service];
   }
-
 
   // 📣 📚 SHIM: Announce that the next state has rendered
   useEffect(() => {
     if (state.matches("transitioning_to_details.preparing_transition") ||
         state.matches("transitioning_to_list.rendering_list") ||
         state.matches("showing_details.rendering_list")) {
-      dispatch({
-        type: "RENDERED"
+          
+      // ⏰ 📚 SHIM: Give the list a chance to render before calling getBoundingClientRect
+      requestAnimationFrame(function() {
+
+        dispatch({
+          type: "RENDERED"
+        });
+
       });
     }
   }, [state.value]);
@@ -62,12 +71,12 @@ function PictureGallery({ album, pictures, getPageURL }) {
     // 💡 TBD: Should this code be called more directly, from the gallery machine?
     //         https://xstate.js.org/docs/guides/communication.html
 
-    //         "PICTURE_SELECTED" and "transitioning_to_list" are currently the
-    //         best events to watch for but aren’t super intuitive and could stop
-    //         working if the machine is updated.
+    //         "PICTURE_SELECTED", "DETAILS_CLOSED", and “LET_GO_OF_PICTURE” are the
+    //         best events to watch for presently, but they aren’t super intuitive and
+    //         could stop working if the machine is updated.
 
     if (isBrowser()) {
-      if (state.matches("showing_details.idle")) {
+      if (state.event.type === "PICTURE_SELECTED") {
         const selectedPicture = pictures[state.context.selectedPictureIndex];
         const selectedPictureTitle = selectedPicture.caption 
                                   || selectedPicture.description
@@ -87,7 +96,8 @@ function PictureGallery({ album, pictures, getPageURL }) {
             `/${album.uri}/${selectedPicture.uri}/`
           );
         }
-      } else if (state.matches("transitioning_to_list.rendering_list")) {
+      } else if (state.event.type === "DETAILS_CLOSED" ||
+                 state.event.type === "LET_GO_OF_PICTURE") {
         document.title = album.title;
 
         if (state.context.didPopHistoryState != true) {
@@ -129,9 +139,16 @@ function PictureGallery({ album, pictures, getPageURL }) {
   }, [pictures]);
 
 
+  // 📚 SHIM: If the state is anything other than details, render the PictureList from now on
+  //         (since removing and re-rendering it isn’t good for performance)
+  if (!state.matches("showing_details.idle") && isBrowser()) {
+    setPictureListShouldRender(true);
+  }
+
+
   return html`
     <${GalleryDispatch.Provider} value="${dispatch}">
-      ${!state.matches("showing_details.idle") || isBrowser() && state.history
+      ${(!state.matches("showing_details.idle") || pictureListShouldRender === true)
         ? html`
           <${PictureList}
             album="${album}"
