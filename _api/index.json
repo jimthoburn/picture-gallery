@@ -1,8 +1,7 @@
 {
-  "title": "Name of your gallery",
-  "date": "Example: “Winter 2019”",
+  "title": "Travel pictures",
+  "date": "2016 to 2019",
   "albums": [
-    "my-album-name",
-    "my-other-album-name"
+    "wildflowers"
   ]
 }
