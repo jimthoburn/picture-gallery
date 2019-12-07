@@ -18,8 +18,8 @@
     "htm": "^2.2.1",
     "lit-element": "^2.2.1",
     "preact": "^10.0.4",
-    "preact-render-to-string": "^5.1.1",
-    "xstate": "^4.6.7"
+    "preact-render-to-string": "^5.1.2",
+    "xstate": "^4.7.2"
   },
   "devDependencies": {
     "@pika/web": "^0.6.1",
