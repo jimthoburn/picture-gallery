@@ -1,0 +1,28 @@
+{
+  "uri": "japan",
+  "title": "Japan in Winter",
+  "date": "February & March, 2016",
+  "zipFileSize": null,
+  "coverPicture": null,
+  "hideFromSearchEngines": null,
+  "pictures": [
+    {
+      "source": "https://cdn.glitch.com/0066dc23-cee2-4973-ae99-075586a1eded%2F17.jpg?v=1572802598055",
+      "description": "Forest with snow on the ground",
+      "caption": "Shiogama Shrine, near Mt. Fuji ",
+      "uri": "shiogama-shrine-forest"
+    },
+    {
+      "source": "https://cdn.glitch.com/0066dc23-cee2-4973-ae99-075586a1eded%2F37.jpg?v=1572805031335",
+      "description": "Sign that reads ”Keiō Cherry”, with rain water dripping from it–standing before a lush, green forest of bamboo",
+      "caption": "Tenryū-ji Temple, in Kyoto",
+      "uri": "tenryū-ji-temple"
+    },
+    {
+      "source": "https://cdn.glitch.com/0066dc23-cee2-4973-ae99-075586a1eded%2F60.jpg?v=1572804427134",
+      "description": "Ancient pagodas made of wood, standing on a ground of small stones",
+      "caption": "Hōryū-ji Temple 法隆寺, in Ikaruga, Nara",
+      "uri": "hōryū-ji-temple"
+    }
+  ]
+}
