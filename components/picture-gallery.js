@@ -148,16 +148,17 @@ function PictureGallery({ album, pictures, getPageURL }) {
 
   return html`
     <${GalleryDispatch.Provider} value="${dispatch}">
-      ${(!state.matches("showing_details.idle") || pictureListShouldRender === true)
-        ? html`
-          <${PictureList}
-            album="${album}"
-            pictures="${pictures}"
-            state="${state}" />`
-        : ""}
       ${!state.matches("showing_list")
         ? html`
           <${PictureDetails}
+            album="${album}"
+            pictures="${pictures}"
+            state="${state}"
+            pictureListShouldRender="${pictureListShouldRender}" />`
+        : ""}
+      ${(!state.matches("showing_details.idle") || pictureListShouldRender === true)
+        ? html`
+          <${PictureList}
             album="${album}"
             pictures="${pictures}"
             state="${state}" />`
