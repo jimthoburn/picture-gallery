@@ -12,7 +12,7 @@
     "start": "node --experimental-modules server.js"
   },
   "engines": {
-    "node": "12.13.x"
+    "node": "12.14.x"
   },
   "dependencies": {
     "htm": "^2.2.1",
@@ -22,7 +22,7 @@
     "xstate": "^4.7.5"
   },
   "devDependencies": {
-    "@pika/web": "^0.6.1",
+    "snowpack": "^1.0.1",
     "archiver": "^3.1.1",
     "color-thief": "^2.2.5",
     "concurrent-transform": "^1.0.0",
@@ -39,7 +39,7 @@
     "request": "^2.88.0",
     "serve": "^11.3.0"
   },
-  "@pika/web": {
+  "snowpack": {
     "webDependencies": [
       "htm",
       "lit-element",
