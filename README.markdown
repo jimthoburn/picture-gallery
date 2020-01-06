@@ -204,7 +204,7 @@ User experience
 - [x] Site is just as findable by search engines and [archivable](https://archive.org/) as it would be if it were made of static HTML pages
 - [x] First page renders as quickly as static HTML
 - [x] The application works well on a slow network
-- [ ] The application has cues that are equivalent to a normal browsing experience, like a page loading indicator
+- [x] The application has cues that are equivalent to a normal browsing experience, like a page loading indicator
 - [x] The application is still usable when things go wrong, like if a CSS file doesn’t load or a JavaScript error happens
 - [x] Gesture-driven animations and transitions between pages can be added
 
