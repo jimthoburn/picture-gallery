@@ -13,7 +13,7 @@ import { getSource,
          IMAGE_DETAILS_SIZES }  from "../helpers/image-source-set.js";
 
 
-function PictureDetails({ pictures, album, state }) {
+function PictureDetails({ pictures, album, state, pictureListShouldRender }) {
 
   const dispatch = useContext(GalleryDispatch);
   const detailsElement = useRef(null);
@@ -66,6 +66,7 @@ function PictureDetails({ pictures, album, state }) {
 
   return html`
     <section class="picture-details"
+             data-picture-list-rendered="${pictureListShouldRender}"
              data-state="${stateStrings[stateStrings.length - 1]}"
              style="--scale: ${state.context.transform.scale};
                     --translateX: ${state.context.transform.translateX};

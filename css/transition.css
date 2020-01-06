@@ -8,7 +8,17 @@
 .picture-details {
   position: relative;
   z-index: 2;
+}
+.picture-details[data-picture-list-rendered] {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+}
 
+
+.picture-details {
   /* Defaults */
   --transition-duration: 0.4s;
   --translateX: 0;
@@ -20,15 +30,6 @@
   .picture-details {
     --transition-duration: 0s !important;
   }
-}
-
-/* If both the details and list are visible at the same time */
-.picture-list ~ .picture-details {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
 }
 
 
