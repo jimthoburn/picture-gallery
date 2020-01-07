@@ -24,6 +24,3 @@ index.json
 japan.json
 wildflowers.json
 ```
-
-4. Update (or delete) the `LICENSE` and other files in the `_pictures` folder:  
-[https://creativecommons.org/share-your-work/](https://creativecommons.org/share-your-work/)
