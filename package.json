@@ -1,7 +1,7 @@
 {
   "type": "module",
   "scripts": {
-    "prepare": "pika-web",
+    "prepare": "snowpack",
     "create:images": "node --experimental-modules create/images.js",
     "optimize:images": "node --experimental-modules create/images-optimize.js",
     "create:albums": "node --experimental-modules create/albums.js",
