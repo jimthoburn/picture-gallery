@@ -1,13 +1,14 @@
 
 import { createElement }        from "../web_modules/preact.js";
 import { useRef,
-         useEffect,
+         useLayoutEffect,
          useContext }           from "../web_modules/preact/hooks.js";
 import   htm                    from "../web_modules/htm.js";
 const    html = htm.bind(createElement);
 import { GalleryDispatch }      from "../components/picture-gallery.js";
 import { PictureImage }         from "../components/picture-image.js";
 import { CloseButton }          from "../components/close-button.js";
+import { isBrowser }            from "../helpers/environment.js";
 import { getSource,
          getSourceSet,
          IMAGE_DETAILS_SIZES }  from "../helpers/image-source-set.js";
@@ -63,6 +64,24 @@ function PictureDetails({ pictures, album, state, pictureListShouldRender }) {
     : picture.source;
 
   const stateStrings = state.toStrings();
+
+  useLayoutEffect(() => {
+    if (isBrowser()) {
+      console.log("useLayoutEffect")
+      // 📚 SHIM: Remove and re-add the SVG elements, to work around an issue in
+      //          in Firefox where the SVG elements are invisible when rendered
+      //          client-side. (Removing the <switch> and <foreignobject> elements
+      //          also solves the issue, without needing this hack.)
+      const nextElement = document.querySelector(`svg[aria-label="Next"]`);
+      const previousElement = document.querySelector(`svg[aria-label="Previous"]`);
+
+      const nextParent = document.querySelector(`.next a`);
+      const previousParent = document.querySelector(`.previous a`);
+
+      nextParent.innerHTML     = nextElement.outerHTML;
+      previousParent.innerHTML = previousElement.outerHTML;
+    }
+  });
 
   return html`
     <section class="picture-details"
