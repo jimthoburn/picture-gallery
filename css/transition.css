@@ -9,6 +9,8 @@
   position: relative;
   z-index: 2;
 }
+
+/* If both the details and list are visible at the same time */
 .picture-details[data-picture-list-rendered] {
   position: fixed;
   top: 0;
