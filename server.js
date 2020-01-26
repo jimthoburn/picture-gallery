@@ -21,6 +21,8 @@ import { Error404Page, error404PageTitle } from "./pages/404.js";
 import { Error500Page, error500PageTitle } from "./pages/500.js";
 import { getInitialPageTitle} from "./components/picture-gallery.js";
 
+import { getCombinedAlbumJSON } from "./helpers/album.js";
+
 const galleryData = JSON.parse(fs.readFileSync("./_api/index.json", "utf8"));
 
 const secretAlbums = fs.existsSync("./_secret_albums.json")
@@ -32,14 +34,40 @@ const albums = galleryData.albums.concat(secretAlbums);
 const port = parseInt(process.env.PORT, 10) || 5000;
 const server = express();
 
-async function getData(url) {
-  const response = await fetch(url);
-  return response.json();
+function getData(url) {
+  return new Promise((resolve, reject) => {
+    fetch(url).then(response => {
+      resolve(response.json());
+    }).catch(error => {
+      console.error(error);
+      resolve(null);
+    });
+  });
 }
+
+async function getAlbumJSON({ albumURI, req }) {
+
+  // TODO: Send these requests in parallel
+  const album             = await getData(`${req.protocol}://${req.get("host")}/api/${albumURI}.json`);
+  const generatedPictures = await getData(`${req.protocol}://${req.get("host")}/pictures/${albumURI}/data.json`);
+
+  return getCombinedAlbumJSON({ album, generatedPictures });
+}
+
+// function getAlbumJSON({ albumURI, req }) {
+//   return new Promise((resolve, reject) => {
+//     Promise.all([
+//       getData(`${req.protocol}://${req.get("host")}/api/${albumURI}.json`),
+//       getData(`${req.protocol}://${req.get("host")}/pictures/${albumURI}/data.json`)
+//     ]).then((album, generatedPictures) => {
+//       resolve(getCombinedAlbumJSON({ album, generatedPictures }));
+//     });
+//   })
+// }
 
 function serveIndexPage(req, res, next) {
   Promise.all(galleryData.albums.map(
-    albumURI => getData(`${req.protocol}://${req.get("host")}/api/${albumURI}.json`)
+    albumURI => getAlbumJSON({ albumURI, req })
   )).then(albums => {
     const { title, hideFromSearchEngines } = galleryData;
     const content = render(IndexPage({ ...galleryData, albums }));
@@ -65,7 +93,7 @@ function serveAlbumPage(req, res) {
   const albumURI = urlArray[0];
   console.log(albumURI);
 
-  getData(`${req.protocol}://${req.get("host")}/api/${albumURI}.json`).then(data => {
+  getAlbumJSON({ albumURI, req }).then(data => {
     let album
 
     // If this is a parent album

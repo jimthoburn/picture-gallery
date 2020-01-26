@@ -4,7 +4,8 @@ import htm from "./web_modules/htm.js"; const html = htm.bind(createElement);
 
 import { PictureGallery, getInitialPageTitle, getMachine } from "./components/picture-gallery.js";
 
-import { getLastDispatch }     from "../helpers/xstate-preact.js";
+import { getLastDispatch }      from "./helpers/xstate-preact.js";
+import { getCombinedAlbumJSON } from "./helpers/album.js";
 
 class Catcher extends Component {
   
@@ -107,11 +108,36 @@ class Catcher extends Component {
   }
 }
 
-
-async function getData(url) {
-  const response = await fetch(url);
-  return response.json();
+function getData(url) {
+  return new Promise((resolve, reject) => {
+    fetch(url).then(response => {
+      resolve(response.json());
+    }).catch(error => {
+      console.error(error);
+      resolve(null);
+    });
+  });
 }
+
+async function getAlbumJSON({ albumURI }) {
+
+  // TODO: Send these requests in parallel
+  const album             = await getData(`/api/${albumURI}.json`);
+  const generatedPictures = await getData(`/pictures/${albumURI}/data.json`);
+
+  return getCombinedAlbumJSON({ album, generatedPictures });
+}
+
+// async function getAlbumJSON({ albumURI }) {
+//   return new Promise((resolve, reject) => {
+//     Promise.all([
+//       getData(`/api/${albumURI}.json`),
+//       getData(`/pictures/${albumURI}/data.json`)
+//     ]).then((album, generatedPictures) => {
+//       resolve(getCombinedAlbumJSON({ album, generatedPictures }));
+//     });
+//   })
+// }
 
 function getPageURL() {
   return window.location.href;
@@ -128,7 +154,7 @@ function start() {
   const albumURI = urlArray[0];
   // console.log(albumURI);
 
-  getData(`/api/${albumURI}.json`).then(data => {
+  getAlbumJSON({ albumURI }).then(data => {
     let album;
     if (data.albums) {
       const childAlbumURI = urlArray[1];

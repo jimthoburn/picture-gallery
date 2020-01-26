@@ -72,6 +72,7 @@ async function createAlbumJSON({ source, sourceForPreviewBase64, destination, al
   console.log(files)
 
   const pictures = [];
+  const picturesWithEXIF = [];
 
   console.log("files");
 
@@ -91,6 +92,13 @@ async function createAlbumJSON({ source, sourceForPreviewBase64, destination, al
       filename: encodeURIComponent(photoFileName),
       description: null,
       caption: null,
+      uri: encodeURIComponent(photoFileName.split(".").shift())
+    });
+
+    picturesWithEXIF.push({
+      filename: encodeURIComponent(photoFileName),
+      description: null,
+      caption: null,
       uri: encodeURIComponent(photoFileName.split(".").shift()),
       width: meta.exif.ExifImageWidth,
       height: meta.exif.ExifImageHeight,
@@ -100,14 +108,14 @@ async function createAlbumJSON({ source, sourceForPreviewBase64, destination, al
     });
   }
 
-  const data = {
+  const userEditableData = {
     ...album,
     pictures
   }
 
-  console.log(data);
+  const readOnlyData = picturesWithEXIF;
 
-  return data;
+  return {userEditableData, readOnlyData};
 
   //for (let picture of pictures) {
 
@@ -158,7 +166,7 @@ function getAllFilesFromFolder(dir) {
   return results
 }
 
-function saveJSON({ destination, fileName, data }) {
+function saveJSON({ destination, fileName, data, overwrite }) {
 
   // https://www.npmjs.com/package/js-yaml#safedump-object---options-
   let output = JSON.stringify(data, null, 2);
@@ -167,11 +175,15 @@ function saveJSON({ destination, fileName, data }) {
     if (err) {
       console.error(err)
     } else {
-      fs.writeFileSync(`${destination}/${fileName}`, output, 'utf8', (err) => {
-        if (err) {
-          console.log(err)
-        }
-      })
+      if (fs.existsSync(`${destination}/${fileName}`) && overwrite !== true) {
+        console.log(`${destination}/${fileName} already exists. Skipping…`);
+      } else {
+        fs.writeFileSync(`${destination}/${fileName}`, output, 'utf8', (err) => {
+          if (err) {
+            console.log(err)
+          }
+        })
+      }
     }
   })
 }
@@ -215,7 +227,7 @@ if (albumGroups.length > 0) {
 } else {
   albums.forEach(async (album) => {
     let uri = album.split("/").pop();
-    let data = await createAlbumJSON({
+    let {userEditableData, readOnlyData} = await createAlbumJSON({
       source: `./_pictures/${album}/original`,
       sourceForPreviewBase64: `./_pictures/${album}/16-wide`,
       album: {
@@ -231,7 +243,8 @@ if (albumGroups.length > 0) {
       }
     });
 
-    saveJSON({ destination, fileName: `${uri}.json`, data })
+    saveJSON({ destination, fileName: `${uri}.json`, data: userEditableData });
+    saveJSON({ destination: `./_pictures/${album}`, fileName: `data.json`, data: readOnlyData, overwrite: true });
   });
 }
 

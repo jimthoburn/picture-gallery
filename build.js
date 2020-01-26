@@ -13,6 +13,8 @@ import { ParentAlbumPage } from "./pages/parent-album.js";
 import { Error404Page, error404PageTitle } from "./pages/404.js";
 import { getInitialPageTitle } from "./components/picture-gallery.js";
 
+import { getCombinedAlbumJSON } from "./helpers/album.js";
+
 const galleryData = JSON.parse(fs.readFileSync("./_api/index.json", "utf8"));
 
 const secretAlbums = fs.existsSync("./_secret_albums.json")
@@ -98,11 +100,18 @@ function generateAlbum({ album, hideFromSearchEngines }) {
 }
 
 
+function getAlbumJSON({ albumURI }) {
+  const album             = JSON.parse(fs.readFileSync(`./_api/${albumURI}.json`, 'utf8'));
+  const generatedPictures = fs.existsSync(`./_pictures/${albumURI}/data.json`)
+    ? JSON.parse(fs.readFileSync(`./_pictures/${albumURI}/data.json`, "utf8"))
+    : [];
+  return getCombinedAlbumJSON({ album, generatedPictures });
+}
+
+
 function generateIndexPage() {
   console.log(`Generating index page`);
-  const albums = galleryData.albums.map(
-    albumURI => JSON.parse(fs.readFileSync(`./_api/${albumURI}.json`, 'utf8'))
-  );
+  const albums = galleryData.albums.map(albumURI => getAlbumJSON({ albumURI }));
   const { title, hideFromSearchEngines } = galleryData;
   const content = render(IndexPage({ ...galleryData, albums }));
 
@@ -124,7 +133,7 @@ function generateError404Page() {
 function generateAllAlbums() {
   for (let nextAlbumName of albums) {
 
-    const album = JSON.parse(fs.readFileSync(`./_api/${nextAlbumName}.json`, "utf8"));
+    const album = getAlbumJSON({ albumURI: nextAlbumName });
 
     if (album.albums) {
       console.log(`Generating group album for: ${ album.title }`);
