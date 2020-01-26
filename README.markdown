@@ -94,7 +94,7 @@ For example, you may want to change the album names and add dates.
 "date": "February & March, 2016",
 ```
 
-After you make changes, you may need to stop (press “control C”) and restart the server `npm start`.
+After you make changes, you may need to stop (press “control C”) and restart the server with `npm start`.
 
 It’s okay to commit the generated files in these folders:
 
@@ -114,7 +114,7 @@ The `build` command will create a `_site` folder that can be published on any we
 npm run build
 ```
 
-You can browse the static site with this command:
+You can browse the static site locally with this command:
 
 ```
 npm run serve
@@ -159,7 +159,7 @@ You can also ask search engines not to index your album by setting `hideFromSear
 {
   "uri": "my-secret-album-name-0c64f7ea-ad3d-4101-b379-fb5098aed301",
   "title": "My Secret Album",
-  "date": "February & March, 2016",
+  "date": "February & March, 2019",
   "hideFromSearchEngines": true,
 }
 ```
@@ -224,7 +224,7 @@ Developer experience
 
 ## <span id="resources"></span> Helpful resources
 
-These projects and guides were super helpful to me while working on the gallery…
+These projects and guides have been super helpful to me, while working on the gallery…
 
 * https://barrgroup.com/Embedded-Systems/How-To/State-Machines-Event-Driven-Systems
 * https://barrgroup.com/Embedded-Systems/How-To/Introduction-Hierarchical-State-Machines
