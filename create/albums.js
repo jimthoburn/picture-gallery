@@ -18,8 +18,14 @@ const galleryData = JSON.parse(fs.readFileSync("./_api/index.json", "utf8"));
 const secretAlbums = fs.existsSync("./_secret_albums.json")
   ? JSON.parse(fs.readFileSync("./_secret_albums.json", "utf8"))
   : [];
+  
+const secretAlbumGroups = fs.existsSync("./_secret_album_groups.json")
+  ? JSON.parse(fs.readFileSync("./_secret_album_groups.json", "utf8"))
+  : [];
 
 const albums = galleryData.albums.concat(secretAlbums);
+
+const albumGroups = secretAlbumGroups;
 
 
 // https://www.npmjs.com/package/exif
@@ -172,59 +178,60 @@ function saveJSON({ destination, fileName, data }) {
 
 const destination = "./_api";
 
-albums.forEach(async (album) => {
-  let uri = album.split("/").pop();
-  let data = await createAlbumJSON({
-    source: `./_pictures/${album}/original`,
-    sourceForPreviewBase64: `./_pictures/${album}/16-wide`,
-    album: {
-      uri,
-      title: uri,
-      date: null,
-      zipFileSize: null,
-      coverPicture: null, // source:
-                          //   https://cdn.com/els9-234-sdf.jpg
-                          // OR filename:
-                          //   my-image-file.jpg
-      hideFromSearchEngines: null
+if (albumGroups.length > 0) {
+  albumGroups.forEach(async (group) => {
+    let albums = [];
+
+    let albumNames = group.albums.reverse();
+
+    for (let album of albumNames) {
+      let data = await createAlbumJSON({
+        source: `./_pictures/${group.uri}/${album}/original`,
+        sourceForPreviewBase64: `./_pictures/${group.uri}/${album}/16-wide`,
+        album: {
+          uri: album,
+          title: album,
+          date: null,
+          zipFileSize: null,
+          coverPicture: null, // source:
+                              //   https://cdn.com/els9-234-sdf.jpg
+                              // OR filename:
+                              //   my-image-file.jpg
+          hideFromSearchEngines: null
+        }
+      });
+      albums.push(data);
     }
+
+    let data = {
+      uri: group.uri,
+      title: group.uri,
+      date: null,
+      albums
+    }
+
+    saveJSON({ destination, fileName: `${group.uri}.json`, data })
   });
+} else {
+  albums.forEach(async (album) => {
+    let uri = album.split("/").pop();
+    let data = await createAlbumJSON({
+      source: `./_pictures/${album}/original`,
+      sourceForPreviewBase64: `./_pictures/${album}/16-wide`,
+      album: {
+        uri,
+        title: uri,
+        date: null,
+        zipFileSize: null,
+        coverPicture: null, // source:
+                            //   https://cdn.com/els9-234-sdf.jpg
+                            // OR filename:
+                            //   my-image-file.jpg
+        hideFromSearchEngines: null
+      }
+    });
 
-  saveJSON({ destination, fileName: `${uri}.json`, data })
-});
-
-
-// albumsGroups.forEach(async (group) => {
-//   let albums = [];
-// 
-//   let albumNames = group.albums.reverse();
-// 
-//   for (let album of albumNames) {
-//     let data = await createAlbumJSON({
-//       source: `./_pictures/${group.uri}/${album}/original`,
-//       sourceForPreviewBase64: `./_pictures/${group.uri}/${album}/16-wide`,
-//       album: {
-//         uri: album,
-//         title: album,
-//         date: null,
-//         zipFileSize: null,
-//         coverPicture: null, // source:
-//                             //   https://cdn.com/els9-234-sdf.jpg
-//                             // OR filename:
-//                             //   my-image-file.jpg
-//         hideFromSearchEngines: null
-//       }
-//     });
-//     albums.push(data);
-//   }
-// 
-//   let data = {
-//     uri: group.uri,
-//     title: group.uri,
-//     date: null,
-//     albums
-//   }
-// 
-//   saveJSON({ destination, fileName: `${group.uri}.json`, data })
-// });
+    saveJSON({ destination, fileName: `${uri}.json`, data })
+  });
+}
 
