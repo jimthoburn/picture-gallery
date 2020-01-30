@@ -37,17 +37,19 @@ https://imageoptim.com
 
 ```
 _pictures/
-    your-album-name/
+    your-album/
         original/
             1.jpg
             2.jpg
             3.jpg
-    your-other-album-name/
+    your-other-album/
         original/
             1.jpg
             2.jpg
             3.jpg
 ```
+
+You can also make [groups of albums](#group-albums)
 
 6. Add information about your gallery and featured albums to `_api/index.json`
 
@@ -160,6 +162,28 @@ This will add a [noindex](https://support.google.com/webmasters/answer/93710?hl=
 
 You may also want to make your repository [private](https://help.github.com/en/github/creating-cloning-and-archiving-repositories/about-repositories), if your gallery is stored in a public place like GitHub.
 
+### Group albums
+
+To group several albums together and show them on a single web page, create a
+new folder using the name of your group–and place the albums within it.
+
+```
+_pictures/
+    your-group-of-related-albums/
+        related-album/
+            original/
+                1.jpg
+                2.jpg
+                3.jpg
+        another-related-album/
+            original/
+                1.jpg
+                2.jpg
+                3.jpg
+```
+
+And then visit `http://localhost:5000/your-group-of-related-albums/`
+
 ### Image file storage
 
 You may also want to use Git LFS, if your repository is getting close to 1 GB in size. See [GitHub disk quota](https://help.github.com/en/github/managing-large-files/what-is-my-disk-quota)
@@ -202,7 +226,7 @@ User experience
 
 Editor experience
 - [ ] Content can be created with a simple language like markdown
-- [ ] Content can be added, edited and removed using a simple mechanism like files and folders
+- [x] Content can be added, edited and removed using a simple mechanism like files and folders
 - [x] The gallery can be hosted anywhere and kept private, if desired
 
 Developer experience
