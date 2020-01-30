@@ -49,7 +49,9 @@ _pictures/
             3.jpg
 ```
 
-You can also make [groups of albums](#group-albums)
+It’s okay to delete the `japan` and `wildflowers` example albums.
+
+_You can also make [groups of albums](#group-albums)._
 
 6. Add information about your gallery and featured albums to `_api/index.json`
 
@@ -63,6 +65,8 @@ You can also make [groups of albums](#group-albums)
   ]
 }
 ```
+
+It’s okay to remove the `japan` and `wildflowers` examples from the list of albums.
 
 7. Open your project folder in a terminal and install dependencies:
 
