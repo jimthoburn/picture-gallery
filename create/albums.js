@@ -11,7 +11,7 @@ import exif from "exif";
 import base64 from "../helpers/node-base64-image.js";
 import ColorThief from "color-thief";
 
-import { getSecretAlbums } from "./helpers/secret-albums.js";
+import { getSecretAlbums } from "../helpers/secret-albums.js";
 
 
 const colorthief = new ColorThief();
