@@ -8,16 +8,16 @@ import gulp from "gulp";
 import imageResize from "gulp-image-resize";
 
 import parallel from "concurrent-transform";
-
 import os from "os";
+
+import { getSecretAlbums } from "./helpers/secret-albums.js";
+
 
 const galleryData = JSON.parse(fs.readFileSync("./_api/index.json", "utf8"));
 
-const secretAlbums = fs.existsSync("./_secret_albums.json")
-  ? JSON.parse(fs.readFileSync("./_secret_albums.json", "utf8"))
-  : [];
+const [secretAlbums, secretAlbumGroups] = getSecretAlbums();
 
-const albums = galleryData.albums.concat(secretAlbums);
+const albums = secretAlbums;
 
 const SIZES = [
   16,

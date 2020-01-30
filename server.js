@@ -22,20 +22,15 @@ import { Error500Page, error500PageTitle } from "./pages/500.js";
 import { getInitialPageTitle} from "./components/picture-gallery.js";
 
 import { getCombinedAlbumJSON } from "./helpers/album.js";
+import { getSecretAlbums } from "./helpers/secret-albums.js";
 
 const galleryData = JSON.parse(fs.readFileSync("./_api/index.json", "utf8"));
 
-const secretAlbums = fs.existsSync("./_secret_albums.json")
-  ? JSON.parse(fs.readFileSync("./_secret_albums.json", "utf8"))
-  : [];
+const [secretAlbums, secretAlbumGroups] = getSecretAlbums();
 
-const secretAlbumGroups = fs.existsSync("./_secret_album_groups.json")
-  ? JSON.parse(fs.readFileSync("./_secret_album_groups.json", "utf8"))
-  : [];
+const albums = secretAlbums.concat(secretAlbumGroups.map(group => group.uri));
 
-const albums = galleryData.albums.concat(secretAlbums).concat(secretAlbumGroups.map(group => group.uri));
-
-console.log(albums);
+// console.log(albums);
 
 const port = parseInt(process.env.PORT, 10) || 5000;
 const server = express();
@@ -98,23 +93,23 @@ function serveIndexPage(req, res, next) {
 // https://example.com/baking/a/       ==>  baking/a
 function getAlbumURI({ pageURL, albumNames }) {
 
-  console.log("getAlbumURI")
-  console.log("pageURL", pageURL)
-  console.log("albumNames", albumNames)
+  // console.log("getAlbumURI")
+  // console.log("pageURL", pageURL)
+  // console.log("albumNames", albumNames)
 
   // https://example.com/wildflowers/7/  ==>  ["example.com", "wildflowers", "7"]
   // https://example.com/baking/a/3/     ==>  ["example.com", "baking", "a", "3"]
   // https://example.com/baking/a/       ==>  ["example.com", "baking", "a"]
   let urlArray = pageURL.split("://").pop().split("?").shift().split("/").filter(bit => bit !== "");
   urlArray.shift(); // Remove the domain and port
-  console.log(urlArray);
+  // console.log(urlArray);
   
   let groupMatches = albumNames.filter(name => name === urlArray[0]);
-  console.log("groupMatches", groupMatches);
+  // console.log("groupMatches", groupMatches);
   let matches       = albumNames.filter(name => name === urlArray.slice(0, urlArray.length - 1).join("/"));
-  console.log("matches", matches);
+  // console.log("matches", matches);
   let strongMatches = albumNames.filter(name => name === urlArray.join("/"));
-  console.log("strongMatches", strongMatches);
+  // console.log("strongMatches", strongMatches);
 
   if (strongMatches.length > 0) {
     return strongMatches[0]
@@ -126,7 +121,7 @@ function getAlbumURI({ pageURL, albumNames }) {
 }
 
 async function serveAlbumPage(req, res) {
-  console.log("serveAlbumPage")
+  // console.log("serveAlbumPage")
 
   function getPageURL() {
     // https://stackoverflow.com/questions/10183291/how-to-get-the-full-url-in-express
@@ -159,7 +154,7 @@ async function serveAlbumPage(req, res) {
 
     // If this is a parent album
     if (data.albums) {
-      console.log("**** PARENT ALBUM");
+      // console.log("**** PARENT ALBUM");
 
       // const childAlbumURI = urlArray[1];
       // const childAlbum = data.albums.filter(album => album.uri === childAlbumURI)[0];
@@ -187,7 +182,7 @@ async function serveAlbumPage(req, res) {
 
     // If this is part of a group album
     } else if (getAlbumURI({ pageURL: getPageURL(), albumNames: secretAlbumGroups.map(group => group.uri) })) {
-      console.log("**** CHILD ALBUM");
+      // console.log("**** CHILD ALBUM");
 
       getAlbumJSON({ albumURI: `${getAlbumURI({ pageURL: getPageURL(), albumNames: secretAlbumGroups.map(group => group.uri) })}/index`, req }).then(parent => {
         album = {
@@ -196,7 +191,7 @@ async function serveAlbumPage(req, res) {
           parent,
           hideFromSearchEngines: data.hideFromSearchEngines || parent.hideFromSearchEngines
         };
-        console.log(album);
+        // console.log(album);
 
         const title   = getInitialPageTitle({ getPageURL, album, pictures: album.pictures });
         const content = render(AlbumPage({ getPageURL, album, pictures: album.pictures }));
@@ -207,10 +202,10 @@ async function serveAlbumPage(req, res) {
       });
 
     } else {
-      console.log("**** ALBUM");
+      // console.log("**** ALBUM");
 
       album = data;
-      console.log(album);
+      // console.log(album);
 
       const title   = getInitialPageTitle({ getPageURL, album, pictures: album.pictures });
       const content = render(AlbumPage({ getPageURL, album, pictures: album.pictures }));
@@ -243,6 +238,8 @@ function sendError500Page(err, req, res, next) {
 
 
 server.get("/", serveIndexPage);
+
+console.log("albums", albums);
 
 for (let album of albums) {
   server.get(`/${album}/$`, serveAlbumPage); // Albums

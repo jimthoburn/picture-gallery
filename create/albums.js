@@ -11,19 +11,16 @@ import exif from "exif";
 import base64 from "../helpers/node-base64-image.js";
 import ColorThief from "color-thief";
 
+import { getSecretAlbums } from "./helpers/secret-albums.js";
+
+
 const colorthief = new ColorThief();
 
 const galleryData = JSON.parse(fs.readFileSync("./_api/index.json", "utf8"));
 
-const secretAlbums = fs.existsSync("./_secret_albums.json")
-  ? JSON.parse(fs.readFileSync("./_secret_albums.json", "utf8"))
-  : [];
-  
-const secretAlbumGroups = fs.existsSync("./_secret_album_groups.json")
-  ? JSON.parse(fs.readFileSync("./_secret_album_groups.json", "utf8"))
-  : [];
+const [secretAlbums, secretAlbumGroups] = getSecretAlbums();
 
-const albums = galleryData.albums.concat(secretAlbums);
+const albums = secretAlbums;
 
 const albumGroups = secretAlbumGroups;
 
