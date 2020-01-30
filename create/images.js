@@ -10,7 +10,7 @@ import imageResize from "gulp-image-resize";
 import parallel from "concurrent-transform";
 import os from "os";
 
-import { getSecretAlbums } from "./helpers/secret-albums.js";
+import { getSecretAlbums } from "../helpers/secret-albums.js";
 
 
 const galleryData = JSON.parse(fs.readFileSync("./_api/index.json", "utf8"));
