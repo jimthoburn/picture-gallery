@@ -1,4 +1,5 @@
 
+
 export function getCombinedAlbumJSON({ album, generatedPictures }) {
   if (generatedPictures && generatedPictures.length > 0) {
     const pictures = generatedPictures.map(generatedPicture => {

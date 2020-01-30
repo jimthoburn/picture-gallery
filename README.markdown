@@ -137,20 +137,12 @@ This will [automatically rebuild and publish your site](https://docs.netlify.com
 ### Secret albums
 
 If you want to publish an album to share with friends without making it public,
-create a file called `_secret_albums.json` and add your album name to it (instead of adding it to the `index.json` file). That way, it won’t appear on the home page of your picture gallery site.
-
-```
-[
-  "my-secret-album-name"
-]
-```
+you can leave it out of the `api/index.json`. That way, it won’t appear on the home page of your picture gallery site.
 
 To make the album name hard to guess, you may want to include a [UUID](https://duckduckgo.com/?q=UUID+generator&t=ffab&ia=answer) as part of the name. For example:
 
 ```
-[
-  "my-secret-album-name-0c64f7ea-ad3d-4101-b379-fb5098aed301"
-]
+my-secret-album-name-0c64f7ea-ad3d-4101-b379-fb5098aed301
 ```
 
 You can also ask search engines not to index your album by setting `hideFromSearchEngines` to `true` in the `JSON` file for your album.

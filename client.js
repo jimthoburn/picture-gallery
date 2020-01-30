@@ -143,7 +143,9 @@ async function getAlbumJSON({ albumURI }) {
   const album             = await getData(`/api/${albumURI}.json`);
   const generatedPictures = await getData(`/pictures/${albumURI}/data.json`);
 
-  return getCombinedAlbumJSON({ album, generatedPictures });
+  if (album && generatedPictures) {
+    return getCombinedAlbumJSON({ album, generatedPictures });
+  }
 }
 
 // async function getAlbumJSON({ albumURI }) {
@@ -183,6 +185,7 @@ async function start() {
   if (testResult) {
     console.log("test 1 passed");
     getAlbumJSON({ albumURI: urlArray.join("/") }).then(data => {
+      if (!data) return;
       if (urlArray.length >= 2) {
         getData(`/api/${urlArray[0]}/index.json`).then(parent => {
           startHydrate({ data, parent });
@@ -206,6 +209,7 @@ async function start() {
       if (testResult) {
         console.log("test 2 passed");
         getAlbumJSON({ albumURI: urlArray.slice(0, urlArray.length - 1).join("/") }).then(data => {
+          if (!data) return;
           if (urlArray.length >= 3) {
             getData(`/api/${urlArray[0]}/index.json`).then(parent => {
               startHydrate({ data, parent });
@@ -224,7 +228,7 @@ async function start() {
 }
 
 function testURL(url) {
-  console.log("url", url);
+  // console.log("url", url);
   return new Promise((resolve, reject) => {
     fetch(url).then(response => {
       try {
@@ -253,8 +257,8 @@ function testURL(url) {
 }
 
 function startHydrate({ data, parent }) {
-  console.log("startHydrate");
-  console.log("data", data);
+  // console.log("startHydrate");
+  // console.log("data", data);
   let album;
   if (parent) {
     album = {

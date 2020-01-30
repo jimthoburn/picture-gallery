@@ -14,18 +14,13 @@ import { Error404Page, error404PageTitle } from "./pages/404.js";
 import { getInitialPageTitle } from "./components/picture-gallery.js";
 
 import { getCombinedAlbumJSON } from "./helpers/album.js";
+import { getSecretAlbums } from "./helpers/secret-albums.js";
 
 const galleryData = JSON.parse(fs.readFileSync("./_api/index.json", "utf8"));
 
-const secretAlbums = fs.existsSync("./_secret_albums.json")
-  ? JSON.parse(fs.readFileSync("./_secret_albums.json", "utf8"))
-  : [];
+const [secretAlbums, secretAlbumGroups] = getSecretAlbums();
 
-const secretAlbumGroups = fs.existsSync("./_secret_album_groups.json")
-  ? JSON.parse(fs.readFileSync("./_secret_album_groups.json", "utf8"))
-  : [];
-
-const albums = galleryData.albums.concat(secretAlbums);
+const albums = secretAlbums;
 
 const groupAlbums = secretAlbumGroups.map(group => group.uri);
 

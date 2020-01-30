@@ -8,14 +8,14 @@ const __dirname = dirname(fileURLToPath(import.meta.url));
 
 import mkdirp from "mkdirp";
 import archiver from "archiver";
+import { getSecretAlbums } from "./helpers/secret-albums.js";
+
 
 const galleryData = JSON.parse(fs.readFileSync("./_api/index.json", "utf8"));
 
-const secretAlbums = fs.existsSync("./_secret_albums.json")
-  ? JSON.parse(fs.readFileSync("./_secret_albums.json", "utf8"))
-  : [];
+const [secretAlbums, secretAlbumGroups] = getSecretAlbums();
 
-const albums = galleryData.albums.concat(secretAlbums);
+const albums = secretAlbums;
 
 // KUDOS: https://www.npmjs.com/package/archiver
 function createZip(source, destination, callback) {
