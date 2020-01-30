@@ -21,7 +21,13 @@ const secretAlbums = fs.existsSync("./_secret_albums.json")
   ? JSON.parse(fs.readFileSync("./_secret_albums.json", "utf8"))
   : [];
 
+const secretAlbumGroups = fs.existsSync("./_secret_album_groups.json")
+  ? JSON.parse(fs.readFileSync("./_secret_album_groups.json", "utf8"))
+  : [];
+
 const albums = galleryData.albums.concat(secretAlbums);
+
+const groupAlbums = secretAlbumGroups.map(group => group.uri);
 
 const GENERATED_FILES_FOLDER = "./_site";
 
@@ -135,34 +141,47 @@ function generateAllAlbums() {
 
     const album = getAlbumJSON({ albumURI: nextAlbumName });
 
-    if (album.albums) {
-      console.log(`Generating group album for: ${ album.title }`);
+    const parentAlbums = groupAlbums.filter(groupAlbumName => groupAlbumName === nextAlbumName.split("/")[0]);
 
-      const pageURL = `/${ album.uri }/`;
+    if (parentAlbums.length > 0) {
+      console.log("**** CHILD ALBUM");
 
-      console.log(`Generating page for: ${ pageURL }`);
+      const parent = getAlbumJSON({ albumURI: `${parentAlbums[0]}/index` });
+      generateAlbum({ 
+        album: {
+          ...album,
+          uri: `${parent.uri}/${album.uri}`,
+          parent
+        },
+        hideFromSearchEngines: album.hideFromSearchEngines || parent.hideFromSearchEngines
+      });
 
-      const { title, hideFromSearchEngines } = album;
-      const content = render(ParentAlbumPage({ parent: album, children: album.albums }));
-
-      const renderedHTML = WithoutClientLayout({ title, content, hideFromSearchEngines });
-      const beautifiedHTML = jsBeautify.html_beautify(renderedHTML);
-
-      createFile({ pageURL, html: beautifiedHTML });
-
-      for (let childAlbum of album.albums) {
-        generateAlbum({ 
-          album: {
-            ...childAlbum,
-            uri: `${album.uri}/${childAlbum.uri}`,
-            parent: album
-          },
-          hideFromSearchEngines: album.hideFromSearchEngines
-        });
-      }
     } else {
       generateAlbum({ album, hideFromSearchEngines: album.hideFromSearchEngines });
     }
+
+  }
+  for (let nextAlbumName of groupAlbums) {
+
+    const album = getAlbumJSON({ albumURI: `${nextAlbumName}/index` });
+
+    const children = album.albums.map(
+      childAlbumURI => getAlbumJSON({ albumURI: `${nextAlbumName}/${childAlbumURI}`})
+    )
+
+    console.log(`Generating group album for: ${ album.title }`);
+
+    const pageURL = `/${ album.uri }/`;
+
+    console.log(`Generating page for: ${ pageURL }`);
+
+    const { title, hideFromSearchEngines } = album;
+    const content = render(ParentAlbumPage({ parent: album, children }));
+
+    const renderedHTML = WithoutClientLayout({ title, content, hideFromSearchEngines });
+    const beautifiedHTML = jsBeautify.html_beautify(renderedHTML);
+
+    createFile({ pageURL, html: beautifiedHTML });
   }
 }
 

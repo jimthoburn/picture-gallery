@@ -136,8 +136,6 @@ async function createAlbumJSON({ source, sourceForPreviewBase64, destination, al
     //     2.json
     //     3.json
 
-
-
   //}
   //saveJSON({ destination, fileName: `${album.uri}-pictures.json`, data })
 
@@ -168,8 +166,7 @@ function getAllFilesFromFolder(dir) {
 
 function saveJSON({ destination, fileName, data, overwrite }) {
 
-  // https://www.npmjs.com/package/js-yaml#safedump-object---options-
-  let output = JSON.stringify(data, null, 2);
+  const output = JSON.stringify(data, null, 2);
 
   mkdirp(destination, function (err) {
     if (err) {
@@ -190,61 +187,48 @@ function saveJSON({ destination, fileName, data, overwrite }) {
 
 const destination = "./_api";
 
+albums.forEach(async (album) => {
+  let uri = album.split("/").pop();
+  let {userEditableData, readOnlyData} = await createAlbumJSON({
+    source: `./_pictures/${album}/original`,
+    sourceForPreviewBase64: `./_pictures/${album}/16-wide`,
+    album: {
+      uri,
+      title: uri,
+      date: null,
+      zipFileSize: null,
+      coverPicture: null, // source:
+                          //   https://cdn.com/els9-234-sdf.jpg
+                          // OR filename:
+                          //   my-image-file.jpg
+      hideFromSearchEngines: null
+    }
+  });
+
+  let pathBits = album.split("/");
+  pathBits.pop();
+  let basepath = pathBits.join("/");
+
+  saveJSON({ destination: `${destination}/${basepath}`, fileName: `${uri}.json`, data: userEditableData });
+  saveJSON({ destination: `./_pictures/${album}`, fileName: `data.json`, data: readOnlyData, overwrite: true });
+});
+
 if (albumGroups.length > 0) {
   albumGroups.forEach(async (group) => {
-    let albums = [];
-
-    let albumNames = group.albums.reverse();
-
-    for (let album of albumNames) {
-      let data = await createAlbumJSON({
-        source: `./_pictures/${group.uri}/${album}/original`,
-        sourceForPreviewBase64: `./_pictures/${group.uri}/${album}/16-wide`,
-        album: {
-          uri: album,
-          title: album,
-          date: null,
-          zipFileSize: null,
-          coverPicture: null, // source:
-                              //   https://cdn.com/els9-234-sdf.jpg
-                              // OR filename:
-                              //   my-image-file.jpg
-          hideFromSearchEngines: null
-        }
-      });
-      albums.push(data);
-    }
 
     let data = {
       uri: group.uri,
       title: group.uri,
       date: null,
-      albums
+      coverPicture: null, // source:
+                          //   https://cdn.com/els9-234-sdf.jpg
+                          // OR filename:
+                          //   my-image-file.jpg
+      hideFromSearchEngines: null,
+      albums: group.albums
     }
 
-    saveJSON({ destination, fileName: `${group.uri}.json`, data })
-  });
-} else {
-  albums.forEach(async (album) => {
-    let uri = album.split("/").pop();
-    let {userEditableData, readOnlyData} = await createAlbumJSON({
-      source: `./_pictures/${album}/original`,
-      sourceForPreviewBase64: `./_pictures/${album}/16-wide`,
-      album: {
-        uri,
-        title: uri,
-        date: null,
-        zipFileSize: null,
-        coverPicture: null, // source:
-                            //   https://cdn.com/els9-234-sdf.jpg
-                            // OR filename:
-                            //   my-image-file.jpg
-        hideFromSearchEngines: null
-      }
-    });
-
-    saveJSON({ destination, fileName: `${uri}.json`, data: userEditableData });
-    saveJSON({ destination: `./_pictures/${album}`, fileName: `data.json`, data: readOnlyData, overwrite: true });
+    saveJSON({ destination: `${destination}/${group.uri}`, fileName: `index.json`, data })
   });
 }
 
