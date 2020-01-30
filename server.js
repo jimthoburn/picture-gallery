@@ -29,7 +29,13 @@ const secretAlbums = fs.existsSync("./_secret_albums.json")
   ? JSON.parse(fs.readFileSync("./_secret_albums.json", "utf8"))
   : [];
 
-const albums = galleryData.albums.concat(secretAlbums);
+const secretAlbumGroups = fs.existsSync("./_secret_album_groups.json")
+  ? JSON.parse(fs.readFileSync("./_secret_album_groups.json", "utf8"))
+  : [];
+
+const albums = galleryData.albums.concat(secretAlbums).concat(secretAlbumGroups.map(group => group.uri));
+
+console.log(albums);
 
 const port = parseInt(process.env.PORT, 10) || 5000;
 const server = express();
@@ -37,7 +43,13 @@ const server = express();
 function getData(url) {
   return new Promise((resolve, reject) => {
     fetch(url).then(response => {
-      resolve(response.json());
+      if (response.ok) {
+        resolve(response.json());
+      } else {
+        console.error(response.status);
+        console.error(url);
+        resolve(null);
+      }
     }).catch(error => {
       console.error(error);
       resolve(null);
@@ -80,59 +92,134 @@ function serveIndexPage(req, res, next) {
   });
 }
 
-function serveAlbumPage(req, res) {
+// https://example.com/wildflowers/7/  ==>  wildflowers
+// https://example.com/wildflowers/    ==>  wildflowers
+// https://example.com/baking/a/3/     ==>  baking/a
+// https://example.com/baking/a/       ==>  baking/a
+function getAlbumURI({ pageURL, albumNames }) {
+
+  console.log("getAlbumURI")
+  console.log("pageURL", pageURL)
+  console.log("albumNames", albumNames)
+
+  // https://example.com/wildflowers/7/  ==>  ["example.com", "wildflowers", "7"]
+  // https://example.com/baking/a/3/     ==>  ["example.com", "baking", "a", "3"]
+  // https://example.com/baking/a/       ==>  ["example.com", "baking", "a"]
+  let urlArray = pageURL.split("://").pop().split("?").shift().split("/").filter(bit => bit !== "");
+  urlArray.shift(); // Remove the domain and port
+  console.log(urlArray);
+  
+  let groupMatches = albumNames.filter(name => name === urlArray[0]);
+  console.log("groupMatches", groupMatches);
+  let matches       = albumNames.filter(name => name === urlArray.slice(0, urlArray.length - 1).join("/"));
+  console.log("matches", matches);
+  let strongMatches = albumNames.filter(name => name === urlArray.join("/"));
+  console.log("strongMatches", strongMatches);
+
+  if (strongMatches.length > 0) {
+    return strongMatches[0]
+  } else if (matches.length > 0) {
+    return matches[0]
+  } else if (groupMatches.length > 0) {
+    return groupMatches[0]
+  }
+}
+
+async function serveAlbumPage(req, res) {
+  console.log("serveAlbumPage")
 
   function getPageURL() {
     // https://stackoverflow.com/questions/10183291/how-to-get-the-full-url-in-express
     return `${req.protocol}://${req.get("host")}${req.originalUrl}`;
   }
 
-  // https://example.com/wildflowers/7/  ==>  /wildflowers/
-  let urlArray = getPageURL().split("://").pop().split("?").shift().split("/");
-  urlArray.shift(); // Remove the domain and port
-  const albumURI = urlArray[0];
-  console.log(albumURI);
+  let albumURI;
+  if (!albumURI) {
+    albumURI = getAlbumURI({ pageURL: getPageURL(), albumNames: secretAlbums });
+  }
+  if (!albumURI) {
+    albumURI = getAlbumURI({ pageURL: getPageURL(), albumNames: galleryData.albums });
+  }
+  if (!albumURI) {
+    albumURI = getAlbumURI({ pageURL: getPageURL(), albumNames: secretAlbumGroups.map(group => group.uri) });
+    if (albumURI) {
+       albumURI = albumURI + "/index";
+    }
+  }
 
-  getAlbumJSON({ albumURI, req }).then(data => {
-    let album
+  // const test = await getData(`${req.protocol}://${req.get("host")}/api/${albumURI}.json`);
+  // if (!test) {
+  //   // If the request failed, try again by looking for an index.json file
+  //   // (for the case where this is a parent album)
+  //   albumURI = albumURI + "/index";
+  // }
+
+  getAlbumJSON({ albumURI, req }).then(async function(data) {
+    let album;
 
     // If this is a parent album
     if (data.albums) {
-      const childAlbumURI = urlArray[1];
-      const childAlbum = data.albums.filter(album => album.uri === childAlbumURI)[0];
-      console.log(childAlbum);
+      console.log("**** PARENT ALBUM");
 
-      if (childAlbum) {
+      // const childAlbumURI = urlArray[1];
+      // const childAlbum = data.albums.filter(album => album.uri === childAlbumURI)[0];
+      // const childAlbum = await getAlbumJSON({ albumURI: `${albumURI}/${childAlbumURI}`, req });
+      // console.log(childAlbum);
+
+      // if (childAlbum) {
+      //   album = {
+      //     ...childAlbum,
+      //     uri: `${data.uri}/${childAlbum.uri}`,
+      //     parent: data,
+      //     hideFromSearchEngines: data.hideFromSearchEngines
+      //   };
+      // } else {
+        Promise.all(data.albums.map(
+          childAlbumURI => getAlbumJSON({ albumURI: `${albumURI.replace("/index", "")}/${childAlbumURI}`, req })
+        )).then(albums => {
+          const { title, hideFromSearchEngines } = data;
+          const content = render(ParentAlbumPage({ parent: data, children: albums }));
+
+          const beautifiedHTML = jsBeautify.html_beautify(WithoutClientLayout({ title, content, hideFromSearchEngines }));
+          res.send(beautifiedHTML);
+        })
+      //}
+
+    // If this is part of a group album
+    } else if (getAlbumURI({ pageURL: getPageURL(), albumNames: secretAlbumGroups.map(group => group.uri) })) {
+      console.log("**** CHILD ALBUM");
+
+      getAlbumJSON({ albumURI: `${getAlbumURI({ pageURL: getPageURL(), albumNames: secretAlbumGroups.map(group => group.uri) })}/index`, req }).then(parent => {
         album = {
-          ...childAlbum,
-          uri: `${data.uri}/${childAlbum.uri}`,
-          parent: data,
-          hideFromSearchEngines: data.hideFromSearchEngines
+          ...data,
+          uri: getAlbumURI({ pageURL: getPageURL(), albumNames: secretAlbumGroups.map(group => group.uri) }) + "/" + data.uri,
+          parent,
+          hideFromSearchEngines: data.hideFromSearchEngines || parent.hideFromSearchEngines
         };
-      } else {
-        album = data;
+        console.log(album);
 
-        const { title, hideFromSearchEngines } = album;
-        const content = render(ParentAlbumPage({ parent: album, children: album.albums }));
+        const title   = getInitialPageTitle({ getPageURL, album, pictures: album.pictures });
+        const content = render(AlbumPage({ getPageURL, album, pictures: album.pictures }));
+        const { hideFromSearchEngines } = album;
 
-        const beautifiedHTML = jsBeautify.html_beautify(WithoutClientLayout({ title, content, hideFromSearchEngines }));
+        const beautifiedHTML = jsBeautify.html_beautify(DefaultLayout({ title, content, hideFromSearchEngines }));
         res.send(beautifiedHTML);
+      });
 
-        return;
-      }
     } else {
+      console.log("**** ALBUM");
+
       album = data;
+      console.log(album);
+
+      const title   = getInitialPageTitle({ getPageURL, album, pictures: album.pictures });
+      const content = render(AlbumPage({ getPageURL, album, pictures: album.pictures }));
+      const { hideFromSearchEngines } = album;
+
+      const beautifiedHTML = jsBeautify.html_beautify(DefaultLayout({ title, content, hideFromSearchEngines }));
+      res.send(beautifiedHTML);
     }
 
-    const title   = getInitialPageTitle({ getPageURL, album, pictures: album.pictures });
-    const content = render(AlbumPage({ getPageURL, album, pictures: album.pictures }));
-    const { hideFromSearchEngines } = album;
-
-    const beautifiedHTML = jsBeautify.html_beautify(DefaultLayout({ title, content, hideFromSearchEngines }));
-    res.send(beautifiedHTML);
-  }).catch(function(err) {
-    console.error(err.stack);
-    sendError500Page(err, req, res, next);
   });
 }
 

@@ -20,3 +20,38 @@ export function getCombinedAlbumJSON({ album, generatedPictures }) {
     return album;
   }
 }
+
+
+// https://example.com/wildflowers/7/  ==>  wildflowers
+// https://example.com/wildflowers/    ==>  wildflowers
+// https://example.com/baking/a/3/     ==>  baking/a
+// https://example.com/baking/a/       ==>  baking/a
+export function getAlbumURI({ pageURL, albumNames }) {
+
+  console.log("getAlbumURI")
+  console.log("pageURL", pageURL)
+  console.log("albumNames", albumNames)
+
+  // https://example.com/wildflowers/7/  ==>  ["example.com", "wildflowers", "7"]
+  // https://example.com/baking/a/3/     ==>  ["example.com", "baking", "a", "3"]
+  // https://example.com/baking/a/       ==>  ["example.com", "baking", "a"]
+  let urlArray = pageURL.split("://").pop().split("?").shift().split("/").filter(bit => bit !== "");
+  urlArray.shift(); // Remove the domain and port
+  console.log(urlArray);
+
+  let groupMatches = albumNames.filter(name => name === urlArray[0]);
+  console.log("groupMatches", groupMatches);
+  let matches       = albumNames.filter(name => name === urlArray.slice(0, urlArray.length - 1).join("/"));
+  console.log("matches", matches);
+  let strongMatches = albumNames.filter(name => name === urlArray.join("/"));
+  console.log("strongMatches", strongMatches);
+
+  if (strongMatches.length > 0) {
+    return strongMatches[0]
+  } else if (matches.length > 0) {
+    return matches[0]
+  } else if (groupMatches.length > 0) {
+    return groupMatches[0]
+  }
+}
+
