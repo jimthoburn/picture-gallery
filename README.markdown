@@ -143,7 +143,7 @@ This will [automatically rebuild and publish your site](https://docs.netlify.com
 ### Secret albums
 
 If you want to publish an album to share with friends without making it public,
-you can leave it out of the `api/index.json`. That way, it won’t appear on the home page of your picture gallery site.
+you can leave it out of the `api/index.json` file. That way, it won’t appear on the home page of your picture gallery site.
 
 To make the album name hard to guess, you may want to include a [UUID](https://duckduckgo.com/?q=UUID+generator&t=ffab&ia=answer) as part of the name. For example:
 
@@ -169,7 +169,7 @@ You may also want to make your repository [private](https://help.github.com/en/g
 ### Group albums
 
 To group several albums together and show them on a single web page, create a
-new folder using the name of your group–and place the albums within it.
+new folder using the name of your group–and place the albums inside it.
 
 ```
 _pictures/
@@ -190,7 +190,7 @@ And then visit `http://localhost:5000/your-group-of-related-albums/`
 
 ### Image file storage
 
-You may also want to use Git LFS, if your repository is getting close to 1 GB in size. See [GitHub disk quota](https://help.github.com/en/github/managing-large-files/what-is-my-disk-quota)
+You may want to use Git LFS, if your repository is getting close to 1 GB in size. See [GitHub disk quota](https://help.github.com/en/github/managing-large-files/what-is-my-disk-quota)
 
 * https://git-lfs.github.com/  
 * https://www.netlify.com/products/large-media/
