@@ -229,7 +229,7 @@ User experience
 - [x] Gesture-driven animations and transitions between pages can be added
 
 Editor experience
-- [ ] Content can be created with a simple language like markdown
+- [x] Content can be created with a simple language like markdown
 - [x] Content can be added, edited and removed using a simple mechanism like files and folders
 - [x] The gallery can be hosted anywhere and kept private, if desired
 
