@@ -5,13 +5,14 @@ import jsBeautify from "js-beautify";
 
 import { render } from "./web_modules/preact-render-to-string.js";
 
+import { config } from "./_config.js";
 import { DefaultLayout } from "./layouts/default.js";
 import { WithoutClientLayout } from "./layouts/without-client.js";
 import { AlbumPage } from "./pages/album.js";
 import { IndexPage } from "./pages/index.js";
 import { ParentAlbumPage } from "./pages/parent-album.js";
 import { Error404Page, error404PageTitle } from "./pages/404.js";
-import { getInitialPageTitle } from "./components/picture-gallery.js";
+import { getInitialPageTitle, getOpenGraphImage } from "./components/picture-gallery.js";
 
 import { getCombinedAlbumJSON } from "./helpers/album.js";
 import { getSecretAlbums } from "./helpers/secret-albums.js";
@@ -93,7 +94,15 @@ function generateAlbum({ album, hideFromSearchEngines }) {
     const title   = getInitialPageTitle({ getPageURL, pictures: album.pictures, album });
     const content = render(AlbumPage({ getPageURL, pictures: album.pictures, album }));
 
-    const renderedHTML = DefaultLayout({ title, content, hideFromSearchEngines });
+    const renderedHTML = DefaultLayout({
+      title,
+      content,
+      hideFromSearchEngines,
+      openGraphImage:
+        config.host
+          ? `${config.host}${ getOpenGraphImage({ getPageURL, pictures: album.pictures, album }) }`
+          : null
+    });
     const beautifiedHTML = jsBeautify.html_beautify(renderedHTML);
 
     createFile({ pageURL, html: beautifiedHTML });
@@ -116,7 +125,20 @@ function generateIndexPage() {
   const { title, hideFromSearchEngines } = galleryData;
   const content = render(IndexPage({ ...galleryData, albums }));
 
-  const beautifiedHTML = jsBeautify.html_beautify(WithoutClientLayout({ title, content, hideFromSearchEngines }));
+  function getPageURL() {
+    return "/";
+  }
+
+  const beautifiedHTML = jsBeautify.html_beautify(WithoutClientLayout({
+    title,
+    content,
+    hideFromSearchEngines,
+    openGraphImage:
+      config.host
+        ? `${config.host}${ getOpenGraphImage({ getPageURL, pictures: albums[0].pictures, album: albums[0] }) }`
+        : null
+  }));
+
   createFile({ pageURL: "/", filename: "index.html", html: beautifiedHTML });
 }
 
@@ -168,12 +190,24 @@ function generateAllAlbums() {
 
     const pageURL = `/${ album.uri }/`;
 
+    function getPageURL() {
+      return pageURL;
+    }
+
     console.log(`Generating page for: ${ pageURL }`);
 
     const { title, hideFromSearchEngines } = album;
     const content = render(ParentAlbumPage({ parent: album, children }));
 
-    const renderedHTML = WithoutClientLayout({ title, content, hideFromSearchEngines });
+    const renderedHTML = WithoutClientLayout({
+      title,
+      content,
+      hideFromSearchEngines,
+      openGraphImage:
+        config.host
+          ? `${config.host}${ getOpenGraphImage({ getPageURL, pictures: children[0].pictures, album: children[0], parent: album }) }`
+          : null
+    });
     const beautifiedHTML = jsBeautify.html_beautify(renderedHTML);
 
     createFile({ pageURL, html: beautifiedHTML });
