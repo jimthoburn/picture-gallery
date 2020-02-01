@@ -12,6 +12,8 @@ import { PictureList }    from "../components/picture-list.js";
 import { PictureDetails } from "../components/picture-details.js";
 import { actions,
          guards }         from "../machines/gallery-options.js";
+import { getSource,
+         getCoverPhoto }  from "../helpers/image-source-set.js";
 
 
 const GalleryDispatch = createContext(null);
@@ -197,6 +199,16 @@ function getInitialPageTitle({ album, pictures, getPageURL }) {
   }
 }
 
+function getOpenGraphImage({ album, parent, pictures, getPageURL }) {
+  let selectedPictureIndex = getSelectedPictureIndexFromURL({ album, pictures, getPageURL });
+  if (selectedPictureIndex) {
+    const picture = pictures[selectedPictureIndex];
+    return getSource({ album, picture, largestSize: true });
+  } else {
+    return getCoverPhoto({album, parent});
+  }
+}
 
-export { PictureGallery, GalleryDispatch, getInitialPageTitle, getMachine };
+
+export { PictureGallery, GalleryDispatch, getInitialPageTitle, getOpenGraphImage, getMachine };
 

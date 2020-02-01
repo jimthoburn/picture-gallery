@@ -5,7 +5,7 @@ import { config } from "../_config.js";
 
 const whenDefined = fs.readFileSync("helpers/when-defined.js", 'utf8');
 
-export const DefaultLayout = ({ title, content, hideFromSearchEngines }) => {
+export const DefaultLayout = ({ title, content, hideFromSearchEngines, openGraphImage }) => {
   return `
     <!DOCTYPE html>
     <html lang="en" dir="ltr">
@@ -34,6 +34,10 @@ export const DefaultLayout = ({ title, content, hideFromSearchEngines }) => {
         <script type="module" crossorigin src="/web_modules/lit-element.js"></script>
         <script type="module" crossorigin src="/components/responsive-image.js"></script>
         <script type="module" crossorigin src="/client.js"></script>
+
+        ${ openGraphImage 
+          ? `<meta property="og:image" content="${openGraphImage}" />`
+          : ""}
       </head>
       <body>
         ${content}
