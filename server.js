@@ -77,7 +77,7 @@ function serveIndexPage(req, res, next) {
   Promise.all(galleryData.albums.map(
     albumURI => getAlbumJSON({ albumURI, req })
   )).then(albums => {
-    const { title, hideFromSearchEngines } = galleryData;
+    const { title, askSearchEnginesNotToIndex } = galleryData;
     const content = render(IndexPage({ ...galleryData, albums }));
 
     function getPageURL() {
@@ -88,7 +88,7 @@ function serveIndexPage(req, res, next) {
     const beautifiedHTML = jsBeautify.html_beautify(WithoutClientLayout({
       title,
       content,
-      hideFromSearchEngines,
+      askSearchEnginesNotToIndex,
       openGraphImage:
         config.host
           ? `${config.host}${ getOpenGraphImage({ getPageURL, pictures: albums[0].pictures, album: albums[0] }) }`
@@ -180,19 +180,19 @@ async function serveAlbumPage(req, res) {
       //     ...childAlbum,
       //     uri: `${data.uri}/${childAlbum.uri}`,
       //     parent: data,
-      //     hideFromSearchEngines: data.hideFromSearchEngines
+      //     askSearchEnginesNotToIndex: data.askSearchEnginesNotToIndex
       //   };
       // } else {
         Promise.all(data.albums.map(
           childAlbumURI => getAlbumJSON({ albumURI: `${albumURI.replace("/index", "")}/${childAlbumURI}`, req })
         )).then(albums => {
-          const { title, hideFromSearchEngines } = data;
+          const { title, askSearchEnginesNotToIndex } = data;
           const content = render(ParentAlbumPage({ parent: data, children: albums }));
 
           const beautifiedHTML = jsBeautify.html_beautify(WithoutClientLayout({
             title,
             content,
-            hideFromSearchEngines,
+            askSearchEnginesNotToIndex,
             openGraphImage:
               config.host
                 ? `${config.host}${ getOpenGraphImage({ getPageURL, pictures: albums[0].pictures, album: albums[0], parent: data }) }`
@@ -211,18 +211,18 @@ async function serveAlbumPage(req, res) {
           ...data,
           uri: getAlbumURI({ pageURL: getPageURL(), albumNames: secretAlbumGroups.map(group => group.uri) }) + "/" + data.uri,
           parent,
-          hideFromSearchEngines: data.hideFromSearchEngines || parent.hideFromSearchEngines
+          askSearchEnginesNotToIndex: data.askSearchEnginesNotToIndex || parent.askSearchEnginesNotToIndex
         };
         // console.log(album);
 
         const title   = getInitialPageTitle({ getPageURL, album, pictures: album.pictures });
         const content = render(AlbumPage({ getPageURL, album, pictures: album.pictures }));
-        const { hideFromSearchEngines } = album;
+        const { askSearchEnginesNotToIndex } = album;
 
         const beautifiedHTML = jsBeautify.html_beautify(DefaultLayout({
           title,
           content,
-          hideFromSearchEngines,
+          askSearchEnginesNotToIndex,
           openGraphImage:
             config.host
               ? `${config.host}${ getOpenGraphImage({ getPageURL, pictures: album.pictures, album }) }`
@@ -239,12 +239,12 @@ async function serveAlbumPage(req, res) {
 
       const title   = getInitialPageTitle({ getPageURL, album, pictures: album.pictures });
       const content = render(AlbumPage({ getPageURL, album, pictures: album.pictures }));
-      const { hideFromSearchEngines } = album;
+      const { askSearchEnginesNotToIndex } = album;
 
       const beautifiedHTML = jsBeautify.html_beautify(DefaultLayout({
         title,
         content,
-        hideFromSearchEngines,
+        askSearchEnginesNotToIndex,
         openGraphImage:
           config.host
             ? `${config.host}${ getOpenGraphImage({ getPageURL, pictures: album.pictures, album }) }`

@@ -57,11 +57,11 @@ _You can also make [groups of albums](#group-albums)._
 
 ```
 {
-  "title": "Travel pictures",
-  "date": "2016 to 2019",
+  "title": "A name for your gallery",
+  "date": "2019 to 2020",
   "albums": [
-    "your-album-name",
-    "your-other-album-name"
+    "your-album",
+    "your-other-album"
   ]
 }
 ```
@@ -92,15 +92,23 @@ To stop the server, press “control C”
 
 ### Editing
 
-You can edit the `.json` files that were created for you in the `_api` folder.
-For example, you may want to change the album names and add dates.
+You can edit the [JSON](https://www.json.org/json-en.html) files that were created for you in the `_api` folder:
 
 ```
-"title": "Japan in Winter",
-"date": "February & March, 2016",
+_api/
+    index.json
+    your-album.json
+    your-other-album.json
 ```
 
-After you make changes, you may need to stop (press “control C”) and restart the server with `npm start`.
+For example, you may want to change the `title` and add a `date` for each album:
+
+```
+"title": "A name for your album",
+"date": "February & March, 2020",
+```
+
+To see your changes, you may need to stop the server (press “control C”) and then restart the server (`npm start`).
 
 It’s okay to commit the generated files in these folders:
 
@@ -111,6 +119,44 @@ _pictures
 ```
 
 These files are your data and will only change if you re-run the `npm run create` script or edit them yourself.
+
+### How to add a new album
+
+1. Add your pictures to the `_pictures` folder:
+
+```
+_pictures/
+    your-new-album/
+        original/
+            1.jpg
+            2.jpg
+            3.jpg
+```
+
+2. Create data for your new album:
+
+```
+npm run create
+```
+
+3. Edit the data file for your album (optional):
+
+```
+_api/
+    your-new-album.json
+```
+
+3. Add your album to the `index.json` file to feature it on your gallery’s home page (optional):
+
+```
+{
+  "title": "A name for your gallery",
+  "date": "2019 to 2020",
+  "albums": [
+    "your-new-album"
+  ]
+}
+```
 
 ### How to publish your gallery
 
@@ -148,21 +194,27 @@ you can leave it out of the `api/index.json` file. That way, it won’t appear o
 To make the album name hard to guess, you may want to include a [UUID](https://duckduckgo.com/?q=UUID+generator&t=ffab&ia=answer) as part of the name. For example:
 
 ```
-my-secret-album-name-0c64f7ea-ad3d-4101-b379-fb5098aed301
+your-secret-album-0c64f7ea-ad3d-4101-b379-fb5098aed301
 ```
 
-You can also ask search engines not to index your album by setting `hideFromSearchEngines` to `true` in the `JSON` file for your album.
+You can also ask search engines not to index your album by setting `askSearchEnginesNotToIndex` to `true` in the `JSON` file for your album.
 
 ```
 {
-  "uri": "my-secret-album-name-0c64f7ea-ad3d-4101-b379-fb5098aed301",
-  "title": "My Secret Album",
+  "uri": "your-secret-album-0c64f7ea-ad3d-4101-b379-fb5098aed301",
+  "title": "A name of your secret album",
   "date": "February & March, 2019",
-  "hideFromSearchEngines": true,
+  "askSearchEnginesNotToIndex": true,
 }
 ```
 
 This will add a [noindex](https://support.google.com/webmasters/answer/93710?hl=en) meta element to your page.
+
+You can also hide your entire gallery by setting `askSearchEnginesNotToIndex` to `true` in the `_config` file:
+
+```
+"askSearchEnginesNotToIndex": true
+```
 
 You may also want to make your repository [private](https://help.github.com/en/github/creating-cloning-and-archiving-repositories/about-repositories), if your gallery is stored in a public place like GitHub.
 
@@ -187,6 +239,14 @@ _pictures/
 ```
 
 And then visit `http://localhost:5000/your-group-of-related-albums/`
+
+### Social sharing image
+
+To make an [open graph image](https://ogp.me/) available for each page in your gallery, add your domain name to the `_config` file:
+
+```
+"host": "https://your-domain-name.com"
+```
 
 ### Image file storage
 

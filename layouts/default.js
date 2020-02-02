@@ -5,7 +5,7 @@ import { config } from "../_config.js";
 
 const whenDefined = fs.readFileSync("helpers/when-defined.js", 'utf8');
 
-export const DefaultLayout = ({ title, content, hideFromSearchEngines, openGraphImage }) => {
+export const DefaultLayout = ({ title, content, askSearchEnginesNotToIndex, openGraphImage }) => {
   return `
     <!DOCTYPE html>
     <html lang="en" dir="ltr">
@@ -16,7 +16,7 @@ export const DefaultLayout = ({ title, content, hideFromSearchEngines, openGraph
 
         <meta charset="utf-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-        ${ hideFromSearchEngines || config.hideFromSearchEngines 
+        ${ askSearchEnginesNotToIndex || config.askSearchEnginesNotToIndex 
           ? `<meta name="robots" content="noindex" />`
           : ""}
         <title>${title}</title>
