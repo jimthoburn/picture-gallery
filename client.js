@@ -143,9 +143,7 @@ async function getAlbumJSON({ albumURI }) {
   const album             = await getData(`/api/${albumURI}.json`);
   const generatedPictures = await getData(`/pictures/${albumURI}/data.json`);
 
-  if (album && generatedPictures) {
-    return getCombinedAlbumJSON({ album, generatedPictures });
-  }
+  return getCombinedAlbumJSON({ album, generatedPictures });
 }
 
 // async function getAlbumJSON({ albumURI }) {
