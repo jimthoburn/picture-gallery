@@ -198,7 +198,7 @@ albums.forEach(async (album) => {
                           //   https://cdn.com/els9-234-sdf.jpg
                           // OR filename:
                           //   my-image-file.jpg
-      hideFromSearchEngines: null
+      askSearchEnginesNotToIndex: null
     }
   });
 
@@ -221,7 +221,7 @@ if (albumGroups.length > 0) {
                           //   https://cdn.com/els9-234-sdf.jpg
                           // OR filename:
                           //   my-image-file.jpg
-      hideFromSearchEngines: null,
+      askSearchEnginesNotToIndex: null,
       albums: group.albums
     }
 

@@ -4,7 +4,7 @@
   "date": "February & March, 2016",
   "zipFileSize": null,
   "coverPicture": null,
-  "hideFromSearchEngines": null,
+  "askSearchEnginesNotToIndex": null,
   "pictures": [
     {
       "source": "https://cdn.glitch.com/0066dc23-cee2-4973-ae99-075586a1eded%2F17.jpg?v=1572802598055",

@@ -76,7 +76,7 @@ function copy({source, destination}) {
 }
 
 
-function generateAlbum({ album, hideFromSearchEngines }) {
+function generateAlbum({ album, askSearchEnginesNotToIndex }) {
 
   const urlsToGenerate = [`/${album.uri}/`].concat(
                            album.pictures.map(picture => `/${album.uri}/${picture.uri}/`)
@@ -97,7 +97,7 @@ function generateAlbum({ album, hideFromSearchEngines }) {
     const renderedHTML = DefaultLayout({
       title,
       content,
-      hideFromSearchEngines,
+      askSearchEnginesNotToIndex,
       openGraphImage:
         config.host
           ? `${config.host}${ getOpenGraphImage({ getPageURL, pictures: album.pictures, album }) }`
@@ -122,7 +122,7 @@ function getAlbumJSON({ albumURI }) {
 function generateIndexPage() {
   console.log(`Generating index page`);
   const albums = galleryData.albums.map(albumURI => getAlbumJSON({ albumURI }));
-  const { title, hideFromSearchEngines } = galleryData;
+  const { title, askSearchEnginesNotToIndex } = galleryData;
   const content = render(IndexPage({ ...galleryData, albums }));
 
   function getPageURL() {
@@ -132,7 +132,7 @@ function generateIndexPage() {
   const beautifiedHTML = jsBeautify.html_beautify(WithoutClientLayout({
     title,
     content,
-    hideFromSearchEngines,
+    askSearchEnginesNotToIndex,
     openGraphImage:
       config.host
         ? `${config.host}${ getOpenGraphImage({ getPageURL, pictures: albums[0].pictures, album: albums[0] }) }`
@@ -170,11 +170,11 @@ function generateAllAlbums() {
           uri: `${parent.uri}/${album.uri}`,
           parent
         },
-        hideFromSearchEngines: album.hideFromSearchEngines || parent.hideFromSearchEngines
+        askSearchEnginesNotToIndex: album.askSearchEnginesNotToIndex || parent.askSearchEnginesNotToIndex
       });
 
     } else {
-      generateAlbum({ album, hideFromSearchEngines: album.hideFromSearchEngines });
+      generateAlbum({ album, askSearchEnginesNotToIndex: album.askSearchEnginesNotToIndex });
     }
 
   }
@@ -196,13 +196,13 @@ function generateAllAlbums() {
 
     console.log(`Generating page for: ${ pageURL }`);
 
-    const { title, hideFromSearchEngines } = album;
+    const { title, askSearchEnginesNotToIndex } = album;
     const content = render(ParentAlbumPage({ parent: album, children }));
 
     const renderedHTML = WithoutClientLayout({
       title,
       content,
-      hideFromSearchEngines,
+      askSearchEnginesNotToIndex,
       openGraphImage:
         config.host
           ? `${config.host}${ getOpenGraphImage({ getPageURL, pictures: children[0].pictures, album: children[0], parent: album }) }`
