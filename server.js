@@ -14,7 +14,6 @@ import { render } from "./web_modules/preact-render-to-string.js";
 
 import { config } from "./_config.js";
 import { DefaultLayout } from "./layouts/default.js";
-import { WithoutClientLayout } from "./layouts/without-client.js";
 import { IndexPage } from "./pages/index.js";
 import { AlbumPage } from "./pages/album.js";
 import { ParentAlbumPage } from "./pages/parent-album.js";
@@ -85,10 +84,11 @@ function serveIndexPage(req, res, next) {
       return `${req.protocol}://${req.get("host")}${req.originalUrl}`;
     }
 
-    const beautifiedHTML = jsBeautify.html_beautify(WithoutClientLayout({
+    const beautifiedHTML = jsBeautify.html_beautify(DefaultLayout({
       title,
       content,
       askSearchEnginesNotToIndex,
+      includeClientJS: false,
       openGraphImage:
         config.host
           ? `${config.host}${ getOpenGraphImage({ getPageURL, pictures: albums[0].pictures, album: albums[0] }) }`
@@ -189,10 +189,11 @@ async function serveAlbumPage(req, res) {
           const { title, askSearchEnginesNotToIndex } = data;
           const content = render(ParentAlbumPage({ parent: data, children: albums }));
 
-          const beautifiedHTML = jsBeautify.html_beautify(WithoutClientLayout({
+          const beautifiedHTML = jsBeautify.html_beautify(DefaultLayout({
             title,
             content,
             askSearchEnginesNotToIndex,
+            includeClientJS: false,
             openGraphImage:
               config.host
                 ? `${config.host}${ getOpenGraphImage({ getPageURL, pictures: albums[0].pictures, album: albums[0], parent: data }) }`
@@ -261,9 +262,10 @@ function sendError404Page(req, res, next) {
   const title   = error404PageTitle;
   const content = render(Error404Page());
 
-  const beautifiedHTML = jsBeautify.html_beautify(WithoutClientLayout({
+  const beautifiedHTML = jsBeautify.html_beautify(DefaultLayout({
     title,
-    content
+    content,
+    includeClientJS: false
   }));
   res.status(404).send(beautifiedHTML);
 }
@@ -272,9 +274,10 @@ function sendError500Page(err, req, res, next) {
   const title   = error500PageTitle;
   const content = render(Error500Page({ errorMessage: err.stack }));
 
-  const beautifiedHTML = jsBeautify.html_beautify(WithoutClientLayout({
+  const beautifiedHTML = jsBeautify.html_beautify(DefaultLayout({
     title,
-    content
+    content,
+    includeClientJS: false
   }));
   res.status(500).send(beautifiedHTML);
 }

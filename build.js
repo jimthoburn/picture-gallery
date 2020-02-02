@@ -7,7 +7,6 @@ import { render } from "./web_modules/preact-render-to-string.js";
 
 import { config } from "./_config.js";
 import { DefaultLayout } from "./layouts/default.js";
-import { WithoutClientLayout } from "./layouts/without-client.js";
 import { AlbumPage } from "./pages/album.js";
 import { IndexPage } from "./pages/index.js";
 import { ParentAlbumPage } from "./pages/parent-album.js";
@@ -129,10 +128,11 @@ function generateIndexPage() {
     return "/";
   }
 
-  const beautifiedHTML = jsBeautify.html_beautify(WithoutClientLayout({
+  const beautifiedHTML = jsBeautify.html_beautify(DefaultLayout({
     title,
     content,
     askSearchEnginesNotToIndex,
+    includeClientJS: false,
     openGraphImage:
       config.host
         ? `${config.host}${ getOpenGraphImage({ getPageURL, pictures: albums[0].pictures, album: albums[0] }) }`
@@ -148,7 +148,11 @@ function generateError404Page() {
   const title   = error404PageTitle;
   const content = render(Error404Page());
 
-  const beautifiedHTML = jsBeautify.html_beautify(WithoutClientLayout({ title, content }));
+  const beautifiedHTML = jsBeautify.html_beautify(DefaultLayout({
+    title,
+    content,
+    includeClientJS: false
+  }));
   createFile({ pageURL: "/", filename: "404.html", html: beautifiedHTML });
 }
 
@@ -199,10 +203,11 @@ function generateAllAlbums() {
     const { title, askSearchEnginesNotToIndex } = album;
     const content = render(ParentAlbumPage({ parent: album, children }));
 
-    const renderedHTML = WithoutClientLayout({
+    const renderedHTML = DefaultLayout({
       title,
       content,
       askSearchEnginesNotToIndex,
+      includeClientJS: false,
       openGraphImage:
         config.host
           ? `${config.host}${ getOpenGraphImage({ getPageURL, pictures: children[0].pictures, album: children[0], parent: album }) }`
