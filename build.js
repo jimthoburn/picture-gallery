@@ -20,7 +20,12 @@ const galleryData = JSON.parse(fs.readFileSync("./_api/index.json", "utf8"));
 
 const [secretAlbums, secretAlbumGroups] = getSecretAlbums();
 
-const albums = secretAlbums;
+// https://stackoverflow.com/questions/1960473/get-all-unique-values-in-a-javascript-array-remove-duplicates
+function onlyUnique(value, index, self) { 
+  return self.indexOf(value) === index;
+}
+
+const albums = galleryData.albums.concat(secretAlbums).filter( onlyUnique );
 
 const groupAlbums = secretAlbumGroups.map(group => group.uri);
 
