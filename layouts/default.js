@@ -3,14 +3,11 @@ import fs from "fs";
 
 import { config } from "../_config.js";
 
-const whenDefined = fs.readFileSync("helpers/when-defined.js", 'utf8');
-
 export const DefaultLayout = ({ title, content, askSearchEnginesNotToIndex, includeClientJS = true, openGraphImage }) => {
   return `
     <!DOCTYPE html>
     <html lang="en" dir="ltr">
       <head>
-        <script> (function() { ${whenDefined} })(); </script>
         <link rel="preload" crossorigin href="/components/responsive-image.js" as="script" />
         <link rel="preload" crossorigin href="/web_modules/lit-element.js" as="script" />
 

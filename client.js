@@ -137,6 +137,25 @@ function getData(url) {
   });
 }
 
+function getMarkdown(url) {
+  console.log("url", url);
+  return new Promise((resolve, reject) => {
+    fetch(url).then(response => {
+      try {
+        response.text().then(resolve);
+      } catch(e) {
+        console.error(e);
+        console.error(response.status);
+        console.error(url);
+        resolve(null);
+      }
+    }).catch(error => {
+      console.error(error);
+      resolve(null);
+    });
+  });
+}
+
 async function getAlbumJSON({ albumURI }) {
 
   // TODO: Send these requests in parallel
@@ -144,6 +163,10 @@ async function getAlbumJSON({ albumURI }) {
   const generatedPictures = await getData(`/pictures/${albumURI}/data.json`);
 
   return getCombinedAlbumJSON({ album, generatedPictures });
+}
+
+async function getAlbumStory({ albumURI }) {
+  return await getMarkdown(`/api/${albumURI}.markdown`);
 }
 
 // async function getAlbumJSON({ albumURI }) {
@@ -182,14 +205,18 @@ async function start() {
   // console.log(testResult);
   if (testResult) {
     console.log("test 1 passed");
-    getAlbumJSON({ albumURI: urlArray.join("/") }).then(data => {
+    Promise.all([
+      getAlbumJSON( { albumURI: urlArray.join("/") }),
+      getAlbumStory({ albumURI: urlArray.join("/") })
+    ]).then((values) => {
+      const [data, story] = values;
       if (!data) return;
       if (urlArray.length >= 2) {
         getData(`/api/${urlArray[0]}/index.json`).then(parent => {
-          startHydrate({ data, parent });
+          startHydrate({ data, story, parent });
         });
       } else {
-        startHydrate({ data });
+        startHydrate({ data, story });
       }
     });
     return;
@@ -206,14 +233,18 @@ async function start() {
       // console.log(testResult);
       if (testResult) {
         console.log("test 2 passed");
-        getAlbumJSON({ albumURI: urlArray.slice(0, urlArray.length - 1).join("/") }).then(data => {
+        Promise.all([
+          getAlbumJSON( { albumURI: urlArray.slice(0, urlArray.length - 1).join("/") }),
+          getAlbumStory({ albumURI: urlArray.slice(0, urlArray.length - 1).join("/") })
+        ]).then((values) => {
+          const [data, story] = values;
           if (!data) return;
           if (urlArray.length >= 3) {
             getData(`/api/${urlArray[0]}/index.json`).then(parent => {
-              startHydrate({ data, parent });
+              startHydrate({ data, story, parent });
             });
           } else {
-            startHydrate({ data });
+            startHydrate({ data, story });
           }
         });
         return;
@@ -254,7 +285,7 @@ function testURL(url) {
   });
 }
 
-function startHydrate({ data, parent }) {
+function startHydrate({ data, story, parent }) {
   // console.log("startHydrate");
   // console.log("data", data);
   let album;
@@ -276,6 +307,7 @@ function startHydrate({ data, parent }) {
         <${PictureGallery}
           getPageURL=${getPageURL}
           pictures=${album.pictures}
+          story=${story}
           album=${album} />
       </${Catcher}>
     `,

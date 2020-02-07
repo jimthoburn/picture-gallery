@@ -80,7 +80,7 @@ function copy({source, destination}) {
 }
 
 
-function generateAlbum({ album, askSearchEnginesNotToIndex }) {
+function generateAlbum({ album, story, askSearchEnginesNotToIndex }) {
 
   const urlsToGenerate = [`/${album.uri}/`].concat(
                            album.pictures.map(picture => `/${album.uri}/${picture.uri}/`)
@@ -96,7 +96,7 @@ function generateAlbum({ album, askSearchEnginesNotToIndex }) {
     }
 
     const title   = getInitialPageTitle({ getPageURL, pictures: album.pictures, album });
-    const content = render(AlbumPage({ getPageURL, pictures: album.pictures, album }));
+    const content = render(AlbumPage({ getPageURL, pictures: album.pictures, story, album }));
 
     const renderedHTML = DefaultLayout({
       title,
@@ -120,6 +120,14 @@ function getAlbumJSON({ albumURI }) {
     ? JSON.parse(fs.readFileSync(`./_pictures/${albumURI}/data.json`, "utf8"))
     : [];
   return getCombinedAlbumJSON({ album, generatedPictures });
+}
+
+
+function getAlbumStory({ albumURI }) {
+  const story = fs.existsSync(`./_api/${albumURI}.markdown`)
+    ? fs.readFileSync(`./_api/${albumURI}.markdown`, "utf8")
+    : null;
+  return story;
 }
 
 
@@ -166,6 +174,7 @@ function generateAllAlbums() {
   for (let nextAlbumName of albums) {
 
     const album = getAlbumJSON({ albumURI: nextAlbumName });
+    const story = getAlbumStory({ albumURI: nextAlbumName });
 
     const parentAlbums = groupAlbums.filter(groupAlbumName => groupAlbumName === nextAlbumName.split("/")[0]);
 
@@ -179,11 +188,12 @@ function generateAllAlbums() {
           uri: `${parent.uri}/${album.uri}`,
           parent
         },
+        story,
         askSearchEnginesNotToIndex: album.askSearchEnginesNotToIndex || parent.askSearchEnginesNotToIndex
       });
 
     } else {
-      generateAlbum({ album, askSearchEnginesNotToIndex: album.askSearchEnginesNotToIndex });
+      generateAlbum({ album, story, askSearchEnginesNotToIndex: album.askSearchEnginesNotToIndex });
     }
 
   }

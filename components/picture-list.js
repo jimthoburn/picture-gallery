@@ -10,6 +10,7 @@ import { isBrowser,
          onKeyboardDetected } from "../helpers/environment.js";
 import { closest }            from "../helpers/closest.js";
 import { GalleryDispatch }    from "../components/picture-gallery.js";
+import { RenderedMarkdown }   from "../components/rendered-markdown.js";
 import { getSource,
          getSourceSet,
          IMAGE_LIST_SIZES }   from "../helpers/image-source-set.js";
@@ -20,7 +21,7 @@ let getSelectedPicture = function() {
 }
 
 
-function PictureList({ album, pictures, state }) {
+function PictureList({ album, pictures, story, state }) {
   const dispatch = useContext(GalleryDispatch);
 
   const selectedPicture = useRef(null);
@@ -143,8 +144,12 @@ function PictureList({ album, pictures, state }) {
         })}
       </ol>
 
+      ${ (story)
+         ? html`<article><${RenderedMarkdown} markdown="${ story }"></${RenderedMarkdown}></article>`
+         : "" }
+
       ${ (album.zipFileSize)
-         ? html`<p>
+         ? html`<p class="action">
                   <a href="/archives/${ album.uri }.zip">Download All Pictures</a><br />
                   <small>ZIP file / ${ album.zipFileSize }</small>
                 </p>`

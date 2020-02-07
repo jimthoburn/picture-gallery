@@ -5,12 +5,13 @@ const    html = htm.bind(createElement);
 import { PictureGallery } from "../components/picture-gallery.js";
 
 
-function AlbumPage({ album, pictures, getPageURL }) {
+function AlbumPage({ album, pictures, story, getPageURL }) {
 
   return html`
     <${PictureGallery}
       album="${album}"
       pictures="${pictures}"
+      story="${story}"
       getPageURL="${getPageURL}" />
   `;
 }
