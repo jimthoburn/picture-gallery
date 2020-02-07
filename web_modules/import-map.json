@@ -1,0 +1,12 @@
+{
+  "imports": {
+    "htm": "./htm.js",
+    "lit-element": "./lit-element.js",
+    "markdown-it": "./markdown-it.js",
+    "markdown-it-deflist": "./markdown-it-deflist.js",
+    "preact": "./preact.js",
+    "preact/hooks": "./preact/hooks.js",
+    "preact-render-to-string": "./preact-render-to-string.js",
+    "xstate": "./xstate.js"
+  }
+}
