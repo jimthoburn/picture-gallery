@@ -24,7 +24,7 @@ let getMachine = function() {
 } 
 
 
-function PictureGallery({ album, pictures, getPageURL }) {
+function PictureGallery({ album, pictures, story, getPageURL }) {
 
   if (isBrowser()) {
     console.log(`🖼 ✨ Render`);
@@ -163,6 +163,7 @@ function PictureGallery({ album, pictures, getPageURL }) {
           <${PictureList}
             album="${album}"
             pictures="${pictures}"
+            story="${story}"
             state="${state}" />`
         : ""}
     </${GalleryDispatch.Provider}>

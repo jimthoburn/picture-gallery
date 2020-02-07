@@ -57,6 +57,23 @@ function getData(url) {
   });
 }
 
+function getMarkdown(url) {
+  return new Promise((resolve, reject) => {
+    fetch(url).then(response => {
+      if (response.ok) {
+        resolve(response.text());
+      } else {
+        console.error(response.status);
+        console.error(url);
+        resolve(null);
+      }
+    }).catch(error => {
+      console.error(error);
+      resolve(null);
+    });
+  });
+}
+
 async function getAlbumJSON({ albumURI, req }) {
 
   // TODO: Send these requests in parallel
@@ -64,6 +81,11 @@ async function getAlbumJSON({ albumURI, req }) {
   const generatedPictures = await getData(`${req.protocol}://${req.get("host")}/pictures/${albumURI}/data.json`);
 
   return getCombinedAlbumJSON({ album, generatedPictures });
+}
+
+async function getAlbumStory({ albumURI, req }) {
+  const story = await getMarkdown(`${req.protocol}://${req.get("host")}/api/${albumURI}.markdown`);
+  return story;
 }
 
 // function getAlbumJSON({ albumURI, req }) {
@@ -243,8 +265,9 @@ async function serveAlbumPage(req, res) {
       album = data;
       // console.log(album);
 
+      const story   = await getAlbumStory({ albumURI, req });
       const title   = getInitialPageTitle({ getPageURL, album, pictures: album.pictures });
-      const content = render(AlbumPage({ getPageURL, album, pictures: album.pictures }));
+      const content = render(AlbumPage({ getPageURL, album, pictures: album.pictures, story }));
       const { askSearchEnginesNotToIndex } = album;
 
       const beautifiedHTML = jsBeautify.html_beautify(DefaultLayout({
@@ -320,6 +343,22 @@ server.use(express.static("./_public"));
 server.get("/client.js", function(req, res) {
   res.sendFile("client.js", { root: __dirname });
 });
+
+// If the browser has cached a trailing slash redirects to a file with an extension,
+// Redirect back to the original file
+// server.get(`*.*/$`, function(req, res, next) {
+// 
+//   const urlWithoutTrailingSlash = `${req.originalUrl}`.replace(/\/$/g, "");
+//   const urlWithoutLeadingOrTrailingSlash = `${urlWithoutTrailingSlash}`.replace(/^\//g, "");
+// 
+//   if (fs.existsSync(`.${urlWithoutLeadingOrTrailingSlash}`) ||
+//       fs.existsSync(`./_${urlWithoutLeadingOrTrailingSlash}`) ||
+//       fs.existsSync(`./_public/${urlWithoutLeadingOrTrailingSlash}`)) {
+//     res.redirect(urlWithoutTrailingSlash);
+//   } else {
+//     sendError404Page(req, res, next)
+//   }
+// });
 
 // Add trailing slashes to URLs: /wildflowers => /wildflowers/
 server.use(slashes());
