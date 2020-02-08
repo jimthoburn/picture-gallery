@@ -248,6 +248,16 @@ To make an [open graph image](https://ogp.me/) available for each page in your g
 "host": "https://your-domain-name.com"
 ```
 
+### How to add a story about an album
+
+If you’d like to include some words about your album, create a [markdown](https://guides.github.com/features/mastering-markdown/) file with the same name as your album’s `.json` file and place it in the `_api` folder. For example:
+
+```
+_api/
+    your-album.json
+    your-album.markdown
+```
+
 ### Image file storage
 
 You may want to use Git LFS, if your repository is getting close to 1 GB in size. See [GitHub disk quota](https://help.github.com/en/github/managing-large-files/what-is-my-disk-quota)
