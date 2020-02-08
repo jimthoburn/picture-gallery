@@ -109,25 +109,29 @@ class Catcher extends Component {
 }
 
 function getData(url) {
-  console.log("url", url);
+  // console.log("url", url);
   return new Promise((resolve, reject) => {
     fetch(url).then(response => {
-      try {
-        response.text().then(text => {
-          try {
-            // console.log(text);
-            // json = response.json();
-            const json = JSON.parse(text);
-            resolve(json);
-          } catch(e) {
-            console.error(e);
-            resolve(null);
-          }
-        });
-      } catch(e) {
-        console.error(e);
-        console.error(response.status);
-        console.error(url);
+      if (response.ok) {
+        try {
+          response.text().then(text => {
+            try {
+              // console.log(text);
+              // json = response.json();
+              const json = JSON.parse(text);
+              resolve(json);
+            } catch(e) {
+              console.error(e);
+              resolve(null);
+            }
+          });
+        } catch(e) {
+          console.error(e);
+          console.error(response.status);
+          console.error(url);
+          resolve(null);
+        }
+      } else {
         resolve(null);
       }
     }).catch(error => {
@@ -138,15 +142,19 @@ function getData(url) {
 }
 
 function getMarkdown(url) {
-  console.log("url", url);
+  // console.log("url", url);
   return new Promise((resolve, reject) => {
     fetch(url).then(response => {
-      try {
-        response.text().then(resolve);
-      } catch(e) {
-        console.error(e);
-        console.error(response.status);
-        console.error(url);
+      if (response.ok) {
+        try {
+          response.text().then(resolve);
+        } catch(e) {
+          console.error(e);
+          console.error(response.status);
+          console.error(url);
+          resolve(null);
+        }
+      } else {
         resolve(null);
       }
     }).catch(error => {
@@ -260,22 +268,26 @@ function testURL(url) {
   // console.log("url", url);
   return new Promise((resolve, reject) => {
     fetch(url).then(response => {
-      try {
-        response.text().then(text => {
-          try {
-            // console.log(text);
-            // json = response.json();
-            const json = JSON.parse(text);
-            resolve(json);
-          } catch(e) {
-            console.error(e);
-            resolve(null);
-          }
-        });
-      } catch(e) {
-        console.error(e);
-        console.error(response.status);
-        console.error(url);
+      if (response.ok) {
+        try {
+          response.text().then(text => {
+            try {
+              // console.log(text);
+              // json = response.json();
+              const json = JSON.parse(text);
+              resolve(json);
+            } catch(e) {
+              console.error(e);
+              resolve(null);
+            }
+          });
+        } catch(e) {
+          console.error(e);
+          console.error(response.status);
+          console.error(url);
+          resolve(null);
+        }
+      } else {
         resolve(null);
       }
     }).catch(error => {
