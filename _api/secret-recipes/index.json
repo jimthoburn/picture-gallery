@@ -1,0 +1,10 @@
+{
+  "uri": "secret-recipes",
+  "title": "Secret Recipes",
+  "date": null,
+  "coverPicture": null,
+  "askSearchEnginesNotToIndex": true,
+  "albums": [
+    "chocolate-almond-oat-cookies"
+  ]
+}

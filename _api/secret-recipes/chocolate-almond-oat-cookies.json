@@ -1,0 +1,28 @@
+{
+  "uri": "chocolate-almond-oat-cookies",
+  "title": "Chocolate Almond Oat Cookies",
+  "date": null,
+  "zipFileSize": "6.5 MB",
+  "coverPicture": null,
+  "askSearchEnginesNotToIndex": null,
+  "pictures": [
+    {
+      "filename": "1.jpg",
+      "description": null,
+      "caption": null,
+      "uri": "1"
+    },
+    {
+      "filename": "6.jpg",
+      "description": null,
+      "caption": null,
+      "uri": "6"
+    },
+    {
+      "filename": "8.jpg",
+      "description": null,
+      "caption": null,
+      "uri": "8"
+    }
+  ]
+}
