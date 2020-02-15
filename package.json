@@ -9,12 +9,16 @@
     "create": "npm run create:images && npm run optimize:images && npm run create:albums && npm run create:archives",
     "build": "node --experimental-modules build.js",
     "serve": "serve ./_site/",
-    "start": "node --experimental-modules server.js"
+    "start": "node --experimental-modules server.js",
+    "cypress:open": "cypress open",
+    "cypress:run": "cypress run",
+    "test": "npm run cypress:run"
   },
   "engines": {
     "node": "12.14.x"
   },
   "dependencies": {
+    "cypress": "^4.0.1",
     "htm": "^2.2.1",
     "lit-element": "^2.2.1",
     "markdown-it": "^10.0.0",

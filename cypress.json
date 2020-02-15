@@ -1,0 +1,10 @@
+{
+  "baseUrl": "http://localhost:5000",
+  "testAlbumURL": "/japan/",
+  "testPictureURL": "/japan/shiogama-shrine-forest/",
+  "testGroupAlbumURL": "/secret-recipes/",
+  "testGroupAlbumChildURL": "/secret-recipes/chocolate-almond-oat-cookies/",
+  "testGroupAlbumChildName": "Chocolate Almond Oat Cookies",
+  "testGroupAlbumPictureURL": "/secret-recipes/chocolate-almond-oat-cookies/1/",
+  "testSecretAlbumURL": "/secret-recipes/"
+}
