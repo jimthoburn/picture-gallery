@@ -234,17 +234,23 @@ async function serveAlbumPage(req, res) {
     } else if (getAlbumURI({ pageURL: getPageURL(), albumNames: secretAlbumGroups.map(group => group.uri) })) {
       // console.log("**** CHILD ALBUM");
 
-      getAlbumJSON({ albumURI: `${getAlbumURI({ pageURL: getPageURL(), albumNames: secretAlbumGroups.map(group => group.uri) })}/index`, req }).then(parent => {
+      getAlbumJSON({ albumURI: `${getAlbumURI({ pageURL: getPageURL(), albumNames: secretAlbumGroups.map(group => group.uri) })}/index`, req }).then(async function(parent) {
+        const childAlbumURI = getAlbumURI({ pageURL: getPageURL(), albumNames: secretAlbumGroups.map(group => group.uri) }) + "/" + data.uri;
+
+        console.log("childAlbumURI", childAlbumURI);
+
         album = {
           ...data,
-          uri: getAlbumURI({ pageURL: getPageURL(), albumNames: secretAlbumGroups.map(group => group.uri) }) + "/" + data.uri,
+          uri: childAlbumURI,
           parent,
           askSearchEnginesNotToIndex: data.askSearchEnginesNotToIndex || parent.askSearchEnginesNotToIndex
         };
         // console.log(album);
 
+        const story = await getAlbumStory({ albumURI: childAlbumURI, req });
+
         const title   = getInitialPageTitle({ getPageURL, album, pictures: album.pictures });
-        const content = render(AlbumPage({ getPageURL, album, pictures: album.pictures }));
+        const content = render(AlbumPage({ getPageURL, album, pictures: album.pictures, story }));
         const { askSearchEnginesNotToIndex } = album;
 
         const beautifiedHTML = jsBeautify.html_beautify(DefaultLayout({
@@ -361,7 +367,7 @@ server.get("/client.js", function(req, res) {
 // });
 
 // Add trailing slashes to URLs: /wildflowers => /wildflowers/
-server.use(slashes());
+server.use(slashes(true, { code: 302 })); // 302 Temporary redirects
 
 server.use(sendError404Page);
 
