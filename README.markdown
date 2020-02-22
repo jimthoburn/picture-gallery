@@ -14,11 +14,11 @@ I’m using it to practice with new tools and to share photos with friends 🦊 
 
 ### Quick start
 
-You can [remix this Glitch](https://glitch.com/edit/#!/picture-gallery) to make your own gallery 🎏
+You can [remix this Glitch project](https://glitch.com/edit/#!/picture-gallery) to make your own gallery 🎏
 
 ### Automation
 
-If you have a lot of images, you can use this GitHub project to automatically generate different image sizes and data for your albums and then publish them as a static web site.
+If you have a lot of images, you can automatically generate different image sizes and data for your albums and then publish them as a static web site.
 
 Here are the basic steps:
 
