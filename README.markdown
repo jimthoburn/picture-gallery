@@ -210,13 +210,13 @@ You can also ask search engines not to index your album by setting `askSearchEng
 
 This will add a [noindex](https://support.google.com/webmasters/answer/93710?hl=en) meta element to your page.
 
-You can also hide your entire gallery by setting `askSearchEnginesNotToIndex` to `true` in the `_config` file:
+And you can ask search engines not to index your entire gallery (including the home page) by setting `askSearchEnginesNotToIndex` to `true` in the `_config` file:
 
 ```
 "askSearchEnginesNotToIndex": true
 ```
 
-You may also want to make your repository [private](https://help.github.com/en/github/creating-cloning-and-archiving-repositories/about-repositories), if your gallery is stored in a public place like GitHub.
+If your gallery is stored in a public place like GitHub, it may also be a good idea to [make your repository private](https://help.github.com/en/github/creating-cloning-and-archiving-repositories/about-repositories).
 
 ### Group albums
 
@@ -257,6 +257,8 @@ _api/
     your-album.json
     your-album.markdown
 ```
+
+Your story will appear along with the images, on the page for your album.
 
 ### Image file storage
 
