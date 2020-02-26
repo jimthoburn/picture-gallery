@@ -14,7 +14,7 @@ I’m using it to practice with new tools and to share photos with friends 🦊 
 
 * [Quick start](#quick-start)
 * [Creating and publishing a gallery](#creating-and-publishing-a-gallery)
-* [Editing a gallery](#editing)
+* [Editing a gallery](#editing-a-gallery)
 * [How to add a new album](#how-to-add-a-new-album)
 * [How to publish your gallery](#how-to-publish-your-gallery)
 * [Secret albums](#secret-albums)
@@ -99,7 +99,7 @@ npm start
 
 To stop the server, press “control C”
 
-### Editing
+### Editing a gallery
 
 You can edit the [JSON](https://www.json.org/json-en.html) files that were created for you in the `_api` folder:
 
