@@ -12,15 +12,24 @@ I’m using it to practice with new tools and to share photos with friends 🦊 
 
 ## How to make your own gallery
 
+* [Quick start](#quick-start)
+* [Creating and publishing a gallery](#creating-and-publishing-a-gallery)
+* [Editing a gallery](#editing)
+* [How to add a new album](#how-to-add-a-new-album)
+* [How to publish your gallery](#how-to-publish-your-gallery)
+* [Secret albums](#secret-albums)
+* [Group albums](#group-albums)
+* [Social sharing image](#social-sharing-image)
+* [How to add a story about an album](how-to-add-a-story-about-an-album)
+* [Image file storage](#image-file-storage)
+
 ### Quick start
 
 You can [remix this Glitch project](https://glitch.com/edit/#!/picture-gallery) to make your own gallery 🎏
 
-### Automation
+### Creating and publishing a gallery
 
-If you have a lot of images, you can automatically generate different image sizes and data for your albums and then publish them as a static web site.
-
-Here are the basic steps:
+You can follow these steps to create your albums and then publish them as a static web site.
 
 1. Install Node 12.13.1 LTS or newer  
 https://nodejs.org
