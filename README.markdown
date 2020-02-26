@@ -13,7 +13,7 @@ I’m using it to practice with new tools and to share photos with friends 🦊 
 ## How to make your own gallery
 
 * [Quick start](#quick-start)
-* [Creating and publishing a gallery](#creating-and-publishing-a-gallery)
+* [Creating a gallery](#creating-a-gallery)
 * [Editing a gallery](#editing-a-gallery)
 * [How to add a new album](#how-to-add-a-new-album)
 * [How to publish your gallery](#how-to-publish-your-gallery)
@@ -27,7 +27,7 @@ I’m using it to practice with new tools and to share photos with friends 🦊 
 
 You can [remix this Glitch project](https://glitch.com/edit/#!/picture-gallery) to make your own gallery 🎏
 
-### Creating and publishing a gallery
+### Creating a gallery
 
 You can follow these steps to create your albums and then publish them as a static web site.
 
