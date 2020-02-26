@@ -29,7 +29,7 @@ You can [remix this Glitch project](https://glitch.com/edit/#!/picture-gallery) 
 
 ### Creating a gallery
 
-You can follow these steps to create your albums and then publish them as a static web site.
+You can follow these steps to create images and data for your albums.
 
 1. Install Node 12.13.1 LTS or newer  
 https://nodejs.org
