@@ -107,27 +107,27 @@ function PictureImage({ album, picture, state }) {
       <responsive-image
         aspect-ratio="${
           (picture.width && picture.height)
-          ? `${picture.width}/${picture.height}`
+          ? `${picture.width} / ${picture.height}`
           : "1/1"
         }"
         max-width="100vw"
         max-height="100vh"
         ref="${image}">
         ${ (picture.previewBase64)
-           ? html`
-          <img
-            class="preview"
-            width="${ 320 * (picture.width  > picture.height ? 1 : picture.width/picture.height) }"
-            height="${320 * (picture.height > picture.width  ? 1 : picture.height/picture.width) }"
-            src="data:image/jpeg;base64,${picture.previewBase64}" alt="" />`
-           : "" }
+          ? html`
+            <img
+              class="preview"
+              width=" ${320 * (picture.width  > picture.height ? 1 : picture.width  / picture.height) }"
+              height="${320 * (picture.height > picture.width  ? 1 : picture.height / picture.width) }"
+              src="data:image/jpeg;base64,${picture.previewBase64}" alt="" />`
+          : "" }
         <img
           src="${getSource({album, picture})}"
           srcset="${getSourceSet({album, picture})}"
-          sizes="${getSourceSet({album, picture}) ? sizes : null}"
+          sizes=" ${getSourceSet({album, picture}) ? sizes : null}"
           alt="${alt}"
-          width="${ 320 * (picture.width  > picture.height ? 1 : picture.width/picture.height) }"
-          height="${320 * (picture.height > picture.width  ? 1 : picture.height/picture.width) }"
+          width=" ${320 * (picture.width  > picture.height ? 1 : picture.width  / picture.height) }"
+          height="${320 * (picture.height > picture.width  ? 1 : picture.height / picture.width) }"
           data-style="background-color: ${picture.primaryColor}"
           onLoad="${onImageLoaded}" />
       </responsive-image>

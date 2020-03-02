@@ -7,7 +7,7 @@ import   htm                    from "../web_modules/htm.js";
 const    html = htm.bind(createElement);
 import { usingKeyboard,
          onKeyboardDetected }   from "../helpers/environment.js";
-import { GalleryDispatch }       from "../components/picture-gallery.js";
+import { GalleryDispatch }      from "../components/picture-gallery.js";
 
 
 function CloseButton({ state, album }) {
@@ -32,7 +32,7 @@ function CloseButton({ state, album }) {
     // ⌨️ If the a modifier key is pressed, let the browser handle it
     if (e.metaKey || e.ctrlKey || e.shiftKey) return;
 
-    // TODO: Handle case where the details are transitioning in when this event happens
+    // ✅ TODO: Handle case where the details are transitioning in when this event happens
     // (Or more likely, when the forward/backward buttons are pressed)
     dispatch({
       type: "DETAILS_CLOSED"
