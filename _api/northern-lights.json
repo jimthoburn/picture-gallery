@@ -1,0 +1,28 @@
+{
+  "uri": "northern-lights",
+  "title": "Northern Lights",
+  "date": "Muncho Lake, British Columbia, Canada, September, 2011",
+  "zipFileSize": "2.1 MB",
+  "coverPicture": null,
+  "askSearchEnginesNotToIndex": true,
+  "pictures": [
+    {
+      "filename": "1.jpeg",
+      "description": null,
+      "caption": null,
+      "uri": "1"
+    },
+    {
+      "filename": "2.jpeg",
+      "description": null,
+      "caption": null,
+      "uri": "2"
+    },
+    {
+      "filename": "3.jpeg",
+      "description": null,
+      "caption": null,
+      "uri": "3"
+    }
+  ]
+}
