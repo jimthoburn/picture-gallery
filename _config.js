@@ -16,11 +16,11 @@ export const config = {
     "homeURL": "/",
     "albumURL": "/japan/",
     "pictureURL": "/japan/shiogama-shrine-forest/",
-    "groupAlbumURL": "/secret-recipes/",
-    "groupAlbumChildURL": "/secret-recipes/chocolate-almond-oat-cookies/",
-    "groupAlbumChildName": "Chocolate Almond Oat Cookies",
-    "groupAlbumPictureURL": "/secret-recipes/chocolate-almond-oat-cookies/1/",
-    "secretAlbumURL": "/secret-recipes/"
+    "groupAlbumURL": "/wildflowers/",
+    "groupAlbumChildURL": "/wildflowers/joshua-tree/",
+    "groupAlbumChildName": "Wildflowers of Joshua Tree",
+    "groupAlbumPictureURL": "/wildflowers/joshua-tree/1/",
+    "secretAlbumURL": "/northern-lights/"
   }
 
 };
