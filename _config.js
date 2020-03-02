@@ -11,4 +11,16 @@ export const config = {
   // Override the settings in individual albums, and “noindex” the entire site
   // "askSearchEnginesNotToIndex": true
 
+  "test": {
+    "hostURL": "http://localhost:4000",
+    "homeURL": "/",
+    "albumURL": "/japan/",
+    "pictureURL": "/japan/shiogama-shrine-forest/",
+    "groupAlbumURL": "/secret-recipes/",
+    "groupAlbumChildURL": "/secret-recipes/chocolate-almond-oat-cookies/",
+    "groupAlbumChildName": "Chocolate Almond Oat Cookies",
+    "groupAlbumPictureURL": "/secret-recipes/chocolate-almond-oat-cookies/1/",
+    "secretAlbumURL": "/secret-recipes/"
+  }
+
 };
