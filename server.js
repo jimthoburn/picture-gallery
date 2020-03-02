@@ -14,6 +14,7 @@ import { render } from "./web_modules/preact-render-to-string.js";
 
 import { config } from "./_config.js";
 import { DefaultLayout } from "./layouts/default.js";
+import { RobotsText } from "./layouts/robots.txt.js";
 import { IndexPage } from "./pages/index.js";
 import { AlbumPage } from "./pages/album.js";
 import { ParentAlbumPage } from "./pages/parent-album.js";
@@ -33,11 +34,14 @@ function onlyUnique(value, index, self) {
   return self.indexOf(value) === index;
 }
 
-const albums = galleryData.albums.concat(secretAlbums).concat(secretAlbumGroups.map(group => group.uri)).filter( onlyUnique );
+const albums = galleryData.albums
+                .concat(secretAlbums)
+                .concat(secretAlbumGroups.map(group => group.uri))
+                .filter( onlyUnique );
 
 // console.log(albums);
 
-const port = parseInt(process.env.PORT, 10) || 5000;
+const port = parseInt(process.env.PORT, 10) || 4000;
 const server = express();
 
 function getData(url) {
@@ -348,6 +352,16 @@ server.use(express.static("./_public"));
 
 server.get("/client.js", function(req, res) {
   res.sendFile("client.js", { root: __dirname });
+});
+
+server.get("/robots.txt", function(req, res, next) {
+  if (config.askSearchEnginesNotToIndex) {
+    sendError404Page(req, res, next);
+  } else {
+    const text = RobotsText({ host:config.host });
+    res.type('text/plain');
+    res.send(text);
+  }
 });
 
 // If the browser has cached a trailing slash redirects to a file with an extension,

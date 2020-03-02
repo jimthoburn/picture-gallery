@@ -45,7 +45,11 @@ function ParentAlbumPage({ parent, children }) {
                   srcset="${getSourceSet({parent, album, picture})}"
                   sizes="${getSourceSet({parent, album, picture}) ? sizes : null}"
                   loading="lazy"
-                  alt=""
+                  alt="${
+                    (picture.description)
+                    ? picture.description
+                    : `Picture ${index + 1}`
+                  }"
                   width="${ 320 * (picture.width  > picture.height ? 1 : picture.width/picture.height) }"
                   height="${320 * (picture.height > picture.width  ? 1 : picture.height/picture.width) }"
                   data-style="background-color: ${picture.primaryColor}" />
