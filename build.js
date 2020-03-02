@@ -119,14 +119,17 @@ function generateAlbum({ album, story, askSearchEnginesNotToIndex }) {
 
     const title   = getInitialPageTitle({ getPageURL, pictures: album.pictures, album });
     const content = render(AlbumPage({ getPageURL, pictures: album.pictures, story, album }));
+    const openGraphImage = getOpenGraphImage({ getPageURL, pictures: album.pictures, album });
 
     const renderedHTML = DefaultLayout({
       title,
       content,
       askSearchEnginesNotToIndex,
       openGraphImage:
-        config.host
-          ? `${config.host}${ getOpenGraphImage({ getPageURL, pictures: album.pictures, album }) }`
+        openGraphImage ?
+          openGraphImage.indexOf("http") != 0 && config.host
+            ? `${config.host}${openGraphImage}`
+            : openGraphImage
           : null
     });
     const beautifiedHTML = jsBeautify.html_beautify(renderedHTML);
@@ -178,14 +181,21 @@ function generateIndexPage() {
     return "/";
   }
 
+  const openGraphImage = 
+    albums[0].albums
+      ? getOpenGraphImage({ getPageURL, pictures: albums[0].albums[0].pictures, album: albums[0].albums[0] })
+      : getOpenGraphImage({ getPageURL, pictures: albums[0].pictures, album: albums[0] })
+
   const beautifiedHTML = jsBeautify.html_beautify(DefaultLayout({
     title,
     content,
     askSearchEnginesNotToIndex,
     includeClientJS: false,
     openGraphImage:
-      config.host
-        ? `${config.host}${ getOpenGraphImage({ getPageURL, pictures: albums[0].pictures, album: albums[0] }) }`
+      openGraphImage ?
+        openGraphImage.indexOf("http") != 0 && config.host
+          ? `${config.host}${openGraphImage}`
+          : openGraphImage
         : null
   }));
 
@@ -296,6 +306,7 @@ function generateAllAlbums() {
 
     const { title, askSearchEnginesNotToIndex } = album;
     const content = render(ParentAlbumPage({ parent: album, children }));
+    const openGraphImage = getOpenGraphImage({ getPageURL, pictures: children[0].pictures, album: children[0], parent: album });
 
     const renderedHTML = DefaultLayout({
       title,
@@ -303,8 +314,10 @@ function generateAllAlbums() {
       askSearchEnginesNotToIndex,
       includeClientJS: false,
       openGraphImage:
-        config.host
-          ? `${config.host}${ getOpenGraphImage({ getPageURL, pictures: children[0].pictures, album: children[0], parent: album }) }`
+        openGraphImage ?
+          openGraphImage.indexOf("http") != 0 && config.host
+            ? `${config.host}${openGraphImage}`
+            : openGraphImage
           : null
     });
     const beautifiedHTML = jsBeautify.html_beautify(renderedHTML);
