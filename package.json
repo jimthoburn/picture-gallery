@@ -33,6 +33,7 @@
   "devDependencies": {
     "@babel/core": "^7.8.6",
     "archiver": "^3.1.1",
+    "capitalize": "^2.0.2",
     "color-thief": "^2.2.5",
     "concurrent-transform": "^1.0.0",
     "connect-slashes": "^1.4.0",

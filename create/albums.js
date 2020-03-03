@@ -10,6 +10,7 @@ import mkdirp from "mkdirp";
 import exif from "exif";
 import base64 from "../helpers/node-base64-image.js";
 import ColorThief from "color-thief";
+import capitalize from "capitalize";
 
 import { getSecretAlbums } from "../helpers/secret-albums.js";
 
@@ -163,7 +164,9 @@ function getAllFilesFromFolder(dir) {
 
 function saveJSON({ destination, fileName, data, overwrite }) {
 
-  const output = JSON.stringify(data, null, 2);
+  const output =
+`${JSON.stringify(data, null, 2)}
+`; // Add a trailing line return
 
   mkdirp(destination, function (err) {
     if (err) {
@@ -184,6 +187,7 @@ function saveJSON({ destination, fileName, data, overwrite }) {
 
 const destination = "./_api";
 
+
 albums.forEach(async (album) => {
   let uri = album.split("/").pop();
   let {userEditableData, readOnlyData} = await createAlbumJSON({
@@ -191,7 +195,7 @@ albums.forEach(async (album) => {
     sourceForPreviewBase64: `./_pictures/${album}/16-wide`,
     album: {
       uri,
-      title: uri,
+      title: capitalize(uri.replace(/\-/g, " ")),
       date: null,
       zipFileSize: null,
       coverPicture: null, // source:
@@ -215,7 +219,7 @@ if (albumGroups.length > 0) {
 
     let data = {
       uri: group.uri,
-      title: group.uri,
+      title: capitalize(group.uri.replace(/\-/g, " ")),
       date: null,
       coverPicture: null, // source:
                           //   https://cdn.com/els9-234-sdf.jpg

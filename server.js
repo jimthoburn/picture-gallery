@@ -1,3 +1,4 @@
+
 import fs from "fs";
 
 // https://stackoverflow.com/questions/46745014/alternative-for-dirname-in-node-when-using-the-experimental-modules-flag
@@ -107,6 +108,7 @@ function serveIndexPage(req, res, next) {
   Promise.all(galleryData.albums.map(
     albumURI => getAlbumJSON({ albumURI, req })
   )).then(albums => {
+
     const { title, askSearchEnginesNotToIndex } = galleryData;
     const content = render(IndexPage({ ...galleryData, albums }));
 
