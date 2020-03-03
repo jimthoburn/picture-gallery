@@ -16,8 +16,6 @@ function hasAnOpenGraphImage({ url }) {
           // Double check for strings with two instances of “https://”
           // https://pictures.tobbi.cohttps://cdn.glitch.com/0066dc23-cee2-4973-ae99-075586a1eded%2F17.jpg?v=1572802598055
           && content.match(/https?:\/\//g).length == 1;
-      console.log("isValidURL", isValidURL);
-      console.log("content", content);
       expect(isValidURL).toBe(true);
     } else {
       return true;

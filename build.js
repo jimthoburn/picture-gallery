@@ -43,7 +43,7 @@ const groupAlbums = secretAlbumGroups.map(group => group.uri);
 
 const albums = galleryData.albums.concat(secretAlbums).filter( notGroupAlbum ).filter( onlyUnique );
 
-console.log("*** albums");
+console.log("albums");
 console.log(albums);
 
 const GENERATED_FILES_FOLDER = "./_site";
