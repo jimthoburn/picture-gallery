@@ -226,3 +226,4 @@ var markdownItDeflist = function deflist_plugin(md) {
 };
 
 export default markdownItDeflist;
+//# sourceMappingURL=markdown-it-deflist.js.map

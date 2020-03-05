@@ -39,7 +39,7 @@ function generateImages(size, imagePath) {
     // interlace: "Line" // Make the image “progressive” // https://fettblog.eu/snippets/node.js/progressive-jpegs-gm/
   }
 
-  gulp.src(imagePath + "/original/*.{jpg,png}")
+  gulp.src(imagePath + "/original/*.{jpg,jpeg,png}")
     .pipe(parallel(
       imageResize(options),
       os.cpus().length

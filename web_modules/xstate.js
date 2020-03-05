@@ -1111,15 +1111,18 @@ function forwardTo(target, options) {
 /**
  * Escalates an error by sending it as an event to this machine's parent.
  *
- * @param errorData The error data to send.
+ * @param errorData The error data to send, or the expression function that
+ * takes in the `context`, `event`, and `meta`, and returns the error data to send.
  * @param options Options to pass into the send action creator.
  */
 
 
 function escalate(errorData, options) {
-  return sendParent({
-    type: error,
-    data: errorData
+  return sendParent(function (context, event, meta) {
+    return {
+      type: error,
+      data: isFunction(errorData) ? errorData(context, event, meta) : errorData
+    };
   }, __assign(__assign({}, options), {
     to: SpecialTargets.Parent
   }));
@@ -3282,22 +3285,20 @@ function () {
 var children =
 /*#__PURE__*/
 new Map();
-var idMap =
-/*#__PURE__*/
-new Map();
 var sessionIdIndex = 0;
 var registry = {
-  register: function (actor) {
-    var id = "x:" + sessionIdIndex++;
+  bookId: function () {
+    return "x:" + sessionIdIndex++;
+  },
+  register: function (id, actor) {
     children.set(id, actor);
-    idMap.set(actor, id);
     return id;
   },
   get: function (id) {
     return children.get(id);
   },
-  lookup: function (actorRef) {
-    return idMap.get(actorRef);
+  free: function (id) {
+    children.delete(id);
   }
 };
 
@@ -3365,7 +3366,7 @@ function () {
    * @param machine The machine to be interpreted
    * @param options Interpreter options
    */
-  function Interpreter(machine, options, sessionId) {
+  function Interpreter(machine, options) {
     var _this = this;
 
     if (options === void 0) {
@@ -3488,7 +3489,7 @@ function () {
     this.scheduler = new Scheduler({
       deferEvents: this.options.deferEvents
     });
-    this.sessionId = sessionId !== undefined ? sessionId : registry.register(this);
+    this.sessionId = registry.bookId();
   }
 
   Object.defineProperty(Interpreter.prototype, "initialState", {
@@ -3784,6 +3785,7 @@ function () {
       return this;
     }
 
+    registry.register(this.sessionId, this);
     this.initialized = true;
     this._status = InterpreterStatus.Running;
     var resolvedState = initialState === undefined ? this.initialState : withServiceScope(this, function () {
@@ -3907,6 +3909,7 @@ function () {
     this.scheduler.clear();
     this.initialized = false;
     this._status = InterpreterStatus.Stopped;
+    registry.free(this.sessionId);
     return this;
   };
 
@@ -4657,3 +4660,4 @@ var actions = {
 };
 
 export { ActionTypes, Interpreter, Machine, SpecialTargets, State, StateNode, actions, assign$1 as assign, createMachine, doneInvoke, forwardTo, interpret, mapState, matchState, matchesState, send$1 as send, sendParent, sendUpdate, spawn };
+//# sourceMappingURL=xstate.js.map

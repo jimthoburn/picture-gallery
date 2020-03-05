@@ -1,0 +1,28 @@
+{
+  "uri": "northern-lights",
+  "title": "Northern lights",
+  "date": null,
+  "zipFileSize": null,
+  "coverPicture": null,
+  "askSearchEnginesNotToIndex": true,
+  "pictures": [
+    {
+      "filename": "1.jpeg",
+      "description": null,
+      "caption": null,
+      "uri": "1"
+    },
+    {
+      "filename": "2.jpeg",
+      "description": null,
+      "caption": null,
+      "uri": "2"
+    },
+    {
+      "filename": "3.jpeg",
+      "description": null,
+      "caption": null,
+      "uri": "3"
+    }
+  ]
+}

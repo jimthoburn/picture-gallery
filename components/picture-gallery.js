@@ -41,7 +41,7 @@ function PictureGallery({ album, pictures, story, getPageURL }) {
   });
   if (isBrowser()) {
     console.log(state.value);
-    console.log(state.context.detailsPictureLoaded);
+    // console.log(state.context.detailsPictureLoaded);
   }
   
   // 💡 TBD: Is there a better way to make the machine available outside of this component?
