@@ -7,6 +7,8 @@ import { render } from "./web_modules/preact-render-to-string.js";
 
 import { config } from "./_config.js";
 import { DefaultLayout } from "./layouts/default.js";
+import { RobotsText } from "./layouts/robots.txt.js";
+import { SiteMapXML } from "./layouts/sitemap.xml.js";
 import { AlbumPage } from "./pages/album.js";
 import { IndexPage } from "./pages/index.js";
 import { ParentAlbumPage } from "./pages/parent-album.js";
@@ -25,9 +27,24 @@ function onlyUnique(value, index, self) {
   return self.indexOf(value) === index;
 }
 
-const albums = galleryData.albums.concat(secretAlbums).filter( onlyUnique );
+function notGroupAlbum(album) {
+  const matchingGroupAlbums =
+    groupAlbums.filter(groupAlbum => groupAlbum === album);
+  return matchingGroupAlbums.length <= 0
+}
+
+function isGroupAlbum(album) {
+  const matchingGroupAlbums =
+    groupAlbums.filter(groupAlbum => groupAlbum === album);
+  return matchingGroupAlbums.length >= 1
+}
 
 const groupAlbums = secretAlbumGroups.map(group => group.uri);
+
+const albums = galleryData.albums.concat(secretAlbums).filter( notGroupAlbum ).filter( onlyUnique );
+
+console.log("albums");
+console.log(albums);
 
 const GENERATED_FILES_FOLDER = "./_site";
 
@@ -43,14 +60,9 @@ const staticFolders = [
 ];
 
 
-function createFile({ pageURL, filename, html }) {
-  // console.log('**** ');
-  // console.log('createFile for ' + pageURL);
-  // console.log('html ' + html);
+function createFile({ pageURL, filename, output }) {
 
-  let writePath = GENERATED_FILES_FOLDER + pageURL;
-
-  let output = html;
+  const writePath = GENERATED_FILES_FOLDER + pageURL;
 
   mkdirp(writePath, function (err) {
     if (err) {
@@ -63,6 +75,16 @@ function createFile({ pageURL, filename, html }) {
       });
     }
   });
+}
+
+
+function removeFile({ pageURL, filename }) {
+  const writePath = GENERATED_FILES_FOLDER + pageURL;
+
+  const path = `${writePath}/${filename ? filename : "index.html"}`;
+  if (fs.existsSync(path)) {
+    fs.unlinkSync(path);
+  }
 }
 
 
@@ -97,19 +119,22 @@ function generateAlbum({ album, story, askSearchEnginesNotToIndex }) {
 
     const title   = getInitialPageTitle({ getPageURL, pictures: album.pictures, album });
     const content = render(AlbumPage({ getPageURL, pictures: album.pictures, story, album }));
+    const openGraphImage = getOpenGraphImage({ getPageURL, pictures: album.pictures, album });
 
     const renderedHTML = DefaultLayout({
       title,
       content,
       askSearchEnginesNotToIndex,
       openGraphImage:
-        config.host
-          ? `${config.host}${ getOpenGraphImage({ getPageURL, pictures: album.pictures, album }) }`
+        openGraphImage ?
+          openGraphImage.indexOf("http") != 0 && config.host
+            ? `${config.host}${openGraphImage}`
+            : openGraphImage
           : null
     });
     const beautifiedHTML = jsBeautify.html_beautify(renderedHTML);
 
-    createFile({ pageURL, html: beautifiedHTML });
+    createFile({ pageURL, output: beautifiedHTML });
   }
 }
 
@@ -133,7 +158,22 @@ function getAlbumStory({ albumURI }) {
 
 function generateIndexPage() {
   console.log(`Generating index page`);
-  const albums = galleryData.albums.map(albumURI => getAlbumJSON({ albumURI }));
+  console.log("groupAlbums", groupAlbums);
+  const albums = galleryData.albums.map(albumURI => {
+    console.log("index: albumURI", albumURI);
+    const isGroupAlbum = (groupAlbums.filter(album => album === albumURI).length > 0);
+    console.log("index: isGroupAlbum", isGroupAlbum);
+    let json = getAlbumJSON({
+      albumURI: `${albumURI}${(isGroupAlbum) ? "/index" : ""}`
+    });
+    if (isGroupAlbum) {
+      const children = json.albums.map(
+        childAlbumURI => getAlbumJSON({ albumURI: `${albumURI}/${childAlbumURI}`})
+      )
+      json.albums = children
+    }
+    return json;
+  });
   const { title, askSearchEnginesNotToIndex } = galleryData;
   const content = render(IndexPage({ ...galleryData, albums }));
 
@@ -141,18 +181,25 @@ function generateIndexPage() {
     return "/";
   }
 
+  const openGraphImage = 
+    albums[0].albums
+      ? getOpenGraphImage({ getPageURL, pictures: albums[0].albums[0].pictures, album: albums[0].albums[0] })
+      : getOpenGraphImage({ getPageURL, pictures: albums[0].pictures, album: albums[0] })
+
   const beautifiedHTML = jsBeautify.html_beautify(DefaultLayout({
     title,
     content,
     askSearchEnginesNotToIndex,
     includeClientJS: false,
     openGraphImage:
-      config.host
-        ? `${config.host}${ getOpenGraphImage({ getPageURL, pictures: albums[0].pictures, album: albums[0] }) }`
+      openGraphImage ?
+        openGraphImage.indexOf("http") != 0 && config.host
+          ? `${config.host}${openGraphImage}`
+          : openGraphImage
         : null
   }));
 
-  createFile({ pageURL: "/", filename: "index.html", html: beautifiedHTML });
+  createFile({ pageURL: "/", filename: "index.html", output: beautifiedHTML });
 }
 
 
@@ -166,7 +213,49 @@ function generateError404Page() {
     content,
     includeClientJS: false
   }));
-  createFile({ pageURL: "/", filename: "404.html", html: beautifiedHTML });
+  createFile({ pageURL: "/", filename: "404.html", output: beautifiedHTML });
+}
+
+
+function generateSiteMap({ host }) {
+  console.log(`Generating site map`);
+  const publicAlbums = galleryData.albums.filter( notGroupAlbum ).map(albumURI => getAlbumJSON({ albumURI }));
+  const publicGroupAlbums =
+    galleryData.albums.filter( isGroupAlbum ).map(
+      groupAlbumURI => {
+        const album = getAlbumJSON({ albumURI: `${groupAlbumURI}/index` });
+        const children = album.albums.map(
+          childAlbumURI => getAlbumJSON({ albumURI: `${groupAlbumURI}/${childAlbumURI}`})
+        )
+        return {
+          ...album,
+          albums: children
+        };
+      }
+    );
+
+  // const publicGroupAlbums = [];
+  // for (let nextAlbumName of groupAlbums) {
+  //   const album = getAlbumJSON({ albumURI: `${nextAlbumName}/index` });
+  //   const children = album.albums.map(
+  //     childAlbumURI => getAlbumJSON({ albumURI: `${nextAlbumName}/${childAlbumURI}`})
+  //   )
+  //   publicGroupAlbums.push({
+  //     ...album,
+  //     albums: children
+  //   });
+  // }
+
+  const xml = SiteMapXML({ host, albums: publicAlbums, groupAlbums: publicGroupAlbums });
+
+  createFile({ pageURL: "/", filename: "sitemap.xml", output: xml });
+}
+
+
+function generateRobotsText({ host }) {
+  console.log(`Generating robots.txt`);
+  const text = RobotsText({ host });
+  createFile({ pageURL: "/", filename: "robots.txt", output: text });
 }
 
 
@@ -179,7 +268,7 @@ function generateAllAlbums() {
     const parentAlbums = groupAlbums.filter(groupAlbumName => groupAlbumName === nextAlbumName.split("/")[0]);
 
     if (parentAlbums.length > 0) {
-      console.log("**** CHILD ALBUM");
+      // console.log("**** CHILD ALBUM");
 
       const parent = getAlbumJSON({ albumURI: `${parentAlbums[0]}/index` });
       generateAlbum({ 
@@ -217,6 +306,7 @@ function generateAllAlbums() {
 
     const { title, askSearchEnginesNotToIndex } = album;
     const content = render(ParentAlbumPage({ parent: album, children }));
+    const openGraphImage = getOpenGraphImage({ getPageURL, pictures: children[0].pictures, album: children[0], parent: album });
 
     const renderedHTML = DefaultLayout({
       title,
@@ -224,13 +314,15 @@ function generateAllAlbums() {
       askSearchEnginesNotToIndex,
       includeClientJS: false,
       openGraphImage:
-        config.host
-          ? `${config.host}${ getOpenGraphImage({ getPageURL, pictures: children[0].pictures, album: children[0], parent: album }) }`
+        openGraphImage ?
+          openGraphImage.indexOf("http") != 0 && config.host
+            ? `${config.host}${openGraphImage}`
+            : openGraphImage
           : null
     });
     const beautifiedHTML = jsBeautify.html_beautify(renderedHTML);
 
-    createFile({ pageURL, html: beautifiedHTML });
+    createFile({ pageURL, output: beautifiedHTML });
   }
 }
 
@@ -271,6 +363,17 @@ function build() {
   copyAllStaticFiles();
 
   generateError404Page();
+
+  if (config.askSearchEnginesNotToIndex !== true) {
+    generateRobotsText({ host: config.host });
+    generateSiteMap({ host: config.host });
+  } else {
+    console.log("Removing sitemap.xml");
+    removeFile({ pageURL: "/", filename: "sitemap.xml" });
+
+    console.log("Removing robots.txt");
+    removeFile({ pageURL: "/", filename: "robots.txt" });
+  }
 
   console.log(`Build files saved to: ${GENERATED_FILES_FOLDER}`);
 

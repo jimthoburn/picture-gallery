@@ -11,4 +11,16 @@ export const config = {
   // Override the settings in individual albums, and “noindex” the entire site
   // "askSearchEnginesNotToIndex": true
 
+  "test": {
+    "hostURL": "http://localhost:4000",
+    "homeURL": "/",
+    "albumURL": "/japan/",
+    "pictureURL": "/japan/shiogama-shrine-forest/",
+    "groupAlbumURL": "/wildflowers/",
+    "groupAlbumChildURL": "/wildflowers/joshua-tree/",
+    "groupAlbumChildName": "Wildflowers of Joshua Tree",
+    "groupAlbumPictureURL": "/wildflowers/joshua-tree/1/",
+    "secretAlbumURL": "/northern-lights/"
+  }
+
 };
