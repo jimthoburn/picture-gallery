@@ -95,7 +95,7 @@ npm run create
 npm start
 ```
 
-10. Visit `http://localhost:5000`
+10. Visit `http://localhost:4000`
 
 To stop the server, press “control C”
 
@@ -181,7 +181,7 @@ You can browse the static site locally with this command:
 npm run serve
 ```
 
-And then visit `http://localhost:5000`
+And then visit `http://localhost:4000`
 
 You can publish your copy of this project to a static host like [Netlify](https://www.netlify.com/) using these settings:
 
@@ -247,7 +247,7 @@ _pictures/
                 3.jpg
 ```
 
-And then visit `http://localhost:5000/your-group-of-related-albums/`
+And then visit `http://localhost:4000/your-group-of-related-albums/`
 
 ### Social sharing image
 
