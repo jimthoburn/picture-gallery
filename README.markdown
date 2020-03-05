@@ -58,7 +58,15 @@ _pictures/
             3.jpg
 ```
 
-It’s okay to delete the `japan` and `wildflowers` example albums.
+You may also want to delete the example albums, and the LICENSE file:
+
+```
+japan
+LICENSE
+northern-lights
+secret-recipes
+wildflowers
+```
 
 _You can also make [groups of albums](#group-albums)._
 
@@ -75,7 +83,7 @@ _You can also make [groups of albums](#group-albums)._
 }
 ```
 
-It’s okay to remove the `japan` and `wildflowers` examples from the list of albums.
+You may also want to remove the `japan` and `wildflowers` examples from the list of albums.
 
 7. Open your project folder in a terminal and install dependencies:
 
