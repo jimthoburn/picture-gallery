@@ -128,7 +128,7 @@ function PictureList({ album, pictures, story, state }) {
                      sizes="${getSourceSet({album, picture}) ? sizes : null}"
                      width="${ 320 * (picture.width  > picture.height ? 1 : picture.width/picture.height) }"
                      height="${320 * (picture.height > picture.width  ? 1 : picture.height/picture.width) }"
-                     data-style="background-color: ${picture.primaryColor}"
+                     data-style="background-color: ${ picture.primaryColor ||"unset" }"
                      loading="lazy"
                      alt="${
                        (picture.description)

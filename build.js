@@ -9,8 +9,8 @@ import { config } from "./_config.js";
 import { DefaultLayout } from "./layouts/default.js";
 import { RobotsText } from "./layouts/robots.txt.js";
 import { SiteMapXML } from "./layouts/sitemap.xml.js";
-import { AlbumPage } from "./pages/album.js";
 import { IndexPage } from "./pages/index.js";
+import { AlbumPage } from "./pages/album.js";
 import { ParentAlbumPage } from "./pages/parent-album.js";
 import { Error404Page, error404PageTitle } from "./pages/404.js";
 import { getInitialPageTitle, getOpenGraphImage } from "./components/picture-gallery.js";
@@ -169,8 +169,8 @@ function generateIndexPage() {
     if (isGroupAlbum) {
       const children = json.albums.map(
         childAlbumURI => getAlbumJSON({ albumURI: `${albumURI}/${childAlbumURI}`})
-      )
-      json.albums = children
+      );
+      json.albums = children;
     }
     return json;
   });
@@ -219,6 +219,8 @@ function generateError404Page() {
 
 function generateSiteMap({ host }) {
   console.log(`Generating site map`);
+  console.log({galleryData});
+
   const publicAlbums = galleryData.albums.filter( notGroupAlbum ).map(albumURI => getAlbumJSON({ albumURI }));
   const publicGroupAlbums =
     galleryData.albums.filter( isGroupAlbum ).map(
@@ -364,7 +366,7 @@ function build() {
 
   generateError404Page();
 
-  if (config.askSearchEnginesNotToIndex !== true) {
+  if (config.askSearchEnginesNotToIndex !== true && config.host) {
     generateRobotsText({ host: config.host });
     generateSiteMap({ host: config.host });
   } else {
