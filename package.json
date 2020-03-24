@@ -46,7 +46,7 @@
     "imageoptim-cli": "^3.0.2",
     "is-url": "^1.2.4",
     "jest": "^25.1.0",
-    "jest-playwright-preset": "0.0.12",
+    "jest-playwright-preset": "0.0.15",
     "js-beautify": "^1.10.3",
     "lodash": "^4.17.15",
     "node-fetch": "^2.6.0",
