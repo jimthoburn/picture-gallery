@@ -20,7 +20,7 @@ I’m using it to practice with new tools and to share photos with friends 🦊 
 * [Secret albums](#secret-albums)
 * [Group albums](#group-albums)
 * [Social sharing image](#social-sharing-image)
-* [How to add a story about an album](how-to-add-a-story-about-an-album)
+* [How to add a story about an album](#how-to-add-a-story-about-an-album)
 * [Image file storage](#image-file-storage)
 
 ### Quick start
