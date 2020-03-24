@@ -11,10 +11,12 @@ const options = {
   url: config.test.albumURL
 };
 
-it("is listed on the home page", async () => {
-  await page.goto(config.test.hostURL + config.test.homeURL);
-  const element = await page.$(`a[href*="${options.url}"]`);
-  expect(element).not.toBe(null);
+describe(options.name, function() {
+  it("is listed on the home page", async () => {
+    await page.goto(config.test.hostURL + config.test.homeURL);
+    const element = await page.$(`a[href*="${options.url}"]`);
+    expect(element).not.toBe(null);
+  });
 });
 
 describeAccessibility(options);
