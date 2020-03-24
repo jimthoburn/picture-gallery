@@ -5,10 +5,9 @@ import isUrl from "is-url";
 
 
 function hasAnOpenGraphImage({ url }) {
-  it("has an open graph image, based on “host” specified in “_config.js”", async () => {
-    await page.goto(config.test.hostURL + url);
-
-    if (config.host && config.host.indexOf("http") === 0) {
+  if (config.host && config.host.indexOf("http") === 0) {
+    it("has an open graph image, based on “host” specified in “_config.js”", async () => {
+      await page.goto(config.test.hostURL + url);
       const content = await page.$eval(`meta[property="og:image"]`, element =>
         element.getAttribute("content")
       );
@@ -17,10 +16,25 @@ function hasAnOpenGraphImage({ url }) {
           // https://pictures.tobbi.cohttps://cdn.glitch.com/0066dc23-cee2-4973-ae99-075586a1eded%2F17.jpg?v=1572802598055
           && content.match(/https?:\/\//g).length == 1;
       expect(isValidURL).toBe(true);
-    } else {
-      return true;
-    }
-  });
+    });
+  } else {
+    it("has a valid open graph image that starts with “http”, or does not have an open graph image specified–since “host” is empty or invalid in “_config.js”", async () => {
+      await page.goto(config.test.hostURL + url);
+      const metaElement = await page.$(`meta[property="og:image"]`);
+      if (metaElement) {
+        const content = await page.$eval(`meta[property="og:image"]`, element =>
+          element.getAttribute("content")
+        );
+        const isValidURL = isUrl(content)
+            // Double check for strings with two instances of “https://”
+            // https://pictures.tobbi.cohttps://cdn.glitch.com/0066dc23-cee2-4973-ae99-075586a1eded%2F17.jpg?v=1572802598055
+            && content.match(/https?:\/\//g).length == 1;
+        expect(isValidURL).toBe(true);
+      } else {
+        expect(metaElement).toBe(null);
+      }
+    }); 
+  }
 }
 
 function describeFindability({ name, url }) {

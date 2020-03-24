@@ -164,7 +164,7 @@ function serveIndexPage(req, res, next) {
       askSearchEnginesNotToIndex,
       includeClientJS: false,
       openGraphImage:
-        openGraphImage ?
+        openGraphImage && (openGraphImage.indexOf("http") === 0 || config.host) ?
           openGraphImage.indexOf("http") != 0 && config.host
             ? `${config.host}${openGraphImage}`
             : openGraphImage
@@ -279,7 +279,7 @@ async function serveAlbumPage(req, res) {
             askSearchEnginesNotToIndex,
             includeClientJS: false,
             openGraphImage:
-              openGraphImage ?
+              openGraphImage && (openGraphImage.indexOf("http") === 0 || config.host) ?
                 openGraphImage.indexOf("http") != 0 && config.host
                   ? `${config.host}${openGraphImage}`
                   : openGraphImage
@@ -319,7 +319,7 @@ async function serveAlbumPage(req, res) {
           content,
           askSearchEnginesNotToIndex,
           openGraphImage:
-            openGraphImage ?
+            openGraphImage && (openGraphImage.indexOf("http") === 0 || config.host) ?
               openGraphImage.indexOf("http") != 0 && config.host
                 ? `${config.host}${openGraphImage}`
                 : openGraphImage
@@ -346,7 +346,7 @@ async function serveAlbumPage(req, res) {
         content,
         askSearchEnginesNotToIndex,
         openGraphImage:
-          openGraphImage ?
+          openGraphImage && (openGraphImage.indexOf("http") === 0 || config.host) ?
             openGraphImage.indexOf("http") != 0 && config.host
               ? `${config.host}${openGraphImage}`
               : openGraphImage
