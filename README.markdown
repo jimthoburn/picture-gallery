@@ -25,7 +25,7 @@ I’m using it to practice with new tools and to share photos with friends 🦊 
 
 ### Quick start
 
-You can [remix this Glitch project](https://glitch.com/edit/#!/picture-gallery) to make your own gallery 🎏
+You can [remix this Glitch project](https://glitch.com/edit/#!/picture-gallery?path=glitch_README.markdown) to make your own gallery 🎏
 
 ### Creating a gallery
 
