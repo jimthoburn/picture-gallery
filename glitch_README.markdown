@@ -15,7 +15,7 @@
 
 1. Remix this Glitch
 
-2. Upload your photos to the `assets` folder.
+2. Upload your pictures to the `assets` folder.
 
 3. Change the album information in the `_api` folder.
 
