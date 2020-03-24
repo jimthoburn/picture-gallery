@@ -227,7 +227,7 @@ You can also ask search engines not to index your album by setting `askSearchEng
 
 This will add a [noindex](https://support.google.com/webmasters/answer/93710?hl=en) meta element to your page.
 
-And you can ask search engines not to index your entire gallery (including the home page) by setting `askSearchEnginesNotToIndex` to `true` in the `_config` file:
+And you can ask search engines not to index your entire gallery (including the home page) by setting `askSearchEnginesNotToIndex` to `true` in the [_config.js](https://github.com/jimthoburn/picture-gallery/blob/master/_config.js) file:
 
 ```
 "askSearchEnginesNotToIndex": true
@@ -259,7 +259,7 @@ And then visit `http://localhost:4000/your-group-of-related-albums/`
 
 ### Social sharing image
 
-To make an [open graph image](https://ogp.me/) available for each page in your gallery, add your domain name to the `_config` file:
+To make an [open graph image](https://ogp.me/) available for each page in your gallery, add your domain name to the [_config.js](https://github.com/jimthoburn/picture-gallery/blob/master/_config.js) file:
 
 ```
 "host": "https://your-domain-name.com"
