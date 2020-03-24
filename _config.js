@@ -1,7 +1,7 @@
 
 export const config = {
 
-  // For open graph images
+  // For open graph images and site map
   // "host": "https://example.com",
   
   // https://dev.to/pickleat/add-an-emoji-favicon-to-your-site-co2

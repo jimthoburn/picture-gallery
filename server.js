@@ -16,6 +16,7 @@ import { render } from "./web_modules/preact-render-to-string.js";
 import { config } from "./_config.js";
 import { DefaultLayout } from "./layouts/default.js";
 import { RobotsText } from "./layouts/robots.txt.js";
+import { SiteMapXML } from "./layouts/sitemap.xml.js";
 import { IndexPage } from "./pages/index.js";
 import { AlbumPage } from "./pages/album.js";
 import { ParentAlbumPage } from "./pages/parent-album.js";
@@ -30,22 +31,43 @@ const galleryData = JSON.parse(fs.readFileSync("./_api/index.json", "utf8"));
 
 const [secretAlbums, secretAlbumGroups] = getSecretAlbums();
 
-// https://stackoverflow.com/questions/1960473/get-all-unique-values-in-a-javascript-array-remove-duplicates
-function onlyUnique(value, index, self) { 
-  return self.indexOf(value) === index;
-}
+const groupAlbums = secretAlbumGroups.map(group => group.uri);
+console.log({groupAlbums});
 
 const albums = galleryData.albums
                 .concat(secretAlbums)
                 .concat(secretAlbumGroups.map(group => group.uri))
                 .filter( onlyUnique );
 
-// console.log(albums);
+console.log({albums});
+
+// https://stackoverflow.com/questions/1960473/get-all-unique-values-in-a-javascript-array-remove-duplicates
+function onlyUnique(value, index, self) { 
+  return self.indexOf(value) === index;
+}
+
+function notGroupAlbum(album) {
+  const matchingGroupAlbums =
+    groupAlbums.filter(groupAlbum => groupAlbum === album);
+  return matchingGroupAlbums.length <= 0
+}
+
+function isGroupAlbum(album) {
+  console.log("isGroupAlbum");
+  const matchingGroupAlbums =
+    groupAlbums.filter(groupAlbum => groupAlbum === album);
+  console.log({album});
+  console.log({groupAlbums});
+  console.log({matchingGroupAlbums});
+  console.log({ isGroupAlbum: matchingGroupAlbums.length >= 1 });
+  return matchingGroupAlbums.length >= 1
+}
 
 const port = parseInt(process.env.PORT, 10) || 4000;
 const server = express();
 
 function getData(url) {
+  console.log("getData: " + url);
   return new Promise((resolve, reject) => {
     fetch(url).then(response => {
       if (response.ok) {
@@ -105,9 +127,23 @@ async function getAlbumStory({ albumURI, req }) {
 // }
 
 function serveIndexPage(req, res, next) {
+  console.log("serveIndexPage");
+  
   Promise.all(galleryData.albums.map(
-    albumURI => getAlbumJSON({ albumURI, req })
+    async (albumURI) => {
+      const json = await getAlbumJSON({ albumURI: `${albumURI}${(isGroupAlbum(albumURI)) ? "/index" : ""}`, req });
+      if (isGroupAlbum(albumURI)) {
+        const children = await Promise.all(json.albums.map(
+          async (childAlbumURI) => await getAlbumJSON({ albumURI: `${albumURI}/${childAlbumURI}`, req })
+        ));
+        json.albums = children;
+      }
+      return json;
+    }
   )).then(albums => {
+
+    console.log("albums for serveIndexPage");
+    console.log({ albums });
 
     const { title, askSearchEnginesNotToIndex } = galleryData;
     const content = render(IndexPage({ ...galleryData, albums }));
@@ -117,14 +153,21 @@ function serveIndexPage(req, res, next) {
       return `${req.protocol}://${req.get("host")}${req.originalUrl}`;
     }
 
+    const openGraphImage = 
+      albums[0].albums
+        ? getOpenGraphImage({ getPageURL, pictures: albums[0].albums[0].pictures, album: albums[0].albums[0] })
+        : getOpenGraphImage({ getPageURL, pictures: albums[0].pictures, album: albums[0] });
+
     const beautifiedHTML = jsBeautify.html_beautify(DefaultLayout({
       title,
       content,
       askSearchEnginesNotToIndex,
       includeClientJS: false,
       openGraphImage:
-        config.host
-          ? `${config.host}${ getOpenGraphImage({ getPageURL, pictures: albums[0].pictures, album: albums[0] }) }`
+        openGraphImage ?
+          openGraphImage.indexOf("http") != 0 && config.host
+            ? `${config.host}${openGraphImage}`
+            : openGraphImage
           : null
     }));
     res.send(beautifiedHTML);
@@ -168,7 +211,7 @@ function getAlbumURI({ pageURL, albumNames }) {
 }
 
 async function serveAlbumPage(req, res) {
-  // console.log("serveAlbumPage")
+  console.log("serveAlbumPage")
 
   function getPageURL() {
     // https://stackoverflow.com/questions/10183291/how-to-get-the-full-url-in-express
@@ -184,10 +227,13 @@ async function serveAlbumPage(req, res) {
   }
   if (!albumURI) {
     albumURI = getAlbumURI({ pageURL: getPageURL(), albumNames: secretAlbumGroups.map(group => group.uri) });
-    if (albumURI) {
-       albumURI = albumURI + "/index";
-    }
   }
+
+  if (isGroupAlbum(albumURI)) {
+     albumURI = albumURI + "/index";
+  }
+
+  console.log({albumURI});
 
   // const test = await getData(`${req.protocol}://${req.get("host")}/api/${albumURI}.json`);
   // if (!test) {
@@ -197,7 +243,10 @@ async function serveAlbumPage(req, res) {
   // }
 
   getAlbumJSON({ albumURI, req }).then(async function(data) {
+    console.log("getAlbumJSON");
     let album;
+
+    console.log({data});
 
     // If this is a parent album
     if (data.albums) {
@@ -217,10 +266,12 @@ async function serveAlbumPage(req, res) {
       //   };
       // } else {
         Promise.all(data.albums.map(
-          childAlbumURI => getAlbumJSON({ albumURI: `${albumURI.replace("/index", "")}/${childAlbumURI}`, req })
+          async (childAlbumURI) => await getAlbumJSON({ albumURI: `${albumURI.replace("/index", "")}/${childAlbumURI}`, req })
         )).then(albums => {
           const { title, askSearchEnginesNotToIndex } = data;
           const content = render(ParentAlbumPage({ parent: data, children: albums }));
+
+          const openGraphImage = getOpenGraphImage({ getPageURL, pictures: albums[0].pictures, album: albums[0], parent: data });
 
           const beautifiedHTML = jsBeautify.html_beautify(DefaultLayout({
             title,
@@ -228,8 +279,10 @@ async function serveAlbumPage(req, res) {
             askSearchEnginesNotToIndex,
             includeClientJS: false,
             openGraphImage:
-              config.host
-                ? `${config.host}${ getOpenGraphImage({ getPageURL, pictures: albums[0].pictures, album: albums[0], parent: data }) }`
+              openGraphImage ?
+                openGraphImage.indexOf("http") != 0 && config.host
+                  ? `${config.host}${openGraphImage}`
+                  : openGraphImage
                 : null
           }));
           res.send(beautifiedHTML);
@@ -259,13 +312,17 @@ async function serveAlbumPage(req, res) {
         const content = render(AlbumPage({ getPageURL, album, pictures: album.pictures, story }));
         const { askSearchEnginesNotToIndex } = album;
 
+        const openGraphImage = getOpenGraphImage({ getPageURL, pictures: album.pictures, album });
+
         const beautifiedHTML = jsBeautify.html_beautify(DefaultLayout({
           title,
           content,
           askSearchEnginesNotToIndex,
           openGraphImage:
-            config.host
-              ? `${config.host}${ getOpenGraphImage({ getPageURL, pictures: album.pictures, album }) }`
+            openGraphImage ?
+              openGraphImage.indexOf("http") != 0 && config.host
+                ? `${config.host}${openGraphImage}`
+                : openGraphImage
               : null
         }));
         res.send(beautifiedHTML);
@@ -282,13 +339,17 @@ async function serveAlbumPage(req, res) {
       const content = render(AlbumPage({ getPageURL, album, pictures: album.pictures, story }));
       const { askSearchEnginesNotToIndex } = album;
 
+      const openGraphImage = getOpenGraphImage({ getPageURL, pictures: album.pictures, album });
+
       const beautifiedHTML = jsBeautify.html_beautify(DefaultLayout({
         title,
         content,
         askSearchEnginesNotToIndex,
         openGraphImage:
-          config.host
-            ? `${config.host}${ getOpenGraphImage({ getPageURL, pictures: album.pictures, album }) }`
+          openGraphImage ?
+            openGraphImage.indexOf("http") != 0 && config.host
+              ? `${config.host}${openGraphImage}`
+              : openGraphImage
             : null
       }));
       res.send(beautifiedHTML);
@@ -357,13 +418,74 @@ server.get("/client.js", function(req, res) {
 });
 
 server.get("/robots.txt", function(req, res, next) {
-  if (config.askSearchEnginesNotToIndex) {
+  if (config.askSearchEnginesNotToIndex || !config.host) {
     sendError404Page(req, res, next);
-  } else {
-    const text = RobotsText({ host:config.host });
-    res.type('text/plain');
-    res.send(text);
+    return;
   }
+
+  const text = RobotsText({ host: config.host });
+  res.type('text/plain');
+  res.send(text);
+});
+
+server.get("/sitemap.xml", async function(req, res, next) {
+  if (config.askSearchEnginesNotToIndex || !config.host) {
+    sendError404Page(req, res, next);
+    return;
+  }
+  console.log({galleryData});
+
+  const publicAlbumURIs = galleryData.albums.filter( notGroupAlbum );
+
+  console.log({publicAlbumURIs});
+
+  const publicAlbums = await Promise.all(publicAlbumURIs.map(async (albumURI) => {
+    const json = await getAlbumJSON({ albumURI, req });
+    return json;
+  }));
+
+  console.log({publicAlbums});
+
+  // https://stackoverflow.com/questions/40140149/use-async-await-with-array-map
+  const publicGroupAlbums = await Promise.all(
+    galleryData.albums.filter( isGroupAlbum ).map(
+      async groupAlbumURI => {
+        const album = await getAlbumJSON({ albumURI: `${groupAlbumURI}/index`, req });
+        console.log(album);
+
+        const childrenURIs = album.albums;
+        console.log({childrenURIs});
+        const children = await Promise.all(childrenURIs.map(async (childAlbumURI) => {
+          const json = await getAlbumJSON({ albumURI: `${groupAlbumURI}/${childAlbumURI}`, req });
+          return json;
+        }));
+        console.log({children});
+
+        return {
+          ...album,
+          albums: children
+        };
+      }
+    )
+  );
+
+  // console.log({publicGroupAlbums});
+
+  // const publicGroupAlbums = [];
+  // for (let nextAlbumName of groupAlbums) {
+  //   const album = getAlbumJSON({ albumURI: `${nextAlbumName}/index` });
+  //   const children = album.albums.map(
+  //     childAlbumURI => getAlbumJSON({ albumURI: `${nextAlbumName}/${childAlbumURI}`})
+  //   )
+  //   publicGroupAlbums.push({
+  //     ...album,
+  //     albums: children
+  //   });
+  // }
+
+  const xml = SiteMapXML({ host: config.host, albums: publicAlbums, groupAlbums: publicGroupAlbums });
+  res.type('text/xml');
+  res.send(xml);
 });
 
 // If the browser has cached a trailing slash redirects to a file with an extension,

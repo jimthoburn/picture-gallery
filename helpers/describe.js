@@ -43,6 +43,17 @@ function describeFindability({ name, url }) {
         const matches = pageSource.match(new RegExp(`<loc>.*${url}<\/loc>`));
         expect(matches).toBeNull();
       });
+    } else if (!config.host) {
+      it("doesn’t ask search engines not to index it", async () => {
+        await page.goto(config.test.hostURL + url);
+        const element = await page.$(`meta[name="robots"][content="noindex"]`);
+        expect(element).toBeNull();
+      });
+
+      it("is not listed in the site map, since config.host is empty and the site map does not exist", async () => {
+        const response = await page.goto(config.test.hostURL + "/sitemap.xml");
+        expect(response.status()).toBe(404);
+      });
     } else {
       it("doesn’t ask search engines not to index it", async () => {
         await page.goto(config.test.hostURL + url);
