@@ -1436,6 +1436,8 @@ function () {
    * @param configuration
    */
   function State(config) {
+    var _this = this;
+
     this.actions = [];
     this.activities = EMPTY_ACTIVITY_MAP;
     this.meta = {};
@@ -1459,7 +1461,7 @@ function () {
     this.done = !!config.done;
     Object.defineProperty(this, 'nextEvents', {
       get: function () {
-        return nextEvents(config.configuration);
+        return nextEvents(_this.configuration);
       }
     });
   }
@@ -1863,6 +1865,7 @@ function () {
         id: this.id,
         key: this.key,
         version: this.version,
+        context: this.context,
         type: this.type,
         initial: this.initial,
         history: this.history,
@@ -1871,8 +1874,8 @@ function () {
         }),
         on: this.on,
         transitions: this.transitions,
-        onEntry: this.onEntry,
-        onExit: this.onExit,
+        entry: this.onEntry,
+        exit: this.onExit,
         activities: this.activities || [],
         meta: this.meta,
         order: this.order || -1,
@@ -3109,7 +3112,8 @@ function () {
     }) : true;
     var guards = this.machine.options.guards;
     var target = this.resolveTarget(normalizedTarget);
-    return __assign(__assign({}, transitionConfig), {
+
+    var transition = __assign(__assign({}, transitionConfig), {
       actions: toActionObjects(toArray(transitionConfig.actions)),
       cond: toGuard(transitionConfig.cond, guards),
       target: target,
@@ -3117,6 +3121,18 @@ function () {
       internal: internal,
       eventType: transitionConfig.event
     });
+
+    Object.defineProperty(transition, 'toJSON', {
+      value: function () {
+        return __assign(__assign({}, transition), {
+          target: transition.target ? transition.target.map(function (t) {
+            return "#" + t.id;
+          }) : undefined,
+          source: "#{this.id}"
+        });
+      }
+    });
+    return transition;
   };
 
   StateNode.prototype.formatTransitions = function () {

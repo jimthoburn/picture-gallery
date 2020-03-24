@@ -22,25 +22,25 @@
     "test:playwright-examples": "node --experimental-modules test/playwright-examples.js"
   },
   "dependencies": {
-    "htm": "^2.2.1",
-    "lit-element": "^2.2.1",
+    "htm": "^3.0.3",
+    "lit-element": "^2.3.1",
     "markdown-it": "^10.0.0",
     "markdown-it-deflist": "^2.0.3",
-    "preact": "^10.3.2",
+    "preact": "^10.3.4",
     "preact-render-to-string": "^5.1.4",
-    "xstate": "^4.7.8"
+    "xstate": "^4.8.0"
   },
   "devDependencies": {
-    "@babel/core": "^7.8.6",
+    "@babel/core": "^7.9.0",
     "archiver": "^3.1.1",
-    "capitalize": "^2.0.2",
+    "capitalize": "^2.0.3",
     "color-thief": "^2.2.5",
     "concurrent-transform": "^1.0.0",
     "connect-slashes": "^1.4.0",
     "esm": "^3.2.25",
     "exif": "^0.6.0",
     "express": "^4.17.1",
-    "fs-extra": "^8.1.0",
+    "fs-extra": "^9.0.0",
     "gulp": "^4.0.2",
     "gulp-image-resize": "^0.13.1",
     "imageoptim-cli": "^3.0.2",
@@ -53,7 +53,7 @@
     "playwright": "^0.11.1",
     "request": "^2.88.2",
     "serve": "^11.3.0",
-    "snowpack": "^1.4.0"
+    "snowpack": "^1.6.0"
   },
   "jest": {
     "preset": "jest-playwright-preset"
