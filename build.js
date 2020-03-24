@@ -126,7 +126,7 @@ function generateAlbum({ album, story, askSearchEnginesNotToIndex }) {
       content,
       askSearchEnginesNotToIndex,
       openGraphImage:
-        openGraphImage ?
+        openGraphImage && (openGraphImage.indexOf("http") === 0 || config.host) ?
           openGraphImage.indexOf("http") != 0 && config.host
             ? `${config.host}${openGraphImage}`
             : openGraphImage
@@ -192,7 +192,7 @@ function generateIndexPage() {
     askSearchEnginesNotToIndex,
     includeClientJS: false,
     openGraphImage:
-      openGraphImage ?
+      openGraphImage && (openGraphImage.indexOf("http") === 0 || config.host) ?
         openGraphImage.indexOf("http") != 0 && config.host
           ? `${config.host}${openGraphImage}`
           : openGraphImage
@@ -316,7 +316,7 @@ function generateAllAlbums() {
       askSearchEnginesNotToIndex,
       includeClientJS: false,
       openGraphImage:
-        openGraphImage ?
+        openGraphImage && (openGraphImage.indexOf("http") === 0 || config.host) ?
           openGraphImage.indexOf("http") != 0 && config.host
             ? `${config.host}${openGraphImage}`
             : openGraphImage
