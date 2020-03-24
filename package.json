@@ -50,7 +50,7 @@
     "js-beautify": "^1.10.3",
     "lodash": "^4.17.15",
     "node-fetch": "^2.6.0",
-    "playwright": "^0.11.1",
+    "playwright": "^0.12.1",
     "request": "^2.88.2",
     "serve": "^11.3.0",
     "snowpack": "^1.6.0"
