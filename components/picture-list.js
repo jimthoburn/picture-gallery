@@ -53,6 +53,12 @@ function PictureList({ album, pictures, story, state }) {
   // 📣 Announce selection events
   function onListImageClick(e, index) {
 
+    // 🤖 TEST: Simulate a client-side error after user interaction
+    // if (new URLSearchParams(window.location.search).get("test") === "error-after-user-interaction") {
+    //   throw "Simulating a client-side error after user interaction";
+    //   return;
+    // }
+
     // ⌨️ If the a modifier key is pressed, let the browser handle it
     if (e.metaKey || e.ctrlKey || e.shiftKey) return;
 
