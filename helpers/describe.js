@@ -31,7 +31,7 @@ function hasAnOpenGraphImage({ url }) {
             && content.match(/https?:\/\//g).length == 1;
         expect(isValidURL).toBe(true);
       } else {
-        expect(metaElement).toBe(null);
+        expect(metaElement).toBeNull();
       }
     }); 
   }

@@ -2,7 +2,8 @@
 import { createElement,
          createContext }  from "../web_modules/preact.js";
 import { useState,
-         useEffect }      from "../web_modules/preact/hooks.js";
+         useLayoutEffect,
+         useEffect}       from "../web_modules/preact/hooks.js";
 import   htm              from "../web_modules/htm.js";
 const    html = htm.bind(createElement);
 import { isBrowser }      from "../helpers/environment.js";
@@ -79,6 +80,13 @@ function PictureGallery({ album, pictures, story, getPageURL }) {
 
     if (isBrowser()) {
       if (state.event.type === "PICTURE_SELECTED") {
+
+        // 🤖 TEST:
+        if (new URLSearchParams(window.location.search).get("test") === "error-after-user-interaction") {
+          throw "Simulating a client-side error after user interaction";
+          return;
+        }
+
         const selectedPicture = pictures[state.context.selectedPictureIndex];
         const selectedPictureTitle = selectedPicture.caption 
                                   || selectedPicture.description
@@ -146,7 +154,13 @@ function PictureGallery({ album, pictures, story, getPageURL }) {
   if (!state.matches("showing_details.idle") && isBrowser()) {
     setPictureListShouldRender(true);
   }
-
+  
+  // 🤖 TEST:
+  if (isBrowser() && new URLSearchParams(window.location.search).get("test") === "error-during-initial-render") {
+    document.body.innerHTML = "";
+    throw "Simulating a client-side error during the initial page render";
+    return "";
+  }
 
   return html`
     <${GalleryDispatch.Provider} value="${dispatch}">
