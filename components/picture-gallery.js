@@ -207,7 +207,7 @@ function getSelectedPictureIndexFromURL({ album, pictures, getPageURL }) {
 
 function getInitialPageTitle({ album, pictures, getPageURL }) {
   let selectedPictureIndex = getSelectedPictureIndexFromURL({ album, pictures, getPageURL });
-  if (selectedPictureIndex) {
+  if (selectedPictureIndex != null) {
     return pictures[selectedPictureIndex].caption || `Picture ${ selectedPictureIndex + 1 }`;
   } else {
     return album.title;
@@ -216,7 +216,7 @@ function getInitialPageTitle({ album, pictures, getPageURL }) {
 
 function getOpenGraphImage({ album, parent, pictures, getPageURL }) {
   let selectedPictureIndex = getSelectedPictureIndexFromURL({ album, pictures, getPageURL });
-  if (selectedPictureIndex) {
+  if (selectedPictureIndex != null) {
     const picture = pictures[selectedPictureIndex];
     return getSource({ album, picture, largestSize: true });
   } else {

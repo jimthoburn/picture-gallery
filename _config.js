@@ -15,10 +15,10 @@ export const config = {
     "hostURL": "http://localhost:4000",
     "homeURL": "/",
     "albumURL": "/japan/",
-    "pictureURL": "/japan/shiogama-shrine-forest/",
+    "pictureURL": "/japan/tenryū-ji-temple/",
     "groupAlbumURL": "/wildflowers/",
     "groupAlbumChildURL": "/wildflowers/joshua-tree/",
-    "groupAlbumChildName": "Wildflowers of Joshua Tree",
+    "groupAlbumChildName": "Joshua Tree",
     "groupAlbumPictureURL": "/wildflowers/joshua-tree/1/",
     "secretAlbumURL": "/northern-lights/"
   }

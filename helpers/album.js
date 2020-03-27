@@ -1,15 +1,16 @@
 
 
-export function getCombinedAlbumJSON({ album, generatedPictures }) {
+function getCombinedAlbumJSON({ album, generatedPictures }) {
   if (generatedPictures && generatedPictures.length > 0) {
-    const pictures = generatedPictures.map(generatedPicture => {
-      const manuallyEditedPicture = album.pictures.filter(p => p.filename === generatedPicture.filename);
-      if (manuallyEditedPicture.length > 0) {
+
+    const pictures = album.pictures.map(manuallyEditedPicture => {
+      const generatedPicture = generatedPictures.filter(p => p.filename === manuallyEditedPicture.filename);
+      if (generatedPicture.length > 0) {
         // Combine and override generated data with manual data
         // https://stackoverflow.com/questions/2454295/how-to-concatenate-properties-from-multiple-javascript-objects#30871719
-        return Object.assign(generatedPicture, manuallyEditedPicture[0]);
+        return Object.assign(generatedPicture[0], manuallyEditedPicture);
       } else {
-        return generatedPicture;
+        return manuallyEditedPicture;
       }
     });
 
@@ -27,7 +28,7 @@ export function getCombinedAlbumJSON({ album, generatedPictures }) {
 // https://example.com/wildflowers/    ==>  wildflowers
 // https://example.com/baking/a/3/     ==>  baking/a
 // https://example.com/baking/a/       ==>  baking/a
-export function getAlbumURI({ pageURL, albumNames }) {
+function getAlbumURI({ pageURL, albumNames }) {
 
   console.log("getAlbumURI")
   console.log("pageURL", pageURL)
@@ -56,3 +57,9 @@ export function getAlbumURI({ pageURL, albumNames }) {
   }
 }
 
+
+
+export {
+  getCombinedAlbumJSON,
+  getAlbumURI
+}

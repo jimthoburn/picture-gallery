@@ -1,6 +1,8 @@
 
 import fs from "fs";
 
+import { onlyUnique } from "../helpers/array.js";
+
 
 // https://stackoverflow.com/questions/20822273/best-way-to-get-folder-and-file-list-in-javascript#21459809
 function getAllFilesFromFolder(dir) {
@@ -25,7 +27,7 @@ function getAllFilesFromFolder(dir) {
 };
 
 
-function getSecretAlbums() {
+function getAlbumNamesFromPicturesFolder() {
   let secretAlbums = [];
   let secretAlbumGroups = [];
 
@@ -56,7 +58,7 @@ function getSecretAlbums() {
   //       // If it has a parent folder, create or update the group album
   //     }
   //     // Otherwise
-  //     getSecretAlbums(files[index]);
+  //     getAlbumNamesFromPicturesFolder(files[index]);
   //   }
   // }
 
@@ -65,12 +67,7 @@ function getSecretAlbums() {
     return folder.replace(/^.\/_pictures\//, "").replace(/\/original$/, "");
   });
 
-  console.log("secretAlbums", secretAlbums);
-
-  // https://stackoverflow.com/questions/1960473/get-all-unique-values-in-a-javascript-array-remove-duplicates
-  function onlyUnique(value, index, self) { 
-    return self.indexOf(value) === index;
-  }
+  // console.log("secretAlbums", secretAlbums);
 
   secretAlbumGroups = secretAlbums.map(folder => {
     const bits = folder.split("/");
@@ -87,7 +84,7 @@ function getSecretAlbums() {
     }
   })
 
-  console.log("secretAlbumGroups", secretAlbumGroups);
+  // console.log("secretAlbumGroups", secretAlbumGroups);
 
   // secretAlbums = fs.existsSync("./_secret_albums.json")
   //   ? JSON.parse(fs.readFileSync("./_secret_albums.json", "utf8"))
@@ -103,6 +100,6 @@ function getSecretAlbums() {
 
 
 export {
-  getSecretAlbums
+  getAlbumNamesFromPicturesFolder
 }
 

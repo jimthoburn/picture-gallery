@@ -9,8 +9,8 @@ import { getSource,
 
 function IndexPage({ title, date, albums }) {
 
-  console.log("IndexPage");
-  console.log(albums);
+  // console.log("IndexPage");
+  // console.log(albums);
 
   return html`
     <section class="picture-list picture-list__has-captions">
@@ -101,7 +101,11 @@ function IndexPage({ title, date, albums }) {
             <li>
               <a href="/${album.uri}/">
                 <responsive-image
-                  aspect-ratio="${picture.width}/${picture.height}"
+                  aspect-ratio="${
+                    (picture.width && picture.height)
+                    ? `${picture.width} / ${picture.height}`
+                    : "1 / 1"
+                  }"
                   max-width="100%"
                   max-height="100%">
                   ${ (picture.previewBase64)
