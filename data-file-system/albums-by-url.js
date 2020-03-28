@@ -1,14 +1,43 @@
 
-import { getAlbumNames }                from "../data-file-system/album-names.js";
+import { getGalleryData }                  from "../data/gallery.js";
+import { getAlbumNamesFromPicturesFolder } from "../data-file-system/albums-from-pictures-folder.js";
 
-import { fetchFromFileSystem as fetch } from "../helpers/fetch-from-file-system.js";
-import { getAlbumByURL }                from "../data/album-by-url.js";
-import { onlyUnique }                   from "../helpers/array.js";
+import { fetchFromFileSystem as fetch }    from "../helpers/fetch-from-file-system.js";
+import { getAlbumByURL }                   from "../data/album-by-url.js";
+import { onlyUnique }                      from "../helpers/array.js";
 
 
 const urls = {};
 const publicURLs = {};
 
+
+async function getAlbumNames() {
+  const [
+    albumsWithOriginalFolder,
+    groupData
+  ] = getAlbumNamesFromPicturesFolder();
+
+  const albumNames = albumsWithOriginalFolder.filter(name => name.split("/").length === 1); // skip child albums
+  const groupNames = groupData.map(group => group.uri);
+
+  const gallery = await getGalleryData({ fetch });
+
+  console.log("*** albumNames ***");
+  console.log(albumNames);
+
+  console.log("*** groupNames ***");
+  console.log(groupNames);
+  
+  console.log("*** gallery.albums ***");
+  console.log(gallery.albums);
+
+  return [
+    ...albumNames,
+    ...groupNames,
+    ...gallery.albums
+  ].filter(onlyUnique);
+
+};
 
 function isPublic(album) {
   return !album.askSearchEnginesNotToIndex &&
