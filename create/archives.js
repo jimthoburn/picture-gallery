@@ -8,7 +8,7 @@ const __dirname = dirname(fileURLToPath(import.meta.url));
 
 import mkdirp from "mkdirp";
 import archiver from "archiver";
-import { getAlbumNamesFromPicturesFolder } from "../data-from-files/albums-from-pictures-folder.js";
+import { getAlbumNamesFromPicturesFolder } from "../data-file-system/albums-from-pictures-folder.js";
 
 
 const galleryData = JSON.parse(fs.readFileSync("./_api/index.json", "utf8"));

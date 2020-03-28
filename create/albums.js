@@ -12,7 +12,7 @@ import base64 from "../helpers/node-base64-image.js";
 import ColorThief from "color-thief";
 import capitalize from "capitalize";
 
-import { getAlbumNamesFromPicturesFolder } from "../data-from-files/albums-from-pictures-folder.js";
+import { getAlbumNamesFromPicturesFolder } from "../data-file-system/albums-from-pictures-folder.js";
 
 
 const colorthief = new ColorThief();

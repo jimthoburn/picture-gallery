@@ -12,10 +12,9 @@ import { fetchFromFileSystem as fetch }
 
 import { getGalleryData }    from "../data/gallery.js";
 import { getPublicURLs,
-         getPublicAlbums,
          isGroupAlbum,
          isAlbum,
-         getAlbum }          from "../data-from-files-and-fetch/album-urls.js";
+         getAlbum }          from "../data-file-system/albums-by-url.js";
 
 import { DefaultLayout }     from "../layouts/default.js";
 import { RobotsText }        from "../layouts/robots.txt.js";

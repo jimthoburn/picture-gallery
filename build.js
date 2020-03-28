@@ -3,9 +3,8 @@ import fs                   from "fs-extra";
 import mkdirp               from "mkdirp";
 
 import { config }           from "./_config.js";
-import { getStaticFolders } from "./data/static-folders.js";
 
-import { getAlbumURLs }     from "./data-from-files-and-fetch/album-urls.js";
+import { getAlbumsByURL }   from "./data-file-system/albums-by-url.js";
 import { getSourceByURL }   from "./get-source/by-url.js";
 import { getError404HTML }  from "./get-source/error.js";
 
@@ -52,7 +51,7 @@ function copy({source, destination}) {
 }
 
 function buildStaticFiles() {
-  for (let folder of getStaticFolders()) {
+  for (let folder of config.staticFolders) {
 
     const folderWithoutLeadingUnderscore = folder.replace(/^_/, "");
 
@@ -125,7 +124,7 @@ function build(urls) {
 }
 
 console.log("Starting build");
-getAlbumURLs().then(albumURLs => {
+getAlbumsByURL().then(albumURLs => {
   build(["/", ...albumURLs]);
 });
 

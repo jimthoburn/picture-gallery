@@ -10,7 +10,7 @@ import imageResize from "gulp-image-resize";
 import parallel from "concurrent-transform";
 import os from "os";
 
-import { getAlbumNamesFromPicturesFolder } from "../data-from-files/albums-from-pictures-folder.js";
+import { getAlbumNamesFromPicturesFolder } from "../data-file-system/albums-from-pictures-folder.js";
 
 
 const galleryData = JSON.parse(fs.readFileSync("./_api/index.json", "utf8"));

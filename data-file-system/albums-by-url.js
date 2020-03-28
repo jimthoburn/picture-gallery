@@ -1,5 +1,5 @@
 
-import { getAlbumNames }                from "../data-from-files-and-fetch/album-names.js";
+import { getAlbumNames }                from "../data-file-system/album-names.js";
 
 import { fetchFromFileSystem as fetch } from "../helpers/fetch-from-file-system.js";
 import { getAlbumByURL }                from "../data/album-by-url.js";
@@ -48,7 +48,7 @@ async function __initURLs() {
   // console.log(publicURLs);
 }
 
-async function getAlbumURLs() {
+async function getAlbumsByURL() {
   await __initURLs();
   return Object.keys(urls);
 }
@@ -94,7 +94,7 @@ function getAlbum(url) {
 
 
 export {
-  getAlbumURLs,
+  getAlbumsByURL,
   getPublicURLs,
   getPublicAlbums,
   isGroupAlbum,

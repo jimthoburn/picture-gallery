@@ -7,9 +7,8 @@ const __dirname = dirname(fileURLToPath(import.meta.url));
 import express              from "express";
 
 import { config }           from "./_config.js";
-import { getStaticFolders } from "./data/static-folders.js";
 
-import { getAlbumURLs }     from "./data-from-files-and-fetch/album-urls.js";
+import { getAlbumsByURL }     from "./data-file-system/albums-by-url.js";
 import { getSourceByURL }   from "./get-source/by-url.js";
 import { getError404HTML,
          getError500HTML }  from "./get-source/error.js";
@@ -20,7 +19,7 @@ const server = express();
 
 
 function serveStaticFiles() {
-  for (let folder of getStaticFolders()) {
+  for (let folder of config.staticFolders) {
     const folderWithoutLeadingUnderscore = folder.replace(/^_/, "");
     server.use( `/${folderWithoutLeadingUnderscore}`, express.static( `./${folder}` ) );
   }
@@ -116,7 +115,7 @@ function serve(urls) {
 }
 
 console.log("Starting server");
-getAlbumURLs().then(albumURLs => {
+getAlbumsByURL().then(albumURLs => {
   serve(["/", ...albumURLs]);
 });
 

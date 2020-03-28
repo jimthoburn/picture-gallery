@@ -1,6 +1,6 @@
 
 import { getGalleryData }                  from "../data/gallery.js";
-import { getAlbumNamesFromPicturesFolder } from "../data-from-files/albums-from-pictures-folder.js";
+import { getAlbumNamesFromPicturesFolder } from "../data-file-system/albums-from-pictures-folder.js";
 import { onlyUnique }                      from "../helpers/array.js";
 import { fetchFromFileSystem as fetch }    from "../helpers/fetch-from-file-system.js";
 

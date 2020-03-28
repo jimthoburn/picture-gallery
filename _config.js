@@ -11,8 +11,19 @@ export const config = {
   // Override the settings in individual albums, and “noindex” the entire site
   // "askSearchEnginesNotToIndex": true,
 
-  "buildFolder" : "_site",
-  "serverPort"  : "4000",
+  "buildFolder"   : "_site",
+  "serverPort"    : "4000",
+  "staticFolders" : [
+    "_api",
+    "_archives",
+    "_pictures",
+    "components",
+    "css",
+    "data",
+    "helpers",
+    "machines",
+    "web_modules"
+  ],
 
   "test": {
     "hostURL"              : "http://localhost:4000",
