@@ -5,7 +5,7 @@ const staticFolders = [
   "_pictures",
   "components",
   "css",
-  "data-from-fetch",
+  "data",
   "helpers",
   "machines",
   "web_modules"
