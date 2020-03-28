@@ -1,6 +1,6 @@
 export const SiteMapXML = ({ host, urls }) => {
 
-  console.log(urls);
+  // console.log(urls);
 
   const items = [];
 

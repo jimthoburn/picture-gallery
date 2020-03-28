@@ -5,7 +5,7 @@
 const esmImport = require("esm")(module /*, options*/);
 const { config } = esmImport("../_config.js");
 
-describe("404 page", function() {
+describe("🚥 404 page", function() {
   it("exists", async () => {
     const response = await page.goto(config.test.hostURL + "/an-unknown-url/");
     expect(response.status()).toBe(404);

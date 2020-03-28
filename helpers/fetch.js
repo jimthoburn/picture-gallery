@@ -12,11 +12,11 @@ function fetchText({url, fetch}) {
       })
       .then(resolve)
       .catch(error => {
-        console.error(error);
-        console.log({ url });
-        if (response) {
-          console.log({ responseStatus: response.status });
-        }
+        // console.error(error);
+        // console.log({ url });
+        // if (response) {
+        //   console.log({ responseStatus: response.status });
+        // }
         resolve(null);
       });
   });
