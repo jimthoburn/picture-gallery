@@ -11,32 +11,19 @@ const urls = {};
 const publicURLs = {};
 
 
+// TBD:  Get album names from the _api folder instead of _pictures
+//       to support albums without a presence in the _pictures folder
+//       and to skip pictures that may not have an album JSON file?
 async function getAlbumNames() {
-  const [
-    albumsWithOriginalFolder,
-    groupData
-  ] = getAlbumNamesFromPicturesFolder();
-
-  const albumNames = albumsWithOriginalFolder.filter(name => name.split("/").length === 1); // skip child albums
-  const groupNames = groupData.map(group => group.uri);
 
   const gallery = await getGalleryData({ fetch });
-
-  console.log("*** albumNames ***");
-  console.log(albumNames);
-
-  console.log("*** groupNames ***");
-  console.log(groupNames);
-  
-  console.log("*** gallery.albums ***");
-  console.log(gallery.albums);
+  const [albumNames, groupData] = getAlbumNamesFromPicturesFolder();
 
   return [
     ...albumNames,
-    ...groupNames,
+    ...groupData.map(group => group.uri),
     ...gallery.albums
   ].filter(onlyUnique);
-
 };
 
 function isPublic(album) {
