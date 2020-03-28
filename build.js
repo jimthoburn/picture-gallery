@@ -1,15 +1,16 @@
 
-import fs     from "fs-extra";
-import mkdirp from "mkdirp";
+import fs                   from "fs-extra";
+import mkdirp               from "mkdirp";
 
-import { config }          from "./_config.js";
-import { getStaticFolders }   from "./data/static-folders.js";
+import { config }           from "./_config.js";
+import { getStaticFolders } from "./data/static-folders.js";
 
-import { getURLs }         from "./data-from-files-and-fetch/urls.js";
-import { getSourceByURL }  from "./get-source/by-url.js";
-import { getError404HTML } from "./get-source/error.js";
+import { getAlbumURLs }     from "./data-from-files-and-fetch/album-urls.js";
+import { getSourceByURL }   from "./get-source/by-url.js";
+import { getError404HTML }  from "./get-source/error.js";
 
-const GENERATED_FILES_FOLDER = "./_site";
+
+const GENERATED_FILES_FOLDER = `./${config.buildFolder}`;
 
 
 function createFile({ pageURL, filename, output }) {
@@ -123,8 +124,8 @@ function build(urls) {
   console.log(`Build files saved to: ${GENERATED_FILES_FOLDER}`);
 }
 
-getURLs().then(urls => {
-  console.log("*** starting build ***");
-  build(["/", ...urls]);
+console.log("Starting build");
+getAlbumURLs().then(albumURLs => {
+  build(["/", ...albumURLs]);
 });
 

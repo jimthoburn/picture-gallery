@@ -92,7 +92,7 @@ async function __initURLs() {
   // console.log(publicURLs);
 }
 
-async function getURLs() {
+async function getAlbumURLs() {
   await __initURLs();
   return Object.keys(urls);
 }
@@ -139,7 +139,7 @@ function getAlbum(url) {
 
 
 export {
-  getURLs,
+  getAlbumURLs,
   getPublicURLs,
   getPublicAlbums,
   isGroupAlbum,

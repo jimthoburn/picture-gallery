@@ -1,20 +1,21 @@
 
 // https://stackoverflow.com/questions/46745014/alternative-for-dirname-in-node-when-using-the-experimental-modules-flag
-import { dirname } from 'path';
-import { fileURLToPath } from 'url';
+import { dirname }          from 'path';
+import { fileURLToPath }    from 'url';
 const __dirname = dirname(fileURLToPath(import.meta.url));
 
-import express from "express";
+import express              from "express";
 
-import { config } from "./_config.js";
+import { config }           from "./_config.js";
 import { getStaticFolders } from "./data/static-folders.js";
 
-import { getURLs }         from "./data-from-files-and-fetch/urls.js";
-import { getSourceByURL } from "./get-source/by-url.js";
-import { getError404HTML, getError500HTML } from "./get-source/error.js";
+import { getAlbumURLs }     from "./data-from-files-and-fetch/album-urls.js";
+import { getSourceByURL }   from "./get-source/by-url.js";
+import { getError404HTML,
+         getError500HTML }  from "./get-source/error.js";
 
 
-const port = parseInt(process.env.PORT, 10) || 4000;
+const port = parseInt(process.env.PORT, 10) || config.serverPort;
 const server = express();
 
 
@@ -114,9 +115,8 @@ function serve(urls) {
   });
 }
 
-
-getURLs().then(urls => {
-  console.log("*** starting server ***");
-  serve(["/", ...urls]);
+console.log("Starting server");
+getAlbumURLs().then(albumURLs => {
+  serve(["/", ...albumURLs]);
 });
 

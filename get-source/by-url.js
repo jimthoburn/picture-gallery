@@ -15,7 +15,7 @@ import { getPublicURLs,
          getPublicAlbums,
          isGroupAlbum,
          isAlbum,
-         getAlbum }          from "../data-from-files-and-fetch/urls.js";
+         getAlbum }          from "../data-from-files-and-fetch/album-urls.js";
 
 import { DefaultLayout }     from "../layouts/default.js";
 import { RobotsText }        from "../layouts/robots.txt.js";
