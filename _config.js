@@ -12,7 +12,7 @@ export const config = {
   // "askSearchEnginesNotToIndex": true,
 
   "buildFolder" : "_site",
-  "serverPort"   : "4000",
+  "serverPort"  : "4000",
 
   "test": {
     "hostURL"              : "http://localhost:4000",
