@@ -1,24 +1,28 @@
 
-import jsBeautify from "js-beautify";
+import jsBeautify            from "js-beautify";
 
-import { config }          from "../_config.js";
+import { config }            from "../_config.js";
 
-import { render }          from "../web_modules/preact-render-to-string.js";
-import { getInitialPageTitle, getOpenGraphImage } from "../components/picture-gallery.js";
+import { render }            from "../web_modules/preact-render-to-string.js";
+import { getInitialPageTitle,
+         getOpenGraphImage } from "../components/picture-gallery.js";
 
-import { getGalleryData }  from "../data/gallery.js";
+import { fetchFromFileSystem as fetch }
+                             from "../helpers/fetch-from-file-system.js";
+
+import { getGalleryData }    from "../data/gallery.js";
 import { getPublicURLs,
          getPublicAlbums,
          isGroupAlbum,
          isAlbum,
-         getAlbum }         from "../data-from-files-and-fetch/urls.js";
+         getAlbum }          from "../data-from-files-and-fetch/urls.js";
 
-import { DefaultLayout }   from "../layouts/default.js";
-import { RobotsText }      from "../layouts/robots.txt.js";
-import { SiteMapXML }      from "../layouts/sitemap.xml.js";
-import { IndexPage }       from "../pages/index.js";
-import { AlbumPage }       from "../pages/album.js";
-import { ParentAlbumPage } from "../pages/parent-album.js";
+import { DefaultLayout }     from "../layouts/default.js";
+import { RobotsText }        from "../layouts/robots.txt.js";
+import { SiteMapXML }        from "../layouts/sitemap.xml.js";
+import { IndexPage }         from "../pages/index.js";
+import { AlbumPage }         from "../pages/album.js";
+import { ParentAlbumPage }   from "../pages/parent-album.js";
 
 
 function getAlbumHTML(url) {
@@ -99,7 +103,7 @@ function getIndexHTML() {
   
   return new Promise(async (resolve, reject) => {
     
-    const gallery = await getGalleryData();
+    const gallery = await getGalleryData({ fetch });
     const albums = gallery.albums.map(albumURI => getAlbum(`/${albumURI}/`));
 
     const { title, askSearchEnginesNotToIndex } = gallery;

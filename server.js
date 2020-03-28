@@ -32,8 +32,8 @@ function serveStaticFiles() {
   });
 }
 
-function serveGallery() {
-  for (let url of ["/", ...getURLs()]) {
+function serveGallery(urls) {
+  for (let url of urls) {
     console.log("serveGallery: " + encodeURI(url));
     server.get(encodeURI(url), (req, res) => {
       getSourceByURL(url)
@@ -79,10 +79,10 @@ function withoutTrailingSlash(url) {
   return url.replace(/\/$/, "");
 }
 
-function addTrailingSlashes() {
+function addTrailingSlashes(urls) {
   // Add trailing slashes to URLs: /wildflowers => /wildflowers/
   server.use(function(req, res, next) {
-    const matches = getURLs().filter(url => encodeURI(withoutTrailingSlash(url)) === req.url);
+    const matches = urls.filter(url => encodeURI(withoutTrailingSlash(url)) === req.url);
     if (matches.length) {
       console.log("Adding a trailing slash to: " + req.url);
       res.redirect(302, matches[0]);
@@ -92,11 +92,12 @@ function addTrailingSlashes() {
   });
 }
 
-function serve() {
+function serve(urls) {
+  console.log(urls);
 
-  addTrailingSlashes();
+  addTrailingSlashes(urls);
 
-  serveGallery();
+  serveGallery(urls);
   serveStaticFiles();
 
   if (config.askSearchEnginesNotToIndex !== true && config.host) {
@@ -114,11 +115,8 @@ function serve() {
 }
 
 
-setTimeout(() => {
+getURLs().then(urls => {
   console.log("*** starting server ***");
-  console.dir(getURLs());
-
-  serve();
-}, 1000);
-
+  serve(["/", ...urls]);
+});
 

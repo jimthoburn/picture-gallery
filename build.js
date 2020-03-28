@@ -75,8 +75,8 @@ function buildStaticFiles() {
   copy({source, destination});
 }
 
-function buildGallery() {
-  for (let url of ["/", ...getURLs()]) {
+function buildGallery(urls) {
+  for (let url of urls) {
     getSourceByURL(url)
       .then(html => createFile({ pageURL: url, output: html }))
       .catch(err => console.error(err));
@@ -102,8 +102,9 @@ function buildError404Page() {
   createFile({ pageURL: "/", filename: "404.html", output: getError404HTML() });
 }
 
-function build() {
-  buildGallery();
+function build(urls) {
+
+  buildGallery(urls);
   buildStaticFiles();
 
   if (config.askSearchEnginesNotToIndex !== true && config.host) {
@@ -122,10 +123,8 @@ function build() {
   console.log(`Build files saved to: ${GENERATED_FILES_FOLDER}`);
 }
 
-setTimeout(() => {
+getURLs().then(urls => {
   console.log("*** starting build ***");
-  console.dir(getURLs());
-
-  build();
-}, 1000);
+  build(["/", ...urls]);
+});
 

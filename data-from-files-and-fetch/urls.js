@@ -43,7 +43,7 @@ function isPublic(album) {
 }
 
 // console.log("***** starting up *****");
-(async function() {
+async function __initURLs() {
   // console.log("***** albumNames *****");
   // console.dir(albumNames);
 
@@ -90,9 +90,10 @@ function isPublic(album) {
   // console.log("***** urls *****");
   // console.log(urls);
   // console.log(publicURLs);
-})();
+}
 
-function getURLs() {
+async function getURLs() {
+  await __initURLs();
   return Object.keys(urls);
 }
 
