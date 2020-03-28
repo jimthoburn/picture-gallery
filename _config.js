@@ -1,7 +1,7 @@
 
 export const config = {
 
-  // For open graph images and site map
+  // The place where this gallery will be published (this is used for open graph images and the site map).
   // "host": "https://example.com",
   
   // https://dev.to/pickleat/add-an-emoji-favicon-to-your-site-co2

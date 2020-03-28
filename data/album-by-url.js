@@ -43,12 +43,12 @@ function __getAlbumData({ albumURI, urlArray, parentUrlLength, fetch, parent }) 
 }
 
 function getAlbumData({ albumURI, urlArray, parentUrlLength, testNumber, fetch }) {
-  console.log("getAlbumData: " + albumURI);
+  // console.log("getAlbumData: " + albumURI);
   return new Promise(async (resolve, reject) => {
-    console.log(`Testing: /api/${albumURI}.json`)
+    // console.log(`Testing: /api/${albumURI}.json`)
     let testResult = await fetchJSON({url: `/api/${albumURI}.json`, fetch});
     if (testResult) {
-      console.log("Test passed: " + testNumber);
+      // console.log("Test passed: " + testNumber);
       __getAlbumData({ albumURI, urlArray, parentUrlLength, fetch })
         .then(resolve);
     } else {
@@ -71,7 +71,7 @@ function getAlbumData({ albumURI, urlArray, parentUrlLength, testNumber, fetch }
           albums: children
         });
       } else {
-        console.log("Test did not pass: " + testNumber);
+        // console.log("Test did not pass: " + testNumber);
         reject();
       }
     }
@@ -79,7 +79,7 @@ function getAlbumData({ albumURI, urlArray, parentUrlLength, testNumber, fetch }
 }
 
 function getURLArray(url) {
-  console.log("getURLArray: " + url);
+  // console.log("getURLArray: " + url);
   let urlArray;
   // /wildflowers/7/                     ==>  ["example.com", "wildflowers", "7"]
   // /baking/a/3/                        ==>  ["example.com", "baking", "a", "3"]
@@ -104,7 +104,7 @@ function __getAlbumByURL({ url, fetch }) {
     const urlArrayWithoutLastItem = urlArray.slice(0, urlArray.length - 1);
     let testNumber = 1;
 
-    console.log("albumURI: " + urlArray.join("/"));
+    // console.log("albumURI: " + urlArray.join("/"));
 
     // The whole URL might match an album
     // baking   ==> baking.json
@@ -140,7 +140,7 @@ function __getAlbumByURL({ url, fetch }) {
 }
 
 async function getAlbumByURL({ url, fetch }) {
-  console.log("getAlbumByURL: " + url);
+  // console.log("getAlbumByURL: " + url);
   return await __getAlbumByURL({ url, fetch });
 }
 

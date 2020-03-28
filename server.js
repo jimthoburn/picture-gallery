@@ -5,6 +5,7 @@ import { fileURLToPath }    from 'url';
 const __dirname = dirname(fileURLToPath(import.meta.url));
 
 import express              from "express";
+import chalk                from "chalk";
 
 import { config }           from "./_config.js";
 
@@ -19,6 +20,7 @@ const server = express();
 
 
 function serveStaticFiles() {
+  console.log(`📂 Preparing static files`);
   for (let folder of config.staticFolders) {
     const folderWithoutLeadingUnderscore = folder.replace(/^_/, "");
     server.use( `/${folderWithoutLeadingUnderscore}`, express.static( `./${folder}` ) );
@@ -33,8 +35,9 @@ function serveStaticFiles() {
 }
 
 function serveGallery(urls) {
+  console.log(`📗 Preparing albums`);
   for (let url of urls) {
-    console.log("serveGallery: " + encodeURI(url));
+    // console.log("serveGallery: " + encodeURI(url));
     server.get(encodeURI(url), (req, res) => {
       getSourceByURL(url)
         .then(html => res.send(html))
@@ -44,6 +47,7 @@ function serveGallery(urls) {
 }
 
 function serveRobotsText() {
+  console.log(`🤖 Preparing robots.txt`);
   const url = "/robots.txt";
   server.get(url, function(req, res, next) {
     getSourceByURL(url)
@@ -53,6 +57,7 @@ function serveRobotsText() {
 }
 
 function serveSiteMap() {
+  console.log(`🗺  Preparing sitemap.xml`);
   const url = "/sitemap.xml";
   server.get(url, async function(req, res, next) {
     getSourceByURL(url)
@@ -62,14 +67,14 @@ function serveSiteMap() {
 }
 
 function serveError404Page() {
-  console.log(`Serving error 404 page`);
+  console.log(`🚥 Preparing 404 "not found" page`);
   server.use(function (req, res, next) {
     res.status(404).send(getError404HTML());
   });
 }
 
 function serveError500Page() {
-  console.log(`Serving error 500 page`);
+  console.log(`🚥 Preparing 500 "server error" page`);
   server.use(function (err, req, res, next) {
     res.status(500).send(getError500HTML(err));
   });
@@ -93,7 +98,7 @@ function addTrailingSlashes(urls) {
 }
 
 function serve(urls) {
-  console.log(urls);
+  // console.log(urls);
 
   addTrailingSlashes(urls);
 
@@ -103,6 +108,11 @@ function serve(urls) {
   if (config.askSearchEnginesNotToIndex !== true && config.host) {
     serveRobotsText();
     serveSiteMap();
+  } else {
+    if (config.askSearchEnginesNotToIndex === true) console.log("⚠️ ", chalk.italic("askSearchEnginesNotToIndex"), "is set to", chalk.italic(true), "in", chalk.italic("_config.js"));
+    if (!config.host) console.log("⚠️ ", chalk.italic("host"), "is not set in", chalk.italic("_config.js"));
+    console.log("⚠️  Skipping sitemap.xml");
+    console.log("⚠️  Skipping robots.txt");
   }
 
   serveError404Page();
@@ -110,11 +120,19 @@ function serve(urls) {
 
   server.listen(port, err => {
     if (err) throw err;
-    console.log(`Ready on http://localhost:${port}`);
+    console.log("");
+    console.log(chalk.cyan("- - - - - - - - - - - - - - - - - - - - - - -"));
+    console.log("💁", chalk.cyan(`Server ready on`), chalk.italic(`http://localhost:${port}`));
+    console.log(chalk.cyan("- - - - - - - - - - - - - - - - - - - - - - -"));
+    console.log("");
   });
 }
 
-console.log("Starting server");
+console.log("");
+console.log(chalk.cyan("- - - - - - - - - - - - - - - - - - - - - - -"));
+console.log("⏱️ ", chalk.cyan("Starting server"));
+console.log(chalk.cyan("- - - - - - - - - - - - - - - - - - - - - - -"));
+console.log("");
 getAlbumsByURL().then(albumURLs => {
   serve(["/", ...albumURLs]);
 });

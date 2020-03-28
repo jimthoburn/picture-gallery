@@ -1,6 +1,7 @@
 
 import fs                   from "fs-extra";
 import mkdirp               from "mkdirp";
+import chalk                from "chalk";
 
 import { config }           from "./_config.js";
 
@@ -39,7 +40,7 @@ function removeFile({ pageURL, filename }) {
 }
 
 function copy({source, destination}) {
-  console.log(`Copying files from: ${source}`);
+  // console.log(`📂 Copying files from: ${source}`);
 
   // https://www.npmjs.com/package/fs-extra
   fs.copy(source, destination, function (err) {
@@ -51,6 +52,7 @@ function copy({source, destination}) {
 }
 
 function buildStaticFiles() {
+  console.log(`📂 Preparing static files`);
   for (let folder of config.staticFolders) {
 
     const folderWithoutLeadingUnderscore = folder.replace(/^_/, "");
@@ -76,6 +78,7 @@ function buildStaticFiles() {
 }
 
 function buildGallery(urls) {
+  console.log(`📗 Preparing albums`);
   for (let url of urls) {
     getSourceByURL(url)
       .then(html => createFile({ pageURL: url, output: html }))
@@ -84,21 +87,21 @@ function buildGallery(urls) {
 }
 
 async function buildRobotsText() {
-  console.log(`Generating robots.txt`);
+  console.log(`🤖 Preparing robots.txt`);
   getSourceByURL("/robots.txt")
     .then(text => createFile({ pageURL: "/", filename: "robots.txt", output: text }))
     .catch(err => console.error(err));
 }
 
 function buildSiteMap() {
-  console.log(`Generating sitemap.xml`);
+  console.log(`🗺  Preparing sitemap.xml`);
   getSourceByURL("/sitemap.xml")
     .then(xml => createFile({ pageURL: "/", filename: "sitemap.xml", output: xml }))
     .catch(err => console.error(err));
 }
 
 function buildError404Page() {
-  console.log(`Generating error 404 page`);
+  console.log(`🚥 Preparing 404 "not found" page`);
   createFile({ pageURL: "/", filename: "404.html", output: getError404HTML() });
 }
 
@@ -111,19 +114,29 @@ function build(urls) {
     buildRobotsText();
     buildSiteMap();
   } else {
-    console.log("Removing sitemap.xml");
+    if (config.askSearchEnginesNotToIndex === true) console.log("⚠️ ", chalk.italic("askSearchEnginesNotToIndex"), "is set to", chalk.italic(true), "in", chalk.italic("_config.js"));
+    if (!config.host) console.log("⚠️ ", chalk.italic("host"), "is not set in", chalk.italic("_config.js"));
+    console.log("⚠️  Skipping sitemap.xml");
     removeFile({ pageURL: "/", filename: "sitemap.xml" });
 
-    console.log("Removing robots.txt");
+    console.log("⚠️  Skipping robots.txt");
     removeFile({ pageURL: "/", filename: "robots.txt" });
   }
 
   buildError404Page();
-
-  console.log(`Build files saved to: ${GENERATED_FILES_FOLDER}`);
+  
+  console.log("");
+  console.log(chalk.cyan("- - - - - - - - - - - - - - - - - - - - - - -"));
+  console.log("🏁", chalk.cyan(`Build files saved to`), chalk.italic(config.buildFolder));
+  console.log(chalk.cyan("- - - - - - - - - - - - - - - - - - - - - - -"));
+  console.log("");
 }
 
-console.log("Starting build");
+console.log("");
+console.log(chalk.cyan("- - - - - - - - - - - - - - - - - - - - - - -"));
+console.log("⏱️ ", chalk.cyan("Starting build"));
+console.log(chalk.cyan("- - - - - - - - - - - - - - - - - - - - - - -"));
+console.log("");
 getAlbumsByURL().then(albumURLs => {
   build(["/", ...albumURLs]);
 });
