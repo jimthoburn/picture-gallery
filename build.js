@@ -3,7 +3,7 @@ import fs     from "fs-extra";
 import mkdirp from "mkdirp";
 
 import { config }          from "./_config.js";
-import { staticFolders }   from "./data/static-folders.js";
+import { getStaticFolders }   from "./data/static-folders.js";
 
 import { getURLs }         from "./data-from-files-and-fetch/urls.js";
 import { getSourceByURL }  from "./get-source/by-url.js";
@@ -51,7 +51,7 @@ function copy({source, destination}) {
 }
 
 function buildStaticFiles() {
-  for (let folder of staticFolders) {
+  for (let folder of getStaticFolders()) {
 
     const folderWithoutLeadingUnderscore = folder.replace(/^_/, "");
 

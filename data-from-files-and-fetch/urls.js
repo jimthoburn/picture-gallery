@@ -3,7 +3,7 @@ import { getGroupAlbumNames }           from "../data-from-files/group-albums.js
 import { getNonGroupAlbumNames }        from "../data-from-files/non-group-album-names.js";
 
 import { fetchFromFileSystem as fetch } from "../helpers/fetch-from-file-system.js";
-import { getAlbumByURL }                from "../data-from-fetch/album-by-url.js";
+import { getAlbumByURL }                from "../data/album-by-url.js";
 import { onlyUnique } from "../helpers/array.js";
 
 

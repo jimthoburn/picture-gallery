@@ -7,7 +7,7 @@ const __dirname = dirname(fileURLToPath(import.meta.url));
 import express from "express";
 
 import { config } from "./_config.js";
-import { staticFolders } from "./data/static-folders.js";
+import { getStaticFolders } from "./data/static-folders.js";
 
 import { getURLs }         from "./data-from-files-and-fetch/urls.js";
 import { getSourceByURL } from "./get-source/by-url.js";
@@ -19,7 +19,7 @@ const server = express();
 
 
 function serveStaticFiles() {
-  for (let folder of staticFolders) {
+  for (let folder of getStaticFolders()) {
     const folderWithoutLeadingUnderscore = folder.replace(/^_/, "");
     server.use( `/${folderWithoutLeadingUnderscore}`, express.static( `./${folder}` ) );
   }

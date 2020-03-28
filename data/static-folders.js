@@ -11,8 +11,12 @@ const staticFolders = [
   "web_modules"
 ];
 
+function getStaticFolders() {
+  return staticFolders;
+}
+
 
 export {
-  staticFolders
+  getStaticFolders
 }
 

@@ -5,7 +5,7 @@ import htm from "./web_modules/htm.js"; const html = htm.bind(createElement);
 import { PictureGallery, getInitialPageTitle } from "./components/picture-gallery.js";
 import { Catcher } from "./components/catcher.js";
 
-import { getAlbumByURL } from "./data-from-fetch/album-by-url.js";
+import { getAlbumByURL } from "./data/album-by-url.js";
 
 function getPageURL() {
   return window.location.href;

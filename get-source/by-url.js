@@ -6,7 +6,7 @@ import { config }          from "../_config.js";
 import { render }          from "../web_modules/preact-render-to-string.js";
 import { getInitialPageTitle, getOpenGraphImage } from "../components/picture-gallery.js";
 
-import { getGalleryData }  from "../data-from-files/gallery-from-index-json.js";
+import { getGalleryData }  from "../data/gallery.js";
 import { getPublicURLs,
          getPublicAlbums,
          isGroupAlbum,
@@ -97,28 +97,10 @@ function getGroupAlbumHTML(url) {
 
 function getIndexHTML() {
   
-  return new Promise((resolve, reject) => {
+  return new Promise(async (resolve, reject) => {
     
-    const gallery = getGalleryData();
+    const gallery = await getGalleryData();
     const albums = gallery.albums.map(albumURI => getAlbum(`/${albumURI}/`));
-    
-    // console.log("**** albums");
-    // for (let album of albums) {
-    //   console.log(album);
-    //   if (album.pictures) {
-    //     for (let picture of album.pictures) {
-    //       console.log(picture);
-    //     }
-    //   }
-    //   if (album.albums) {
-    //     for (let child of album.albums) {
-    //       console.log(child);
-    //       for (let picture of child.pictures) {
-    //         console.log(picture);
-    //       }
-    //     }
-    //   }
-    // }
 
     const { title, askSearchEnginesNotToIndex } = gallery;
     const content = render(IndexPage({ ...gallery, albums }));
