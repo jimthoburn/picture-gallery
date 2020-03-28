@@ -10,12 +10,12 @@ import imageResize from "gulp-image-resize";
 import parallel from "concurrent-transform";
 import os from "os";
 
-import { getSecretAlbums } from "../helpers/secret-albums.js";
+import { getAlbumNamesFromPicturesFolder } from "../data-file-system/albums-from-pictures-folder.js";
 
 
 const galleryData = JSON.parse(fs.readFileSync("./_api/index.json", "utf8"));
 
-const [secretAlbums, secretAlbumGroups] = getSecretAlbums();
+const [secretAlbums, secretAlbumGroups] = getAlbumNamesFromPicturesFolder();
 
 const albums = secretAlbums;
 

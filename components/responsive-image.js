@@ -92,7 +92,9 @@ class ResponsiveImage extends LitElement {
     let aspectRatio = this["aspect-ratio"];
 
     // Handle the case where aspect ratio is not valid
-    if (isNaN(aspectRatio.split("/")[0]) || isNaN(aspectRatio.split("/")[1])) {
+    if (aspectRatio.length < 2 ||
+        isNaN(aspectRatio.split("/")[0]) ||
+        isNaN(aspectRatio.split("/")[1]) ) {
       aspectRatio = "1/1";
     }
 

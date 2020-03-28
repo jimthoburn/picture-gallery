@@ -12,14 +12,14 @@ import base64 from "../helpers/node-base64-image.js";
 import ColorThief from "color-thief";
 import capitalize from "capitalize";
 
-import { getSecretAlbums } from "../helpers/secret-albums.js";
+import { getAlbumNamesFromPicturesFolder } from "../data-file-system/albums-from-pictures-folder.js";
 
 
 const colorthief = new ColorThief();
 
 const galleryData = JSON.parse(fs.readFileSync("./_api/index.json", "utf8"));
 
-const [secretAlbums, secretAlbumGroups] = getSecretAlbums();
+const [secretAlbums, secretAlbumGroups] = getAlbumNamesFromPicturesFolder();
 
 const albums = secretAlbums;
 
