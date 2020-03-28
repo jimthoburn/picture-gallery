@@ -5,7 +5,6 @@ import { fileURLToPath } from 'url';
 const __dirname = dirname(fileURLToPath(import.meta.url));
 
 import express from "express";
-import slashes from "connect-slashes";
 
 import { config } from "./_config.js";
 import { staticFolders } from "./data/static-folders.js";
@@ -37,7 +36,6 @@ function serveGallery() {
   for (let url of ["/", ...getURLs()]) {
     console.log("serveGallery: " + encodeURI(url));
     server.get(encodeURI(url), (req, res) => {
-      console.log("serveGallery: " + url);
       getSourceByURL(url)
         .then(html => res.send(html))
         .catch(err => res.status(500).send(getError500HTML(err)));
@@ -63,7 +61,41 @@ function serveSiteMap() {
   });
 }
 
+function serveError404Page() {
+  console.log(`Serving error 404 page`);
+  server.use(function (req, res, next) {
+    res.status(404).send(getError404HTML());
+  });
+}
+
+function serveError500Page() {
+  console.log(`Serving error 500 page`);
+  server.use(function (err, req, res, next) {
+    res.status(500).send(getError500HTML(err));
+  });
+}
+
+function withoutTrailingSlash(url) {
+  return url.replace(/\/$/, "");
+}
+
+function addTrailingSlashes() {
+  // Add trailing slashes to URLs: /wildflowers => /wildflowers/
+  server.use(function(req, res, next) {
+    const matches = getURLs().filter(url => encodeURI(withoutTrailingSlash(url)) === req.url);
+    if (matches.length) {
+      console.log("Adding a trailing slash to: " + req.url);
+      res.redirect(302, matches[0]);
+      return;
+    }
+    next();
+  });
+}
+
 function serve() {
+
+  addTrailingSlashes();
+
   serveGallery();
   serveStaticFiles();
 
@@ -72,19 +104,8 @@ function serve() {
     serveSiteMap();
   }
 
-  // Add trailing slashes to URLs: /wildflowers => /wildflowers/
-  server.use(slashes(true, { code: 302 })); // 302 Temporary redirects
-  
-  // serveError404Page();
-
-  server.use(function (req, res, next) {
-    console.log("serve 404: " + req.originalUrl);
-    res.status(404).send(getError404HTML());
-  });
-
-  server.use(function (err, req, res, next) {
-    res.status(500).send(getError500HTML(err));
-  });
+  serveError404Page();
+  serveError500Page();
 
   server.listen(port, err => {
     if (err) throw err;

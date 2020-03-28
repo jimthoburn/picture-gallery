@@ -195,11 +195,14 @@ function getSelectedPictureIndexFromURL({ album, pictures, getPageURL }) {
 
   for (let index = 0; index < pictures.length; index++) {
     if (
-      // TRICKY:
+      // TRICKY: Support with or without trailing slash, and
+      //                 with or without encoded UTF-8 characters
       // for server.js 
       `/${encodeURIComponent(album.uri)}/${encodeURIComponent(pictures[index].uri)}/` === pageURL ||
+      `/${encodeURIComponent(album.uri)}/${encodeURIComponent(pictures[index].uri)}`  === pageURL ||
       // for build.js 
-      `/${album.uri}/${pictures[index].uri}/` === pageURL) {
+      `/${album.uri}/${pictures[index].uri}/` === pageURL ||
+      `/${album.uri}/${pictures[index].uri}`  === pageURL) {
       return index;
     }
   }
