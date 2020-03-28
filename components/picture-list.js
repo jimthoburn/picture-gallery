@@ -116,7 +116,7 @@ function PictureList({ album, pictures, story, state }) {
                 aspect-ratio="${
                   (picture.width && picture.height)
                   ? `${picture.width}/${picture.height}`
-                  : "1/1"
+                  : "1 / 1"
                 }"
                 max-width="100%"
                 max-height="100%"

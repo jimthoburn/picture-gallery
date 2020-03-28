@@ -8,12 +8,12 @@ const __dirname = dirname(fileURLToPath(import.meta.url));
 
 import mkdirp from "mkdirp";
 import archiver from "archiver";
-import { getSecretAlbums } from "../helpers/secret-albums.js";
+import { getAlbumNamesFromPicturesFolder } from "../data-file-system/albums-from-pictures-folder.js";
 
 
 const galleryData = JSON.parse(fs.readFileSync("./_api/index.json", "utf8"));
 
-const [secretAlbums, secretAlbumGroups] = getSecretAlbums();
+const [secretAlbums, secretAlbumGroups] = getAlbumNamesFromPicturesFolder();
 
 const albums = secretAlbums;
 

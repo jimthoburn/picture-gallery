@@ -1,34 +1,40 @@
-export const SiteMapXML = ({ host, albums, groupAlbums }) => {
+export const SiteMapXML = ({ host, urls }) => {
+
+  console.log(urls);
 
   const items = [];
 
-  function addItem({ url }) {
+  function addItem(url) {
     items.push(
 `  <url>
-    <loc>${host}${url}</loc>
+    <loc>${host || ""}${url}</loc>
   </url>
 `
     );
   }
 
-  albums.forEach(album => {
-    addItem({ url: `/${album.uri}/` });
-    album.pictures.forEach(picture => {
-      addItem({ url: `/${album.uri}/${picture.uri}/` });
-    });
-  });
+  for (let url of urls) {
+    addItem(url);
+  }
 
-  groupAlbums.forEach(groupAlbum => {
-    if (groupAlbum.askSearchEnginesNotToIndex !== true) {
-      addItem({ url: `/${groupAlbum.uri}/` });
-      groupAlbum.albums.forEach(album => {
-        addItem({ url: `/${groupAlbum.uri}/${album.uri}/` });
-        album.pictures.forEach(picture => {
-          addItem({ url: `/${groupAlbum.uri}/${album.uri}/${picture.uri}/` });
-        });
-      });
-    }
-  });
+  // albums.forEach(album => {
+  //   addItem({ url: `/${album.uri}/` });
+  //   album.pictures.forEach(picture => {
+  //     addItem({ url: `/${album.uri}/${picture.uri}/` });
+  //   });
+  // });
+  // 
+  // groupAlbums.forEach(groupAlbum => {
+  //   if (groupAlbum.askSearchEnginesNotToIndex !== true) {
+  //     addItem({ url: `/${groupAlbum.uri}/` });
+  //     groupAlbum.albums.forEach(album => {
+  //       addItem({ url: `/${groupAlbum.uri}/${album.uri}/` });
+  //       album.pictures.forEach(picture => {
+  //         addItem({ url: `/${groupAlbum.uri}/${album.uri}/${picture.uri}/` });
+  //       });
+  //     });
+  //   }
+  // });
 
   const xml = 
 `<?xml version="1.0" encoding="UTF-8"?>

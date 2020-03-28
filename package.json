@@ -36,7 +36,6 @@
     "capitalize": "^2.0.3",
     "color-thief": "^2.2.5",
     "concurrent-transform": "^1.0.0",
-    "connect-slashes": "^1.4.0",
     "esm": "^3.2.25",
     "exif": "^0.6.0",
     "express": "^4.17.1",
