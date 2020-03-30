@@ -223,7 +223,7 @@ function getOpenGraphImage({ album, parent, pictures, getPageURL }) {
     const picture = pictures[selectedPictureIndex];
     return getSource({ album, picture, largestSize: true });
   } else {
-    return getCoverPhoto({album, parent});
+    return getCoverPhoto({album});
   }
 }
 

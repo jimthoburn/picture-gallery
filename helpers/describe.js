@@ -2,7 +2,21 @@
 import { config } from "../_config.js";
 
 import isUrl from "is-url";
+import fetch from "node-fetch";
 
+
+function describeHasContent({ name, url }) {
+  describe(`${name}, has content 🖼`, function() {
+    it("has an image with a valid URL", async () => {
+      await page.goto(config.test.hostURL + url);
+      const src = await page.$eval(`img:not([src*="data:image"])`, element =>
+        element.getAttribute("src")
+      );
+      const response = await fetch(src.indexOf("http") === 0 ? src : `${config.test.hostURL}${src}`);
+      expect(response.ok).toBe(true);
+    });
+  });
+}
 
 function hasAnOpenGraphImage({ url }) {
   if (config.host && config.host.indexOf("http") === 0) {
@@ -11,11 +25,13 @@ function hasAnOpenGraphImage({ url }) {
       const content = await page.$eval(`meta[property="og:image"]`, element =>
         element.getAttribute("content")
       );
-      const isValidURL = isUrl(content)
-          // Double check for strings with two instances of “https://”
-          // https://pictures.tobbi.cohttps://cdn.glitch.com/0066dc23-cee2-4973-ae99-075586a1eded%2F17.jpg?v=1572802598055
-          && content.match(/https?:\/\//g).length == 1;
-      expect(isValidURL).toBe(true);
+      const response = await fetch(content);
+      expect(response.ok).toBe(true);
+      // const isValidURL = isUrl(content)
+      //     // Double check for strings with two instances of “https://”
+      //     // https://pictures.tobbi.cohttps://cdn.glitch.com/0066dc23-cee2-4973-ae99-075586a1eded%2F17.jpg?v=1572802598055
+      //     && content.match(/https?:\/\//g).length == 1;
+      // expect(isValidURL).toBe(true);
     });
   } else {
     it("has a valid open graph image that starts with “http”, or does not have an open graph image specified–since “host” is empty or invalid in “_config.js”", async () => {
@@ -25,11 +41,13 @@ function hasAnOpenGraphImage({ url }) {
         const content = await page.$eval(`meta[property="og:image"]`, element =>
           element.getAttribute("content")
         );
-        const isValidURL = isUrl(content)
-            // Double check for strings with two instances of “https://”
-            // https://pictures.tobbi.cohttps://cdn.glitch.com/0066dc23-cee2-4973-ae99-075586a1eded%2F17.jpg?v=1572802598055
-            && content.match(/https?:\/\//g).length == 1;
-        expect(isValidURL).toBe(true);
+        const response = await fetch(content);
+        expect(response.ok).toBe(true);
+        // const isValidURL = isUrl(content)
+        //     // Double check for strings with two instances of “https://”
+        //     // https://pictures.tobbi.cohttps://cdn.glitch.com/0066dc23-cee2-4973-ae99-075586a1eded%2F17.jpg?v=1572802598055
+        //     && content.match(/https?:\/\//g).length == 1;
+        // expect(isValidURL).toBe(true);
       } else {
         expect(metaElement).toBeNull();
       }
@@ -97,4 +115,4 @@ function describeAccessibility({ name, url }) {
   });
 }
 
-export { describeFindability, describeAccessibility, hasAnOpenGraphImage }
+export { describeHasContent, describeFindability, describeAccessibility, hasAnOpenGraphImage }

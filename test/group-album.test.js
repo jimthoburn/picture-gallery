@@ -4,7 +4,7 @@
 // https://www.npmjs.com/package/esm
 const esmImport = require("esm")(module /*, options*/);
 const { config } = esmImport("../_config.js");
-const { describeAccessibility, describeFindability } = esmImport("../helpers/describe.js");
+const { describeHasContent, describeAccessibility, describeFindability } = esmImport("../helpers/describe.js");
 
 const options = {
   name: "📗📗📗 Group album",
@@ -18,6 +18,8 @@ describe(options.name, function() {
     expect(element).not.toBe(null);
   });
 });
+
+describeHasContent(options);
 
 describeAccessibility(options);
 

@@ -31,8 +31,8 @@ function ParentAlbumPage({ parent, children }) {
               <responsive-image
                 aspect-ratio="${
                   (picture.width && picture.height)
-                  ? `${picture.width} / ${picture.height}`
-                  : "1 / 1"
+                  ? `${picture.width}/${picture.height}`
+                  : "1/1"
                 }"
                 max-width="100%"
                 max-height="100%">
@@ -45,9 +45,9 @@ function ParentAlbumPage({ parent, children }) {
                     src="data:image/jpeg;base64,${picture.previewBase64}" alt="" />`
                    : "" }
                 <img
-                  src="${getSource({parent, album, picture})}"
-                  srcset="${getSourceSet({parent, album, picture})}"
-                  sizes="${getSourceSet({parent, album, picture}) ? sizes : null}"
+                  src="${getSource({album, picture})}"
+                  srcset="${getSourceSet({album, picture})}"
+                  sizes="${getSourceSet({album, picture}) ? sizes : null}"
                   loading="lazy"
                   alt="${
                     (picture.description)

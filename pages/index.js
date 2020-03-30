@@ -103,8 +103,8 @@ function IndexPage({ title, date, albums }) {
                 <responsive-image
                   aspect-ratio="${
                     (picture.width && picture.height)
-                    ? `${picture.width} / ${picture.height}`
-                    : "1 / 1"
+                    ? `${picture.width}/${picture.height}`
+                    : "1/1"
                   }"
                   max-width="100%"
                   max-height="100%">

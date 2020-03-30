@@ -2,15 +2,15 @@
 export const IMAGE_LIST_SIZES    = "100vw"; //"(min-width: 40em) 320px, 44vw";
 export const IMAGE_DETAILS_SIZES = "100vw"; //"(min-aspect-ratio: 1/1) 100vh, 100vw";
 
-export function getSource({parent, album, picture, largestSize = false}) {
-  const albumURI = parent ? `${parent.uri}/${album.uri}` : album.uri;
+export function getSource({album, picture, largestSize = false}) {
+  const albumURI = album.uri;
   return (picture.filename)
     ? `/pictures/${ albumURI }/${ largestSize ? "6000" : "384" }-wide/${ picture.filename }`
     : picture.source;
 }
 
-export function getSourceSet({parent, album, picture}) {
-  const albumURI = parent ? `${parent.uri}/${album.uri}` : album.uri;
+export function getSourceSet({album, picture}) {
+  const albumURI = album.uri;
   return (picture.filename)
     ? `/pictures/${ albumURI }/384-wide/${ picture.filename } 384w,
        /pictures/${ albumURI }/512-wide/${ picture.filename } 512w,
@@ -22,12 +22,12 @@ export function getSourceSet({parent, album, picture}) {
     : null;
 }
 
-export function getCoverPhoto({album, parent}) {
+export function getCoverPhoto({album,}) {
   const match = album.pictures.filter(picture =>
     picture.filename === album.coverPicture || 
     picture.source   === album.coverPicture
   );
   const picture = match.length > 0 ? match[0] : album.pictures[0];
-  return getSource({ album, picture, parent, largestSize: true });
+  return getSource({ album, picture, largestSize: true });
 }
 
