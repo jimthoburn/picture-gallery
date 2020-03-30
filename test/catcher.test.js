@@ -5,7 +5,6 @@
 const esmImport = require("esm")(module /*, options*/);
 const { config } = esmImport("../_config.js");
 
-
 describe("😺 Catcher", function() {
   it("restores the original server-side rendered HTML, if an error happened during the initial client-side render", async () => {
     await page.goto(config.test.hostURL + config.test.albumURL + "?test=error-during-initial-render");

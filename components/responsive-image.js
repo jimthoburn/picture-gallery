@@ -84,7 +84,8 @@ class ResponsiveImage extends LitElement {
 
     const image = this.querySelector("img:not(.preview)");
 
-    if (image) this.querySelector("img:not(.preview)").removeEventListener("load", this.onImageLoaded);
+    if (image) this.querySelector("img:not(.preview)")
+                   .removeEventListener("load", this.onImageLoaded);
   }
 
 
@@ -92,13 +93,16 @@ class ResponsiveImage extends LitElement {
     let aspectRatio = this["aspect-ratio"];
 
     // Handle the case where aspect ratio is not valid
-    if (aspectRatio.length < 2 ||
-        isNaN(aspectRatio.split("/")[0]) ||
-        isNaN(aspectRatio.split("/")[1]) ) {
+    if (!aspectRatio || aspectRatio.split("/").length < 2 ||
+        isNaN(aspectRatio.split("/")[0].trim()) ||
+        isNaN(aspectRatio.split("/")[1].trim()) ) {
       aspectRatio = "1/1";
     }
 
-    const [width, height] = aspectRatio.split("/");
+    const [width, height] = 
+      aspectRatio.split("/").map(
+        string => Number(string.trim())
+      );
     const maxWidth  = this["max-width"];
     const maxHeight = this["max-height"];
 
