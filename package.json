@@ -48,7 +48,7 @@
     "jest": "^25.1.0",
     "jest-playwright-preset": "0.0.15",
     "js-beautify": "^1.10.3",
-    "lodash": "^4.17.15",
+    "lodash": "^4.17.19",
     "node-fetch": "^2.6.0",
     "playwright": "^0.12.1",
     "request": "^2.88.2",
