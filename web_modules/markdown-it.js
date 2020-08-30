@@ -1,9 +1,15 @@
-function createCommonjsModule(fn, module) {
-	return module = { exports: {} }, fn(module, module.exports), module.exports;
+function createCommonjsModule(fn, basedir, module) {
+	return module = {
+	  path: basedir,
+	  exports: {},
+	  require: function (path, base) {
+      return commonjsRequire(path, (base === undefined || base === null) ? module.path : base);
+    }
+	}, fn(module, module.exports), module.exports;
 }
 
-function getCjsExportFromNamespace (n) {
-	return n && n['default'] || n;
+function commonjsRequire () {
+	throw new Error('Dynamic requires are not currently supported by @rollup/plugin-commonjs');
 }
 
 const Aacute = "Á";
@@ -2129,7 +2135,7 @@ const Zscr = "𝒵";
 const zscr = "𝓏";
 const zwj = "‍";
 const zwnj = "‌";
-var entities = {
+var require$$0 = {
   Aacute: Aacute,
   aacute: aacute,
   Abreve: Abreve,
@@ -4257,2138 +4263,8 @@ var entities = {
   zwnj: zwnj
 };
 
-var entities$1 = /*#__PURE__*/Object.freeze({
-	__proto__: null,
-	Aacute: Aacute,
-	aacute: aacute,
-	Abreve: Abreve,
-	abreve: abreve,
-	ac: ac,
-	acd: acd,
-	acE: acE,
-	Acirc: Acirc,
-	acirc: acirc,
-	acute: acute,
-	Acy: Acy,
-	acy: acy,
-	AElig: AElig,
-	aelig: aelig,
-	af: af,
-	Afr: Afr,
-	afr: afr,
-	Agrave: Agrave,
-	agrave: agrave,
-	alefsym: alefsym,
-	aleph: aleph,
-	Alpha: Alpha,
-	alpha: alpha,
-	Amacr: Amacr,
-	amacr: amacr,
-	amalg: amalg,
-	amp: amp,
-	AMP: AMP,
-	andand: andand,
-	And: And,
-	and: and,
-	andd: andd,
-	andslope: andslope,
-	andv: andv,
-	ang: ang,
-	ange: ange,
-	angle: angle,
-	angmsdaa: angmsdaa,
-	angmsdab: angmsdab,
-	angmsdac: angmsdac,
-	angmsdad: angmsdad,
-	angmsdae: angmsdae,
-	angmsdaf: angmsdaf,
-	angmsdag: angmsdag,
-	angmsdah: angmsdah,
-	angmsd: angmsd,
-	angrt: angrt,
-	angrtvb: angrtvb,
-	angrtvbd: angrtvbd,
-	angsph: angsph,
-	angst: angst,
-	angzarr: angzarr,
-	Aogon: Aogon,
-	aogon: aogon,
-	Aopf: Aopf,
-	aopf: aopf,
-	apacir: apacir,
-	ap: ap,
-	apE: apE,
-	ape: ape,
-	apid: apid,
-	apos: apos,
-	ApplyFunction: ApplyFunction,
-	approx: approx,
-	approxeq: approxeq,
-	Aring: Aring,
-	aring: aring,
-	Ascr: Ascr,
-	ascr: ascr,
-	Assign: Assign,
-	ast: ast,
-	asymp: asymp,
-	asympeq: asympeq,
-	Atilde: Atilde,
-	atilde: atilde,
-	Auml: Auml,
-	auml: auml,
-	awconint: awconint,
-	awint: awint,
-	backcong: backcong,
-	backepsilon: backepsilon,
-	backprime: backprime,
-	backsim: backsim,
-	backsimeq: backsimeq,
-	Backslash: Backslash,
-	Barv: Barv,
-	barvee: barvee,
-	barwed: barwed,
-	Barwed: Barwed,
-	barwedge: barwedge,
-	bbrk: bbrk,
-	bbrktbrk: bbrktbrk,
-	bcong: bcong,
-	Bcy: Bcy,
-	bcy: bcy,
-	bdquo: bdquo,
-	becaus: becaus,
-	because: because,
-	Because: Because,
-	bemptyv: bemptyv,
-	bepsi: bepsi,
-	bernou: bernou,
-	Bernoullis: Bernoullis,
-	Beta: Beta,
-	beta: beta,
-	beth: beth,
-	between: between,
-	Bfr: Bfr,
-	bfr: bfr,
-	bigcap: bigcap,
-	bigcirc: bigcirc,
-	bigcup: bigcup,
-	bigodot: bigodot,
-	bigoplus: bigoplus,
-	bigotimes: bigotimes,
-	bigsqcup: bigsqcup,
-	bigstar: bigstar,
-	bigtriangledown: bigtriangledown,
-	bigtriangleup: bigtriangleup,
-	biguplus: biguplus,
-	bigvee: bigvee,
-	bigwedge: bigwedge,
-	bkarow: bkarow,
-	blacklozenge: blacklozenge,
-	blacksquare: blacksquare,
-	blacktriangle: blacktriangle,
-	blacktriangledown: blacktriangledown,
-	blacktriangleleft: blacktriangleleft,
-	blacktriangleright: blacktriangleright,
-	blank: blank,
-	blk12: blk12,
-	blk14: blk14,
-	blk34: blk34,
-	block: block,
-	bne: bne,
-	bnequiv: bnequiv,
-	bNot: bNot,
-	bnot: bnot,
-	Bopf: Bopf,
-	bopf: bopf,
-	bot: bot,
-	bottom: bottom,
-	bowtie: bowtie,
-	boxbox: boxbox,
-	boxdl: boxdl,
-	boxdL: boxdL,
-	boxDl: boxDl,
-	boxDL: boxDL,
-	boxdr: boxdr,
-	boxdR: boxdR,
-	boxDr: boxDr,
-	boxDR: boxDR,
-	boxh: boxh,
-	boxH: boxH,
-	boxhd: boxhd,
-	boxHd: boxHd,
-	boxhD: boxhD,
-	boxHD: boxHD,
-	boxhu: boxhu,
-	boxHu: boxHu,
-	boxhU: boxhU,
-	boxHU: boxHU,
-	boxminus: boxminus,
-	boxplus: boxplus,
-	boxtimes: boxtimes,
-	boxul: boxul,
-	boxuL: boxuL,
-	boxUl: boxUl,
-	boxUL: boxUL,
-	boxur: boxur,
-	boxuR: boxuR,
-	boxUr: boxUr,
-	boxUR: boxUR,
-	boxv: boxv,
-	boxV: boxV,
-	boxvh: boxvh,
-	boxvH: boxvH,
-	boxVh: boxVh,
-	boxVH: boxVH,
-	boxvl: boxvl,
-	boxvL: boxvL,
-	boxVl: boxVl,
-	boxVL: boxVL,
-	boxvr: boxvr,
-	boxvR: boxvR,
-	boxVr: boxVr,
-	boxVR: boxVR,
-	bprime: bprime,
-	breve: breve,
-	Breve: Breve,
-	brvbar: brvbar,
-	bscr: bscr,
-	Bscr: Bscr,
-	bsemi: bsemi,
-	bsim: bsim,
-	bsime: bsime,
-	bsolb: bsolb,
-	bsol: bsol,
-	bsolhsub: bsolhsub,
-	bull: bull,
-	bullet: bullet,
-	bump: bump,
-	bumpE: bumpE,
-	bumpe: bumpe,
-	Bumpeq: Bumpeq,
-	bumpeq: bumpeq,
-	Cacute: Cacute,
-	cacute: cacute,
-	capand: capand,
-	capbrcup: capbrcup,
-	capcap: capcap,
-	cap: cap,
-	Cap: Cap,
-	capcup: capcup,
-	capdot: capdot,
-	CapitalDifferentialD: CapitalDifferentialD,
-	caps: caps,
-	caret: caret,
-	caron: caron,
-	Cayleys: Cayleys,
-	ccaps: ccaps,
-	Ccaron: Ccaron,
-	ccaron: ccaron,
-	Ccedil: Ccedil,
-	ccedil: ccedil,
-	Ccirc: Ccirc,
-	ccirc: ccirc,
-	Cconint: Cconint,
-	ccups: ccups,
-	ccupssm: ccupssm,
-	Cdot: Cdot,
-	cdot: cdot,
-	cedil: cedil,
-	Cedilla: Cedilla,
-	cemptyv: cemptyv,
-	cent: cent,
-	centerdot: centerdot,
-	CenterDot: CenterDot,
-	cfr: cfr,
-	Cfr: Cfr,
-	CHcy: CHcy,
-	chcy: chcy,
-	check: check,
-	checkmark: checkmark,
-	Chi: Chi,
-	chi: chi,
-	circ: circ,
-	circeq: circeq,
-	circlearrowleft: circlearrowleft,
-	circlearrowright: circlearrowright,
-	circledast: circledast,
-	circledcirc: circledcirc,
-	circleddash: circleddash,
-	CircleDot: CircleDot,
-	circledR: circledR,
-	circledS: circledS,
-	CircleMinus: CircleMinus,
-	CirclePlus: CirclePlus,
-	CircleTimes: CircleTimes,
-	cir: cir,
-	cirE: cirE,
-	cire: cire,
-	cirfnint: cirfnint,
-	cirmid: cirmid,
-	cirscir: cirscir,
-	ClockwiseContourIntegral: ClockwiseContourIntegral,
-	CloseCurlyDoubleQuote: CloseCurlyDoubleQuote,
-	CloseCurlyQuote: CloseCurlyQuote,
-	clubs: clubs,
-	clubsuit: clubsuit,
-	colon: colon,
-	Colon: Colon,
-	Colone: Colone,
-	colone: colone,
-	coloneq: coloneq,
-	comma: comma,
-	commat: commat,
-	comp: comp,
-	compfn: compfn,
-	complement: complement,
-	complexes: complexes,
-	cong: cong,
-	congdot: congdot,
-	Congruent: Congruent,
-	conint: conint,
-	Conint: Conint,
-	ContourIntegral: ContourIntegral,
-	copf: copf,
-	Copf: Copf,
-	coprod: coprod,
-	Coproduct: Coproduct,
-	copy: copy,
-	COPY: COPY,
-	copysr: copysr,
-	CounterClockwiseContourIntegral: CounterClockwiseContourIntegral,
-	crarr: crarr,
-	cross: cross,
-	Cross: Cross,
-	Cscr: Cscr,
-	cscr: cscr,
-	csub: csub,
-	csube: csube,
-	csup: csup,
-	csupe: csupe,
-	ctdot: ctdot,
-	cudarrl: cudarrl,
-	cudarrr: cudarrr,
-	cuepr: cuepr,
-	cuesc: cuesc,
-	cularr: cularr,
-	cularrp: cularrp,
-	cupbrcap: cupbrcap,
-	cupcap: cupcap,
-	CupCap: CupCap,
-	cup: cup,
-	Cup: Cup,
-	cupcup: cupcup,
-	cupdot: cupdot,
-	cupor: cupor,
-	cups: cups,
-	curarr: curarr,
-	curarrm: curarrm,
-	curlyeqprec: curlyeqprec,
-	curlyeqsucc: curlyeqsucc,
-	curlyvee: curlyvee,
-	curlywedge: curlywedge,
-	curren: curren,
-	curvearrowleft: curvearrowleft,
-	curvearrowright: curvearrowright,
-	cuvee: cuvee,
-	cuwed: cuwed,
-	cwconint: cwconint,
-	cwint: cwint,
-	cylcty: cylcty,
-	dagger: dagger,
-	Dagger: Dagger,
-	daleth: daleth,
-	darr: darr,
-	Darr: Darr,
-	dArr: dArr,
-	dash: dash,
-	Dashv: Dashv,
-	dashv: dashv,
-	dbkarow: dbkarow,
-	dblac: dblac,
-	Dcaron: Dcaron,
-	dcaron: dcaron,
-	Dcy: Dcy,
-	dcy: dcy,
-	ddagger: ddagger,
-	ddarr: ddarr,
-	DD: DD,
-	dd: dd,
-	DDotrahd: DDotrahd,
-	ddotseq: ddotseq,
-	deg: deg,
-	Del: Del,
-	Delta: Delta,
-	delta: delta,
-	demptyv: demptyv,
-	dfisht: dfisht,
-	Dfr: Dfr,
-	dfr: dfr,
-	dHar: dHar,
-	dharl: dharl,
-	dharr: dharr,
-	DiacriticalAcute: DiacriticalAcute,
-	DiacriticalDot: DiacriticalDot,
-	DiacriticalDoubleAcute: DiacriticalDoubleAcute,
-	DiacriticalGrave: DiacriticalGrave,
-	DiacriticalTilde: DiacriticalTilde,
-	diam: diam,
-	diamond: diamond,
-	Diamond: Diamond,
-	diamondsuit: diamondsuit,
-	diams: diams,
-	die: die,
-	DifferentialD: DifferentialD,
-	digamma: digamma,
-	disin: disin,
-	div: div,
-	divide: divide,
-	divideontimes: divideontimes,
-	divonx: divonx,
-	DJcy: DJcy,
-	djcy: djcy,
-	dlcorn: dlcorn,
-	dlcrop: dlcrop,
-	dollar: dollar,
-	Dopf: Dopf,
-	dopf: dopf,
-	Dot: Dot,
-	dot: dot,
-	DotDot: DotDot,
-	doteq: doteq,
-	doteqdot: doteqdot,
-	DotEqual: DotEqual,
-	dotminus: dotminus,
-	dotplus: dotplus,
-	dotsquare: dotsquare,
-	doublebarwedge: doublebarwedge,
-	DoubleContourIntegral: DoubleContourIntegral,
-	DoubleDot: DoubleDot,
-	DoubleDownArrow: DoubleDownArrow,
-	DoubleLeftArrow: DoubleLeftArrow,
-	DoubleLeftRightArrow: DoubleLeftRightArrow,
-	DoubleLeftTee: DoubleLeftTee,
-	DoubleLongLeftArrow: DoubleLongLeftArrow,
-	DoubleLongLeftRightArrow: DoubleLongLeftRightArrow,
-	DoubleLongRightArrow: DoubleLongRightArrow,
-	DoubleRightArrow: DoubleRightArrow,
-	DoubleRightTee: DoubleRightTee,
-	DoubleUpArrow: DoubleUpArrow,
-	DoubleUpDownArrow: DoubleUpDownArrow,
-	DoubleVerticalBar: DoubleVerticalBar,
-	DownArrowBar: DownArrowBar,
-	downarrow: downarrow,
-	DownArrow: DownArrow,
-	Downarrow: Downarrow,
-	DownArrowUpArrow: DownArrowUpArrow,
-	DownBreve: DownBreve,
-	downdownarrows: downdownarrows,
-	downharpoonleft: downharpoonleft,
-	downharpoonright: downharpoonright,
-	DownLeftRightVector: DownLeftRightVector,
-	DownLeftTeeVector: DownLeftTeeVector,
-	DownLeftVectorBar: DownLeftVectorBar,
-	DownLeftVector: DownLeftVector,
-	DownRightTeeVector: DownRightTeeVector,
-	DownRightVectorBar: DownRightVectorBar,
-	DownRightVector: DownRightVector,
-	DownTeeArrow: DownTeeArrow,
-	DownTee: DownTee,
-	drbkarow: drbkarow,
-	drcorn: drcorn,
-	drcrop: drcrop,
-	Dscr: Dscr,
-	dscr: dscr,
-	DScy: DScy,
-	dscy: dscy,
-	dsol: dsol,
-	Dstrok: Dstrok,
-	dstrok: dstrok,
-	dtdot: dtdot,
-	dtri: dtri,
-	dtrif: dtrif,
-	duarr: duarr,
-	duhar: duhar,
-	dwangle: dwangle,
-	DZcy: DZcy,
-	dzcy: dzcy,
-	dzigrarr: dzigrarr,
-	Eacute: Eacute,
-	eacute: eacute,
-	easter: easter,
-	Ecaron: Ecaron,
-	ecaron: ecaron,
-	Ecirc: Ecirc,
-	ecirc: ecirc,
-	ecir: ecir,
-	ecolon: ecolon,
-	Ecy: Ecy,
-	ecy: ecy,
-	eDDot: eDDot,
-	Edot: Edot,
-	edot: edot,
-	eDot: eDot,
-	ee: ee,
-	efDot: efDot,
-	Efr: Efr,
-	efr: efr,
-	eg: eg,
-	Egrave: Egrave,
-	egrave: egrave,
-	egs: egs,
-	egsdot: egsdot,
-	el: el,
-	Element: Element,
-	elinters: elinters,
-	ell: ell,
-	els: els,
-	elsdot: elsdot,
-	Emacr: Emacr,
-	emacr: emacr,
-	empty: empty,
-	emptyset: emptyset,
-	EmptySmallSquare: EmptySmallSquare,
-	emptyv: emptyv,
-	EmptyVerySmallSquare: EmptyVerySmallSquare,
-	emsp13: emsp13,
-	emsp14: emsp14,
-	emsp: emsp,
-	ENG: ENG,
-	eng: eng,
-	ensp: ensp,
-	Eogon: Eogon,
-	eogon: eogon,
-	Eopf: Eopf,
-	eopf: eopf,
-	epar: epar,
-	eparsl: eparsl,
-	eplus: eplus,
-	epsi: epsi,
-	Epsilon: Epsilon,
-	epsilon: epsilon,
-	epsiv: epsiv,
-	eqcirc: eqcirc,
-	eqcolon: eqcolon,
-	eqsim: eqsim,
-	eqslantgtr: eqslantgtr,
-	eqslantless: eqslantless,
-	Equal: Equal,
-	equals: equals,
-	EqualTilde: EqualTilde,
-	equest: equest,
-	Equilibrium: Equilibrium,
-	equiv: equiv,
-	equivDD: equivDD,
-	eqvparsl: eqvparsl,
-	erarr: erarr,
-	erDot: erDot,
-	escr: escr,
-	Escr: Escr,
-	esdot: esdot,
-	Esim: Esim,
-	esim: esim,
-	Eta: Eta,
-	eta: eta,
-	ETH: ETH,
-	eth: eth,
-	Euml: Euml,
-	euml: euml,
-	euro: euro,
-	excl: excl,
-	exist: exist,
-	Exists: Exists,
-	expectation: expectation,
-	exponentiale: exponentiale,
-	ExponentialE: ExponentialE,
-	fallingdotseq: fallingdotseq,
-	Fcy: Fcy,
-	fcy: fcy,
-	female: female,
-	ffilig: ffilig,
-	fflig: fflig,
-	ffllig: ffllig,
-	Ffr: Ffr,
-	ffr: ffr,
-	filig: filig,
-	FilledSmallSquare: FilledSmallSquare,
-	FilledVerySmallSquare: FilledVerySmallSquare,
-	fjlig: fjlig,
-	flat: flat,
-	fllig: fllig,
-	fltns: fltns,
-	fnof: fnof,
-	Fopf: Fopf,
-	fopf: fopf,
-	forall: forall,
-	ForAll: ForAll,
-	fork: fork,
-	forkv: forkv,
-	Fouriertrf: Fouriertrf,
-	fpartint: fpartint,
-	frac12: frac12,
-	frac13: frac13,
-	frac14: frac14,
-	frac15: frac15,
-	frac16: frac16,
-	frac18: frac18,
-	frac23: frac23,
-	frac25: frac25,
-	frac34: frac34,
-	frac35: frac35,
-	frac38: frac38,
-	frac45: frac45,
-	frac56: frac56,
-	frac58: frac58,
-	frac78: frac78,
-	frasl: frasl,
-	frown: frown,
-	fscr: fscr,
-	Fscr: Fscr,
-	gacute: gacute,
-	Gamma: Gamma,
-	gamma: gamma,
-	Gammad: Gammad,
-	gammad: gammad,
-	gap: gap,
-	Gbreve: Gbreve,
-	gbreve: gbreve,
-	Gcedil: Gcedil,
-	Gcirc: Gcirc,
-	gcirc: gcirc,
-	Gcy: Gcy,
-	gcy: gcy,
-	Gdot: Gdot,
-	gdot: gdot,
-	ge: ge,
-	gE: gE,
-	gEl: gEl,
-	gel: gel,
-	geq: geq,
-	geqq: geqq,
-	geqslant: geqslant,
-	gescc: gescc,
-	ges: ges,
-	gesdot: gesdot,
-	gesdoto: gesdoto,
-	gesdotol: gesdotol,
-	gesl: gesl,
-	gesles: gesles,
-	Gfr: Gfr,
-	gfr: gfr,
-	gg: gg,
-	Gg: Gg,
-	ggg: ggg,
-	gimel: gimel,
-	GJcy: GJcy,
-	gjcy: gjcy,
-	gla: gla,
-	gl: gl,
-	glE: glE,
-	glj: glj,
-	gnap: gnap,
-	gnapprox: gnapprox,
-	gne: gne,
-	gnE: gnE,
-	gneq: gneq,
-	gneqq: gneqq,
-	gnsim: gnsim,
-	Gopf: Gopf,
-	gopf: gopf,
-	grave: grave,
-	GreaterEqual: GreaterEqual,
-	GreaterEqualLess: GreaterEqualLess,
-	GreaterFullEqual: GreaterFullEqual,
-	GreaterGreater: GreaterGreater,
-	GreaterLess: GreaterLess,
-	GreaterSlantEqual: GreaterSlantEqual,
-	GreaterTilde: GreaterTilde,
-	Gscr: Gscr,
-	gscr: gscr,
-	gsim: gsim,
-	gsime: gsime,
-	gsiml: gsiml,
-	gtcc: gtcc,
-	gtcir: gtcir,
-	gt: gt,
-	GT: GT,
-	Gt: Gt,
-	gtdot: gtdot,
-	gtlPar: gtlPar,
-	gtquest: gtquest,
-	gtrapprox: gtrapprox,
-	gtrarr: gtrarr,
-	gtrdot: gtrdot,
-	gtreqless: gtreqless,
-	gtreqqless: gtreqqless,
-	gtrless: gtrless,
-	gtrsim: gtrsim,
-	gvertneqq: gvertneqq,
-	gvnE: gvnE,
-	Hacek: Hacek,
-	hairsp: hairsp,
-	half: half,
-	hamilt: hamilt,
-	HARDcy: HARDcy,
-	hardcy: hardcy,
-	harrcir: harrcir,
-	harr: harr,
-	hArr: hArr,
-	harrw: harrw,
-	Hat: Hat,
-	hbar: hbar,
-	Hcirc: Hcirc,
-	hcirc: hcirc,
-	hearts: hearts,
-	heartsuit: heartsuit,
-	hellip: hellip,
-	hercon: hercon,
-	hfr: hfr,
-	Hfr: Hfr,
-	HilbertSpace: HilbertSpace,
-	hksearow: hksearow,
-	hkswarow: hkswarow,
-	hoarr: hoarr,
-	homtht: homtht,
-	hookleftarrow: hookleftarrow,
-	hookrightarrow: hookrightarrow,
-	hopf: hopf,
-	Hopf: Hopf,
-	horbar: horbar,
-	HorizontalLine: HorizontalLine,
-	hscr: hscr,
-	Hscr: Hscr,
-	hslash: hslash,
-	Hstrok: Hstrok,
-	hstrok: hstrok,
-	HumpDownHump: HumpDownHump,
-	HumpEqual: HumpEqual,
-	hybull: hybull,
-	hyphen: hyphen,
-	Iacute: Iacute,
-	iacute: iacute,
-	ic: ic,
-	Icirc: Icirc,
-	icirc: icirc,
-	Icy: Icy,
-	icy: icy,
-	Idot: Idot,
-	IEcy: IEcy,
-	iecy: iecy,
-	iexcl: iexcl,
-	iff: iff,
-	ifr: ifr,
-	Ifr: Ifr,
-	Igrave: Igrave,
-	igrave: igrave,
-	ii: ii,
-	iiiint: iiiint,
-	iiint: iiint,
-	iinfin: iinfin,
-	iiota: iiota,
-	IJlig: IJlig,
-	ijlig: ijlig,
-	Imacr: Imacr,
-	imacr: imacr,
-	image: image,
-	ImaginaryI: ImaginaryI,
-	imagline: imagline,
-	imagpart: imagpart,
-	imath: imath,
-	Im: Im,
-	imof: imof,
-	imped: imped,
-	Implies: Implies,
-	incare: incare,
-	infin: infin,
-	infintie: infintie,
-	inodot: inodot,
-	intcal: intcal,
-	int: int,
-	Int: Int,
-	integers: integers,
-	Integral: Integral,
-	intercal: intercal,
-	Intersection: Intersection,
-	intlarhk: intlarhk,
-	intprod: intprod,
-	InvisibleComma: InvisibleComma,
-	InvisibleTimes: InvisibleTimes,
-	IOcy: IOcy,
-	iocy: iocy,
-	Iogon: Iogon,
-	iogon: iogon,
-	Iopf: Iopf,
-	iopf: iopf,
-	Iota: Iota,
-	iota: iota,
-	iprod: iprod,
-	iquest: iquest,
-	iscr: iscr,
-	Iscr: Iscr,
-	isin: isin,
-	isindot: isindot,
-	isinE: isinE,
-	isins: isins,
-	isinsv: isinsv,
-	isinv: isinv,
-	it: it,
-	Itilde: Itilde,
-	itilde: itilde,
-	Iukcy: Iukcy,
-	iukcy: iukcy,
-	Iuml: Iuml,
-	iuml: iuml,
-	Jcirc: Jcirc,
-	jcirc: jcirc,
-	Jcy: Jcy,
-	jcy: jcy,
-	Jfr: Jfr,
-	jfr: jfr,
-	jmath: jmath,
-	Jopf: Jopf,
-	jopf: jopf,
-	Jscr: Jscr,
-	jscr: jscr,
-	Jsercy: Jsercy,
-	jsercy: jsercy,
-	Jukcy: Jukcy,
-	jukcy: jukcy,
-	Kappa: Kappa,
-	kappa: kappa,
-	kappav: kappav,
-	Kcedil: Kcedil,
-	kcedil: kcedil,
-	Kcy: Kcy,
-	kcy: kcy,
-	Kfr: Kfr,
-	kfr: kfr,
-	kgreen: kgreen,
-	KHcy: KHcy,
-	khcy: khcy,
-	KJcy: KJcy,
-	kjcy: kjcy,
-	Kopf: Kopf,
-	kopf: kopf,
-	Kscr: Kscr,
-	kscr: kscr,
-	lAarr: lAarr,
-	Lacute: Lacute,
-	lacute: lacute,
-	laemptyv: laemptyv,
-	lagran: lagran,
-	Lambda: Lambda,
-	lambda: lambda,
-	lang: lang,
-	Lang: Lang,
-	langd: langd,
-	langle: langle,
-	lap: lap,
-	Laplacetrf: Laplacetrf,
-	laquo: laquo,
-	larrb: larrb,
-	larrbfs: larrbfs,
-	larr: larr,
-	Larr: Larr,
-	lArr: lArr,
-	larrfs: larrfs,
-	larrhk: larrhk,
-	larrlp: larrlp,
-	larrpl: larrpl,
-	larrsim: larrsim,
-	larrtl: larrtl,
-	latail: latail,
-	lAtail: lAtail,
-	lat: lat,
-	late: late,
-	lates: lates,
-	lbarr: lbarr,
-	lBarr: lBarr,
-	lbbrk: lbbrk,
-	lbrace: lbrace,
-	lbrack: lbrack,
-	lbrke: lbrke,
-	lbrksld: lbrksld,
-	lbrkslu: lbrkslu,
-	Lcaron: Lcaron,
-	lcaron: lcaron,
-	Lcedil: Lcedil,
-	lcedil: lcedil,
-	lceil: lceil,
-	lcub: lcub,
-	Lcy: Lcy,
-	lcy: lcy,
-	ldca: ldca,
-	ldquo: ldquo,
-	ldquor: ldquor,
-	ldrdhar: ldrdhar,
-	ldrushar: ldrushar,
-	ldsh: ldsh,
-	le: le,
-	lE: lE,
-	LeftAngleBracket: LeftAngleBracket,
-	LeftArrowBar: LeftArrowBar,
-	leftarrow: leftarrow,
-	LeftArrow: LeftArrow,
-	Leftarrow: Leftarrow,
-	LeftArrowRightArrow: LeftArrowRightArrow,
-	leftarrowtail: leftarrowtail,
-	LeftCeiling: LeftCeiling,
-	LeftDoubleBracket: LeftDoubleBracket,
-	LeftDownTeeVector: LeftDownTeeVector,
-	LeftDownVectorBar: LeftDownVectorBar,
-	LeftDownVector: LeftDownVector,
-	LeftFloor: LeftFloor,
-	leftharpoondown: leftharpoondown,
-	leftharpoonup: leftharpoonup,
-	leftleftarrows: leftleftarrows,
-	leftrightarrow: leftrightarrow,
-	LeftRightArrow: LeftRightArrow,
-	Leftrightarrow: Leftrightarrow,
-	leftrightarrows: leftrightarrows,
-	leftrightharpoons: leftrightharpoons,
-	leftrightsquigarrow: leftrightsquigarrow,
-	LeftRightVector: LeftRightVector,
-	LeftTeeArrow: LeftTeeArrow,
-	LeftTee: LeftTee,
-	LeftTeeVector: LeftTeeVector,
-	leftthreetimes: leftthreetimes,
-	LeftTriangleBar: LeftTriangleBar,
-	LeftTriangle: LeftTriangle,
-	LeftTriangleEqual: LeftTriangleEqual,
-	LeftUpDownVector: LeftUpDownVector,
-	LeftUpTeeVector: LeftUpTeeVector,
-	LeftUpVectorBar: LeftUpVectorBar,
-	LeftUpVector: LeftUpVector,
-	LeftVectorBar: LeftVectorBar,
-	LeftVector: LeftVector,
-	lEg: lEg,
-	leg: leg,
-	leq: leq,
-	leqq: leqq,
-	leqslant: leqslant,
-	lescc: lescc,
-	les: les,
-	lesdot: lesdot,
-	lesdoto: lesdoto,
-	lesdotor: lesdotor,
-	lesg: lesg,
-	lesges: lesges,
-	lessapprox: lessapprox,
-	lessdot: lessdot,
-	lesseqgtr: lesseqgtr,
-	lesseqqgtr: lesseqqgtr,
-	LessEqualGreater: LessEqualGreater,
-	LessFullEqual: LessFullEqual,
-	LessGreater: LessGreater,
-	lessgtr: lessgtr,
-	LessLess: LessLess,
-	lesssim: lesssim,
-	LessSlantEqual: LessSlantEqual,
-	LessTilde: LessTilde,
-	lfisht: lfisht,
-	lfloor: lfloor,
-	Lfr: Lfr,
-	lfr: lfr,
-	lg: lg,
-	lgE: lgE,
-	lHar: lHar,
-	lhard: lhard,
-	lharu: lharu,
-	lharul: lharul,
-	lhblk: lhblk,
-	LJcy: LJcy,
-	ljcy: ljcy,
-	llarr: llarr,
-	ll: ll,
-	Ll: Ll,
-	llcorner: llcorner,
-	Lleftarrow: Lleftarrow,
-	llhard: llhard,
-	lltri: lltri,
-	Lmidot: Lmidot,
-	lmidot: lmidot,
-	lmoustache: lmoustache,
-	lmoust: lmoust,
-	lnap: lnap,
-	lnapprox: lnapprox,
-	lne: lne,
-	lnE: lnE,
-	lneq: lneq,
-	lneqq: lneqq,
-	lnsim: lnsim,
-	loang: loang,
-	loarr: loarr,
-	lobrk: lobrk,
-	longleftarrow: longleftarrow,
-	LongLeftArrow: LongLeftArrow,
-	Longleftarrow: Longleftarrow,
-	longleftrightarrow: longleftrightarrow,
-	LongLeftRightArrow: LongLeftRightArrow,
-	Longleftrightarrow: Longleftrightarrow,
-	longmapsto: longmapsto,
-	longrightarrow: longrightarrow,
-	LongRightArrow: LongRightArrow,
-	Longrightarrow: Longrightarrow,
-	looparrowleft: looparrowleft,
-	looparrowright: looparrowright,
-	lopar: lopar,
-	Lopf: Lopf,
-	lopf: lopf,
-	loplus: loplus,
-	lotimes: lotimes,
-	lowast: lowast,
-	lowbar: lowbar,
-	LowerLeftArrow: LowerLeftArrow,
-	LowerRightArrow: LowerRightArrow,
-	loz: loz,
-	lozenge: lozenge,
-	lozf: lozf,
-	lpar: lpar,
-	lparlt: lparlt,
-	lrarr: lrarr,
-	lrcorner: lrcorner,
-	lrhar: lrhar,
-	lrhard: lrhard,
-	lrm: lrm,
-	lrtri: lrtri,
-	lsaquo: lsaquo,
-	lscr: lscr,
-	Lscr: Lscr,
-	lsh: lsh,
-	Lsh: Lsh,
-	lsim: lsim,
-	lsime: lsime,
-	lsimg: lsimg,
-	lsqb: lsqb,
-	lsquo: lsquo,
-	lsquor: lsquor,
-	Lstrok: Lstrok,
-	lstrok: lstrok,
-	ltcc: ltcc,
-	ltcir: ltcir,
-	lt: lt,
-	LT: LT,
-	Lt: Lt,
-	ltdot: ltdot,
-	lthree: lthree,
-	ltimes: ltimes,
-	ltlarr: ltlarr,
-	ltquest: ltquest,
-	ltri: ltri,
-	ltrie: ltrie,
-	ltrif: ltrif,
-	ltrPar: ltrPar,
-	lurdshar: lurdshar,
-	luruhar: luruhar,
-	lvertneqq: lvertneqq,
-	lvnE: lvnE,
-	macr: macr,
-	male: male,
-	malt: malt,
-	maltese: maltese,
-	map: map,
-	mapsto: mapsto,
-	mapstodown: mapstodown,
-	mapstoleft: mapstoleft,
-	mapstoup: mapstoup,
-	marker: marker,
-	mcomma: mcomma,
-	Mcy: Mcy,
-	mcy: mcy,
-	mdash: mdash,
-	mDDot: mDDot,
-	measuredangle: measuredangle,
-	MediumSpace: MediumSpace,
-	Mellintrf: Mellintrf,
-	Mfr: Mfr,
-	mfr: mfr,
-	mho: mho,
-	micro: micro,
-	midast: midast,
-	midcir: midcir,
-	mid: mid,
-	middot: middot,
-	minusb: minusb,
-	minus: minus,
-	minusd: minusd,
-	minusdu: minusdu,
-	MinusPlus: MinusPlus,
-	mlcp: mlcp,
-	mldr: mldr,
-	mnplus: mnplus,
-	models: models,
-	Mopf: Mopf,
-	mopf: mopf,
-	mp: mp,
-	mscr: mscr,
-	Mscr: Mscr,
-	mstpos: mstpos,
-	Mu: Mu,
-	mu: mu,
-	multimap: multimap,
-	mumap: mumap,
-	nabla: nabla,
-	Nacute: Nacute,
-	nacute: nacute,
-	nang: nang,
-	nap: nap,
-	napE: napE,
-	napid: napid,
-	napos: napos,
-	napprox: napprox,
-	natural: natural,
-	naturals: naturals,
-	natur: natur,
-	nbsp: nbsp,
-	nbump: nbump,
-	nbumpe: nbumpe,
-	ncap: ncap,
-	Ncaron: Ncaron,
-	ncaron: ncaron,
-	Ncedil: Ncedil,
-	ncedil: ncedil,
-	ncong: ncong,
-	ncongdot: ncongdot,
-	ncup: ncup,
-	Ncy: Ncy,
-	ncy: ncy,
-	ndash: ndash,
-	nearhk: nearhk,
-	nearr: nearr,
-	neArr: neArr,
-	nearrow: nearrow,
-	ne: ne,
-	nedot: nedot,
-	NegativeMediumSpace: NegativeMediumSpace,
-	NegativeThickSpace: NegativeThickSpace,
-	NegativeThinSpace: NegativeThinSpace,
-	NegativeVeryThinSpace: NegativeVeryThinSpace,
-	nequiv: nequiv,
-	nesear: nesear,
-	nesim: nesim,
-	NestedGreaterGreater: NestedGreaterGreater,
-	NestedLessLess: NestedLessLess,
-	NewLine: NewLine,
-	nexist: nexist,
-	nexists: nexists,
-	Nfr: Nfr,
-	nfr: nfr,
-	ngE: ngE,
-	nge: nge,
-	ngeq: ngeq,
-	ngeqq: ngeqq,
-	ngeqslant: ngeqslant,
-	nges: nges,
-	nGg: nGg,
-	ngsim: ngsim,
-	nGt: nGt,
-	ngt: ngt,
-	ngtr: ngtr,
-	nGtv: nGtv,
-	nharr: nharr,
-	nhArr: nhArr,
-	nhpar: nhpar,
-	ni: ni,
-	nis: nis,
-	nisd: nisd,
-	niv: niv,
-	NJcy: NJcy,
-	njcy: njcy,
-	nlarr: nlarr,
-	nlArr: nlArr,
-	nldr: nldr,
-	nlE: nlE,
-	nle: nle,
-	nleftarrow: nleftarrow,
-	nLeftarrow: nLeftarrow,
-	nleftrightarrow: nleftrightarrow,
-	nLeftrightarrow: nLeftrightarrow,
-	nleq: nleq,
-	nleqq: nleqq,
-	nleqslant: nleqslant,
-	nles: nles,
-	nless: nless,
-	nLl: nLl,
-	nlsim: nlsim,
-	nLt: nLt,
-	nlt: nlt,
-	nltri: nltri,
-	nltrie: nltrie,
-	nLtv: nLtv,
-	nmid: nmid,
-	NoBreak: NoBreak,
-	NonBreakingSpace: NonBreakingSpace,
-	nopf: nopf,
-	Nopf: Nopf,
-	Not: Not,
-	not: not,
-	NotCongruent: NotCongruent,
-	NotCupCap: NotCupCap,
-	NotDoubleVerticalBar: NotDoubleVerticalBar,
-	NotElement: NotElement,
-	NotEqual: NotEqual,
-	NotEqualTilde: NotEqualTilde,
-	NotExists: NotExists,
-	NotGreater: NotGreater,
-	NotGreaterEqual: NotGreaterEqual,
-	NotGreaterFullEqual: NotGreaterFullEqual,
-	NotGreaterGreater: NotGreaterGreater,
-	NotGreaterLess: NotGreaterLess,
-	NotGreaterSlantEqual: NotGreaterSlantEqual,
-	NotGreaterTilde: NotGreaterTilde,
-	NotHumpDownHump: NotHumpDownHump,
-	NotHumpEqual: NotHumpEqual,
-	notin: notin,
-	notindot: notindot,
-	notinE: notinE,
-	notinva: notinva,
-	notinvb: notinvb,
-	notinvc: notinvc,
-	NotLeftTriangleBar: NotLeftTriangleBar,
-	NotLeftTriangle: NotLeftTriangle,
-	NotLeftTriangleEqual: NotLeftTriangleEqual,
-	NotLess: NotLess,
-	NotLessEqual: NotLessEqual,
-	NotLessGreater: NotLessGreater,
-	NotLessLess: NotLessLess,
-	NotLessSlantEqual: NotLessSlantEqual,
-	NotLessTilde: NotLessTilde,
-	NotNestedGreaterGreater: NotNestedGreaterGreater,
-	NotNestedLessLess: NotNestedLessLess,
-	notni: notni,
-	notniva: notniva,
-	notnivb: notnivb,
-	notnivc: notnivc,
-	NotPrecedes: NotPrecedes,
-	NotPrecedesEqual: NotPrecedesEqual,
-	NotPrecedesSlantEqual: NotPrecedesSlantEqual,
-	NotReverseElement: NotReverseElement,
-	NotRightTriangleBar: NotRightTriangleBar,
-	NotRightTriangle: NotRightTriangle,
-	NotRightTriangleEqual: NotRightTriangleEqual,
-	NotSquareSubset: NotSquareSubset,
-	NotSquareSubsetEqual: NotSquareSubsetEqual,
-	NotSquareSuperset: NotSquareSuperset,
-	NotSquareSupersetEqual: NotSquareSupersetEqual,
-	NotSubset: NotSubset,
-	NotSubsetEqual: NotSubsetEqual,
-	NotSucceeds: NotSucceeds,
-	NotSucceedsEqual: NotSucceedsEqual,
-	NotSucceedsSlantEqual: NotSucceedsSlantEqual,
-	NotSucceedsTilde: NotSucceedsTilde,
-	NotSuperset: NotSuperset,
-	NotSupersetEqual: NotSupersetEqual,
-	NotTilde: NotTilde,
-	NotTildeEqual: NotTildeEqual,
-	NotTildeFullEqual: NotTildeFullEqual,
-	NotTildeTilde: NotTildeTilde,
-	NotVerticalBar: NotVerticalBar,
-	nparallel: nparallel,
-	npar: npar,
-	nparsl: nparsl,
-	npart: npart,
-	npolint: npolint,
-	npr: npr,
-	nprcue: nprcue,
-	nprec: nprec,
-	npreceq: npreceq,
-	npre: npre,
-	nrarrc: nrarrc,
-	nrarr: nrarr,
-	nrArr: nrArr,
-	nrarrw: nrarrw,
-	nrightarrow: nrightarrow,
-	nRightarrow: nRightarrow,
-	nrtri: nrtri,
-	nrtrie: nrtrie,
-	nsc: nsc,
-	nsccue: nsccue,
-	nsce: nsce,
-	Nscr: Nscr,
-	nscr: nscr,
-	nshortmid: nshortmid,
-	nshortparallel: nshortparallel,
-	nsim: nsim,
-	nsime: nsime,
-	nsimeq: nsimeq,
-	nsmid: nsmid,
-	nspar: nspar,
-	nsqsube: nsqsube,
-	nsqsupe: nsqsupe,
-	nsub: nsub,
-	nsubE: nsubE,
-	nsube: nsube,
-	nsubset: nsubset,
-	nsubseteq: nsubseteq,
-	nsubseteqq: nsubseteqq,
-	nsucc: nsucc,
-	nsucceq: nsucceq,
-	nsup: nsup,
-	nsupE: nsupE,
-	nsupe: nsupe,
-	nsupset: nsupset,
-	nsupseteq: nsupseteq,
-	nsupseteqq: nsupseteqq,
-	ntgl: ntgl,
-	Ntilde: Ntilde,
-	ntilde: ntilde,
-	ntlg: ntlg,
-	ntriangleleft: ntriangleleft,
-	ntrianglelefteq: ntrianglelefteq,
-	ntriangleright: ntriangleright,
-	ntrianglerighteq: ntrianglerighteq,
-	Nu: Nu,
-	nu: nu,
-	num: num,
-	numero: numero,
-	numsp: numsp,
-	nvap: nvap,
-	nvdash: nvdash,
-	nvDash: nvDash,
-	nVdash: nVdash,
-	nVDash: nVDash,
-	nvge: nvge,
-	nvgt: nvgt,
-	nvHarr: nvHarr,
-	nvinfin: nvinfin,
-	nvlArr: nvlArr,
-	nvle: nvle,
-	nvlt: nvlt,
-	nvltrie: nvltrie,
-	nvrArr: nvrArr,
-	nvrtrie: nvrtrie,
-	nvsim: nvsim,
-	nwarhk: nwarhk,
-	nwarr: nwarr,
-	nwArr: nwArr,
-	nwarrow: nwarrow,
-	nwnear: nwnear,
-	Oacute: Oacute,
-	oacute: oacute,
-	oast: oast,
-	Ocirc: Ocirc,
-	ocirc: ocirc,
-	ocir: ocir,
-	Ocy: Ocy,
-	ocy: ocy,
-	odash: odash,
-	Odblac: Odblac,
-	odblac: odblac,
-	odiv: odiv,
-	odot: odot,
-	odsold: odsold,
-	OElig: OElig,
-	oelig: oelig,
-	ofcir: ofcir,
-	Ofr: Ofr,
-	ofr: ofr,
-	ogon: ogon,
-	Ograve: Ograve,
-	ograve: ograve,
-	ogt: ogt,
-	ohbar: ohbar,
-	ohm: ohm,
-	oint: oint,
-	olarr: olarr,
-	olcir: olcir,
-	olcross: olcross,
-	oline: oline,
-	olt: olt,
-	Omacr: Omacr,
-	omacr: omacr,
-	Omega: Omega,
-	omega: omega,
-	Omicron: Omicron,
-	omicron: omicron,
-	omid: omid,
-	ominus: ominus,
-	Oopf: Oopf,
-	oopf: oopf,
-	opar: opar,
-	OpenCurlyDoubleQuote: OpenCurlyDoubleQuote,
-	OpenCurlyQuote: OpenCurlyQuote,
-	operp: operp,
-	oplus: oplus,
-	orarr: orarr,
-	Or: Or,
-	or: or,
-	ord: ord,
-	order: order,
-	orderof: orderof,
-	ordf: ordf,
-	ordm: ordm,
-	origof: origof,
-	oror: oror,
-	orslope: orslope,
-	orv: orv,
-	oS: oS,
-	Oscr: Oscr,
-	oscr: oscr,
-	Oslash: Oslash,
-	oslash: oslash,
-	osol: osol,
-	Otilde: Otilde,
-	otilde: otilde,
-	otimesas: otimesas,
-	Otimes: Otimes,
-	otimes: otimes,
-	Ouml: Ouml,
-	ouml: ouml,
-	ovbar: ovbar,
-	OverBar: OverBar,
-	OverBrace: OverBrace,
-	OverBracket: OverBracket,
-	OverParenthesis: OverParenthesis,
-	para: para,
-	parallel: parallel,
-	par: par,
-	parsim: parsim,
-	parsl: parsl,
-	part: part,
-	PartialD: PartialD,
-	Pcy: Pcy,
-	pcy: pcy,
-	percnt: percnt,
-	period: period,
-	permil: permil,
-	perp: perp,
-	pertenk: pertenk,
-	Pfr: Pfr,
-	pfr: pfr,
-	Phi: Phi,
-	phi: phi,
-	phiv: phiv,
-	phmmat: phmmat,
-	phone: phone,
-	Pi: Pi,
-	pi: pi,
-	pitchfork: pitchfork,
-	piv: piv,
-	planck: planck,
-	planckh: planckh,
-	plankv: plankv,
-	plusacir: plusacir,
-	plusb: plusb,
-	pluscir: pluscir,
-	plus: plus,
-	plusdo: plusdo,
-	plusdu: plusdu,
-	pluse: pluse,
-	PlusMinus: PlusMinus,
-	plusmn: plusmn,
-	plussim: plussim,
-	plustwo: plustwo,
-	pm: pm,
-	Poincareplane: Poincareplane,
-	pointint: pointint,
-	popf: popf,
-	Popf: Popf,
-	pound: pound,
-	prap: prap,
-	Pr: Pr,
-	pr: pr,
-	prcue: prcue,
-	precapprox: precapprox,
-	prec: prec,
-	preccurlyeq: preccurlyeq,
-	Precedes: Precedes,
-	PrecedesEqual: PrecedesEqual,
-	PrecedesSlantEqual: PrecedesSlantEqual,
-	PrecedesTilde: PrecedesTilde,
-	preceq: preceq,
-	precnapprox: precnapprox,
-	precneqq: precneqq,
-	precnsim: precnsim,
-	pre: pre,
-	prE: prE,
-	precsim: precsim,
-	prime: prime,
-	Prime: Prime,
-	primes: primes,
-	prnap: prnap,
-	prnE: prnE,
-	prnsim: prnsim,
-	prod: prod,
-	Product: Product,
-	profalar: profalar,
-	profline: profline,
-	profsurf: profsurf,
-	prop: prop,
-	Proportional: Proportional,
-	Proportion: Proportion,
-	propto: propto,
-	prsim: prsim,
-	prurel: prurel,
-	Pscr: Pscr,
-	pscr: pscr,
-	Psi: Psi,
-	psi: psi,
-	puncsp: puncsp,
-	Qfr: Qfr,
-	qfr: qfr,
-	qint: qint,
-	qopf: qopf,
-	Qopf: Qopf,
-	qprime: qprime,
-	Qscr: Qscr,
-	qscr: qscr,
-	quaternions: quaternions,
-	quatint: quatint,
-	quest: quest,
-	questeq: questeq,
-	quot: quot,
-	QUOT: QUOT,
-	rAarr: rAarr,
-	race: race,
-	Racute: Racute,
-	racute: racute,
-	radic: radic,
-	raemptyv: raemptyv,
-	rang: rang,
-	Rang: Rang,
-	rangd: rangd,
-	range: range,
-	rangle: rangle,
-	raquo: raquo,
-	rarrap: rarrap,
-	rarrb: rarrb,
-	rarrbfs: rarrbfs,
-	rarrc: rarrc,
-	rarr: rarr,
-	Rarr: Rarr,
-	rArr: rArr,
-	rarrfs: rarrfs,
-	rarrhk: rarrhk,
-	rarrlp: rarrlp,
-	rarrpl: rarrpl,
-	rarrsim: rarrsim,
-	Rarrtl: Rarrtl,
-	rarrtl: rarrtl,
-	rarrw: rarrw,
-	ratail: ratail,
-	rAtail: rAtail,
-	ratio: ratio,
-	rationals: rationals,
-	rbarr: rbarr,
-	rBarr: rBarr,
-	RBarr: RBarr,
-	rbbrk: rbbrk,
-	rbrace: rbrace,
-	rbrack: rbrack,
-	rbrke: rbrke,
-	rbrksld: rbrksld,
-	rbrkslu: rbrkslu,
-	Rcaron: Rcaron,
-	rcaron: rcaron,
-	Rcedil: Rcedil,
-	rcedil: rcedil,
-	rceil: rceil,
-	rcub: rcub,
-	Rcy: Rcy,
-	rcy: rcy,
-	rdca: rdca,
-	rdldhar: rdldhar,
-	rdquo: rdquo,
-	rdquor: rdquor,
-	rdsh: rdsh,
-	real: real,
-	realine: realine,
-	realpart: realpart,
-	reals: reals,
-	Re: Re,
-	rect: rect,
-	reg: reg,
-	REG: REG,
-	ReverseElement: ReverseElement,
-	ReverseEquilibrium: ReverseEquilibrium,
-	ReverseUpEquilibrium: ReverseUpEquilibrium,
-	rfisht: rfisht,
-	rfloor: rfloor,
-	rfr: rfr,
-	Rfr: Rfr,
-	rHar: rHar,
-	rhard: rhard,
-	rharu: rharu,
-	rharul: rharul,
-	Rho: Rho,
-	rho: rho,
-	rhov: rhov,
-	RightAngleBracket: RightAngleBracket,
-	RightArrowBar: RightArrowBar,
-	rightarrow: rightarrow,
-	RightArrow: RightArrow,
-	Rightarrow: Rightarrow,
-	RightArrowLeftArrow: RightArrowLeftArrow,
-	rightarrowtail: rightarrowtail,
-	RightCeiling: RightCeiling,
-	RightDoubleBracket: RightDoubleBracket,
-	RightDownTeeVector: RightDownTeeVector,
-	RightDownVectorBar: RightDownVectorBar,
-	RightDownVector: RightDownVector,
-	RightFloor: RightFloor,
-	rightharpoondown: rightharpoondown,
-	rightharpoonup: rightharpoonup,
-	rightleftarrows: rightleftarrows,
-	rightleftharpoons: rightleftharpoons,
-	rightrightarrows: rightrightarrows,
-	rightsquigarrow: rightsquigarrow,
-	RightTeeArrow: RightTeeArrow,
-	RightTee: RightTee,
-	RightTeeVector: RightTeeVector,
-	rightthreetimes: rightthreetimes,
-	RightTriangleBar: RightTriangleBar,
-	RightTriangle: RightTriangle,
-	RightTriangleEqual: RightTriangleEqual,
-	RightUpDownVector: RightUpDownVector,
-	RightUpTeeVector: RightUpTeeVector,
-	RightUpVectorBar: RightUpVectorBar,
-	RightUpVector: RightUpVector,
-	RightVectorBar: RightVectorBar,
-	RightVector: RightVector,
-	ring: ring,
-	risingdotseq: risingdotseq,
-	rlarr: rlarr,
-	rlhar: rlhar,
-	rlm: rlm,
-	rmoustache: rmoustache,
-	rmoust: rmoust,
-	rnmid: rnmid,
-	roang: roang,
-	roarr: roarr,
-	robrk: robrk,
-	ropar: ropar,
-	ropf: ropf,
-	Ropf: Ropf,
-	roplus: roplus,
-	rotimes: rotimes,
-	RoundImplies: RoundImplies,
-	rpar: rpar,
-	rpargt: rpargt,
-	rppolint: rppolint,
-	rrarr: rrarr,
-	Rrightarrow: Rrightarrow,
-	rsaquo: rsaquo,
-	rscr: rscr,
-	Rscr: Rscr,
-	rsh: rsh,
-	Rsh: Rsh,
-	rsqb: rsqb,
-	rsquo: rsquo,
-	rsquor: rsquor,
-	rthree: rthree,
-	rtimes: rtimes,
-	rtri: rtri,
-	rtrie: rtrie,
-	rtrif: rtrif,
-	rtriltri: rtriltri,
-	RuleDelayed: RuleDelayed,
-	ruluhar: ruluhar,
-	rx: rx,
-	Sacute: Sacute,
-	sacute: sacute,
-	sbquo: sbquo,
-	scap: scap,
-	Scaron: Scaron,
-	scaron: scaron,
-	Sc: Sc,
-	sc: sc,
-	sccue: sccue,
-	sce: sce,
-	scE: scE,
-	Scedil: Scedil,
-	scedil: scedil,
-	Scirc: Scirc,
-	scirc: scirc,
-	scnap: scnap,
-	scnE: scnE,
-	scnsim: scnsim,
-	scpolint: scpolint,
-	scsim: scsim,
-	Scy: Scy,
-	scy: scy,
-	sdotb: sdotb,
-	sdot: sdot,
-	sdote: sdote,
-	searhk: searhk,
-	searr: searr,
-	seArr: seArr,
-	searrow: searrow,
-	sect: sect,
-	semi: semi,
-	seswar: seswar,
-	setminus: setminus,
-	setmn: setmn,
-	sext: sext,
-	Sfr: Sfr,
-	sfr: sfr,
-	sfrown: sfrown,
-	sharp: sharp,
-	SHCHcy: SHCHcy,
-	shchcy: shchcy,
-	SHcy: SHcy,
-	shcy: shcy,
-	ShortDownArrow: ShortDownArrow,
-	ShortLeftArrow: ShortLeftArrow,
-	shortmid: shortmid,
-	shortparallel: shortparallel,
-	ShortRightArrow: ShortRightArrow,
-	ShortUpArrow: ShortUpArrow,
-	shy: shy,
-	Sigma: Sigma,
-	sigma: sigma,
-	sigmaf: sigmaf,
-	sigmav: sigmav,
-	sim: sim,
-	simdot: simdot,
-	sime: sime,
-	simeq: simeq,
-	simg: simg,
-	simgE: simgE,
-	siml: siml,
-	simlE: simlE,
-	simne: simne,
-	simplus: simplus,
-	simrarr: simrarr,
-	slarr: slarr,
-	SmallCircle: SmallCircle,
-	smallsetminus: smallsetminus,
-	smashp: smashp,
-	smeparsl: smeparsl,
-	smid: smid,
-	smile: smile,
-	smt: smt,
-	smte: smte,
-	smtes: smtes,
-	SOFTcy: SOFTcy,
-	softcy: softcy,
-	solbar: solbar,
-	solb: solb,
-	sol: sol,
-	Sopf: Sopf,
-	sopf: sopf,
-	spades: spades,
-	spadesuit: spadesuit,
-	spar: spar,
-	sqcap: sqcap,
-	sqcaps: sqcaps,
-	sqcup: sqcup,
-	sqcups: sqcups,
-	Sqrt: Sqrt,
-	sqsub: sqsub,
-	sqsube: sqsube,
-	sqsubset: sqsubset,
-	sqsubseteq: sqsubseteq,
-	sqsup: sqsup,
-	sqsupe: sqsupe,
-	sqsupset: sqsupset,
-	sqsupseteq: sqsupseteq,
-	square: square,
-	Square: Square,
-	SquareIntersection: SquareIntersection,
-	SquareSubset: SquareSubset,
-	SquareSubsetEqual: SquareSubsetEqual,
-	SquareSuperset: SquareSuperset,
-	SquareSupersetEqual: SquareSupersetEqual,
-	SquareUnion: SquareUnion,
-	squarf: squarf,
-	squ: squ,
-	squf: squf,
-	srarr: srarr,
-	Sscr: Sscr,
-	sscr: sscr,
-	ssetmn: ssetmn,
-	ssmile: ssmile,
-	sstarf: sstarf,
-	Star: Star,
-	star: star,
-	starf: starf,
-	straightepsilon: straightepsilon,
-	straightphi: straightphi,
-	strns: strns,
-	sub: sub,
-	Sub: Sub,
-	subdot: subdot,
-	subE: subE,
-	sube: sube,
-	subedot: subedot,
-	submult: submult,
-	subnE: subnE,
-	subne: subne,
-	subplus: subplus,
-	subrarr: subrarr,
-	subset: subset,
-	Subset: Subset,
-	subseteq: subseteq,
-	subseteqq: subseteqq,
-	SubsetEqual: SubsetEqual,
-	subsetneq: subsetneq,
-	subsetneqq: subsetneqq,
-	subsim: subsim,
-	subsub: subsub,
-	subsup: subsup,
-	succapprox: succapprox,
-	succ: succ,
-	succcurlyeq: succcurlyeq,
-	Succeeds: Succeeds,
-	SucceedsEqual: SucceedsEqual,
-	SucceedsSlantEqual: SucceedsSlantEqual,
-	SucceedsTilde: SucceedsTilde,
-	succeq: succeq,
-	succnapprox: succnapprox,
-	succneqq: succneqq,
-	succnsim: succnsim,
-	succsim: succsim,
-	SuchThat: SuchThat,
-	sum: sum,
-	Sum: Sum,
-	sung: sung,
-	sup1: sup1,
-	sup2: sup2,
-	sup3: sup3,
-	sup: sup,
-	Sup: Sup,
-	supdot: supdot,
-	supdsub: supdsub,
-	supE: supE,
-	supe: supe,
-	supedot: supedot,
-	Superset: Superset,
-	SupersetEqual: SupersetEqual,
-	suphsol: suphsol,
-	suphsub: suphsub,
-	suplarr: suplarr,
-	supmult: supmult,
-	supnE: supnE,
-	supne: supne,
-	supplus: supplus,
-	supset: supset,
-	Supset: Supset,
-	supseteq: supseteq,
-	supseteqq: supseteqq,
-	supsetneq: supsetneq,
-	supsetneqq: supsetneqq,
-	supsim: supsim,
-	supsub: supsub,
-	supsup: supsup,
-	swarhk: swarhk,
-	swarr: swarr,
-	swArr: swArr,
-	swarrow: swarrow,
-	swnwar: swnwar,
-	szlig: szlig,
-	Tab: Tab,
-	target: target,
-	Tau: Tau,
-	tau: tau,
-	tbrk: tbrk,
-	Tcaron: Tcaron,
-	tcaron: tcaron,
-	Tcedil: Tcedil,
-	tcedil: tcedil,
-	Tcy: Tcy,
-	tcy: tcy,
-	tdot: tdot,
-	telrec: telrec,
-	Tfr: Tfr,
-	tfr: tfr,
-	there4: there4,
-	therefore: therefore,
-	Therefore: Therefore,
-	Theta: Theta,
-	theta: theta,
-	thetasym: thetasym,
-	thetav: thetav,
-	thickapprox: thickapprox,
-	thicksim: thicksim,
-	ThickSpace: ThickSpace,
-	ThinSpace: ThinSpace,
-	thinsp: thinsp,
-	thkap: thkap,
-	thksim: thksim,
-	THORN: THORN,
-	thorn: thorn,
-	tilde: tilde,
-	Tilde: Tilde,
-	TildeEqual: TildeEqual,
-	TildeFullEqual: TildeFullEqual,
-	TildeTilde: TildeTilde,
-	timesbar: timesbar,
-	timesb: timesb,
-	times: times,
-	timesd: timesd,
-	tint: tint,
-	toea: toea,
-	topbot: topbot,
-	topcir: topcir,
-	top: top,
-	Topf: Topf,
-	topf: topf,
-	topfork: topfork,
-	tosa: tosa,
-	tprime: tprime,
-	trade: trade,
-	TRADE: TRADE,
-	triangle: triangle,
-	triangledown: triangledown,
-	triangleleft: triangleleft,
-	trianglelefteq: trianglelefteq,
-	triangleq: triangleq,
-	triangleright: triangleright,
-	trianglerighteq: trianglerighteq,
-	tridot: tridot,
-	trie: trie,
-	triminus: triminus,
-	TripleDot: TripleDot,
-	triplus: triplus,
-	trisb: trisb,
-	tritime: tritime,
-	trpezium: trpezium,
-	Tscr: Tscr,
-	tscr: tscr,
-	TScy: TScy,
-	tscy: tscy,
-	TSHcy: TSHcy,
-	tshcy: tshcy,
-	Tstrok: Tstrok,
-	tstrok: tstrok,
-	twixt: twixt,
-	twoheadleftarrow: twoheadleftarrow,
-	twoheadrightarrow: twoheadrightarrow,
-	Uacute: Uacute,
-	uacute: uacute,
-	uarr: uarr,
-	Uarr: Uarr,
-	uArr: uArr,
-	Uarrocir: Uarrocir,
-	Ubrcy: Ubrcy,
-	ubrcy: ubrcy,
-	Ubreve: Ubreve,
-	ubreve: ubreve,
-	Ucirc: Ucirc,
-	ucirc: ucirc,
-	Ucy: Ucy,
-	ucy: ucy,
-	udarr: udarr,
-	Udblac: Udblac,
-	udblac: udblac,
-	udhar: udhar,
-	ufisht: ufisht,
-	Ufr: Ufr,
-	ufr: ufr,
-	Ugrave: Ugrave,
-	ugrave: ugrave,
-	uHar: uHar,
-	uharl: uharl,
-	uharr: uharr,
-	uhblk: uhblk,
-	ulcorn: ulcorn,
-	ulcorner: ulcorner,
-	ulcrop: ulcrop,
-	ultri: ultri,
-	Umacr: Umacr,
-	umacr: umacr,
-	uml: uml,
-	UnderBar: UnderBar,
-	UnderBrace: UnderBrace,
-	UnderBracket: UnderBracket,
-	UnderParenthesis: UnderParenthesis,
-	Union: Union,
-	UnionPlus: UnionPlus,
-	Uogon: Uogon,
-	uogon: uogon,
-	Uopf: Uopf,
-	uopf: uopf,
-	UpArrowBar: UpArrowBar,
-	uparrow: uparrow,
-	UpArrow: UpArrow,
-	Uparrow: Uparrow,
-	UpArrowDownArrow: UpArrowDownArrow,
-	updownarrow: updownarrow,
-	UpDownArrow: UpDownArrow,
-	Updownarrow: Updownarrow,
-	UpEquilibrium: UpEquilibrium,
-	upharpoonleft: upharpoonleft,
-	upharpoonright: upharpoonright,
-	uplus: uplus,
-	UpperLeftArrow: UpperLeftArrow,
-	UpperRightArrow: UpperRightArrow,
-	upsi: upsi,
-	Upsi: Upsi,
-	upsih: upsih,
-	Upsilon: Upsilon,
-	upsilon: upsilon,
-	UpTeeArrow: UpTeeArrow,
-	UpTee: UpTee,
-	upuparrows: upuparrows,
-	urcorn: urcorn,
-	urcorner: urcorner,
-	urcrop: urcrop,
-	Uring: Uring,
-	uring: uring,
-	urtri: urtri,
-	Uscr: Uscr,
-	uscr: uscr,
-	utdot: utdot,
-	Utilde: Utilde,
-	utilde: utilde,
-	utri: utri,
-	utrif: utrif,
-	uuarr: uuarr,
-	Uuml: Uuml,
-	uuml: uuml,
-	uwangle: uwangle,
-	vangrt: vangrt,
-	varepsilon: varepsilon,
-	varkappa: varkappa,
-	varnothing: varnothing,
-	varphi: varphi,
-	varpi: varpi,
-	varpropto: varpropto,
-	varr: varr,
-	vArr: vArr,
-	varrho: varrho,
-	varsigma: varsigma,
-	varsubsetneq: varsubsetneq,
-	varsubsetneqq: varsubsetneqq,
-	varsupsetneq: varsupsetneq,
-	varsupsetneqq: varsupsetneqq,
-	vartheta: vartheta,
-	vartriangleleft: vartriangleleft,
-	vartriangleright: vartriangleright,
-	vBar: vBar,
-	Vbar: Vbar,
-	vBarv: vBarv,
-	Vcy: Vcy,
-	vcy: vcy,
-	vdash: vdash,
-	vDash: vDash,
-	Vdash: Vdash,
-	VDash: VDash,
-	Vdashl: Vdashl,
-	veebar: veebar,
-	vee: vee,
-	Vee: Vee,
-	veeeq: veeeq,
-	vellip: vellip,
-	verbar: verbar,
-	Verbar: Verbar,
-	vert: vert,
-	Vert: Vert,
-	VerticalBar: VerticalBar,
-	VerticalLine: VerticalLine,
-	VerticalSeparator: VerticalSeparator,
-	VerticalTilde: VerticalTilde,
-	VeryThinSpace: VeryThinSpace,
-	Vfr: Vfr,
-	vfr: vfr,
-	vltri: vltri,
-	vnsub: vnsub,
-	vnsup: vnsup,
-	Vopf: Vopf,
-	vopf: vopf,
-	vprop: vprop,
-	vrtri: vrtri,
-	Vscr: Vscr,
-	vscr: vscr,
-	vsubnE: vsubnE,
-	vsubne: vsubne,
-	vsupnE: vsupnE,
-	vsupne: vsupne,
-	Vvdash: Vvdash,
-	vzigzag: vzigzag,
-	Wcirc: Wcirc,
-	wcirc: wcirc,
-	wedbar: wedbar,
-	wedge: wedge,
-	Wedge: Wedge,
-	wedgeq: wedgeq,
-	weierp: weierp,
-	Wfr: Wfr,
-	wfr: wfr,
-	Wopf: Wopf,
-	wopf: wopf,
-	wp: wp,
-	wr: wr,
-	wreath: wreath,
-	Wscr: Wscr,
-	wscr: wscr,
-	xcap: xcap,
-	xcirc: xcirc,
-	xcup: xcup,
-	xdtri: xdtri,
-	Xfr: Xfr,
-	xfr: xfr,
-	xharr: xharr,
-	xhArr: xhArr,
-	Xi: Xi,
-	xi: xi,
-	xlarr: xlarr,
-	xlArr: xlArr,
-	xmap: xmap,
-	xnis: xnis,
-	xodot: xodot,
-	Xopf: Xopf,
-	xopf: xopf,
-	xoplus: xoplus,
-	xotime: xotime,
-	xrarr: xrarr,
-	xrArr: xrArr,
-	Xscr: Xscr,
-	xscr: xscr,
-	xsqcup: xsqcup,
-	xuplus: xuplus,
-	xutri: xutri,
-	xvee: xvee,
-	xwedge: xwedge,
-	Yacute: Yacute,
-	yacute: yacute,
-	YAcy: YAcy,
-	yacy: yacy,
-	Ycirc: Ycirc,
-	ycirc: ycirc,
-	Ycy: Ycy,
-	ycy: ycy,
-	yen: yen,
-	Yfr: Yfr,
-	yfr: yfr,
-	YIcy: YIcy,
-	yicy: yicy,
-	Yopf: Yopf,
-	yopf: yopf,
-	Yscr: Yscr,
-	yscr: yscr,
-	YUcy: YUcy,
-	yucy: yucy,
-	yuml: yuml,
-	Yuml: Yuml,
-	Zacute: Zacute,
-	zacute: zacute,
-	Zcaron: Zcaron,
-	zcaron: zcaron,
-	Zcy: Zcy,
-	zcy: zcy,
-	Zdot: Zdot,
-	zdot: zdot,
-	zeetrf: zeetrf,
-	ZeroWidthSpace: ZeroWidthSpace,
-	Zeta: Zeta,
-	zeta: zeta,
-	zfr: zfr,
-	Zfr: Zfr,
-	ZHcy: ZHcy,
-	zhcy: zhcy,
-	zigrarr: zigrarr,
-	zopf: zopf,
-	Zopf: Zopf,
-	Zscr: Zscr,
-	zscr: zscr,
-	zwj: zwj,
-	zwnj: zwnj,
-	'default': entities
-});
-
-var require$$0 = getCjsExportFromNamespace(entities$1);
-
 /*eslint quotes:0*/
-var entities$2 = require$$0;
+var entities = require$$0;
 
 var regex=/[!-#%-\*,-\/:;\?@\[-\]_\{\}\xA1\xA7\xAB\xB6\xB7\xBB\xBF\u037E\u0387\u055A-\u055F\u0589\u058A\u05BE\u05C0\u05C3\u05C6\u05F3\u05F4\u0609\u060A\u060C\u060D\u061B\u061E\u061F\u066A-\u066D\u06D4\u0700-\u070D\u07F7-\u07F9\u0830-\u083E\u085E\u0964\u0965\u0970\u09FD\u0A76\u0AF0\u0C84\u0DF4\u0E4F\u0E5A\u0E5B\u0F04-\u0F12\u0F14\u0F3A-\u0F3D\u0F85\u0FD0-\u0FD4\u0FD9\u0FDA\u104A-\u104F\u10FB\u1360-\u1368\u1400\u166D\u166E\u169B\u169C\u16EB-\u16ED\u1735\u1736\u17D4-\u17D6\u17D8-\u17DA\u1800-\u180A\u1944\u1945\u1A1E\u1A1F\u1AA0-\u1AA6\u1AA8-\u1AAD\u1B5A-\u1B60\u1BFC-\u1BFF\u1C3B-\u1C3F\u1C7E\u1C7F\u1CC0-\u1CC7\u1CD3\u2010-\u2027\u2030-\u2043\u2045-\u2051\u2053-\u205E\u207D\u207E\u208D\u208E\u2308-\u230B\u2329\u232A\u2768-\u2775\u27C5\u27C6\u27E6-\u27EF\u2983-\u2998\u29D8-\u29DB\u29FC\u29FD\u2CF9-\u2CFC\u2CFE\u2CFF\u2D70\u2E00-\u2E2E\u2E30-\u2E4E\u3001-\u3003\u3008-\u3011\u3014-\u301F\u3030\u303D\u30A0\u30FB\uA4FE\uA4FF\uA60D-\uA60F\uA673\uA67E\uA6F2-\uA6F7\uA874-\uA877\uA8CE\uA8CF\uA8F8-\uA8FA\uA8FC\uA92E\uA92F\uA95F\uA9C1-\uA9CD\uA9DE\uA9DF\uAA5C-\uAA5F\uAADE\uAADF\uAAF0\uAAF1\uABEB\uFD3E\uFD3F\uFE10-\uFE19\uFE30-\uFE52\uFE54-\uFE61\uFE63\uFE68\uFE6A\uFE6B\uFF01-\uFF03\uFF05-\uFF0A\uFF0C-\uFF0F\uFF1A\uFF1B\uFF1F\uFF20\uFF3B-\uFF3D\uFF3F\uFF5B\uFF5D\uFF5F-\uFF65]|\uD800[\uDD00-\uDD02\uDF9F\uDFD0]|\uD801\uDD6F|\uD802[\uDC57\uDD1F\uDD3F\uDE50-\uDE58\uDE7F\uDEF0-\uDEF6\uDF39-\uDF3F\uDF99-\uDF9C]|\uD803[\uDF55-\uDF59]|\uD804[\uDC47-\uDC4D\uDCBB\uDCBC\uDCBE-\uDCC1\uDD40-\uDD43\uDD74\uDD75\uDDC5-\uDDC8\uDDCD\uDDDB\uDDDD-\uDDDF\uDE38-\uDE3D\uDEA9]|\uD805[\uDC4B-\uDC4F\uDC5B\uDC5D\uDCC6\uDDC1-\uDDD7\uDE41-\uDE43\uDE60-\uDE6C\uDF3C-\uDF3E]|\uD806[\uDC3B\uDE3F-\uDE46\uDE9A-\uDE9C\uDE9E-\uDEA2]|\uD807[\uDC41-\uDC45\uDC70\uDC71\uDEF7\uDEF8]|\uD809[\uDC70-\uDC74]|\uD81A[\uDE6E\uDE6F\uDEF5\uDF37-\uDF3B\uDF44]|\uD81B[\uDE97-\uDE9A]|\uD82F\uDC9F|\uD836[\uDE87-\uDE8B]|\uD83A[\uDD5E\uDD5F]/;
 
@@ -7036,8 +4912,8 @@ var DIGITAL_ENTITY_TEST_RE = /^#((?:x[a-f0-9]{1,8}|[0-9]{1,8}))/i;
 function replaceEntityPattern(match, name) {
   var code = 0;
 
-  if (has(entities$2, name)) {
-    return entities$2[name];
+  if (has(entities, name)) {
+    return entities[name];
   }
 
   if (name.charCodeAt(0) === 0x23/* # */ && DIGITAL_ENTITY_TEST_RE.test(name)) {
@@ -7270,22 +5146,6 @@ exports.isPunctChar         = isPunctChar;
 exports.escapeRE            = escapeRE;
 exports.normalizeReference  = normalizeReference;
 });
-var utils_1 = utils.lib;
-var utils_2 = utils.assign;
-var utils_3 = utils.isString;
-var utils_4 = utils.has;
-var utils_5 = utils.unescapeMd;
-var utils_6 = utils.unescapeAll;
-var utils_7 = utils.isValidEntityCode;
-var utils_8 = utils.fromCodePoint;
-var utils_9 = utils.escapeHtml;
-var utils_10 = utils.arrayReplaceAt;
-var utils_11 = utils.isSpace;
-var utils_12 = utils.isWhiteSpace;
-var utils_13 = utils.isMdAsciiPunct;
-var utils_14 = utils.isPunctChar;
-var utils_15 = utils.escapeRE;
-var utils_16 = utils.normalizeReference;
 
 // Parse link label
 
@@ -11654,8 +9514,8 @@ var entity = function entity(state, silent) {
     } else {
       match = state.src.slice(pos).match(NAMED_RE);
       if (match) {
-        if (has(entities$2, match[1])) {
-          if (!silent) { state.pending += entities$2[match[1]]; }
+        if (has(entities, match[1])) {
+          if (!silent) { state.pending += entities[match[1]]; }
           state.pos += match[0].length;
           return true;
         }
@@ -12932,35 +10792,38 @@ LinkifyIt.prototype.onCompile = function onCompile() {
 
 var linkifyIt = LinkifyIt;
 
+/*! https://mths.be/punycode v1.4.1 by @mathias */
+
+
 /** Highest positive signed 32-bit float value */
-const maxInt = 2147483647; // aka. 0x7FFFFFFF or 2^31-1
+var maxInt = 2147483647; // aka. 0x7FFFFFFF or 2^31-1
 
 /** Bootstring parameters */
-const base = 36;
-const tMin = 1;
-const tMax = 26;
-const skew = 38;
-const damp = 700;
-const initialBias = 72;
-const initialN = 128; // 0x80
-const delimiter = '-'; // '\x2D'
+var base = 36;
+var tMin = 1;
+var tMax = 26;
+var skew = 38;
+var damp = 700;
+var initialBias = 72;
+var initialN = 128; // 0x80
+var delimiter = '-'; // '\x2D'
 
 /** Regular expressions */
-const regexPunycode = /^xn--/;
-const regexNonASCII = /[^\0-\x7E]/; // non-ASCII chars
-const regexSeparators = /[\x2E\u3002\uFF0E\uFF61]/g; // RFC 3490 separators
+var regexPunycode = /^xn--/;
+var regexNonASCII = /[^\x20-\x7E]/; // unprintable ASCII chars + non-ASCII chars
+var regexSeparators = /[\x2E\u3002\uFF0E\uFF61]/g; // RFC 3490 separators
 
 /** Error messages */
-const errors = {
-	'overflow': 'Overflow: input needs wider integers to process',
-	'not-basic': 'Illegal input >= 0x80 (not a basic code point)',
-	'invalid-input': 'Invalid input'
+var errors = {
+  'overflow': 'Overflow: input needs wider integers to process',
+  'not-basic': 'Illegal input >= 0x80 (not a basic code point)',
+  'invalid-input': 'Invalid input'
 };
 
 /** Convenience shortcuts */
-const baseMinusTMin = base - tMin;
-const floor = Math.floor;
-const stringFromCharCode = String.fromCharCode;
+var baseMinusTMin = base - tMin;
+var floor = Math.floor;
+var stringFromCharCode = String.fromCharCode;
 
 /*--------------------------------------------------------------------------*/
 
@@ -12971,7 +10834,7 @@ const stringFromCharCode = String.fromCharCode;
  * @returns {Error} Throws a `RangeError` with the applicable error message.
  */
 function error(type) {
-	throw new RangeError(errors[type]);
+  throw new RangeError(errors[type]);
 }
 
 /**
@@ -12983,12 +10846,12 @@ function error(type) {
  * @returns {Array} A new array of values returned by the callback function.
  */
 function map$1(array, fn) {
-	const result = [];
-	let length = array.length;
-	while (length--) {
-		result[length] = fn(array[length]);
-	}
-	return result;
+  var length = array.length;
+  var result = [];
+  while (length--) {
+    result[length] = fn(array[length]);
+  }
+  return result;
 }
 
 /**
@@ -13002,19 +10865,19 @@ function map$1(array, fn) {
  * function.
  */
 function mapDomain(string, fn) {
-	const parts = string.split('@');
-	let result = '';
-	if (parts.length > 1) {
-		// In email addresses, only the domain name should be punycoded. Leave
-		// the local part (i.e. everything up to `@`) intact.
-		result = parts[0] + '@';
-		string = parts[1];
-	}
-	// Avoid `split(regex)` for IE8 compatibility. See #17.
-	string = string.replace(regexSeparators, '\x2E');
-	const labels = string.split('.');
-	const encoded = map$1(labels, fn).join('.');
-	return result + encoded;
+  var parts = string.split('@');
+  var result = '';
+  if (parts.length > 1) {
+    // In email addresses, only the domain name should be punycoded. Leave
+    // the local part (i.e. everything up to `@`) intact.
+    result = parts[0] + '@';
+    string = parts[1];
+  }
+  // Avoid `split(regex)` for IE8 compatibility. See #17.
+  string = string.replace(regexSeparators, '\x2E');
+  var labels = string.split('.');
+  var encoded = map$1(labels, fn).join('.');
+  return result + encoded;
 }
 
 /**
@@ -13031,27 +10894,29 @@ function mapDomain(string, fn) {
  * @returns {Array} The new array of code points.
  */
 function ucs2decode(string) {
-	const output = [];
-	let counter = 0;
-	const length = string.length;
-	while (counter < length) {
-		const value = string.charCodeAt(counter++);
-		if (value >= 0xD800 && value <= 0xDBFF && counter < length) {
-			// It's a high surrogate, and there is a next character.
-			const extra = string.charCodeAt(counter++);
-			if ((extra & 0xFC00) == 0xDC00) { // Low surrogate.
-				output.push(((value & 0x3FF) << 10) + (extra & 0x3FF) + 0x10000);
-			} else {
-				// It's an unmatched surrogate; only append this code unit, in case the
-				// next code unit is the high surrogate of a surrogate pair.
-				output.push(value);
-				counter--;
-			}
-		} else {
-			output.push(value);
-		}
-	}
-	return output;
+  var output = [],
+    counter = 0,
+    length = string.length,
+    value,
+    extra;
+  while (counter < length) {
+    value = string.charCodeAt(counter++);
+    if (value >= 0xD800 && value <= 0xDBFF && counter < length) {
+      // high surrogate, and there is a next character
+      extra = string.charCodeAt(counter++);
+      if ((extra & 0xFC00) == 0xDC00) { // low surrogate
+        output.push(((value & 0x3FF) << 10) + (extra & 0x3FF) + 0x10000);
+      } else {
+        // unmatched surrogate; only append this code unit, in case the next
+        // code unit is the high surrogate of a surrogate pair
+        output.push(value);
+        counter--;
+      }
+    } else {
+      output.push(value);
+    }
+  }
+  return output;
 }
 
 /**
@@ -13062,7 +10927,18 @@ function ucs2decode(string) {
  * @param {Array} codePoints The array of numeric code points.
  * @returns {String} The new Unicode string (UCS-2).
  */
-const ucs2encode = array => String.fromCodePoint(...array);
+function ucs2encode(array) {
+  return map$1(array, function(value) {
+    var output = '';
+    if (value > 0xFFFF) {
+      value -= 0x10000;
+      output += stringFromCharCode(value >>> 10 & 0x3FF | 0xD800);
+      value = 0xDC00 | value & 0x3FF;
+    }
+    output += stringFromCharCode(value);
+    return output;
+  }).join('');
+}
 
 /**
  * Converts a basic code point into a digit/integer.
@@ -13073,18 +10949,18 @@ const ucs2encode = array => String.fromCodePoint(...array);
  * representing integers) in the range `0` to `base - 1`, or `base` if
  * the code point does not represent a value.
  */
-const basicToDigit = function(codePoint) {
-	if (codePoint - 0x30 < 0x0A) {
-		return codePoint - 0x16;
-	}
-	if (codePoint - 0x41 < 0x1A) {
-		return codePoint - 0x41;
-	}
-	if (codePoint - 0x61 < 0x1A) {
-		return codePoint - 0x61;
-	}
-	return base;
-};
+function basicToDigit(codePoint) {
+  if (codePoint - 48 < 10) {
+    return codePoint - 22;
+  }
+  if (codePoint - 65 < 26) {
+    return codePoint - 65;
+  }
+  if (codePoint - 97 < 26) {
+    return codePoint - 97;
+  }
+  return base;
+}
 
 /**
  * Converts a digit/integer into a basic code point.
@@ -13097,26 +10973,26 @@ const basicToDigit = function(codePoint) {
  * used; else, the lowercase form is used. The behavior is undefined
  * if `flag` is non-zero and `digit` has no uppercase form.
  */
-const digitToBasic = function(digit, flag) {
-	//  0..25 map to ASCII a..z or A..Z
-	// 26..35 map to ASCII 0..9
-	return digit + 22 + 75 * (digit < 26) - ((flag != 0) << 5);
-};
+function digitToBasic(digit, flag) {
+  //  0..25 map to ASCII a..z or A..Z
+  // 26..35 map to ASCII 0..9
+  return digit + 22 + 75 * (digit < 26) - ((flag != 0) << 5);
+}
 
 /**
  * Bias adaptation function as per section 3.4 of RFC 3492.
  * https://tools.ietf.org/html/rfc3492#section-3.4
  * @private
  */
-const adapt = function(delta, numPoints, firstTime) {
-	let k = 0;
-	delta = firstTime ? floor(delta / damp) : delta >> 1;
-	delta += floor(delta / numPoints);
-	for (/* no initialization */; delta > baseMinusTMin * tMax >> 1; k += base) {
-		delta = floor(delta / baseMinusTMin);
-	}
-	return floor(k + (baseMinusTMin + 1) * delta / (delta + skew));
-};
+function adapt(delta, numPoints, firstTime) {
+  var k = 0;
+  delta = firstTime ? floor(delta / damp) : delta >> 1;
+  delta += floor(delta / numPoints);
+  for ( /* no initialization */ ; delta > baseMinusTMin * tMax >> 1; k += base) {
+    delta = floor(delta / baseMinusTMin);
+  }
+  return floor(k + (baseMinusTMin + 1) * delta / (delta + skew));
+}
 
 /**
  * Converts a Punycode string of ASCII-only symbols to a string of Unicode
@@ -13125,89 +11001,99 @@ const adapt = function(delta, numPoints, firstTime) {
  * @param {String} input The Punycode string of ASCII-only symbols.
  * @returns {String} The resulting string of Unicode symbols.
  */
-const decode$2 = function(input) {
-	// Don't use UCS-2.
-	const output = [];
-	const inputLength = input.length;
-	let i = 0;
-	let n = initialN;
-	let bias = initialBias;
+function decode$2(input) {
+  // Don't use UCS-2
+  var output = [],
+    inputLength = input.length,
+    out,
+    i = 0,
+    n = initialN,
+    bias = initialBias,
+    basic,
+    j,
+    index,
+    oldi,
+    w,
+    k,
+    digit,
+    t,
+    /** Cached calculation results */
+    baseMinusT;
 
-	// Handle the basic code points: let `basic` be the number of input code
-	// points before the last delimiter, or `0` if there is none, then copy
-	// the first basic code points to the output.
+  // Handle the basic code points: let `basic` be the number of input code
+  // points before the last delimiter, or `0` if there is none, then copy
+  // the first basic code points to the output.
 
-	let basic = input.lastIndexOf(delimiter);
-	if (basic < 0) {
-		basic = 0;
-	}
+  basic = input.lastIndexOf(delimiter);
+  if (basic < 0) {
+    basic = 0;
+  }
 
-	for (let j = 0; j < basic; ++j) {
-		// if it's not a basic code point
-		if (input.charCodeAt(j) >= 0x80) {
-			error('not-basic');
-		}
-		output.push(input.charCodeAt(j));
-	}
+  for (j = 0; j < basic; ++j) {
+    // if it's not a basic code point
+    if (input.charCodeAt(j) >= 0x80) {
+      error('not-basic');
+    }
+    output.push(input.charCodeAt(j));
+  }
 
-	// Main decoding loop: start just after the last delimiter if any basic code
-	// points were copied; start at the beginning otherwise.
+  // Main decoding loop: start just after the last delimiter if any basic code
+  // points were copied; start at the beginning otherwise.
 
-	for (let index = basic > 0 ? basic + 1 : 0; index < inputLength; /* no final expression */) {
+  for (index = basic > 0 ? basic + 1 : 0; index < inputLength; /* no final expression */ ) {
 
-		// `index` is the index of the next character to be consumed.
-		// Decode a generalized variable-length integer into `delta`,
-		// which gets added to `i`. The overflow checking is easier
-		// if we increase `i` as we go, then subtract off its starting
-		// value at the end to obtain `delta`.
-		let oldi = i;
-		for (let w = 1, k = base; /* no condition */; k += base) {
+    // `index` is the index of the next character to be consumed.
+    // Decode a generalized variable-length integer into `delta`,
+    // which gets added to `i`. The overflow checking is easier
+    // if we increase `i` as we go, then subtract off its starting
+    // value at the end to obtain `delta`.
+    for (oldi = i, w = 1, k = base; /* no condition */ ; k += base) {
 
-			if (index >= inputLength) {
-				error('invalid-input');
-			}
+      if (index >= inputLength) {
+        error('invalid-input');
+      }
 
-			const digit = basicToDigit(input.charCodeAt(index++));
+      digit = basicToDigit(input.charCodeAt(index++));
 
-			if (digit >= base || digit > floor((maxInt - i) / w)) {
-				error('overflow');
-			}
+      if (digit >= base || digit > floor((maxInt - i) / w)) {
+        error('overflow');
+      }
 
-			i += digit * w;
-			const t = k <= bias ? tMin : (k >= bias + tMax ? tMax : k - bias);
+      i += digit * w;
+      t = k <= bias ? tMin : (k >= bias + tMax ? tMax : k - bias);
 
-			if (digit < t) {
-				break;
-			}
+      if (digit < t) {
+        break;
+      }
 
-			const baseMinusT = base - t;
-			if (w > floor(maxInt / baseMinusT)) {
-				error('overflow');
-			}
+      baseMinusT = base - t;
+      if (w > floor(maxInt / baseMinusT)) {
+        error('overflow');
+      }
 
-			w *= baseMinusT;
+      w *= baseMinusT;
 
-		}
+    }
 
-		const out = output.length + 1;
-		bias = adapt(i - oldi, out, oldi == 0);
+    out = output.length + 1;
+    bias = adapt(i - oldi, out, oldi == 0);
 
-		// `i` was supposed to wrap around from `out` to `0`,
-		// incrementing `n` each time, so we'll fix that now:
-		if (floor(i / out) > maxInt - n) {
-			error('overflow');
-		}
+    // `i` was supposed to wrap around from `out` to `0`,
+    // incrementing `n` each time, so we'll fix that now:
+    if (floor(i / out) > maxInt - n) {
+      error('overflow');
+    }
 
-		n += floor(i / out);
-		i %= out;
+    n += floor(i / out);
+    i %= out;
 
-		// Insert `n` at position `i` of the output.
-		output.splice(i++, 0, n);
+    // Insert `n` at position `i` of the output
+    output.splice(i++, 0, n);
 
-	}
+  }
 
-	return String.fromCodePoint(...output);
-};
+  return ucs2encode(output);
+}
 
 /**
  * Converts a string of Unicode symbols (e.g. a domain name label) to a
@@ -13216,93 +11102,112 @@ const decode$2 = function(input) {
  * @param {String} input The string of Unicode symbols.
  * @returns {String} The resulting Punycode string of ASCII-only symbols.
  */
-const encode$2 = function(input) {
-	const output = [];
+function encode$2(input) {
+  var n,
+    delta,
+    handledCPCount,
+    basicLength,
+    bias,
+    j,
+    m,
+    q,
+    k,
+    t,
+    currentValue,
+    output = [],
+    /** `inputLength` will hold the number of code points in `input`. */
+    inputLength,
+    /** Cached calculation results */
+    handledCPCountPlusOne,
+    baseMinusT,
+    qMinusT;
 
-	// Convert the input in UCS-2 to an array of Unicode code points.
-	input = ucs2decode(input);
+  // Convert the input in UCS-2 to Unicode
+  input = ucs2decode(input);
 
-	// Cache the length.
-	let inputLength = input.length;
+  // Cache the length
+  inputLength = input.length;
 
-	// Initialize the state.
-	let n = initialN;
-	let delta = 0;
-	let bias = initialBias;
+  // Initialize the state
+  n = initialN;
+  delta = 0;
+  bias = initialBias;
 
-	// Handle the basic code points.
-	for (const currentValue of input) {
-		if (currentValue < 0x80) {
-			output.push(stringFromCharCode(currentValue));
-		}
-	}
+  // Handle the basic code points
+  for (j = 0; j < inputLength; ++j) {
+    currentValue = input[j];
+    if (currentValue < 0x80) {
+      output.push(stringFromCharCode(currentValue));
+    }
+  }
 
-	let basicLength = output.length;
-	let handledCPCount = basicLength;
+  handledCPCount = basicLength = output.length;
 
-	// `handledCPCount` is the number of code points that have been handled;
-	// `basicLength` is the number of basic code points.
+  // `handledCPCount` is the number of code points that have been handled;
+  // `basicLength` is the number of basic code points.
 
-	// Finish the basic string with a delimiter unless it's empty.
-	if (basicLength) {
-		output.push(delimiter);
-	}
+  // Finish the basic string - if it is not empty - with a delimiter
+  if (basicLength) {
+    output.push(delimiter);
+  }
 
-	// Main encoding loop:
-	while (handledCPCount < inputLength) {
+  // Main encoding loop:
+  while (handledCPCount < inputLength) {
 
-		// All non-basic code points < n have been handled already. Find the next
-		// larger one:
-		let m = maxInt;
-		for (const currentValue of input) {
-			if (currentValue >= n && currentValue < m) {
-				m = currentValue;
-			}
-		}
+    // All non-basic code points < n have been handled already. Find the next
+    // larger one:
+    for (m = maxInt, j = 0; j < inputLength; ++j) {
+      currentValue = input[j];
+      if (currentValue >= n && currentValue < m) {
+        m = currentValue;
+      }
+    }
 
-		// Increase `delta` enough to advance the decoder's <n,i> state to <m,0>,
-		// but guard against overflow.
-		const handledCPCountPlusOne = handledCPCount + 1;
-		if (m - n > floor((maxInt - delta) / handledCPCountPlusOne)) {
-			error('overflow');
-		}
+    // Increase `delta` enough to advance the decoder's <n,i> state to <m,0>,
+    // but guard against overflow
+    handledCPCountPlusOne = handledCPCount + 1;
+    if (m - n > floor((maxInt - delta) / handledCPCountPlusOne)) {
+      error('overflow');
+    }
 
-		delta += (m - n) * handledCPCountPlusOne;
-		n = m;
+    delta += (m - n) * handledCPCountPlusOne;
+    n = m;
 
-		for (const currentValue of input) {
-			if (currentValue < n && ++delta > maxInt) {
-				error('overflow');
-			}
-			if (currentValue == n) {
-				// Represent delta as a generalized variable-length integer.
-				let q = delta;
-				for (let k = base; /* no condition */; k += base) {
-					const t = k <= bias ? tMin : (k >= bias + tMax ? tMax : k - bias);
-					if (q < t) {
-						break;
-					}
-					const qMinusT = q - t;
-					const baseMinusT = base - t;
-					output.push(
-						stringFromCharCode(digitToBasic(t + qMinusT % baseMinusT, 0))
-					);
-					q = floor(qMinusT / baseMinusT);
-				}
+    for (j = 0; j < inputLength; ++j) {
+      currentValue = input[j];
 
-				output.push(stringFromCharCode(digitToBasic(q, 0)));
-				bias = adapt(delta, handledCPCountPlusOne, handledCPCount == basicLength);
-				delta = 0;
-				++handledCPCount;
-			}
-		}
+      if (currentValue < n && ++delta > maxInt) {
+        error('overflow');
+      }
 
-		++delta;
-		++n;
+      if (currentValue == n) {
+        // Represent delta as a generalized variable-length integer
+        for (q = delta, k = base; /* no condition */ ; k += base) {
+          t = k <= bias ? tMin : (k >= bias + tMax ? tMax : k - bias);
+          if (q < t) {
+            break;
+          }
+          qMinusT = q - t;
+          baseMinusT = base - t;
+          output.push(
+            stringFromCharCode(digitToBasic(t + qMinusT % baseMinusT, 0))
+          );
+          q = floor(qMinusT / baseMinusT);
+        }
 
-	}
-	return output.join('');
-};
+        output.push(stringFromCharCode(digitToBasic(q, 0)));
+        bias = adapt(delta, handledCPCountPlusOne, handledCPCount == basicLength);
+        delta = 0;
+        ++handledCPCount;
+      }
+    }
+
+    ++delta;
+    ++n;
+
+  }
+  return output.join('');
+}
 
 /**
  * Converts a Punycode string representing a domain name or an email address
@@ -13315,13 +11220,13 @@ const encode$2 = function(input) {
  * @returns {String} The Unicode representation of the given Punycode
  * string.
  */
-const toUnicode = function(input) {
-	return mapDomain(input, function(string) {
-		return regexPunycode.test(string)
-			? decode$2(string.slice(4).toLowerCase())
-			: string;
-	});
-};
+function toUnicode(input) {
+  return mapDomain(input, function(string) {
+    return regexPunycode.test(string) ?
+      decode$2(string.slice(4).toLowerCase()) :
+      string;
+  });
+}
 
 /**
  * Converts a Unicode string representing a domain name or an email address to
@@ -13334,40 +11239,45 @@ const toUnicode = function(input) {
  * @returns {String} The Punycode representation of the given domain name or
  * email address.
  */
-const toASCII = function(input) {
-	return mapDomain(input, function(string) {
-		return regexNonASCII.test(string)
-			? 'xn--' + encode$2(string)
-			: string;
-	});
+function toASCII(input) {
+  return mapDomain(input, function(string) {
+    return regexNonASCII.test(string) ?
+      'xn--' + encode$2(string) :
+      string;
+  });
+}
+var version = '1.4.1';
+/**
+ * An object of methods to convert from JavaScript's internal character
+ * representation (UCS-2) to Unicode code points, and back.
+ * @see <https://mathiasbynens.be/notes/javascript-encoding>
+ * @memberOf punycode
+ * @type Object
+ */
+
+var ucs2 = {
+  decode: ucs2decode,
+  encode: ucs2encode
+};
+var punycode = {
+  version: version,
+  ucs2: ucs2,
+  toASCII: toASCII,
+  toUnicode: toUnicode,
+  encode: encode$2,
+  decode: decode$2
 };
 
-/*--------------------------------------------------------------------------*/
-
-/** Define the public API */
-const punycode = {
-	/**
-	 * A string representing the current Punycode.js version number.
-	 * @memberOf punycode
-	 * @type String
-	 */
-	'version': '2.1.0',
-	/**
-	 * An object of methods to convert from JavaScript's internal character
-	 * representation (UCS-2) to Unicode code points, and back.
-	 * @see <https://mathiasbynens.be/notes/javascript-encoding>
-	 * @memberOf punycode
-	 * @type Object
-	 */
-	'ucs2': {
-		'decode': ucs2decode,
-		'encode': ucs2encode
-	},
-	'decode': decode$2,
-	'encode': encode$2,
-	'toASCII': toASCII,
-	'toUnicode': toUnicode
-};
+var punycode$1 = /*#__PURE__*/Object.freeze({
+	__proto__: null,
+	decode: decode$2,
+	encode: encode$2,
+	toUnicode: toUnicode,
+	toASCII: toASCII,
+	version: version,
+	ucs2: ucs2,
+	'default': punycode
+});
 
 // markdown-it default options
 
@@ -13590,7 +11500,7 @@ function normalizeLink(url) {
     //
     if (!parsed.protocol || RECODE_HOSTNAME_FOR.indexOf(parsed.protocol) >= 0) {
       try {
-        parsed.hostname = punycode.toASCII(parsed.hostname);
+        parsed.hostname = punycode$1.toASCII(parsed.hostname);
       } catch (er) { /**/ }
     }
   }
@@ -13610,7 +11520,7 @@ function normalizeLinkText(url) {
     //
     if (!parsed.protocol || RECODE_HOSTNAME_FOR.indexOf(parsed.protocol) >= 0) {
       try {
-        parsed.hostname = punycode.toUnicode(parsed.hostname);
+        parsed.hostname = punycode$1.toUnicode(parsed.hostname);
       } catch (er) { /**/ }
     }
   }
