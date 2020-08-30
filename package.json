@@ -9,7 +9,7 @@
   },
   "type": "module",
   "scripts": {
-    "prepare": "snowpack",
+    "snowpack": "snowpack",
     "create:images": "node --experimental-modules create/images.js",
     "optimize:images": "node --experimental-modules create/images-optimize.js",
     "create:albums": "node --experimental-modules create/albums.js",
@@ -31,7 +31,6 @@
     "xstate": "^4.8.0"
   },
   "devDependencies": {
-    "@babel/core": "^7.9.0",
     "archiver": "^3.1.1",
     "capitalize": "^2.0.3",
     "chalk": "^3.0.0",
@@ -53,13 +52,13 @@
     "playwright": "^0.12.1",
     "request": "^2.88.2",
     "serve": "^11.3.0",
-    "snowpack": "^1.6.0"
+    "snowpack": "^2.9.3"
   },
   "jest": {
     "preset": "jest-playwright-preset"
   },
   "snowpack": {
-    "webDependencies": [
+    "install": [
       "htm",
       "lit-element",
       "markdown-it",
@@ -70,6 +69,7 @@
       "xstate"
     ],
     "installOptions": {
+      "polyfillNode": true,
       "clean": true,
       "optimize": false,
       "sourceMap": true

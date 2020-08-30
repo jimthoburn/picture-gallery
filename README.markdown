@@ -304,6 +304,17 @@ https://xstate.js.org/viz/?gist=18995ef2fca6c1949991f21b1b68c6d0
 <a href="https://xstate.js.org/viz/?gist=18995ef2fca6c1949991f21b1b68c6d0" rel="nofollow"><img width="544" alt="xstate" src="https://user-images.githubusercontent.com/926616/68066254-8bd83b80-fcf2-11e9-8c77-6427061b98a9.png">
 </a>
 
+## Snowpack
+
+This project was originally created with _Snowpack 1_, and hasn’t yet been
+migrated to [Snowpack 2](https://www.snowpack.dev/posts/2020-05-26-snowpack-2-0-release).
+
+In the mean time, you can run this command to update the `web_modules` folder:
+
+```
+sh web_modules_build.sh
+```
+
 ## <span id="goals"></span> Project goals
 
 This project is an experiment to see how easily the following goals can be achieved in a [reactive](https://en.wikipedia.org/wiki/Reactive_programming) single-page application on the web…

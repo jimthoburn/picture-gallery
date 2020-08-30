@@ -446,9 +446,6 @@ function updateHistoryValue(hist, stateValue) {
 }
 
 function updateContext(context, _event, assignActions, state) {
-  {
-    warn(!!context, 'Attempting to update undefined context');
-  }
 
   var updatedContext = context ? assignActions.reduce(function (acc, assignAction) {
     var e_7, _a;
@@ -487,30 +484,6 @@ function updateContext(context, _event, assignActions, state) {
   }, context) : context;
   return updatedContext;
 } // tslint:disable-next-line:no-empty
-
-
-var warn = function () {};
-
-{
-  warn = function (condition, message) {
-    var error = condition instanceof Error ? condition : undefined;
-
-    if (!error && condition) {
-      return;
-    }
-
-    if (console !== undefined) {
-      var args = ["Warning: " + message];
-
-      if (error) {
-        args.push(error);
-      } // tslint:disable-next-line:no-console
-
-
-      console.warn.apply(console, args);
-    }
-  };
-}
 
 function isArray(value) {
   return Array.isArray(value);
@@ -640,21 +613,6 @@ function normalizeTarget(target) {
   }
 
   return toArray(target);
-}
-
-function reportUnhandledExceptionOnInvocation(originalError, currentError, id) {
-  {
-    var originalStackTrace = originalError.stack ? " Stacktrace was '" + originalError.stack + "'" : '';
-
-    if (originalError === currentError) {
-      // tslint:disable-next-line:no-console
-      console.error("Missing onError handler for invocation '" + id + "', error was '" + originalError + "'." + originalStackTrace);
-    } else {
-      var stackTrace = currentError.stack ? " Stacktrace was '" + currentError.stack + "'" : ''; // tslint:disable-next-line:no-console
-
-      console.error("Missing onError handler and/or unhandled exception/promise rejection for invocation '" + id + "'. " + ("Original error: '" + originalError + "'. " + originalStackTrace + " Current error is '" + currentError + "'." + stackTrace));
-    }
-  }
 }
 
 function mapState(stateMap, stateId) {
@@ -1663,14 +1621,6 @@ var createDefaultOptions = function () {
   };
 };
 
-var validateArrayifiedTransitions = function (stateNode, event, transitions) {
-  var hasNonLastUnguardedTarget = transitions.slice(0, -1).some(function (transition) {
-    return !('cond' in transition) && !('in' in transition) && (isString(transition.target) || isMachine(transition.target));
-  });
-  var eventText = event === NULL_EVENT ? 'the transient event' : "event '" + event + "'";
-  warn(!hasNonLastUnguardedTarget, "One or more transitions for " + eventText + " on state '" + stateNode.id + "' are unreachable. " + "Make sure that the default transition is the last one defined.");
-};
-
 var StateNode =
 /*#__PURE__*/
 
@@ -1715,10 +1665,6 @@ function () {
     this.id = this.config.id || __spread([this.machine.key], this.path).join(this.delimiter);
     this.version = this.parent ? this.parent.version : this.config.version;
     this.type = this.config.type || (this.config.parallel ? 'parallel' : this.config.states && keys(this.config.states).length ? 'compound' : this.config.history ? 'history' : 'atomic');
-
-    {
-      warn(!('parallel' in this.config), "The \"parallel\" property is deprecated and will be removed in version 4.1. " + (this.config.parallel ? "Replace with `type: 'parallel'`" : "Use `type: '" + this.type + "'`") + " in the config for state node '" + this.id + "' instead.");
-    }
 
     this.initial = this.config.initial;
     this.states = this.config.states ? mapValues(this.config.states, function (stateConfig, key) {
@@ -2433,10 +2379,6 @@ function () {
       currentState = this.resolveState(State.from(resolvedStateValue, resolvedContext));
     }
 
-    if ( _event.name === WILDCARD) {
-      throw new Error("An event cannot have the wildcard type ('" + WILDCARD + "')");
-    }
-
     if (this.strict) {
       if (!this.events.includes(_event.name) && !isBuiltInEvent(_event.name)) {
         throw new Error("Machine '" + this.id + "' does not accept event '" + _event.name + "'");
@@ -2531,12 +2473,6 @@ function () {
 
         case send:
           var sendAction = resolveSend(actionObject, updatedContext, _event, _this.machine.options.delays); // TODO: fix ActionTypes.Init
-
-          {
-            // warn after resolving as we can create better contextual message here
-            warn(!isString(actionObject.delay) || typeof sendAction.delay === 'number', // tslint:disable-next-line:max-line-length
-            "No delay reference for delay expression '" + actionObject.delay + "' was found on machine '" + _this.machine.id + "'");
-          }
 
           return sendAction;
 
@@ -2875,9 +2811,6 @@ function () {
 
 
       if (this.type === 'compound' && !this.initial) {
-        {
-          warn(false, "Compound state node '" + this.id + "' has no initial state.");
-        }
 
         return [this];
       }
@@ -3156,10 +3089,6 @@ function () {
       onConfig = flatten(keys(strictOnConfigs_1).map(function (key) {
         var arrayified = toTransitionConfigArray(key, strictOnConfigs_1[key]);
 
-        {
-          validateArrayifiedTransitions(_this, key, arrayified);
-        }
-
         return arrayified;
       }).concat(toTransitionConfigArray(WILDCARD, wildcardConfigs)));
     }
@@ -3221,6 +3150,10 @@ function createMachine(config, options) {
   var resolvedInitialContext = typeof config.context === 'function' ? config.context() : config.context;
   return new StateNode(config, options, resolvedInitialContext);
 }
+
+var global$1 = (typeof global !== "undefined" ? global :
+  typeof self !== "undefined" ? self :
+  typeof window !== "undefined" ? window : {});
 
 var defaultOptions = {
   deferEvents: false
@@ -3318,28 +3251,6 @@ var registry = {
   }
 };
 
-function getDevTools() {
-  var w = window;
-
-  if (!!w.__xstate__) {
-    return w.__xstate__;
-  }
-
-  return undefined;
-}
-
-function registerService(service) {
-  if ( typeof window === 'undefined') {
-    return;
-  }
-
-  var devTools = getDevTools();
-
-  if (devTools) {
-    devTools.register(service);
-  }
-}
-
 var DEFAULT_SPAWN_OPTIONS = {
   sync: false,
   autoForward: false
@@ -3431,20 +3342,11 @@ function () {
       var _event = toSCXMLEvent(toEventObject(event, payload));
 
       if (_this._status === InterpreterStatus.Stopped) {
-        // do nothing
-        {
-          warn(false, "Event \"" + _event.name + "\" was sent to stopped service \"" + _this.machine.id + "\". This service has already reached its final state, and will not transition.\nEvent: " + JSON.stringify(_event.data));
-        }
 
         return _this.state;
       }
 
-      if (_this._status === InterpreterStatus.NotStarted && _this.options.deferEvents) {
-        // tslint:disable-next-line:no-console
-        {
-          warn(false, "Event \"" + _event.name + "\" was sent to uninitialized service \"" + _this.machine.id + "\" and is deferred. Make sure .start() is called for this service.\nEvent: " + JSON.stringify(_event.data));
-        }
-      } else if (_this._status !== InterpreterStatus.Running) {
+      if (_this._status === InterpreterStatus.NotStarted && _this.options.deferEvents) ; else if (_this._status !== InterpreterStatus.Running) {
         throw new Error("Event \"" + _event.name + "\" was sent to uninitialized service \"" + _this.machine.id + "\". Make sure .start() is called for this service, or set { deferEvents: true } in the service options.\nEvent: " + JSON.stringify(_event.data));
       }
 
@@ -3469,11 +3371,6 @@ function () {
         if (!isParent) {
           throw new Error("Unable to send event to child '" + to + "' from service '" + _this.id + "'.");
         } // tslint:disable-next-line:no-console
-
-
-        {
-          warn(false, "Service '" + _this.id + "' has no parent: unable to send event " + event.type);
-        }
 
         return;
       }
@@ -3526,9 +3423,6 @@ function () {
   });
   Object.defineProperty(Interpreter.prototype, "state", {
     get: function () {
-      {
-        warn(this._status !== InterpreterStatus.NotStarted, "Attempted to read state from uninitialized service '" + this.id + "'. Make sure the service is started first.");
-      }
 
       return this._state;
     },
@@ -3932,12 +3826,7 @@ function () {
   Interpreter.prototype.batch = function (events) {
     var _this = this;
 
-    if (this._status === InterpreterStatus.NotStarted && this.options.deferEvents) {
-      // tslint:disable-next-line:no-console
-      {
-        warn(false, events.length + " event(s) were sent to uninitialized service \"" + this.machine.id + "\" and are deferred. Make sure .start() is called for this service.\nEvent: " + JSON.stringify(event));
-      }
-    } else if (this._status !== InterpreterStatus.Running) {
+    if (this._status === InterpreterStatus.NotStarted && this.options.deferEvents) ; else if (this._status !== InterpreterStatus.Running) {
       throw new Error( // tslint:disable-next-line:max-line-length
       events.length + " event(s) were sent to uninitialized service \"" + this.machine.id + "\". Make sure .start() is called for this service, or set { deferEvents: true } in the service options.");
     }
@@ -4129,18 +4018,9 @@ function () {
             var id = activity.id,
                 data = activity.data;
 
-            {
-              warn(!('forward' in activity), // tslint:disable-next-line:max-line-length
-              "`forward` property is deprecated (found in invocation of '" + activity.src + "' in in machine '" + this.machine.id + "'). " + "Please use `autoForward` instead.");
-            }
-
             var autoForward = 'autoForward' in activity ? activity.autoForward : !!activity.forward;
 
             if (!serviceCreator) {
-              // tslint:disable-next-line:no-console
-              {
-                warn(false, "No service found for invocation '" + activity.src + "' in machine '" + this.machine.id + "'.");
-              }
 
               return;
             }
@@ -4181,13 +4061,6 @@ function () {
           this.logger(label, value);
         } else {
           this.logger(value);
-        }
-
-        break;
-
-      default:
-        {
-          warn(false, "No implementation found for action type '" + action.type + "'");
         }
 
         break;
@@ -4288,7 +4161,6 @@ function () {
             origin: id
           }));
         } catch (error) {
-          reportUnhandledExceptionOnInvocation(errorData, error, id);
 
           if (_this.devTools) {
             _this.devTools.send(errorEvent, _this.state);
@@ -4462,9 +4334,6 @@ function () {
     var implementation = this.machine.options && this.machine.options.activities ? this.machine.options.activities[activity.type] : undefined;
 
     if (!implementation) {
-      {
-        warn(false, "No implementation found for activity '" + activity.type + "'");
-      } // tslint:disable-next-line:no-console
 
 
       return;
@@ -4519,9 +4388,6 @@ function () {
         }), this.machine);
         this.devTools.init(this.state);
       } // add XState-specific dev tooling hook
-
-
-      registerService(this);
     }
   };
 
@@ -4559,7 +4425,7 @@ function () {
       logger: global.console.log.bind(console),
       devTools: false
     };
-  }(typeof window === 'undefined' ? global : window);
+  }(typeof window === 'undefined' ? global$1 : window);
 
   Interpreter.interpret = interpret;
   return Interpreter;
@@ -4604,9 +4470,6 @@ var resolveSpawnOptions = function (nameOrOptions) {
 function spawn(entity, nameOrOptions) {
   var resolvedOptions = resolveSpawnOptions(nameOrOptions);
   return withServiceScope(undefined, function (service) {
-    {
-      warn(!!service, "Attempted to spawn an Actor (ID: \"" + (isMachine(entity) ? entity.id : 'undefined') + "\") outside of a service. This will have no effect.");
-    }
 
     if (service) {
       return service.spawn(entity, resolvedOptions.name, resolvedOptions);
