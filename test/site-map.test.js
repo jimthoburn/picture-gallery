@@ -1,10 +1,4 @@
-// import { config } from "../_config.js";
-
-// https://github.com/facebook/jest/issues/4842#issuecomment-344170963
-// https://www.npmjs.com/package/esm
-const esmImport = require("esm")(module /*, options*/);
-const { config } = esmImport("../_config.js");
-
+import { config } from "../_config.js";
 
 describe("🗺  Site map", function() {
   if (config.askSearchEnginesNotToIndex) {
