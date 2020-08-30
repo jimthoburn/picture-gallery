@@ -345,7 +345,7 @@ function mapContext(mapper, context, _event) {
   var result = {};
 
   try {
-    for (var _b = __values(keys(mapper)), _c = _b.next(); !_c.done; _c = _b.next()) {
+    for (var _b = __values(Object.keys(mapper)), _c = _b.next(); !_c.done; _c = _b.next()) {
       var key = _c.value;
       var subMapper = mapper[key];
 
@@ -541,9 +541,7 @@ function isObservable(value) {
   }
 }
 
-var symbolObservable =
-/*#__PURE__*/
-function () {
+var symbolObservable = /*#__PURE__*/function () {
   return typeof Symbol === 'function' && Symbol.observable || '@@observable';
 }();
 
@@ -555,9 +553,7 @@ function isMachine(value) {
   }
 }
 
-var uniqueId =
-/*#__PURE__*/
-function () {
+var uniqueId = /*#__PURE__*/function () {
   var currentId = 0;
   return function () {
     currentId++;
@@ -593,7 +589,6 @@ function toSCXMLEvent(event, scxmlEvent) {
 function toTransitionConfigArray(event, configLike) {
   var transitions = toArrayStrict(configLike).map(function (transitionLike) {
     if (typeof transitionLike === 'undefined' || typeof transitionLike === 'string' || isMachine(transitionLike)) {
-      // @ts-ignore until Type instantiation is excessively deep and possibly infinite bug is fixed
       return {
         target: transitionLike,
         event: event
@@ -613,6 +608,37 @@ function normalizeTarget(target) {
   }
 
   return toArray(target);
+}
+
+function evaluateGuard(machine, guard, context, _event, state) {
+  var guards = machine.options.guards;
+  var guardMeta = {
+    state: state,
+    cond: guard,
+    _event: _event
+  }; // TODO: do not hardcode!
+
+  if (guard.type === DEFAULT_GUARD_TYPE) {
+    return guard.predicate(context, _event.data, guardMeta);
+  }
+
+  var condFn = guards[guard.type];
+
+  if (!condFn) {
+    throw new Error("Guard '" + guard.type + "' is not implemented on machine '" + machine.id + "'.");
+  }
+
+  return condFn(context, _event.data, guardMeta);
+}
+
+function toInvokeSource(src) {
+  if (typeof src === 'string') {
+    return {
+      type: src
+    };
+  }
+
+  return src;
 }
 
 function mapState(stateMap, stateId) {
@@ -665,6 +691,7 @@ var ActionTypes;
   ActionTypes["ErrorCustom"] = "xstate.error";
   ActionTypes["Update"] = "xstate.update";
   ActionTypes["Pure"] = "xstate.pure";
+  ActionTypes["Choose"] = "xstate.choose";
 })(ActionTypes || (ActionTypes = {}));
 
 var SpecialTargets;
@@ -690,11 +717,10 @@ var errorExecution = ActionTypes.ErrorExecution;
 var errorPlatform = ActionTypes.ErrorPlatform;
 var error = ActionTypes.ErrorCustom;
 var update = ActionTypes.Update;
+var choose = ActionTypes.Choose;
 var pure = ActionTypes.Pure;
 
-var initEvent =
-/*#__PURE__*/
-toSCXMLEvent({
+var initEvent = /*#__PURE__*/toSCXMLEvent({
   type: init
 });
 
@@ -735,12 +761,10 @@ function toActionObject(action, actionFunctionMap) {
         exec: exec
       });
     } else if (exec) {
-      var type = action.type,
-          other = __rest(action, ["type"]);
-
-      actionObject = __assign(__assign({
-        type: type
-      }, exec), other);
+      var actionType = exec.type || action.type;
+      actionObject = __assign(__assign(__assign({}, exec), action), {
+        type: actionType
+      });
     } else {
       actionObject = action;
     }
@@ -1051,6 +1075,13 @@ function error$1(id, data) {
 
   return eventObject;
 }
+
+function pure$1(getActions) {
+  return {
+    type: ActionTypes.Pure,
+    get: getActions
+  };
+}
 /**
  * Forwards (sends) an event to a specified service.
  *
@@ -1084,6 +1115,73 @@ function escalate(errorData, options) {
   }, __assign(__assign({}, options), {
     to: SpecialTargets.Parent
   }));
+}
+
+function choose$1(conds) {
+  return {
+    type: ActionTypes.Choose,
+    conds: conds
+  };
+}
+
+function resolveActions(machine, currentState, currentContext, _event, actions) {
+  var _a = __read(partition(actions, function (action) {
+    return action.type === assign;
+  }), 2),
+      assignActions = _a[0],
+      otherActions = _a[1];
+
+  var updatedContext = assignActions.length ? updateContext(currentContext, _event, assignActions, currentState) : currentContext;
+  var resolvedActions = flatten(otherActions.map(function (actionObject) {
+    var _a;
+
+    switch (actionObject.type) {
+      case raise:
+        return resolveRaise(actionObject);
+
+      case send:
+        var sendAction = resolveSend(actionObject, updatedContext, _event, machine.options.delays); // TODO: fix ActionTypes.Init
+
+        return sendAction;
+
+      case log:
+        return resolveLog(actionObject, updatedContext, _event);
+
+      case choose:
+        {
+          var chooseAction = actionObject;
+          var matchedActions = (_a = chooseAction.conds.find(function (condition) {
+            var guard = toGuard(condition.cond, machine.options.guards);
+            return !guard || evaluateGuard(machine, guard, updatedContext, _event, currentState);
+          })) === null || _a === void 0 ? void 0 : _a.actions;
+
+          if (!matchedActions) {
+            return [];
+          }
+
+          var resolved = resolveActions(machine, currentState, updatedContext, _event, toActionObjects(toArray(matchedActions), machine.options.actions));
+          updatedContext = resolved[1];
+          return resolved[0];
+        }
+
+      case pure:
+        {
+          var matchedActions = actionObject.get(updatedContext, _event.data);
+
+          if (!matchedActions) {
+            return [];
+          }
+
+          var resolved = resolveActions(machine, currentState, updatedContext, _event, toActionObjects(toArray(matchedActions), machine.options.actions));
+          updatedContext = resolved[1];
+          return resolved[0];
+        }
+
+      default:
+        return toActionObject(actionObject, machine.options.actions);
+    }
+  }));
+  return [resolvedActions, updatedContext];
 }
 
 var isLeafNode = function (stateNode) {
@@ -1560,6 +1658,23 @@ function () {
   return State;
 }();
 
+/**
+ * Maintains a stack of the current service in scope.
+ * This is used to provide the correct service to spawn().
+ */
+var serviceStack = [];
+
+var provide = function (service, fn) {
+  serviceStack.push(service);
+  var result = fn(service);
+  serviceStack.pop();
+  return result;
+};
+
+var consume = function (fn) {
+  return fn(serviceStack[serviceStack.length - 1]);
+};
+
 function createNullActor(id) {
   return {
     id: id,
@@ -1581,16 +1696,35 @@ function createNullActor(id) {
   };
 }
 /**
- * Creates a null actor that is able to be invoked given the provided
+ * Creates a deferred actor that is able to be invoked given the provided
  * invocation information in its `.meta` value.
  *
  * @param invokeDefinition The meta information needed to invoke the actor.
  */
 
 
-function createInvocableActor(invokeDefinition) {
-  var tempActor = createNullActor(invokeDefinition.id);
+function createInvocableActor(invokeDefinition, machine, context, _event) {
+  var _a;
+
+  var invokeSrc = toInvokeSource(invokeDefinition.src);
+  var serviceCreator = (_a = machine === null || machine === void 0 ? void 0 : machine.options.services) === null || _a === void 0 ? void 0 : _a[invokeSrc.type];
+  var resolvedData = invokeDefinition.data ? mapContext(invokeDefinition.data, context, _event) : undefined;
+  var tempActor = serviceCreator ? createDeferredActor(serviceCreator, invokeDefinition.id, resolvedData) : createNullActor(invokeDefinition.id);
   tempActor.meta = invokeDefinition;
+  return tempActor;
+}
+
+function createDeferredActor(entity, id, data) {
+  var tempActor = createNullActor(id);
+  tempActor.deferred = true;
+
+  if (isMachine(entity)) {
+    // "mute" the existing service scope so potential spawned actors within the `.initialState` stay deferred here
+    tempActor.state = provide(undefined, function () {
+      return (data ? entity.withContext(data) : entity).initialState;
+    });
+  }
+
   return tempActor;
 }
 
@@ -1600,6 +1734,40 @@ function isActor(item) {
   } catch (e) {
     return false;
   }
+}
+
+function toInvokeSource$1(src) {
+  if (typeof src === 'string') {
+    var simpleSrc = {
+      type: src
+    };
+
+    simpleSrc.toString = function () {
+      return src;
+    }; // v4 compat - TODO: remove in v5
+
+
+    return simpleSrc;
+  }
+
+  return src;
+}
+
+function toInvokeDefinition(invokeConfig) {
+  return __assign(__assign({
+    type: invoke
+  }, invokeConfig), {
+    toJSON: function () {
+      var onDone = invokeConfig.onDone,
+          onError = invokeConfig.onError,
+          invokeDef = __rest(invokeConfig, ["onDone", "onError"]);
+
+      return __assign(__assign({}, invokeDef), {
+        type: invoke,
+        src: toInvokeSource$1(invokeConfig.src)
+      });
+    }
+  });
 }
 
 var NULL_EVENT = '';
@@ -1706,10 +1874,10 @@ function () {
     dfs(this); // History config
 
     this.history = this.config.history === true ? 'shallow' : this.config.history || false;
-    this._transient = !this.config.on ? false : Array.isArray(this.config.on) ? this.config.on.some(function (_a) {
+    this._transient = !!this.config.always || (!this.config.on ? false : Array.isArray(this.config.on) ? this.config.on.some(function (_a) {
       var event = _a.event;
       return event === NULL_EVENT;
-    }) : NULL_EVENT in this.config.on;
+    }) : NULL_EVENT in this.config.on);
     this.strict = !!this.config.strict; // TODO: deprecate (entry)
 
     this.onEntry = toArray(this.config.entry || this.config.onEntry).map(function (action) {
@@ -1720,39 +1888,47 @@ function () {
       return toActionObject(action);
     });
     this.meta = this.config.meta;
-    this.data = this.type === 'final' ? this.config.data : undefined;
+    this.doneData = this.type === 'final' ? this.config.data : undefined;
     this.invoke = toArray(this.config.invoke).map(function (invokeConfig, i) {
       var _a, _b;
 
       if (isMachine(invokeConfig)) {
         _this.machine.options.services = __assign((_a = {}, _a[invokeConfig.id] = invokeConfig, _a), _this.machine.options.services);
-        return {
-          type: invoke,
+        return toInvokeDefinition({
           src: invokeConfig.id,
           id: invokeConfig.id
-        };
-      } else if (typeof invokeConfig.src !== 'string') {
+        });
+      } else if (isString(invokeConfig.src)) {
+        return toInvokeDefinition(__assign(__assign({}, invokeConfig), {
+          id: invokeConfig.id || invokeConfig.src,
+          src: invokeConfig.src
+        }));
+      } else if (isMachine(invokeConfig.src) || isFunction(invokeConfig.src)) {
         var invokeSrc = _this.id + ":invocation[" + i + "]"; // TODO: util function
 
         _this.machine.options.services = __assign((_b = {}, _b[invokeSrc] = invokeConfig.src, _b), _this.machine.options.services);
-        return __assign(__assign({
-          type: invoke,
+        return toInvokeDefinition(__assign(__assign({
           id: invokeSrc
         }, invokeConfig), {
           src: invokeSrc
-        });
+        }));
       } else {
-        return __assign(__assign({}, invokeConfig), {
-          type: invoke,
-          id: invokeConfig.id || invokeConfig.src,
-          src: invokeConfig.src
-        });
+        var invokeSource = invokeConfig.src;
+        return toInvokeDefinition(__assign(__assign({
+          id: invokeSource.type
+        }, invokeConfig), {
+          src: invokeSource
+        }));
       }
     });
     this.activities = toArray(this.config.activities).concat(this.invoke).map(function (activity) {
       return toActivityDefinition(activity);
     });
-    this.transition = this.transition.bind(this);
+    this.transition = this.transition.bind(this); // TODO: this is the real fix for initialization once
+    // state node getters are deprecated
+    // if (!this.parent) {
+    //   this._init();
+    // }
   }
 
   StateNode.prototype._init = function () {
@@ -1825,11 +2001,11 @@ function () {
         activities: this.activities || [],
         meta: this.meta,
         order: this.order || -1,
-        data: this.data,
+        data: this.doneData,
         invoke: this.invoke
       };
     },
-    enumerable: true,
+    enumerable: false,
     configurable: true
   });
 
@@ -1853,14 +2029,14 @@ function () {
         return map;
       }, {});
     },
-    enumerable: true,
+    enumerable: false,
     configurable: true
   });
   Object.defineProperty(StateNode.prototype, "after", {
     get: function () {
       return this.__cache.delayedTransitions || (this.__cache.delayedTransitions = this.getDelayedTransitions(), this.__cache.delayedTransitions);
     },
-    enumerable: true,
+    enumerable: false,
     configurable: true
   });
   Object.defineProperty(StateNode.prototype, "transitions", {
@@ -1870,7 +2046,7 @@ function () {
     get: function () {
       return this.__cache.transitions || (this.__cache.transitions = this.formatTransitions(), this.__cache.transitions);
     },
-    enumerable: true,
+    enumerable: false,
     configurable: true
   });
 
@@ -2131,7 +2307,7 @@ function () {
         var guardPassed = false;
 
         try {
-          guardPassed = !cond || this.evaluateGuard(cond, resolvedContext, _event, state);
+          guardPassed = !cond || evaluateGuard(this.machine, cond, resolvedContext, _event, state);
         } catch (err) {
           throw new Error("Unable to evaluate guard '" + (cond.name || cond.type) + "' in transition for event '" + eventName + "' in state node '" + this.id + "':\n" + err.message);
         }
@@ -2231,27 +2407,6 @@ function () {
     return true;
   };
 
-  StateNode.prototype.evaluateGuard = function (guard, context, _event, state) {
-    var guards = this.machine.options.guards;
-    var guardMeta = {
-      state: state,
-      cond: guard,
-      _event: _event
-    }; // TODO: do not hardcode!
-
-    if (guard.type === DEFAULT_GUARD_TYPE) {
-      return guard.predicate(context, _event.data, guardMeta);
-    }
-
-    var condFn = guards[guard.type];
-
-    if (!condFn) {
-      throw new Error("Guard '" + guard.type + "' is not implemented on machine '" + this.machine.id + "'.");
-    }
-
-    return condFn(context, _event.data, guardMeta);
-  };
-
   StateNode.prototype.getActions = function (transition, currentContext, _event, prevState) {
     var e_4, _a, e_5, _b;
 
@@ -2312,18 +2467,20 @@ function () {
       }
 
       var parent = sn.parent;
-      events.push(done(sn.id, sn.data), // TODO: deprecate - final states should not emit done events for their own state.
-      done(parent.id, sn.data ? mapContext(sn.data, currentContext, _event) : undefined));
 
-      if (parent.parent) {
-        var grandparent = parent.parent;
+      if (!parent.parent) {
+        return events;
+      }
 
-        if (grandparent.type === 'parallel') {
-          if (getChildren(grandparent).every(function (parentNode) {
-            return isInFinalState(transition.configuration, parentNode);
-          })) {
-            events.push(done(grandparent.id, grandparent.data));
-          }
+      events.push(done(sn.id, sn.doneData), // TODO: deprecate - final states should not emit done events for their own state.
+      done(parent.id, sn.doneData ? mapContext(sn.doneData, currentContext, _event) : undefined));
+      var grandparent = parent.parent;
+
+      if (grandparent.type === 'parallel') {
+        if (getChildren(grandparent).every(function (parentNode) {
+          return isInFinalState(transition.configuration, parentNode);
+        })) {
+          events.push(done(grandparent.id));
         }
       }
 
@@ -2404,6 +2561,7 @@ function () {
 
     var currentActions = state.actions;
     state = this.transition(state, _event); // Save original event to state
+    // TODO: this should be the raised event! Delete in V5 (breaking)
 
     state._event = originalEvent;
     state.event = originalEvent.data;
@@ -2442,9 +2600,9 @@ function () {
         var action = actions_1_1.value;
 
         if (action.type === start) {
-          activities[action.activity.type] = action;
+          activities[action.activity.id || action.activity.type] = action;
         } else if (action.type === stop) {
-          activities[action.activity.type] = false;
+          activities[action.activity.id || action.activity.type] = false;
         }
       }
     } catch (e_6_1) {
@@ -2459,33 +2617,9 @@ function () {
       }
     }
 
-    var _b = __read(partition(actions, function (action) {
-      return action.type === assign;
-    }), 2),
-        assignActions = _b[0],
-        otherActions = _b[1];
-
-    var updatedContext = assignActions.length ? updateContext(currentContext, _event, assignActions, currentState) : currentContext;
-    var resolvedActions = flatten(otherActions.map(function (actionObject) {
-      switch (actionObject.type) {
-        case raise:
-          return resolveRaise(actionObject);
-
-        case send:
-          var sendAction = resolveSend(actionObject, updatedContext, _event, _this.machine.options.delays); // TODO: fix ActionTypes.Init
-
-          return sendAction;
-
-        case log:
-          return resolveLog(actionObject, updatedContext, _event);
-
-        case pure:
-          return actionObject.get(updatedContext, _event.data) || [];
-
-        default:
-          return toActionObject(actionObject, _this.options.actions);
-      }
-    }));
+    var _b = __read(resolveActions(this, currentState, currentContext, _event, actions), 2),
+        resolvedActions = _b[0],
+        updatedContext = _b[1];
 
     var _c = __read(partition(resolvedActions, function (action) {
       return action.type === raise || action.type === send && action.to === SpecialTargets.Internal;
@@ -2497,7 +2631,7 @@ function () {
       return action.type === start && action.activity.type === invoke;
     });
     var children = invokeActions.reduce(function (acc, action) {
-      acc[action.activity.id] = createInvocableActor(action.activity);
+      acc[action.activity.id] = createInvocableActor(action.activity, _this.machine, updatedContext, _event);
       return acc;
     }, currentState ? __assign({}, currentState.children) : {});
     var resolvedConfiguration = resolvedStateValue ? stateTransition.configuration : currentState ? currentState.configuration : [];
@@ -2526,7 +2660,8 @@ function () {
       children: children,
       done: isDone
     });
-    nextState.changed = _event.name === update || !!assignActions.length; // Dispose of penultimate histories to prevent memory leaks
+    var didUpdateContext = currentContext !== updatedContext;
+    nextState.changed = _event.name === update || didUpdateContext; // Dispose of penultimate histories to prevent memory leaks
 
     var history = nextState.history;
 
@@ -2558,7 +2693,7 @@ function () {
     } // Detect if state changed
 
 
-    var changed = maybeNextState.changed || (history ? !!maybeNextState.actions.length || !!assignActions.length || typeof history.value !== typeof maybeNextState.value || !stateValuesEqual(maybeNextState.value, history.value) : undefined);
+    var changed = maybeNextState.changed || (history ? !!maybeNextState.actions.length || didUpdateContext || typeof history.value !== typeof maybeNextState.value || !stateValuesEqual(maybeNextState.value, history.value) : undefined);
     maybeNextState.changed = changed; // Preserve original history after raised events
 
     maybeNextState.historyValue = nextState.historyValue;
@@ -2727,7 +2862,7 @@ function () {
       this.__cache.initialStateValue = initialStateValue;
       return this.__cache.initialStateValue;
     },
-    enumerable: true,
+    enumerable: false,
     configurable: true
   });
 
@@ -2749,7 +2884,8 @@ function () {
      * entering the initial state.
      */
     get: function () {
-      this._init();
+      this._init(); // TODO: this should be in the constructor (see note in constructor)
+
 
       var initialStateValue = this.initialStateValue;
 
@@ -2759,7 +2895,7 @@ function () {
 
       return this.getInitialState(initialStateValue);
     },
-    enumerable: true,
+    enumerable: false,
     configurable: true
   });
   Object.defineProperty(StateNode.prototype, "target", {
@@ -2782,7 +2918,7 @@ function () {
 
       return target;
     },
-    enumerable: true,
+    enumerable: false,
     configurable: true
   });
   /**
@@ -2820,7 +2956,7 @@ function () {
         return _this.getFromRelativePath(initialPath);
       }));
     },
-    enumerable: true,
+    enumerable: false,
     configurable: true
   });
   /**
@@ -2922,7 +3058,7 @@ function () {
       }));
       return [this.id].concat(childStateIds);
     },
-    enumerable: true,
+    enumerable: false,
     configurable: true
   });
   Object.defineProperty(StateNode.prototype, "events", {
@@ -2979,7 +3115,7 @@ function () {
 
       return this.__cache.events = Array.from(events);
     },
-    enumerable: true,
+    enumerable: false,
     configurable: true
   });
   Object.defineProperty(StateNode.prototype, "ownEvents", {
@@ -2996,7 +3132,7 @@ function () {
       }));
       return Array.from(events);
     },
-    enumerable: true,
+    enumerable: false,
     configurable: true
   });
 
@@ -3052,19 +3188,17 @@ function () {
       target: target,
       source: this,
       internal: internal,
-      eventType: transitionConfig.event
-    });
-
-    Object.defineProperty(transition, 'toJSON', {
-      value: function () {
+      eventType: transitionConfig.event,
+      toJSON: function () {
         return __assign(__assign({}, transition), {
           target: transition.target ? transition.target.map(function (t) {
             return "#" + t.id;
           }) : undefined,
-          source: "#{this.id}"
+          source: "#" + _this.id
         });
       }
     });
+
     return transition;
   };
 
@@ -3084,16 +3218,19 @@ function () {
           _c = WILDCARD,
           _d = _b[_c],
           wildcardConfigs = _d === void 0 ? [] : _d,
-          strictOnConfigs_1 = __rest(_b, [typeof _c === "symbol" ? _c : _c + ""]);
+          strictTransitionConfigs_1 = __rest(_b, [typeof _c === "symbol" ? _c : _c + ""]);
 
-      onConfig = flatten(keys(strictOnConfigs_1).map(function (key) {
-        var arrayified = toTransitionConfigArray(key, strictOnConfigs_1[key]);
+      onConfig = flatten(keys(strictTransitionConfigs_1).map(function (key) {
 
-        return arrayified;
+        var transitionConfigArray = toTransitionConfigArray(key, strictTransitionConfigs_1[key]);
+
+        return transitionConfigArray;
       }).concat(toTransitionConfigArray(WILDCARD, wildcardConfigs)));
     }
 
+    var eventlessConfig = this.config.always ? toTransitionConfigArray('', this.config.always) : [];
     var doneConfig = this.config.onDone ? toTransitionConfigArray(String(done(this.id)), this.config.onDone) : [];
+
     var invokeConfig = flatten(this.invoke.map(function (invokeDef) {
       var settleTransitions = [];
 
@@ -3108,7 +3245,7 @@ function () {
       return settleTransitions;
     }));
     var delayedTransitions = this.after;
-    var formattedTransitions = flatten(__spread(doneConfig, invokeConfig, onConfig).map(function (transitionConfig) {
+    var formattedTransitions = flatten(__spread(doneConfig, invokeConfig, onConfig, eventlessConfig).map(function (transitionConfig) {
       return toArray(transitionConfig).map(function (transition) {
         return _this.formatTransition(transition);
       });
@@ -3231,9 +3368,7 @@ function () {
   return Scheduler;
 }();
 
-var children =
-/*#__PURE__*/
-new Map();
+var children = /*#__PURE__*/new Map();
 var sessionIdIndex = 0;
 var registry = {
   bookId: function () {
@@ -3255,25 +3390,6 @@ var DEFAULT_SPAWN_OPTIONS = {
   sync: false,
   autoForward: false
 };
-/**
- * Maintains a stack of the current service in scope.
- * This is used to provide the correct service to spawn().
- *
- * @private
- */
-
-var withServiceScope =
-/*#__PURE__*/
-function () {
-  var serviceStack = [];
-  return function (service, fn) {
-    service && serviceStack.push(service);
-    var result = fn(service || serviceStack[serviceStack.length - 1]);
-    service && serviceStack.pop();
-    return result;
-  };
-}();
-
 var InterpreterStatus;
 
 (function (InterpreterStatus) {
@@ -3413,12 +3529,12 @@ function () {
         return this._initialState;
       }
 
-      return withServiceScope(this, function () {
+      return provide(this, function () {
         _this._initialState = _this.machine.initialState;
         return _this._initialState;
       });
     },
-    enumerable: true,
+    enumerable: false,
     configurable: true
   });
   Object.defineProperty(Interpreter.prototype, "state", {
@@ -3426,7 +3542,7 @@ function () {
 
       return this._state;
     },
-    enumerable: true,
+    enumerable: false,
     configurable: true
   });
   /**
@@ -3537,7 +3653,7 @@ function () {
       var finalChildStateNode = state.configuration.find(function (sn) {
         return sn.type === 'final' && sn.parent === _this.machine;
       });
-      var doneData = finalChildStateNode && finalChildStateNode.data ? mapContext(finalChildStateNode.data, state.context, _event) : undefined;
+      var doneData = finalChildStateNode && finalChildStateNode.doneData ? mapContext(finalChildStateNode.doneData, state.context, _event) : undefined;
 
       try {
         for (var _l = __values(this.doneListeners), _m = _l.next(); !_m.done; _m = _l.next()) {
@@ -3577,8 +3693,8 @@ function () {
     return this;
   };
 
-  Interpreter.prototype.subscribe = function (nextListenerOrObserver, // @ts-ignore
-  errorListener, completeListener) {
+  Interpreter.prototype.subscribe = function (nextListenerOrObserver, _, // TODO: error listener
+  completeListener) {
     var _this = this;
 
     if (!nextListenerOrObserver) {
@@ -3698,7 +3814,7 @@ function () {
     registry.register(this.sessionId, this);
     this.initialized = true;
     this._status = InterpreterStatus.Running;
-    var resolvedState = initialState === undefined ? this.initialState : withServiceScope(this, function () {
+    var resolvedState = initialState === undefined ? this.initialState : provide(this, function () {
       return isState(initialState) ? _this.machine.resolveState(initialState) : _this.machine.resolveState(State.from(initialState, _this.machine.context));
     });
 
@@ -3843,7 +3959,7 @@ function () {
 
         _this.forward(_event);
 
-        nextState = withServiceScope(_this, function () {
+        nextState = provide(_this, function () {
           return _this.machine.transition(nextState, _event);
         });
         batchedActions.push.apply(batchedActions, __spread(nextState.actions.map(function (a) {
@@ -3906,7 +4022,7 @@ function () {
       throw _event.data.data;
     }
 
-    var nextState = withServiceScope(this, function () {
+    var nextState = provide(this, function () {
       return _this.machine.transition(_this.state, _event);
     });
     return nextState;
@@ -3957,9 +4073,13 @@ function () {
   };
 
   Interpreter.prototype.exec = function (action, state, actionFunctionMap) {
+    if (actionFunctionMap === void 0) {
+      actionFunctionMap = this.machine.options.actions;
+    }
+
     var context = state.context,
         _event = state._event;
-    var actionOrExec = getActionFunction(action.type, actionFunctionMap) || action.exec;
+    var actionOrExec = action.exec || getActionFunction(action.type, actionFunctionMap);
     var exec = isFunction(actionOrExec) ? actionOrExec : actionOrExec ? actionOrExec.exec : action.exec;
 
     if (exec) {
@@ -4008,13 +4128,14 @@ function () {
           // (such as in transient states)
           // don't bother starting the activity.
 
-          if (!this.state.activities[activity.type]) {
+          if (!this.state.activities[activity.id || activity.type]) {
             break;
           } // Invoked services
 
 
           if (activity.type === ActionTypes.Invoke) {
-            var serviceCreator = this.machine.options.services ? this.machine.options.services[activity.src] : undefined;
+            var invokeSource = toInvokeSource(activity.src);
+            var serviceCreator = this.machine.options.services ? this.machine.options.services[invokeSource.type] : undefined;
             var id = activity.id,
                 data = activity.data;
 
@@ -4025,7 +4146,11 @@ function () {
               return;
             }
 
-            var source = isFunction(serviceCreator) ? serviceCreator(context, _event.data) : serviceCreator;
+            var resolvedData = data ? mapContext(data, context, _event) : undefined;
+            var source = isFunction(serviceCreator) ? serviceCreator(context, _event.data, {
+              data: resolvedData,
+              src: invokeSource
+            }) : serviceCreator;
 
             if (isPromiseLike(source)) {
               this.state.children[id] = this.spawnPromise(Promise.resolve(source), id);
@@ -4035,7 +4160,7 @@ function () {
               this.state.children[id] = this.spawnObservable(source, id);
             } else if (isMachine(source)) {
               // TODO: try/catch here
-              this.state.children[id] = this.spawnMachine(data ? source.withContext(mapContext(data, context, _event)) : source, {
+              this.state.children[id] = this.spawnMachine(resolvedData ? source.withContext(resolvedData) : source, {
                 id: id,
                 autoForward: autoForward
               });
@@ -4069,6 +4194,12 @@ function () {
     return undefined;
   };
 
+  Interpreter.prototype.removeChild = function (childId) {
+    this.children.delete(childId);
+    this.forwardTo.delete(childId);
+    delete this.state.children[childId];
+  };
+
   Interpreter.prototype.stopChild = function (childId) {
     var child = this.children.get(childId);
 
@@ -4076,9 +4207,7 @@ function () {
       return;
     }
 
-    this.children.delete(childId);
-    this.forwardTo.delete(childId);
-    delete this.state.children[childId];
+    this.removeChild(childId);
 
     if (isFunction(child.stop)) {
       child.stop();
@@ -4126,11 +4255,6 @@ function () {
       });
     }
 
-    childService.onDone(function (doneEvent) {
-      _this.send(toSCXMLEvent(doneEvent, {
-        origin: childService.id
-      }));
-    }).start();
     var actor = childService;
     this.children.set(childService.id, actor);
 
@@ -4138,6 +4262,13 @@ function () {
       this.forwardTo.add(childService.id);
     }
 
+    childService.onDone(function (doneEvent) {
+      _this.removeChild(childService.id);
+
+      _this.send(toSCXMLEvent(doneEvent, {
+        origin: childService.id
+      }));
+    }).start();
     return actor;
   };
 
@@ -4147,12 +4278,16 @@ function () {
     var canceled = false;
     promise.then(function (response) {
       if (!canceled) {
+        _this.removeChild(id);
+
         _this.send(toSCXMLEvent(doneInvoke(id, response), {
           origin: id
         }));
       }
     }, function (errorData) {
       if (!canceled) {
+        _this.removeChild(id);
+
         var errorEvent = error$1(id, errorData);
 
         try {
@@ -4296,10 +4431,14 @@ function () {
         origin: id
       }));
     }, function (err) {
+      _this.removeChild(id);
+
       _this.send(toSCXMLEvent(error$1(id, err), {
         origin: id
       }));
     }, function () {
+      _this.removeChild(id);
+
       _this.send(toSCXMLEvent(doneInvoke(id), {
         origin: id
       }));
@@ -4408,9 +4547,7 @@ function () {
    */
 
 
-  Interpreter.defaultOptions =
-  /*#__PURE__*/
-  function (global) {
+  Interpreter.defaultOptions = /*#__PURE__*/function (global) {
     return {
       execute: true,
       deferEvents: true,
@@ -4425,35 +4562,11 @@ function () {
       logger: global.console.log.bind(console),
       devTools: false
     };
-  }(typeof window === 'undefined' ? global$1 : window);
+  }(typeof self !== 'undefined' ? self : global$1);
 
   Interpreter.interpret = interpret;
   return Interpreter;
 }();
-
-var createNullActor$1 = function (name) {
-  if (name === void 0) {
-    name = 'null';
-  }
-
-  return {
-    id: name,
-    send: function () {
-      return void 0;
-    },
-    subscribe: function () {
-      // tslint:disable-next-line:no-empty
-      return {
-        unsubscribe: function () {}
-      };
-    },
-    toJSON: function () {
-      return {
-        id: name
-      };
-    }
-  };
-};
 
 var resolveSpawnOptions = function (nameOrOptions) {
   if (isString(nameOrOptions)) {
@@ -4469,12 +4582,12 @@ var resolveSpawnOptions = function (nameOrOptions) {
 
 function spawn(entity, nameOrOptions) {
   var resolvedOptions = resolveSpawnOptions(nameOrOptions);
-  return withServiceScope(undefined, function (service) {
+  return consume(function (service) {
 
     if (service) {
       return service.spawn(entity, resolvedOptions.name, resolvedOptions);
     } else {
-      return createNullActor$1(resolvedOptions.name);
+      return createDeferredActor(entity, resolvedOptions.name);
     }
   });
 }
@@ -4535,7 +4648,9 @@ var actions = {
   done: done,
   respond: respond,
   forwardTo: forwardTo,
-  escalate: escalate
+  escalate: escalate,
+  choose: choose$1,
+  pure: pure$1
 };
 
 export { ActionTypes, Interpreter, Machine, SpecialTargets, State, StateNode, actions, assign$1 as assign, createMachine, doneInvoke, forwardTo, interpret, mapState, matchState, matchesState, send$1 as send, sendParent, sendUpdate, spawn };
