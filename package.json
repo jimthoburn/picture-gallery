@@ -19,7 +19,6 @@
     "serve": "serve ./_site/ --listen=4000",
     "start": "node --experimental-modules server.js",
     "test": "BROWSER=chromium jest --detectOpenHandles --verbose",
-    "test:playwright-examples": "node --experimental-modules test/playwright-examples.js"
   },
   "dependencies": {
     "htm": "^3.0.3",
