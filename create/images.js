@@ -1,14 +1,8 @@
 
 import fs from "fs";
+import mkdirp from "mkdirp";
 
-// https://github.com/gulpjs/gulp
-import gulp from "gulp";
-
-// https://www.npmjs.com/package/gulp-image-resize
-import imageResize from "gulp-image-resize";
-
-import parallel from "concurrent-transform";
-import os from "os";
+import gm from "gm";
 
 import { getAlbumNamesFromPicturesFolder } from "../data-file-system/albums-from-pictures-folder.js";
 
@@ -30,22 +24,79 @@ const SIZES = [
   6000
 ];
 
-function generateImages(size, imagePath) {
-  console.log('generateImages: ' + size + ' :: ' + imagePath);
+function getSize(gmFile) {
+  return new Promise((resolve, reject) => {
+    gmFile
+      .size((err, size) => {
+        if (!err) {
+          resolve(size);
+        } else {
+          console.error(err);
+          reject();
+        }
+      });
+  });
+}
 
-  let options = {
-    upscale: false,
-    width: size
-    // interlace: "Line" // Make the image “progressive” // https://fettblog.eu/snippets/node.js/progressive-jpegs-gm/
+function createFolder(folder) {
+  return new Promise((resolve, reject) => {
+    mkdirp(folder, function (err) {
+      if (err) {
+        console.error(err);
+        reject();
+      } else {
+        resolve();
+      }
+    });
+  });
+}
+
+// KUDOS: https://github.com/scalableminds/gulp-image-resize
+function generateImage({ targetWidth, sourceFile, destinationFile }) {
+  return new Promise(async (resolve, reject) => {
+    const gmFile = gm(sourceFile);
+    const imageSize = await getSize(gmFile);
+    if (!imageSize) reject();
+
+    const options = {
+      width: Math.min(targetWidth, imageSize.width),
+      height: imageSize.height,
+    };
+
+    gmFile
+      .resize(options.width, options.height)
+      .write(destinationFile, (err) => {
+        if (!err) {
+          resolve();
+        } else {
+          console.error(err);
+          reject();
+        }
+      });
+
+  });
+}
+
+async function generateImages(targetWidth, imagePath) {
+  console.log('generateImages: ' + targetWidth + ' :: ' + imagePath);
+
+  const sourceFolder      = `${imagePath}/original`;
+  const destinationFolder = `${imagePath}/${targetWidth}-wide`
+  
+  const files = getAllFilesFromFolder(sourceFolder);
+  await createFolder(destinationFolder);
+
+  for (let sourceFile of files) {
+    const pathBits = sourceFile.split("/");
+    const fileName = pathBits[pathBits.length - 1];
+    await generateImage({
+      targetWidth,
+      sourceFile,
+      destinationFile: `${destinationFolder}/${fileName}`,
+    });
   }
 
-  gulp.src(imagePath + "/original/*.{jpg,jpeg,png}")
-    .pipe(parallel(
-      imageResize(options),
-      os.cpus().length
-    ))
-    .pipe(gulp.dest(imagePath + "/" + size + "-wide"))
-    .on('end', generateNext);
+  generateNext();
 }
 
 let nextCursor = 0;
