@@ -8,14 +8,14 @@ import { onlyUnique } from "../helpers/array.js";
 function getAllFilesFromFolder(dir) {
   let results = [];
   fs.readdirSync(dir).forEach(function(file) {
-      file = dir+'/'+file;
-      let stat = fs.statSync(file);
-      
-      results.push(file);
+    file = dir+'/'+file;
+    let stat = fs.statSync(file);
+    
+    results.push(file);
 
-      if (stat && stat.isDirectory()) {
-        results = results.concat(getAllFilesFromFolder(file));
-      }
+    if (stat && stat.isDirectory()) {
+      results = results.concat(getAllFilesFromFolder(file));
+    }
   });
   return results;
 };
