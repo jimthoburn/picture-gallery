@@ -13,21 +13,21 @@ import { getError404HTML }  from "./get-source/error.js";
 const GENERATED_FILES_FOLDER = `./${config.buildFolder}`;
 
 
-function createFile({ pageURL, filename, output }) {
+async function createFile({ pageURL, filename, output }) {
 
   const writePath = GENERATED_FILES_FOLDER + pageURL;
+  const fileName = `${writePath}/${filename ? filename : "index.html"}`;
 
-  mkdirp(writePath, function (err) {
-    if (err) {
-      console.error(err);
-    } else {
-      fs.writeFileSync(`${writePath}/${filename ? filename : "index.html"}`, output, 'utf8', (err) => {
-        if (err) {
-          console.log(err);
-        }
-      });
-    }
-  });
+  try {
+    await mkdirp(writePath);
+    fs.writeFileSync(fileName, output, 'utf8', (err) => {
+      if (err) {
+        console.log(err);
+      }
+    });
+  } catch(e) {
+    console.error(e);
+  }
 }
 
 function removeFile({ pageURL, filename }) {
@@ -86,7 +86,7 @@ function buildGallery(urls) {
   }
 }
 
-async function buildRobotsText() {
+function buildRobotsText() {
   console.log(`🤖 Preparing robots.txt`);
   getSourceByURL("/robots.txt")
     .then(text => createFile({ pageURL: "/", filename: "robots.txt", output: text }))
