@@ -356,3 +356,9 @@ These projects and guides have been super helpful to me, while working on the ga
 * https://hacks.mozilla.org/category/es6-in-depth/
 * https://github.com/developit/htm
 * https://www.pika.dev/
+
+## <span id="license"></span> License
+
+The code for this project is available under an [open source license](LICENSE).
+
+The example photos and recipes are available under a [creative commons license](https://creativecommons.org/licenses/by-sa/4.0/).
