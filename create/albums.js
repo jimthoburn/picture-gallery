@@ -9,13 +9,11 @@ const __dirname = dirname(fileURLToPath(import.meta.url));
 import mkdirp from "mkdirp";
 import exif from "exif";
 import base64 from "../helpers/node-base64-image.js";
-import ColorThief from "color-thief";
+import ColorThief from "colorthief";
 import capitalize from "capitalize";
 
 import { getAlbumNamesFromPicturesFolder } from "../data-file-system/albums-from-pictures-folder.js";
 
-
-const colorthief = new ColorThief();
 
 const galleryData = JSON.parse(fs.readFileSync("./_api/index.json", "utf8"));
 
@@ -82,7 +80,7 @@ async function createAlbumJSON({ source, sourceForPreviewBase64, destination, al
     const meta = await getImageMetadata(filePath);
 
     // https://lokeshdhakar.com/projects/color-thief/#examples
-    const primaryColor = await colorthief.getColor(filePath);
+    const primaryColor = await ColorThief.getColor(filePath);
 
     const previewBase64 = await getPreviewBase64(`${sourceForPreviewBase64}/${photoFileName}`);
 
@@ -162,27 +160,26 @@ function getAllFilesFromFolder(dir) {
   return results
 }
 
-function saveJSON({ destination, fileName, data, overwrite }) {
+async function saveJSON({ destination, fileName, data, overwrite }) {
 
   const output =
 `${JSON.stringify(data, null, 2)}
 `; // Add a trailing line return
 
-  mkdirp(destination, function (err) {
-    if (err) {
-      console.error(err)
+  try {
+    await mkdirp(destination);
+    if (fs.existsSync(`${destination}/${fileName}`) && overwrite !== true) {
+      console.log(`${destination}/${fileName} already exists. Skipping…`);
     } else {
-      if (fs.existsSync(`${destination}/${fileName}`) && overwrite !== true) {
-        console.log(`${destination}/${fileName} already exists. Skipping…`);
-      } else {
-        fs.writeFileSync(`${destination}/${fileName}`, output, 'utf8', (err) => {
-          if (err) {
-            console.log(err)
-          }
-        })
-      }
+      fs.writeFileSync(`${destination}/${fileName}`, output, 'utf8', (err) => {
+        if (err) {
+          console.log(err)
+        }
+      })
     }
-  })
+  } catch(e) {
+    console.error(e);
+  }
 }
 
 const destination = "./_api";

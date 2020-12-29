@@ -38,19 +38,6 @@ function getSize(gmFile) {
   });
 }
 
-function createFolder(folder) {
-  return new Promise((resolve, reject) => {
-    mkdirp(folder, function (err) {
-      if (err) {
-        console.error(err);
-        reject();
-      } else {
-        resolve();
-      }
-    });
-  });
-}
-
 // KUDOS: https://github.com/scalableminds/gulp-image-resize
 function generateImage({ targetWidth, sourceFile, destinationFile }) {
   return new Promise(async (resolve, reject) => {
@@ -84,16 +71,21 @@ async function generateImages(targetWidth, imagePath) {
   const destinationFolder = `${imagePath}/${targetWidth}-wide`
   
   const files = getAllFilesFromFolder(sourceFolder);
-  await createFolder(destinationFolder);
 
-  for (let sourceFile of files) {
-    const pathBits = sourceFile.split("/");
-    const fileName = pathBits[pathBits.length - 1];
-    await generateImage({
-      targetWidth,
-      sourceFile,
-      destinationFile: `${destinationFolder}/${fileName}`,
-    });
+  try {
+    await mkdirp(destinationFolder);
+
+    for (let sourceFile of files) {
+      const pathBits = sourceFile.split("/");
+      const fileName = pathBits[pathBits.length - 1];
+      await generateImage({
+        targetWidth,
+        sourceFile,
+        destinationFile: `${destinationFolder}/${fileName}`,
+      });
+    }
+  } catch(e) {
+    console.error(e);
   }
 
   generateNext();

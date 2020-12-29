@@ -31,10 +31,8 @@ You can [remix this Glitch project](https://glitch.com/edit/#!/picture-gallery?p
 
 If you’d like to work locally instead of using Glitch–you can follow these steps to create images and data for your albums.
 
-1. Install Node 12.20.0 LTS or newer
+1. Install Node 14.15.3 LTS or newer
 https://nodejs.org
-
-_Note:_ The automated tests will only run with _Node 12.20.0_, presently.
 
 2. Install GraphicsMagick  
 http://www.graphicsmagick.org
