@@ -1,6 +1,4 @@
 
-import fs from "fs";
-
 import { config } from "../_config.js";
 
 export const DefaultLayout = ({ title, content, askSearchEnginesNotToIndex, includeClientJS = true, openGraphImage }) => {
