@@ -1,16 +1,16 @@
 /*! *****************************************************************************
-Copyright (c) Microsoft Corporation. All rights reserved.
-Licensed under the Apache License, Version 2.0 (the "License"); you may not use
-this file except in compliance with the License. You may obtain a copy of the
-License at http://www.apache.org/licenses/LICENSE-2.0
+Copyright (c) Microsoft Corporation.
 
-THIS CODE IS PROVIDED ON AN *AS IS* BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
-KIND, EITHER EXPRESS OR IMPLIED, INCLUDING WITHOUT LIMITATION ANY IMPLIED
-WARRANTIES OR CONDITIONS OF TITLE, FITNESS FOR A PARTICULAR PURPOSE,
-MERCHANTABLITY OR NON-INFRINGEMENT.
+Permission to use, copy, modify, and/or distribute this software for any
+purpose with or without fee is hereby granted.
 
-See the Apache Version 2.0 License for specific language governing permissions
-and limitations under the License.
+THE SOFTWARE IS PROVIDED "AS IS" AND THE AUTHOR DISCLAIMS ALL WARRANTIES WITH
+REGARD TO THIS SOFTWARE INCLUDING ALL IMPLIED WARRANTIES OF MERCHANTABILITY
+AND FITNESS. IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR ANY SPECIAL, DIRECT,
+INDIRECT, OR CONSEQUENTIAL DAMAGES OR ANY DAMAGES WHATSOEVER RESULTING FROM
+LOSS OF USE, DATA OR PROFITS, WHETHER IN AN ACTION OF CONTRACT, NEGLIGENCE OR
+OTHER TORTIOUS ACTION, ARISING OUT OF OR IN CONNECTION WITH THE USE OR
+PERFORMANCE OF THIS SOFTWARE.
 ***************************************************************************** */
 var __assign = function () {
   __assign = Object.assign || function __assign(t) {
@@ -38,10 +38,11 @@ function __rest(s, e) {
 }
 
 function __values(o) {
-  var m = typeof Symbol === "function" && o[Symbol.iterator],
+  var s = typeof Symbol === "function" && Symbol.iterator,
+      m = s && o[s],
       i = 0;
   if (m) return m.call(o);
-  return {
+  if (o && typeof o.length === "number") return {
     next: function () {
       if (o && i >= o.length) o = void 0;
       return {
@@ -50,6 +51,7 @@ function __values(o) {
       };
     }
   };
+  throw new TypeError(s ? "Object is not iterable." : "Symbol.iterator is not defined.");
 }
 
 function __read(o, n) {
@@ -553,6 +555,10 @@ function isMachine(value) {
   }
 }
 
+function isActor(value) {
+  return !!value && typeof value.send === 'function';
+}
+
 var uniqueId = /*#__PURE__*/function () {
   var currentId = 0;
   return function () {
@@ -639,6 +645,22 @@ function toInvokeSource(src) {
   }
 
   return src;
+}
+
+function toObserver(nextHandler, errorHandler, completionHandler) {
+  if (typeof nextHandler === 'object') {
+    return nextHandler;
+  }
+
+  var noop = function () {
+    return void 0;
+  };
+
+  return {
+    next: nextHandler,
+    error: errorHandler || noop,
+    complete: completionHandler || noop
+  };
 }
 
 function mapState(stateMap, stateId) {
@@ -977,17 +999,29 @@ function start$1(activity) {
 /**
  * Stops an activity.
  *
- * @param activity The activity to stop.
+ * @param actorRef The activity to stop.
  */
 
 
-function stop$1(activity) {
-  var activityDef = toActivityDefinition(activity);
+function stop$1(actorRef) {
+  var activity = isFunction(actorRef) ? actorRef : toActivityDefinition(actorRef);
   return {
     type: ActionTypes.Stop,
-    activity: activityDef,
+    activity: activity,
     exec: undefined
   };
+}
+
+function resolveStop(action, context, _event) {
+  var actorRefOrString = isFunction(action.activity) ? action.activity(context, _event.data) : action.activity;
+  var resolvedActorRef = typeof actorRefOrString === 'string' ? {
+    id: actorRefOrString
+  } : actorRefOrString;
+  var actionObject = {
+    type: ActionTypes.Stop,
+    activity: resolvedActorRef
+  };
+  return actionObject;
 }
 /**
  * Updates the current context of the machine.
@@ -1175,6 +1209,11 @@ function resolveActions(machine, currentState, currentContext, _event, actions) 
           var resolved = resolveActions(machine, currentState, updatedContext, _event, toActionObjects(toArray(matchedActions), machine.options.actions));
           updatedContext = resolved[1];
           return resolved[0];
+        }
+
+      case stop:
+        {
+          return resolveStop(actionObject, updatedContext, _event);
         }
 
       default:
@@ -1728,12 +1767,16 @@ function createDeferredActor(entity, id, data) {
   return tempActor;
 }
 
-function isActor(item) {
+function isActor$1(item) {
   try {
     return typeof item.send === 'function';
   } catch (e) {
     return false;
   }
+}
+
+function isSpawnedActor(item) {
+  return isActor$1(item) && 'id' in item;
 }
 
 function toInvokeSource$1(src) {
@@ -2628,7 +2671,9 @@ function () {
         nonRaisedActions = _c[1];
 
     var invokeActions = resolvedActions.filter(function (action) {
-      return action.type === start && action.activity.type === invoke;
+      var _a;
+
+      return action.type === start && ((_a = action.activity) === null || _a === void 0 ? void 0 : _a.type) === invoke;
     });
     var children = invokeActions.reduce(function (acc, action) {
       acc[action.activity.id] = createInvocableActor(action.activity, _this.machine, updatedContext, _event);
@@ -2696,7 +2741,6 @@ function () {
     var changed = maybeNextState.changed || (history ? !!maybeNextState.actions.length || didUpdateContext || typeof history.value !== typeof maybeNextState.value || !stateValuesEqual(maybeNextState.value, history.value) : undefined);
     maybeNextState.changed = changed; // Preserve original history after raised events
 
-    maybeNextState.historyValue = nextState.historyValue;
     maybeNextState.history = history;
     return maybeNextState;
   };
@@ -3386,6 +3430,22 @@ var registry = {
   }
 };
 
+function getGlobal() {
+  if (typeof self !== 'undefined') {
+    return self;
+  }
+
+  if (typeof window !== 'undefined') {
+    return window;
+  }
+
+  if (typeof global$1 !== 'undefined') {
+    return global$1;
+  }
+
+  return undefined;
+}
+
 var DEFAULT_SPAWN_OPTIONS = {
   sync: false,
   autoForward: false
@@ -3430,7 +3490,7 @@ function () {
      */
 
     this.initialized = false;
-    this._status = InterpreterStatus.NotStarted;
+    this.status = InterpreterStatus.NotStarted;
     this.children = new Map();
     this.forwardTo = new Set();
     /**
@@ -3457,12 +3517,12 @@ function () {
 
       var _event = toSCXMLEvent(toEventObject(event, payload));
 
-      if (_this._status === InterpreterStatus.Stopped) {
+      if (_this.status === InterpreterStatus.Stopped) {
 
         return _this.state;
       }
 
-      if (_this._status === InterpreterStatus.NotStarted && _this.options.deferEvents) ; else if (_this._status !== InterpreterStatus.Running) {
+      if (_this.status !== InterpreterStatus.Running && !_this.options.deferEvents) {
         throw new Error("Event \"" + _event.name + "\" was sent to uninitialized service \"" + _this.machine.id + "\". Make sure .start() is called for this service, or set { deferEvents: true } in the service options.\nEvent: " + JSON.stringify(_event.data));
       }
 
@@ -3481,7 +3541,7 @@ function () {
 
     this.sendTo = function (event, to) {
       var isParent = _this.parent && (to === SpecialTargets.Parent || _this.parent.id === to);
-      var target = isParent ? _this.parent : isActor(to) ? to : _this.children.get(to) || registry.get(to);
+      var target = isParent ? _this.parent : isString(to) ? _this.children.get(to) || registry.get(to) : isActor(to) ? to : undefined;
 
       if (!target) {
         if (!isParent) {
@@ -3585,8 +3645,12 @@ function () {
 
     if (this.options.execute) {
       this.execute(this.state);
-    } // Dev tools
+    } // Update children
 
+
+    this.children.forEach(function (child) {
+      _this.state.children[child.id] = child;
+    }); // Dev tools
 
     if (this.devTools) {
       this.devTools.send(_event.data, state);
@@ -3686,7 +3750,7 @@ function () {
   Interpreter.prototype.onTransition = function (listener) {
     this.listeners.add(listener); // Send current state to listener
 
-    if (this._status === InterpreterStatus.Running) {
+    if (this.status === InterpreterStatus.Running) {
       listener(this.state, this.state.event);
     }
 
@@ -3717,7 +3781,7 @@ function () {
 
     this.listeners.add(listener); // Send current state to listener
 
-    if (this._status === InterpreterStatus.Running) {
+    if (this.status === InterpreterStatus.Running) {
       listener(this.state);
     }
 
@@ -3806,14 +3870,14 @@ function () {
   Interpreter.prototype.start = function (initialState) {
     var _this = this;
 
-    if (this._status === InterpreterStatus.Running) {
+    if (this.status === InterpreterStatus.Running) {
       // Do not restart the service if it is already started
       return this;
     }
 
     registry.register(this.sessionId, this);
     this.initialized = true;
-    this._status = InterpreterStatus.Running;
+    this.status = InterpreterStatus.Running;
     var resolvedState = initialState === undefined ? this.initialState : provide(this, function () {
       return isState(initialState) ? _this.machine.resolveState(initialState) : _this.machine.resolveState(State.from(initialState, _this.machine.context));
     });
@@ -3836,6 +3900,8 @@ function () {
 
   Interpreter.prototype.stop = function () {
     var e_6, _a, e_7, _b, e_8, _c, e_9, _d, e_10, _e;
+
+    var _this = this;
 
     try {
       for (var _f = __values(this.listeners), _g = _f.next(); !_g.done; _g = _f.next()) {
@@ -3905,8 +3971,29 @@ function () {
       } finally {
         if (e_9) throw e_9.error;
       }
-    } // Stop all children
+    }
 
+    this.state.configuration.forEach(function (stateNode) {
+      var e_11, _a;
+
+      try {
+        for (var _b = __values(stateNode.definition.exit), _c = _b.next(); !_c.done; _c = _b.next()) {
+          var action = _c.value;
+
+          _this.exec(action, _this.state);
+        }
+      } catch (e_11_1) {
+        e_11 = {
+          error: e_11_1
+        };
+      } finally {
+        try {
+          if (_c && !_c.done && (_a = _b.return)) _a.call(_b);
+        } finally {
+          if (e_11) throw e_11.error;
+        }
+      }
+    }); // Stop all children
 
     this.children.forEach(function (child) {
       if (isFunction(child.stop)) {
@@ -3934,7 +4021,7 @@ function () {
 
     this.scheduler.clear();
     this.initialized = false;
-    this._status = InterpreterStatus.Stopped;
+    this.status = InterpreterStatus.Stopped;
     registry.free(this.sessionId);
     return this;
   };
@@ -3942,13 +4029,13 @@ function () {
   Interpreter.prototype.batch = function (events) {
     var _this = this;
 
-    if (this._status === InterpreterStatus.NotStarted && this.options.deferEvents) ; else if (this._status !== InterpreterStatus.Running) {
+    if (this.status === InterpreterStatus.NotStarted && this.options.deferEvents) ; else if (this.status !== InterpreterStatus.Running) {
       throw new Error( // tslint:disable-next-line:max-line-length
       events.length + " event(s) were sent to uninitialized service \"" + this.machine.id + "\". Make sure .start() is called for this service, or set { deferEvents: true } in the service options.");
     }
 
     this.scheduler.schedule(function () {
-      var e_11, _a;
+      var e_12, _a;
 
       var nextState = _this.state;
       var batchChanged = false;
@@ -3974,15 +4061,15 @@ function () {
 
           _loop_1(event_1);
         }
-      } catch (e_11_1) {
-        e_11 = {
-          error: e_11_1
+      } catch (e_12_1) {
+        e_12 = {
+          error: e_12_1
         };
       } finally {
         try {
           if (events_1_1 && !events_1_1.done && (_a = events_1.return)) _a.call(events_1);
         } finally {
-          if (e_11) throw e_11.error;
+          if (e_12) throw e_12.error;
         }
       }
 
@@ -4029,7 +4116,7 @@ function () {
   };
 
   Interpreter.prototype.forward = function (event) {
-    var e_12, _a;
+    var e_13, _a;
 
     try {
       for (var _b = __values(this.forwardTo), _c = _b.next(); !_c.done; _c = _b.next()) {
@@ -4042,15 +4129,15 @@ function () {
 
         child.send(event);
       }
-    } catch (e_12_1) {
-      e_12 = {
-        error: e_12_1
+    } catch (e_13_1) {
+      e_13 = {
+        error: e_13_1
       };
     } finally {
       try {
         if (_c && !_c.done && (_a = _b.return)) _a.call(_b);
       } finally {
-        if (e_12) throw e_12.error;
+        if (e_13) throw e_13.error;
       }
     }
   };
@@ -4153,18 +4240,18 @@ function () {
             }) : serviceCreator;
 
             if (isPromiseLike(source)) {
-              this.state.children[id] = this.spawnPromise(Promise.resolve(source), id);
+              this.spawnPromise(Promise.resolve(source), id);
             } else if (isFunction(source)) {
-              this.state.children[id] = this.spawnCallback(source, id);
+              this.spawnCallback(source, id);
             } else if (isObservable(source)) {
-              this.state.children[id] = this.spawnObservable(source, id);
+              this.spawnObservable(source, id);
             } else if (isMachine(source)) {
               // TODO: try/catch here
-              this.state.children[id] = this.spawnMachine(resolvedData ? source.withContext(resolvedData) : source, {
+              this.spawnMachine(resolvedData ? source.withContext(resolvedData) : source, {
                 id: id,
                 autoForward: autoForward
               });
-            }
+            } else ;
           } else {
             this.spawnActivity(activity);
           }
@@ -4219,7 +4306,7 @@ function () {
       return this.spawnPromise(Promise.resolve(entity), name);
     } else if (isFunction(entity)) {
       return this.spawnCallback(entity, name);
-    } else if (isActor(entity)) {
+    } else if (isSpawnedActor(entity)) {
       return this.spawnActor(entity);
     } else if (isObservable(entity)) {
       return this.spawnObservable(entity, name);
@@ -4317,25 +4404,26 @@ function () {
         return void 0;
       },
       subscribe: function (next, handleError, complete) {
+        var observer = toObserver(next, handleError, complete);
         var unsubscribed = false;
         promise.then(function (response) {
           if (unsubscribed) {
             return;
           }
 
-          next && next(response);
+          observer.next(response);
 
           if (unsubscribed) {
             return;
           }
 
-          complete && complete();
+          observer.complete();
         }, function (err) {
           if (unsubscribed) {
             return;
           }
 
-          handleError(err);
+          observer.error(err);
         });
         return {
           unsubscribe: function () {
@@ -4372,7 +4460,9 @@ function () {
         return;
       }
 
-      _this.send(e);
+      _this.send(toSCXMLEvent(e, {
+        origin: id
+      }));
     };
 
     var callbackStop;
@@ -4506,10 +4596,12 @@ function () {
   };
 
   Interpreter.prototype.attachDev = function () {
-    if (this.options.devTools && typeof window !== 'undefined') {
-      if (window.__REDUX_DEVTOOLS_EXTENSION__) {
+    var global = getGlobal();
+
+    if (this.options.devTools && global) {
+      if (global.__REDUX_DEVTOOLS_EXTENSION__) {
         var devToolsOptions = typeof this.options.devTools === 'object' ? this.options.devTools : undefined;
-        this.devTools = window.__REDUX_DEVTOOLS_EXTENSION__.connect(__assign(__assign({
+        this.devTools = global.__REDUX_DEVTOOLS_EXTENSION__.connect(__assign(__assign({
           name: this.id,
           autoPause: true,
           stateSanitizer: function (state) {
@@ -4553,10 +4645,10 @@ function () {
       deferEvents: true,
       clock: {
         setTimeout: function (fn, ms) {
-          return global.setTimeout.call(null, fn, ms);
+          return setTimeout(fn, ms);
         },
         clearTimeout: function (id) {
-          return global.clearTimeout.call(null, id);
+          return clearTimeout(id);
         }
       },
       logger: global.console.log.bind(console),
@@ -4653,5 +4745,5 @@ var actions = {
   pure: pure$1
 };
 
-export { ActionTypes, Interpreter, Machine, SpecialTargets, State, StateNode, actions, assign$1 as assign, createMachine, doneInvoke, forwardTo, interpret, mapState, matchState, matchesState, send$1 as send, sendParent, sendUpdate, spawn };
+export { ActionTypes, Interpreter, InterpreterStatus, Machine, SpecialTargets, State, StateNode, actions, assign$1 as assign, createMachine, doneInvoke, forwardTo, interpret, mapState, matchState, matchesState, send$1 as send, sendParent, sendUpdate, spawn };
 //# sourceMappingURL=xstate.js.map

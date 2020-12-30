@@ -5210,6 +5210,7 @@ var parse_link_destination = function parseLinkDestination(str, pos, max) {
     while (pos < max) {
       code = str.charCodeAt(pos);
       if (code === 0x0A /* \n */) { return result; }
+      if (code === 0x3C /* < */) { return result; }
       if (code === 0x3E /* > */) {
         result.pos = pos + 1;
         result.str = unescapeAll(str.slice(start + 1, pos));
@@ -5240,12 +5241,14 @@ var parse_link_destination = function parseLinkDestination(str, pos, max) {
     if (code < 0x20 || code === 0x7F) { break; }
 
     if (code === 0x5C /* \ */ && pos + 1 < max) {
+      if (str.charCodeAt(pos + 1) === 0x20) { break; }
       pos += 2;
       continue;
     }
 
     if (code === 0x28 /* ( */) {
       level++;
+      if (level > 32) { return result; }
     }
 
     if (code === 0x29 /* ) */) {
@@ -5299,6 +5302,8 @@ var parse_link_title = function parseLinkTitle(str, pos, max) {
       result.lines = lines;
       result.str = unescapeAll$1(str.slice(start + 1, pos));
       result.ok = true;
+      return result;
+    } else if (code === 0x28 /* ( */ && marker === 0x29 /* ) */) {
       return result;
     } else if (code === 0x0A) {
       lines++;
@@ -5357,14 +5362,17 @@ default_rules.fence = function (tokens, idx, options, env, slf) {
   var token = tokens[idx],
       info = token.info ? unescapeAll$2(token.info).trim() : '',
       langName = '',
-      highlighted, i, tmpAttrs, tmpToken;
+      langAttrs = '',
+      highlighted, i, arr, tmpAttrs, tmpToken;
 
   if (info) {
-    langName = info.split(/\s+/g)[0];
+    arr = info.split(/(\s+)/g);
+    langName = arr[0];
+    langAttrs = arr.slice(2).join('');
   }
 
   if (options.highlight) {
-    highlighted = options.highlight(token.content, langName) || escapeHtml(token.content);
+    highlighted = options.highlight(token.content, langName, langAttrs) || escapeHtml(token.content);
   } else {
     highlighted = escapeHtml(token.content);
   }
@@ -5374,7 +5382,7 @@ default_rules.fence = function (tokens, idx, options, env, slf) {
   }
 
   // If language exists, inject class gently, without modifying original token.
-  // May be, one day we will add .clone() for token and simplify this part, but
+  // May be, one day we will add .deepClone() for token and simplify this part, but
   // now we prefer to keep things local.
   if (info) {
     i        = token.attrIndex('class');
@@ -5383,6 +5391,7 @@ default_rules.fence = function (tokens, idx, options, env, slf) {
     if (i < 0) {
       tmpAttrs.push([ 'class', options.langPrefix + langName ]);
     } else {
+      tmpAttrs[i] = tmpAttrs[i].slice();
       tmpAttrs[i][1] += ' ' + options.langPrefix + langName;
     }
 
@@ -6235,10 +6244,10 @@ function replace_rare(inlineTokens) {
           .replace(/\.{2,}/g, '…').replace(/([?!])…/g, '$1..')
           .replace(/([?!]){4,}/g, '$1$1$1').replace(/,{2,}/g, ',')
           // em-dash
-          .replace(/(^|[^-])---([^-]|$)/mg, '$1\u2014$2')
+          .replace(/(^|[^-])---(?=[^-]|$)/mg, '$1\u2014')
           // en-dash
-          .replace(/(^|\s)--(\s|$)/mg, '$1\u2013$2')
-          .replace(/(^|[^-\s])--([^-\s]|$)/mg, '$1\u2013$2');
+          .replace(/(^|\s)--(?=\s|$)/mg, '$1\u2013')
+          .replace(/(^|[^-\s])--(?=[^-\s]|$)/mg, '$1\u2013');
       }
     }
 
@@ -6330,7 +6339,7 @@ function process_inlines(tokens, state) {
       } else {
         for (j = i - 1; j >= 0; j--) {
           if (tokens[j].type === 'softbreak' || tokens[j].type === 'hardbreak') break; // lastChar defaults to 0x20
-          if (tokens[j].type !== 'text') continue;
+          if (!tokens[j].content) continue; // should skip all tokens except 'text', 'html_inline' or 'code_inline'
 
           lastChar = tokens[j].content.charCodeAt(tokens[j].content.length - 1);
           break;
@@ -6347,7 +6356,7 @@ function process_inlines(tokens, state) {
       } else {
         for (j = i + 1; j < tokens.length; j++) {
           if (tokens[j].type === 'softbreak' || tokens[j].type === 'hardbreak') break; // nextChar defaults to 0x20
-          if (tokens[j].type !== 'text') continue;
+          if (!tokens[j].content) continue; // should skip all tokens except 'text', 'html_inline' or 'code_inline'
 
           nextChar = tokens[j].content.charCodeAt(0);
           break;
@@ -6384,8 +6393,14 @@ function process_inlines(tokens, state) {
       }
 
       if (canOpen && canClose) {
-        // treat this as the middle of the word
-        canOpen = false;
+        // Replace quotes in the middle of punctuation sequence, but not
+        // in the middle of the words, i.e.:
+        //
+        // 1. foo " bar " baz - not replaced
+        // 2. foo-"-bar-"-baz - replaced
+        // 3. foo"bar"baz     - not replaced
+        //
+        canOpen = isLastPunctChar;
         canClose = isNextPunctChar;
       }
 
@@ -6725,7 +6740,7 @@ var isSpace = utils.isSpace;
 
 
 function getLine(state, line) {
-  var pos = state.bMarks[line] + state.blkIndent,
+  var pos = state.bMarks[line] + state.tShift[line],
       max = state.eMarks[line];
 
   return state.src.substr(pos, max - pos);
@@ -6736,56 +6751,42 @@ function escapedSplit(str) {
       pos = 0,
       max = str.length,
       ch,
-      escapes = 0,
+      isEscaped = false,
       lastPos = 0,
-      backTicked = false,
-      lastBackTick = 0;
+      current = '';
 
   ch  = str.charCodeAt(pos);
 
   while (pos < max) {
-    if (ch === 0x60/* ` */) {
-      if (backTicked) {
-        // make \` close code sequence, but not open it;
-        // the reason is: `\` is correct code block
-        backTicked = false;
-        lastBackTick = pos;
-      } else if (escapes % 2 === 0) {
-        backTicked = true;
-        lastBackTick = pos;
+    if (ch === 0x7c/* | */) {
+      if (!isEscaped) {
+        // pipe separating cells, '|'
+        result.push(current + str.substring(lastPos, pos));
+        current = '';
+        lastPos = pos + 1;
+      } else {
+        // escaped pipe, '\|'
+        current += str.substring(lastPos, pos - 1);
+        lastPos = pos;
       }
-    } else if (ch === 0x7c/* | */ && (escapes % 2 === 0) && !backTicked) {
-      result.push(str.substring(lastPos, pos));
-      lastPos = pos + 1;
     }
 
-    if (ch === 0x5c/* \ */) {
-      escapes++;
-    } else {
-      escapes = 0;
-    }
-
+    isEscaped = (ch === 0x5c/* \ */);
     pos++;
-
-    // If there was an un-closed backtick, go back to just after
-    // the last backtick, but as if it was a normal character
-    if (pos === max && backTicked) {
-      backTicked = false;
-      pos = lastBackTick + 1;
-    }
 
     ch = str.charCodeAt(pos);
   }
 
-  result.push(str.substring(lastPos));
+  result.push(current + str.substring(lastPos));
 
   return result;
 }
 
 
 var table = function table(state, startLine, endLine, silent) {
-  var ch, lineText, pos, i, nextLine, columns, columnCount, token,
-      aligns, t, tableLines, tbodyLines;
+  var ch, lineText, pos, i, l, nextLine, columns, columnCount, token,
+      aligns, t, tableLines, tbodyLines, oldParentType, terminate,
+      terminatorRules;
 
   // should have at least two lines
   if (startLine + 2 > endLine) { return false; }
@@ -6844,14 +6845,23 @@ var table = function table(state, startLine, endLine, silent) {
   lineText = getLine(state, startLine).trim();
   if (lineText.indexOf('|') === -1) { return false; }
   if (state.sCount[startLine] - state.blkIndent >= 4) { return false; }
-  columns = escapedSplit(lineText.replace(/^\||\|$/g, ''));
+  columns = escapedSplit(lineText);
+  if (columns.length && columns[0] === '') columns.shift();
+  if (columns.length && columns[columns.length - 1] === '') columns.pop();
 
   // header row will define an amount of columns in the entire table,
-  // and align row shouldn't be smaller than that (the rest of the rows can)
+  // and align row should be exactly the same (the rest of the rows can differ)
   columnCount = columns.length;
-  if (columnCount > aligns.length) { return false; }
+  if (columnCount === 0 || columnCount !== aligns.length) { return false; }
 
   if (silent) { return true; }
+
+  oldParentType = state.parentType;
+  state.parentType = 'table';
+
+  // use 'blockquote' lists for termination because it's
+  // the most similar to tables
+  terminatorRules = state.md.block.ruler.getRules('blockquote');
 
   token     = state.push('table_open', 'table', 1);
   token.map = tableLines = [ startLine, 0 ];
@@ -6864,14 +6874,12 @@ var table = function table(state, startLine, endLine, silent) {
 
   for (i = 0; i < columns.length; i++) {
     token          = state.push('th_open', 'th', 1);
-    token.map      = [ startLine, startLine + 1 ];
     if (aligns[i]) {
       token.attrs  = [ [ 'style', 'text-align:' + aligns[i] ] ];
     }
 
     token          = state.push('inline', '', 0);
     token.content  = columns[i].trim();
-    token.map      = [ startLine, startLine + 1 ];
     token.children = [];
 
     token          = state.push('th_close', 'th', -1);
@@ -6880,18 +6888,33 @@ var table = function table(state, startLine, endLine, silent) {
   token     = state.push('tr_close', 'tr', -1);
   token     = state.push('thead_close', 'thead', -1);
 
-  token     = state.push('tbody_open', 'tbody', 1);
-  token.map = tbodyLines = [ startLine + 2, 0 ];
-
   for (nextLine = startLine + 2; nextLine < endLine; nextLine++) {
     if (state.sCount[nextLine] < state.blkIndent) { break; }
 
-    lineText = getLine(state, nextLine).trim();
-    if (lineText.indexOf('|') === -1) { break; }
-    if (state.sCount[nextLine] - state.blkIndent >= 4) { break; }
-    columns = escapedSplit(lineText.replace(/^\||\|$/g, ''));
+    terminate = false;
+    for (i = 0, l = terminatorRules.length; i < l; i++) {
+      if (terminatorRules[i](state, nextLine, endLine, true)) {
+        terminate = true;
+        break;
+      }
+    }
 
-    token = state.push('tr_open', 'tr', 1);
+    if (terminate) { break; }
+    lineText = getLine(state, nextLine).trim();
+    if (!lineText) { break; }
+    if (state.sCount[nextLine] - state.blkIndent >= 4) { break; }
+    columns = escapedSplit(lineText);
+    if (columns.length && columns[0] === '') columns.shift();
+    if (columns.length && columns[columns.length - 1] === '') columns.pop();
+
+    if (nextLine === startLine + 2) {
+      token     = state.push('tbody_open', 'tbody', 1);
+      token.map = tbodyLines = [ startLine + 2, 0 ];
+    }
+
+    token     = state.push('tr_open', 'tr', 1);
+    token.map = [ nextLine, nextLine + 1 ];
+
     for (i = 0; i < columnCount; i++) {
       token          = state.push('td_open', 'td', 1);
       if (aligns[i]) {
@@ -6906,10 +6929,16 @@ var table = function table(state, startLine, endLine, silent) {
     }
     token = state.push('tr_close', 'tr', -1);
   }
-  token = state.push('tbody_close', 'tbody', -1);
-  token = state.push('table_close', 'table', -1);
 
-  tableLines[1] = tbodyLines[1] = nextLine;
+  if (tbodyLines) {
+    token = state.push('tbody_close', 'tbody', -1);
+    tbodyLines[1] = nextLine;
+  }
+
+  token = state.push('table_close', 'table', -1);
+  tableLines[1] = nextLine;
+
+  state.parentType = oldParentType;
   state.line = nextLine;
   return true;
 };
@@ -7067,7 +7096,7 @@ var blockquote = function blockquote(state, startLine, endLine, silent) {
       terminate,
       terminatorRules,
       token,
-      wasOutdented,
+      isOutdented,
       oldLineMax = state.lineMax,
       pos = state.bMarks[startLine] + state.tShift[startLine],
       max = state.eMarks[startLine];
@@ -7082,8 +7111,8 @@ var blockquote = function blockquote(state, startLine, endLine, silent) {
   // so no point trying to find the end of it in silent mode
   if (silent) { return true; }
 
-  // skip spaces after ">" and re-calculate offset
-  initial = offset = state.sCount[startLine] + pos - (state.bMarks[startLine] + state.tShift[startLine]);
+  // set offset past spaces and ">"
+  initial = offset = state.sCount[startLine] + 1;
 
   // skip one optional space after '>'
   if (state.src.charCodeAt(pos) === 0x20 /* space */) {
@@ -7148,7 +7177,6 @@ var blockquote = function blockquote(state, startLine, endLine, silent) {
 
   oldParentType = state.parentType;
   state.parentType = 'blockquote';
-  wasOutdented = false;
 
   // Search the end of the block
   //
@@ -7177,7 +7205,7 @@ var blockquote = function blockquote(state, startLine, endLine, silent) {
     //    > current blockquote
     // 2. checking this line
     // ```
-    if (state.sCount[nextLine] < state.blkIndent) wasOutdented = true;
+    isOutdented = state.sCount[nextLine] < state.blkIndent;
 
     pos = state.bMarks[nextLine] + state.tShift[nextLine];
     max = state.eMarks[nextLine];
@@ -7187,11 +7215,11 @@ var blockquote = function blockquote(state, startLine, endLine, silent) {
       break;
     }
 
-    if (state.src.charCodeAt(pos++) === 0x3E/* > */ && !wasOutdented) {
+    if (state.src.charCodeAt(pos++) === 0x3E/* > */ && !isOutdented) {
       // This line is inside the blockquote.
 
-      // skip spaces after ">" and re-calculate offset
-      initial = offset = state.sCount[nextLine] + pos - (state.bMarks[nextLine] + state.tShift[nextLine]);
+      // set offset past spaces and ">"
+      initial = offset = state.sCount[nextLine] + 1;
 
       // skip one optional space after '>'
       if (state.src.charCodeAt(pos) === 0x20 /* space */) {
@@ -8097,7 +8125,6 @@ var html_blocks = [
   'main',
   'menu',
   'menuitem',
-  'meta',
   'nav',
   'noframes',
   'ol',
@@ -8136,7 +8163,7 @@ var open_tag    = '<[A-Za-z][A-Za-z0-9\\-]*' + attribute + '*\\s*\\/?>';
 
 var close_tag   = '<\\/[A-Za-z][A-Za-z0-9\\-]*\\s*>';
 var comment     = '<!---->|<!--(?:-?[^>-])(?:-?[^-])*-->';
-var processing  = '<[?].*?[?]>';
+var processing  = '<[?][\\s\\S]*?[?]>';
 var declaration = '<![A-Z]+\\s+[^>]*>';
 var cdata       = '<!\\[CDATA\\[[\\s\\S]*?\\]\\]>';
 
@@ -8758,8 +8785,9 @@ var _escape = function escape(state, silent) {
 
 // Parse backticks
 
+
 var backticks = function backtick(state, silent) {
-  var start, max, marker, matchStart, matchEnd, token,
+  var start, max, marker, token, matchStart, matchEnd, openerLength, closerLength,
       pos = state.pos,
       ch = state.src.charCodeAt(pos);
 
@@ -8769,20 +8797,33 @@ var backticks = function backtick(state, silent) {
   pos++;
   max = state.posMax;
 
+  // scan marker length
   while (pos < max && state.src.charCodeAt(pos) === 0x60/* ` */) { pos++; }
 
   marker = state.src.slice(start, pos);
+  openerLength = marker.length;
+
+  if (state.backticksScanned && (state.backticks[openerLength] || 0) <= start) {
+    if (!silent) state.pending += marker;
+    state.pos += openerLength;
+    return true;
+  }
 
   matchStart = matchEnd = pos;
 
+  // Nothing found in the cache, scan until the end of the line (or until marker is found)
   while ((matchStart = state.src.indexOf('`', matchEnd)) !== -1) {
     matchEnd = matchStart + 1;
 
+    // scan marker length
     while (matchEnd < max && state.src.charCodeAt(matchEnd) === 0x60/* ` */) { matchEnd++; }
 
-    if (matchEnd - matchStart === marker.length) {
+    closerLength = matchEnd - matchStart;
+
+    if (closerLength === openerLength) {
+      // Found matching closer length.
       if (!silent) {
-        token         = state.push('code_inline', 'code', 0);
+        token     = state.push('code_inline', 'code', 0);
         token.markup  = marker;
         token.content = state.src.slice(pos, matchStart)
           .replace(/\n/g, ' ')
@@ -8791,10 +8832,16 @@ var backticks = function backtick(state, silent) {
       state.pos = matchEnd;
       return true;
     }
+
+    // Some different length found, put it in cache as upper limit of where closer can be found
+    state.backticks[closerLength] = matchStart;
   }
 
-  if (!silent) { state.pending += marker; }
-  state.pos += marker.length;
+  // Scanned through the end, didn't find anything
+  state.backticksScanned = true;
+
+  if (!silent) state.pending += marker;
+  state.pos += openerLength;
   return true;
 };
 
@@ -8830,8 +8877,8 @@ var tokenize = function strikethrough(state, silent) {
 
     state.delimiters.push({
       marker: marker,
-      length: 0, // disable "rule of 3" length checks meant for emphasis
-      jump:   i,
+      length: 0,     // disable "rule of 3" length checks meant for emphasis
+      jump:   i / 2, // for `~~` 1 marker = 2 characters
       token:  state.tokens.length - 1,
       end:    -1,
       open:   scanned.can_open,
@@ -9087,9 +9134,9 @@ var link = function link(state, silent) {
       pos,
       res,
       ref,
-      title,
       token,
       href = '',
+      title = '',
       oldPos = state.pos,
       max = state.posMax,
       start = state.pos,
@@ -9132,31 +9179,29 @@ var link = function link(state, silent) {
       } else {
         href = '';
       }
-    }
-
-    // [link](  <href>  "title"  )
-    //                ^^ skipping these spaces
-    start = pos;
-    for (; pos < max; pos++) {
-      code = state.src.charCodeAt(pos);
-      if (!isSpace$9(code) && code !== 0x0A) { break; }
-    }
-
-    // [link](  <href>  "title"  )
-    //                  ^^^^^^^ parsing link title
-    res = state.md.helpers.parseLinkTitle(state.src, pos, state.posMax);
-    if (pos < max && start !== pos && res.ok) {
-      title = res.str;
-      pos = res.pos;
 
       // [link](  <href>  "title"  )
-      //                         ^^ skipping these spaces
+      //                ^^ skipping these spaces
+      start = pos;
       for (; pos < max; pos++) {
         code = state.src.charCodeAt(pos);
         if (!isSpace$9(code) && code !== 0x0A) { break; }
       }
-    } else {
-      title = '';
+
+      // [link](  <href>  "title"  )
+      //                  ^^^^^^^ parsing link title
+      res = state.md.helpers.parseLinkTitle(state.src, pos, state.posMax);
+      if (pos < max && start !== pos && res.ok) {
+        title = res.str;
+        pos = res.pos;
+
+        // [link](  <href>  "title"  )
+        //                         ^^ skipping these spaces
+        for (; pos < max; pos++) {
+          code = state.src.charCodeAt(pos);
+          if (!isSpace$9(code) && code !== 0x0A) { break; }
+        }
+      }
     }
 
     if (pos >= max || state.src.charCodeAt(pos) !== 0x29/* ) */) {
@@ -9374,24 +9419,31 @@ var image$1 = function image(state, silent) {
 
 
 /*eslint max-len:0*/
-var EMAIL_RE    = /^<([a-zA-Z0-9.!#$%&'*+\/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*)>/;
-var AUTOLINK_RE = /^<([a-zA-Z][a-zA-Z0-9+.\-]{1,31}):([^<>\x00-\x20]*)>/;
+var EMAIL_RE    = /^([a-zA-Z0-9.!#$%&'*+\/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*)$/;
+var AUTOLINK_RE = /^([a-zA-Z][a-zA-Z0-9+.\-]{1,31}):([^<>\x00-\x20]*)$/;
 
 
 var autolink = function autolink(state, silent) {
-  var tail, linkMatch, emailMatch, url, fullUrl, token,
+  var url, fullUrl, token, ch, start, max,
       pos = state.pos;
 
   if (state.src.charCodeAt(pos) !== 0x3C/* < */) { return false; }
 
-  tail = state.src.slice(pos);
+  start = state.pos;
+  max = state.posMax;
 
-  if (tail.indexOf('>') < 0) { return false; }
+  for (;;) {
+    if (++pos >= max) return false;
 
-  if (AUTOLINK_RE.test(tail)) {
-    linkMatch = tail.match(AUTOLINK_RE);
+    ch = state.src.charCodeAt(pos);
 
-    url = linkMatch[0].slice(1, -1);
+    if (ch === 0x3C /* < */) return false;
+    if (ch === 0x3E /* > */) break;
+  }
+
+  url = state.src.slice(start + 1, pos);
+
+  if (AUTOLINK_RE.test(url)) {
     fullUrl = state.md.normalizeLink(url);
     if (!state.md.validateLink(fullUrl)) { return false; }
 
@@ -9409,14 +9461,11 @@ var autolink = function autolink(state, silent) {
       token.info    = 'auto';
     }
 
-    state.pos += linkMatch[0].length;
+    state.pos += url.length + 2;
     return true;
   }
 
-  if (EMAIL_RE.test(tail)) {
-    emailMatch = tail.match(EMAIL_RE);
-
-    url = emailMatch[0].slice(1, -1);
+  if (EMAIL_RE.test(url)) {
     fullUrl = state.md.normalizeLink('mailto:' + url);
     if (!state.md.validateLink(fullUrl)) { return false; }
 
@@ -9434,7 +9483,7 @@ var autolink = function autolink(state, silent) {
       token.info    = 'auto';
     }
 
-    state.pos += emailMatch[0].length;
+    state.pos += url.length + 2;
     return true;
   }
 
@@ -9555,20 +9604,20 @@ function processDelimiters(state, delimiters) {
     }
 
     minOpenerIdx = openersBottom[closer.marker][closer.length % 3];
-    newMinOpenerIdx = -1;
 
     openerIdx = closerIdx - closer.jump - 1;
+
+    // avoid crash if `closer.jump` is pointing outside of the array, see #742
+    if (openerIdx < -1) openerIdx = -1;
+
+    newMinOpenerIdx = openerIdx;
 
     for (; openerIdx > minOpenerIdx; openerIdx -= opener.jump + 1) {
       opener = delimiters[openerIdx];
 
       if (opener.marker !== closer.marker) continue;
 
-      if (newMinOpenerIdx === -1) newMinOpenerIdx = openerIdx;
-
-      if (opener.open &&
-          opener.end < 0 &&
-          opener.level === closer.level) {
+      if (opener.open && opener.end < 0) {
 
         isOddMatch = false;
 
@@ -9696,6 +9745,10 @@ function StateInline(src, md, env, outTokens) {
 
   // Stack of delimiter lists for upper level tags
   this._prev_delimiters = [];
+
+  // backtick length => last seen position
+  this.backticks = {};
+  this.backticksScanned = false;
 }
 
 
@@ -10036,12 +10089,13 @@ var re = function (opts) {
           '\\"(?:(?!' + re.src_ZCc + '|["]).)+\\"|' +
           "\\'(?:(?!" + re.src_ZCc + "|[']).)+\\'|" +
           "\\'(?=" + re.src_pseudo_letter + '|[-]).|' +  // allow `I'm_king` if no pair found
-          '\\.{2,4}[a-zA-Z0-9%/]|' + // github has ... in commit range links,
-                                     // google has .... in links (issue #66)
+          '\\.{2,}[a-zA-Z0-9%/&]|' + // google has many dots in "google search" links (#66, #81).
+                                     // github has ... in commit range links,
                                      // Restrict to
                                      // - english
                                      // - percent-encoded
                                      // - parts of file path
+                                     // - params separator
                                      // until more examples found.
           '\\.(?!' + re.src_ZCc + '|[.]).|' +
           (opts && opts['---'] ?
@@ -10049,8 +10103,8 @@ var re = function (opts) {
             :
             '\\-+|'
           ) +
-          '\\,(?!' + re.src_ZCc + ').|' +      // allow `,,,` in paths
-          '\\!(?!' + re.src_ZCc + '|[!]).|' +
+          '\\,(?!' + re.src_ZCc + ').|' +       // allow `,,,` in paths
+          '\\!+(?!' + re.src_ZCc + '|[!]).|' +  // allow `!!!` in paths, but not at the end
           '\\?(?!' + re.src_ZCc + '|[?]).' +
         ')+' +
       '|\\/' +
@@ -11459,7 +11513,7 @@ var commonmark = {
 };
 
 var config = {
-  'default': _default,
+  default: _default,
   zero: zero,
   commonmark: commonmark
 };
@@ -11525,7 +11579,8 @@ function normalizeLinkText(url) {
     }
   }
 
-  return mdurl.decode(mdurl.format(parsed));
+  // add '%' to exclude list because of https://github.com/markdown-it/markdown-it/issues/720
+  return mdurl.decode(mdurl.format(parsed), mdurl.decode.defaultChars + '%');
 }
 
 
@@ -11821,7 +11876,7 @@ MarkdownIt.prototype.set = function (options) {
  * MarkdownIt.configure(presets)
  *
  * Batch load of all options and compenent settings. This is internal method,
- * and you probably will not need it. But if you with - see available presets
+ * and you probably will not need it. But if you will - see available presets
  * and data structure [here](https://github.com/markdown-it/markdown-it/tree/master/lib/presets)
  *
  * We strongly recommend to use presets instead of direct config loads. That
@@ -11947,7 +12002,7 @@ MarkdownIt.prototype.use = function (plugin /*, params, ... */) {
  * - src (String): source string
  * - env (Object): environment sandbox
  *
- * Parse input string and returns list of block tokens (special token type
+ * Parse input string and return list of block tokens (special token type
  * "inline" will contain list of inline tokens). You should not call this
  * method directly, until you write custom renderer (for example, to produce
  * AST).
