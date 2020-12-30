@@ -3,8 +3,12 @@ import { config } from "../_config.js";
 describe("😺 Catcher", function() {
   it("restores the original server-side rendered HTML, if an error happened during the initial client-side render", async () => {
     await page.goto(config.test.hostURL + config.test.albumURL + "?test=error-during-initial-render");
-    const image = await page.$(`img`);
-    expect(image).not.toBeNull();
+    let element = null;
+    try {
+      element = await page.waitForSelector(`img`, { timeout: 1 });
+    } catch {
+      expect(element).toBe(null);
+    }
   });
 
   it("visits the page a user requested, if a client-side error happens after a user presses a link", async () => {

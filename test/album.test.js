@@ -10,8 +10,12 @@ const options = {
 describe(options.name, function() {
   it("is listed on the home page", async () => {
     await page.goto(config.test.hostURL + config.test.homeURL);
-    const element = await page.$(`a[href*="${options.url}"]`);
-    expect(element).not.toBe(null);
+    let element = null;
+    try {
+      element = await page.waitForSelector(`a[href*="${options.url}"]`, { timeout: 1 });
+    } catch {
+      expect(element).toBe(null);
+    }
   });
 });
 

@@ -5,8 +5,12 @@ describe("📒 Secret album", function() {
 
   it("is not listed on the home page", async () => {
     await page.goto(config.test.hostURL + config.test.homeURL);
-    const element = await page.$(`a[href*="${url}"]`);
-    expect(element).toBe(null);
+    let element = null;
+    try {
+      element = await page.waitForSelector(`a[href*="${url}"]`, { timeout: 1 });
+    } catch {
+      expect(element).toBe(null);
+    }
   });
 
   it("asks search engines not to index it", async () => {
