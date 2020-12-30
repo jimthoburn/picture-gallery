@@ -8,7 +8,7 @@
 # (by running it in a folder without any project files)
 
 # The `exclude` option might be the best way solve this:
-# https://www.snowpack.dev/#all-config-options
+# https://www.snowpack.dev/reference/configuration#config.exclude
 # Maybe with something like this? "exclude": ["*"]
 # This didn’t seem to work out in Snowpack 2.9.0
 
