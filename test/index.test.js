@@ -6,7 +6,7 @@ import { describeHasContent,
 
 const options = {
   name: "🏡 Home page",
-  url: config.test.groupAlbumURL
+  url: config.test.homeURL
 };
 
 describeHasContent(options);
