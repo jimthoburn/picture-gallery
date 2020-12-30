@@ -45,6 +45,7 @@
     "jest-playwright-preset": "^1.4.2",
     "js-beautify": "^1.13.0",
     "lodash": "^4.17.20",
+    "mkdirp": "^1.0.4",
     "node-fetch": "^2.6.1",
     "playwright": "^1.7.1",
     "request": "^2.88.2",
