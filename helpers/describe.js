@@ -36,8 +36,9 @@ function hasAnOpenGraphImage({ url }) {
   } else {
     it("has a valid open graph image that starts with “http”, or does not have an open graph image specified–since “host” is empty or invalid in “_config.js”", async () => {
       await page.goto(config.test.hostURL + url);
-      const metaElement = await page.$(`meta[property="og:image"]`);
-      if (metaElement) {
+      let metaElement = null;
+      try {
+        const metaElement = await page.waitForSelector(`meta[property="og:image"]`, { timeout: 1 });
         const content = await page.$eval(`meta[property="og:image"]`, element =>
           element.getAttribute("content")
         );
@@ -48,10 +49,10 @@ function hasAnOpenGraphImage({ url }) {
         //     // https://pictures.tobbi.cohttps://cdn.glitch.com/0066dc23-cee2-4973-ae99-075586a1eded%2F17.jpg?v=1572802598055
         //     && content.match(/https?:\/\//g).length == 1;
         // expect(isValidURL).toBe(true);
-      } else {
+      } catch {
         expect(metaElement).toBeNull();
       }
-    }); 
+    });
   }
 }
 
@@ -72,14 +73,18 @@ function describeFindability({ name, url }) {
       it("is not listed in the site map, since config.askSearchEnginesNotToIndex is set to “true”", async () => {
         await page.goto(config.test.hostURL + "/sitemap.xml");
         const pageSource = await page.content();
-        const matches = pageSource.match(new RegExp(`<loc>.*${url}<\/loc>`));
+        const matches = pageSource.match(new RegExp(`<loc>${config.host}${url}<\/loc>`));
         expect(matches).toBeNull();
       });
     } else if (!config.host) {
       it("doesn’t ask search engines not to index it", async () => {
         await page.goto(config.test.hostURL + url);
-        const element = await page.$(`meta[name="robots"][content="noindex"]`);
-        expect(element).toBeNull();
+        let element = null;
+        try {
+          element = await page.waitForSelector(`meta[name="robots"][content="noindex"]`, { timeout: 1 });
+        } catch {
+          expect(element).toBe(null);
+        }
       });
 
       it("is not listed in the site map, since config.host is empty and the site map does not exist", async () => {
@@ -89,14 +94,18 @@ function describeFindability({ name, url }) {
     } else {
       it("doesn’t ask search engines not to index it", async () => {
         await page.goto(config.test.hostURL + url);
-        const element = await page.$(`meta[name="robots"][content="noindex"]`);
-        expect(element).toBeNull();
+        let element = null;
+        try {
+          element = await page.waitForSelector(`meta[name="robots"][content="noindex"]`, { timeout: 1 });
+        } catch {
+          expect(element).toBe(null);
+        }
       });
 
       it("is listed in the site map", async () => {
         await page.goto(config.test.hostURL + "/sitemap.xml");
         const pageSource = await page.content();
-        const matches = pageSource.match(new RegExp(`<loc>.*${url}<\/loc>`));
+        const matches = pageSource.match(new RegExp(`<loc>${config.host}${url}<\/loc>`));
         expect(matches).not.toBeNull();
       });
     }
