@@ -148,7 +148,10 @@ function getRobotsText() {
 
 function getSiteMapXML() {
   return new Promise((resolve, reject) => {
-    const publicURLs = getPublicURLs();
+    const publicURLs = [
+      "/",               // Home page
+      ...getPublicURLs() // Albums
+    ];
     const xml = SiteMapXML({
       host: config.host,
       urls: publicURLs
