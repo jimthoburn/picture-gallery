@@ -15,6 +15,13 @@ function PictureDetails({ pictures, album, state, pictureListShouldRender }) {
     ? `/pictures/${ album.uri }/6000-wide/${ picture.filename }`
     : picture.source;
 
+  // 1) Remove “https://”
+  //    https://regex101.com/r/WgRjOx/1
+  // 2) Remove starting slash
+  //    https://regex101.com/r/WgRjOx/2
+  // 3) Replace slashes with dashes
+  const downloadFilename = downloadURL.replace(/http[s]?\:\/\//, "").replace(/^\//, "").replace(/\//g, "-");
+
   const stateStrings = state.toStrings();
 
   return html`
@@ -30,7 +37,7 @@ function PictureDetails({ pictures, album, state, pictureListShouldRender }) {
           <p><${CloseButton} album="${album}" state="${state}" /></p>
         </div>
         <p class="download">
-          <a href="${ downloadURL }">
+          <a href="${ downloadURL }" download="${ downloadFilename }">
             Download
           </a>
         </p>

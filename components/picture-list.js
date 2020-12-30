@@ -155,7 +155,7 @@ function PictureList({ album, pictures, story, state }) {
 
       ${ (album.zipFileSize)
          ? html`<p class="action">
-                  <a href="/archives/${ album.uri }.zip">Download All Pictures</a><br />
+                  <a href="/archives/${ album.uri }.zip" download="${ album.uri.replace(/\//g, "-") }.zip">Download All Pictures</a><br />
                   <small>ZIP file / ${ album.zipFileSize }</small>
                 </p>`
          : "" }
