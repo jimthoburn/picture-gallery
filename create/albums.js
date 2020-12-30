@@ -9,7 +9,6 @@ const __dirname = dirname(fileURLToPath(import.meta.url));
 import mkdirp from "mkdirp";
 import exif from "exif";
 import base64 from "../helpers/node-base64-image.js";
-import ColorThief from "colorthief";
 import capitalize from "capitalize";
 
 import { getAlbumNamesFromPicturesFolder } from "../data-file-system/albums-from-pictures-folder.js";
@@ -79,9 +78,6 @@ async function createAlbumJSON({ source, sourceForPreviewBase64, destination, al
     // https://www.npmjs.com/package/exif
     const meta = await getImageMetadata(filePath);
 
-    // https://lokeshdhakar.com/projects/color-thief/#examples
-    const primaryColor = await ColorThief.getColor(filePath);
-
     const previewBase64 = await getPreviewBase64(`${sourceForPreviewBase64}/${photoFileName}`);
 
     pictures.push({
@@ -98,7 +94,6 @@ async function createAlbumJSON({ source, sourceForPreviewBase64, destination, al
       uri: encodeURIComponent(photoFileName.split(".").shift()),
       width: meta.exif.ExifImageWidth,
       height: meta.exif.ExifImageHeight,
-      primaryColor: `rgb(${primaryColor[0]}, ${primaryColor[1]}, ${primaryColor[2]})`,
       previewBase64,
       meta
     });

@@ -34,7 +34,6 @@
     "archiver": "^5.1.0",
     "capitalize": "^2.0.3",
     "chalk": "^4.1.0",
-    "colorthief": "^2.3.2",
     "exif": "^0.6.0",
     "express": "^4.17.1",
     "fs-extra": "^9.0.1",
