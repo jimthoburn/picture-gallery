@@ -36,6 +36,15 @@ class ResponsiveImage extends LitElement {
         object-fit: contain;
       }
 
+      ::slotted(picture) {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        object-fit: contain;
+      }
+
       ::slotted(img.preview) {
         margin: calc(0% - 3em);
         width: calc(100% + 6em);
@@ -71,6 +80,13 @@ class ResponsiveImage extends LitElement {
     const image = this.querySelector("img:not(.preview)");
 
     if (image) image.addEventListener("load", this.onImageLoaded);
+
+    /* SHIM: Make <picture><img /></picture> fill the available space */
+    const pictureImage = this.querySelector("picture img");
+    if (pictureImage) {
+      pictureImage.style.width = "100%";
+      pictureImage.style.height = "auto";
+    }
 
     // https://stackoverflow.com/questions/1977871/check-if-an-image-is-loaded-no-errors-with-jquery#answer-1978021
     if (image && image.complete && image.naturalWidth != 0) {

@@ -221,7 +221,7 @@ function getOpenGraphImage({ album, parent, pictures, getPageURL }) {
   let selectedPictureIndex = getSelectedPictureIndexFromURL({ album, pictures, getPageURL });
   if (selectedPictureIndex != null) {
     const picture = pictures[selectedPictureIndex];
-    return getSource({ album, picture, largestSize: true });
+    return getSource({ album, picture, type: "jpg", largestSize: true });
   } else {
     return getCoverPhoto({album});
   }
