@@ -6,8 +6,9 @@ export const DefaultLayout = ({ title, content, askSearchEnginesNotToIndex, incl
     <!DOCTYPE html>
     <html lang="en" dir="ltr">
       <head>
-        <link rel="preload" crossorigin href="/components/responsive-image.js" as="script" />
+        ${ /* web components */ '' }
         <link rel="preload" crossorigin href="/web_modules/lit-element.js" as="script" />
+        <link rel="preload" crossorigin href="/components/responsive-image.js" as="script" />
 
         <meta charset="utf-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
