@@ -103,7 +103,7 @@ function IndexPage({ title, date, albums }) {
                   
                   <${PictureElement} album="${imageSourceAlbum}" picture="${picture}" sizes="${sizes}">
                     <img
-                      src="${getSource({ album: imageSourceAlbum, picture, type: "jpg" })}"
+                      src="${getSource({ album: imageSourceAlbum, picture, type: "jpeg" })}"
                       loading="lazy"
                       alt="${
                         (picture.description)

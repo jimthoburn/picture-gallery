@@ -130,7 +130,7 @@ function PictureList({ album, pictures, story, state }) {
                     src="data:image/jpeg;base64,${picture.previewBase64}" alt="" />`
                    : "" }
                  <${PictureElement} album="${album}" picture="${picture}" sizes="${sizes}">
-                   <img src="${getSource({album, picture, type: "jpg"})}"
+                   <img src="${getSource({album, picture, type: "jpeg"})}"
                         width="${ 320 * (picture.width  > picture.height ? 1 : picture.width/picture.height) }"
                         height="${320 * (picture.height > picture.width  ? 1 : picture.height/picture.width) }"
                         loading="lazy"

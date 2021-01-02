@@ -10,8 +10,8 @@ export function getSourceSet({album, picture, type}) {
   const albumURI = album.uri;
 
   // https://regex101.com/r/Hz0ar1/2
-  // image.jpg ==> image.avif
-  // image.jpg ==> image.webp
+  // image.jpeg ==> image.avif
+  // image.jpeg ==> image.webp
   const filename =
     (type != null) ?
     picture.filename.replace(/\..+$/, `.${type}`)

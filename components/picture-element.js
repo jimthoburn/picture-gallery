@@ -3,6 +3,8 @@ import { createElement }        from "../web_modules/preact.js";
 import   htm                    from "../web_modules/htm.js";
 const    html = htm.bind(createElement);
 
+import { config }               from "../_config.js";
+
 import { getSource,
          getSourceSet }         from "../helpers/image-source-set.js";
 
@@ -11,23 +13,26 @@ function PictureElement({ album, picture, sizes, children }) {
     return html`
       <picture>
 
-        ${/* AVIF */''}
-        <source
-          srcset="${getSourceSet({album, picture, type: "avif"})}"
-          sizes=" ${getSourceSet({album, picture}) ? sizes : null}"
-          type="image/avif"
-          />
+        ${ (config.imageFormats.avif) ?
+          html`
+          <source
+            srcset="${getSourceSet({album, picture, type: "avif"})}"
+            sizes=" ${getSourceSet({album, picture}) ? sizes : null}"
+            type="image/avif"
+            />
+          ` : "" }
 
-        ${/* WebP */''}
-        <source
-          srcset="${getSourceSet({album, picture, type: "webp"})}"
-          sizes=" ${getSourceSet({album, picture}) ? sizes : null}"
-          type="image/webp"
-          />
+        ${ (config.imageFormats.webp) ?
+          html`
+          <source
+            srcset="${getSourceSet({album, picture, type: "webp"})}"
+            sizes=" ${getSourceSet({album, picture}) ? sizes : null}"
+            type="image/webp"
+            />
+          ` : "" }
 
-        ${/* JPG */''}
         <source
-          srcset="${getSourceSet({album, picture, type: "jpg"})}"
+          srcset="${getSourceSet({album, picture, type: "jpeg"})}"
           sizes=" ${getSourceSet({album, picture}) ? sizes : null}"
           type="image/jpeg"
           />
