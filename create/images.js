@@ -142,11 +142,10 @@ function squooshOne({ width, sourceFile, destinationFolder }) {
       return `'${JSON.stringify(options).replace(/\"/g, ``)}'`;
     }
 
-    let options = [
+    const options = [
       // `--oxipng ${stringify(oxipng)}`,
       `--mozjpeg ${stringify(mozjpeg)}`,
       // `--webp ${stringify(webp)}`,
-      `--avif ${stringify(avif)}`,
 
       `-d ${destinationFolder}`,
     ];
@@ -155,14 +154,15 @@ function squooshOne({ width, sourceFile, destinationFolder }) {
       `--resize ${stringify(resize)}`
     );
 
-    let command = `${squoosh} ${ options.join(" ")} ${sourceFile}`;
+    const command = `${squoosh} ${ options.join(" ")} ${sourceFile}`;
 
     // SHIM: Use Cavif for the largest size AVIF images, since 
     //       Squoosh seems to have an upper limit of 4500 pixels
+    let avifCommand = "";
     if (width >= 4500) {
       // https://github.com/kornelski/cavif-rs
       const cavif = "./lib/cavif-0.6.4/mac/cavif";
-      options = [
+      const avifOptions = [
         `--quality=80`,
         `--speed=1`, // Encoding speed between 1 (best, but slowest) and 10 (fastest)
         `--overwrite`,
@@ -170,7 +170,11 @@ function squooshOne({ width, sourceFile, destinationFolder }) {
 
         `-o '${destinationFolder}/${fileNameBase}.avif'`,
       ];
-      command = `${cavif} ${ options.join(" ")} '${sourceFile}'`
+      avifCommand = `${cavif} ${ avifOptions.join(" ")} '${sourceFile}'`
+    } else {
+      options.push(
+        `--avif ${stringify(avif)}`,
+      );
     }
 
     // SHIM: Use ImageMagick for WebP images, since it’s tricky to produce
@@ -179,7 +183,7 @@ function squooshOne({ width, sourceFile, destinationFolder }) {
 
     // https://stackoverflow.com/questions/20643470/execute-a-command-line-binary-with-node-js#answer-20643568
     console.log(command);
-    exec(`${command} && ${webpCommand} && echo 'successfully created images'`, (err, stdout, stderr) => {
+    exec(`${command} && ${webpCommand} && ${avifCommand} && echo 'successfully created images'`, (err, stdout, stderr) => {
       if (err) {
         // node couldn't execute the command
         console.error(err);
