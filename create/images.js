@@ -154,8 +154,6 @@ function squooshOne({ width, sourceFile, destinationFolder }) {
       `--resize ${stringify(resize)}`
     );
 
-    const command = `${squoosh} ${ options.join(" ")} ${sourceFile}`;
-
     // SHIM: Use Cavif for the largest size AVIF images, since 
     //       Squoosh seems to have an upper limit of 4500 pixels
     let avifCommand = "";
@@ -173,7 +171,7 @@ function squooshOne({ width, sourceFile, destinationFolder }) {
       avifCommand = `&& ${cavif} ${ avifOptions.join(" ")} '${sourceFile}'`
     } else {
       options.push(
-        `--avif ${stringify(avif)}`,
+        `--avif ${stringify(avif)}`
       );
     }
 
@@ -181,9 +179,11 @@ function squooshOne({ width, sourceFile, destinationFolder }) {
     //       WebP images with Squoosh that are similar to JPEG in quality & file size
     const webpCommand = `&& magick '${sourceFile}' -resize ${resize.width}x${9999} -quality ${75} '${destinationFolder}/${fileNameBase}.webp'`;
 
+    const command = `${squoosh} ${ options.join(" ")} ${sourceFile} ${webpCommand} ${avifCommand}`;
+
     // https://stackoverflow.com/questions/20643470/execute-a-command-line-binary-with-node-js#answer-20643568
     console.log(command);
-    exec(`${command} ${webpCommand} ${avifCommand} && echo 'successfully created images'`, (err, stdout, stderr) => {
+    exec(`${command} && echo 'successfully created images'`, (err, stdout, stderr) => {
       if (err) {
         // node couldn't execute the command
         console.error(err);
