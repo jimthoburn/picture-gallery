@@ -67,7 +67,8 @@ async function createAlbumJSON({ source, sourceForPreviewBase64, destination, al
   console.log(files)
 
   const pictures = [];
-  const picturesWithEXIF = [];
+  const picturesWithDataPreview = [];
+  const picturesWithExif = [];
 
   console.log("files");
 
@@ -80,23 +81,28 @@ async function createAlbumJSON({ source, sourceForPreviewBase64, destination, al
 
     const previewBase64 = await getPreviewBase64(`${sourceForPreviewBase64}/${photoFileName.replace(".jpeg", ".jpg")}`);
 
-    pictures.push({
-      filename: encodeURIComponent(photoFileName),
-      description: null,
-      caption: null,
-      uri: encodeURIComponent(photoFileName.split(".").shift())
-    });
-
-    picturesWithEXIF.push({
+    const picture = {
       filename: encodeURIComponent(photoFileName),
       description: null,
       caption: null,
       uri: encodeURIComponent(photoFileName.split(".").shift()),
+    };
+
+    const pictureWithDataPreview = {
+      ...picture,
       width: meta.exif.ExifImageWidth,
       height: meta.exif.ExifImageHeight,
       previewBase64,
-      meta
-    });
+    };
+
+    const pictureWithMeta = {
+      ...pictureWithDataPreview,
+      meta,
+    };
+
+    pictures.push(picture);
+    picturesWithDataPreview.push(pictureWithDataPreview);
+    picturesWithExif.push(pictureWithMeta);
   }
 
   const userEditableData = {
@@ -104,9 +110,10 @@ async function createAlbumJSON({ source, sourceForPreviewBase64, destination, al
     pictures
   }
 
-  const readOnlyData = picturesWithEXIF;
+  const readOnlyData = picturesWithDataPreview;
+  const readOnlyExif = picturesWithExif;
 
-  return {userEditableData, readOnlyData};
+  return {userEditableData, readOnlyData, readOnlyExif};
 
   //for (let picture of pictures) {
 
@@ -182,7 +189,7 @@ const destination = "./_api";
 
 albums.forEach(async (album) => {
   let uri = album.split("/").pop();
-  let {userEditableData, readOnlyData} = await createAlbumJSON({
+  let {userEditableData, readOnlyData, readOnlyExif} = await createAlbumJSON({
     source: `./_pictures/${album}/original`,
     sourceForPreviewBase64: `./_pictures/${album}/16-wide`,
     album: {
@@ -204,6 +211,7 @@ albums.forEach(async (album) => {
 
   saveJSON({ destination: `${destination}/${basepath}`, fileName: `${uri}.json`, data: userEditableData });
   saveJSON({ destination: `./_pictures/${album}`, fileName: `data.json`, data: readOnlyData, overwrite: true });
+  saveJSON({ destination: `./_pictures/${album}`, fileName: `exif.json`, data: readOnlyExif, overwrite: true });
 });
 
 if (albumGroups.length > 0) {
