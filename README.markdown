@@ -60,14 +60,14 @@ _pictures/
             3.jpg
 ```
 
-You may also want to delete the example albums, and the LICENSE file:
+You may also want to delete the example pictures, and the LICENSE file:
 
 ```
-japan
-LICENSE
-northern-lights
-secret-recipes
-wildflowers
+_pictures/
+    LICENSE
+    northern-lights
+    secret-recipes
+    wildflowers
 ```
 
 _You can also make [groups of albums](#group-albums)._
@@ -85,7 +85,7 @@ _You can also make [groups of albums](#group-albums)._
 }
 ```
 
-You may also want to remove the `japan` and `wildflowers` examples from the list of albums.
+You may also want to remove the `japan` and `wildflowers` examples from the list in `_api/index.json`.
 
 7. Open your project folder in a terminal and install dependencies:
 
