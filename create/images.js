@@ -170,7 +170,7 @@ function squooshOne({ width, sourceFile, destinationFolder }) {
 
         `-o '${destinationFolder}/${fileNameBase}.avif'`,
       ];
-      avifCommand = `${cavif} ${ avifOptions.join(" ")} '${sourceFile}'`
+      avifCommand = `&& ${cavif} ${ avifOptions.join(" ")} '${sourceFile}'`
     } else {
       options.push(
         `--avif ${stringify(avif)}`,
@@ -179,11 +179,11 @@ function squooshOne({ width, sourceFile, destinationFolder }) {
 
     // SHIM: Use ImageMagick for WebP images, since it’s tricky to produce
     //       WebP images with Squoosh that are similar to JPEG in quality & file size
-    const webpCommand = `magick '${sourceFile}' -resize ${resize.width}x${9999} -quality ${75} '${destinationFolder}/${fileNameBase}.webp'`;
+    const webpCommand = `&& magick '${sourceFile}' -resize ${resize.width}x${9999} -quality ${75} '${destinationFolder}/${fileNameBase}.webp'`;
 
     // https://stackoverflow.com/questions/20643470/execute-a-command-line-binary-with-node-js#answer-20643568
     console.log(command);
-    exec(`${command} && ${webpCommand} && ${avifCommand} && echo 'successfully created images'`, (err, stdout, stderr) => {
+    exec(`${command} ${webpCommand} ${avifCommand} && echo 'successfully created images'`, (err, stdout, stderr) => {
       if (err) {
         // node couldn't execute the command
         console.error(err);
