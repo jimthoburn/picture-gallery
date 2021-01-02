@@ -3,6 +3,8 @@ import fs from "fs";
 import mkdirp from "mkdirp";
 import { exec } from "child_process";
 
+import sizeOf from "image-size";
+
 import { getAlbumNamesFromPicturesFolder } from "../data-file-system/albums-from-pictures-folder.js";
 
 
