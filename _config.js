@@ -22,8 +22,14 @@ export const config = {
     "data",
     "helpers",
     "machines",
-    "web_modules"
+    "web_modules",
   ],
+
+  // "jpeg" is included too, as a default
+  "imageFormats"  : {
+    "webp": true,
+    "avif": true,
+  },
 
   "test": {
     "hostURL"              : "http://localhost:4000",
@@ -34,7 +40,7 @@ export const config = {
     "groupAlbumChildURL"   : "/wildflowers/joshua-tree/",
     "groupAlbumChildName"  : "Joshua Tree",
     "groupAlbumPictureURL" : "/wildflowers/joshua-tree/1/",
-    "secretAlbumURL"       : "/northern-lights/"
+    "secretAlbumURL"       : "/northern-lights/",
   }
 
 };

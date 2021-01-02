@@ -2,9 +2,9 @@
 import fs from "fs";
 import mkdirp from "mkdirp";
 import { exec } from "child_process";
-
 import sizeOf from "image-size";
 
+import { config } from "../_config.js";
 import { getAlbumNamesFromPicturesFolder } from "../data-file-system/albums-from-pictures-folder.js";
 
 
@@ -29,7 +29,7 @@ const SIZES = [
 // https://web.dev/squoosh-v2/
 // https://github.com/GoogleChromeLabs/squoosh/tree/dev/cli
 // https://github.com/GoogleChromeLabs/squoosh/blob/dev/cli/src/codecs.js
-function squooshOne({ width, sourceFile, destinationFolder }) {
+function generateOneImage({ width, sourceFile, destinationFolder }) {
   return new Promise(async (resolve, reject) => {
 
     const pathBits = sourceFile.split("/");
@@ -154,30 +154,35 @@ function squooshOne({ width, sourceFile, destinationFolder }) {
       `--resize ${stringify(resize)}`
     );
 
-    // SHIM: Use Cavif for the largest size AVIF images, since 
-    //       Squoosh seems to have an upper limit of 4500 pixels
     let avifCommand = "";
-    if (width > 2048) {
-      // https://github.com/kornelski/cavif-rs
-      const cavif = "./lib/cavif-0.6.4/mac/cavif";
-      const avifOptions = [
-        `--quality=65`,
-        `--speed=1`, // Encoding speed between 1 (best, but slowest) and 10 (fastest)
-        `--overwrite`,
-        // `--color=rgb`,
+    if (config.imageFormats && config.imageFormats.avif) {
+      if (width > 2048) {
+        // SHIM: Use Cavif for the largest size AVIF images, since 
+        //       Squoosh seems to have an upper limit of 4500 pixels
+        //       https://github.com/kornelski/cavif-rs
+        const cavif = "./lib/cavif-0.6.4/mac/cavif";
+        const avifOptions = [
+          `--quality=65`,
+          `--speed=1`, // Encoding speed between 1 (best, but slowest) and 10 (fastest)
+          `--overwrite`,
+          // `--color=rgb`,
 
-        `-o '${destinationFolder}/${fileNameBase}.avif'`,
-      ];
-      avifCommand = `&& ${cavif} ${ avifOptions.join(" ")} '${sourceFile}'`
-    } else {
-      options.push(
-        `--avif ${stringify(avif)}`
-      );
+          `-o '${destinationFolder}/${fileNameBase}.avif'`,
+        ];
+        avifCommand = `&& ${cavif} ${ avifOptions.join(" ")} '${sourceFile}'`
+      } else {
+        options.push(
+          `--avif ${stringify(avif)}`
+        );
+      }
     }
 
-    // SHIM: Use ImageMagick for WebP images, since it’s tricky to produce
-    //       WebP images with Squoosh that are similar to JPEG in quality & file size
-    const webpCommand = `&& magick '${sourceFile}' -resize ${resize.width}x${9999} -quality ${75} '${destinationFolder}/${fileNameBase}.webp'`;
+    let webpCommand = "";
+    if (config.imageFormats && config.imageFormats.webp) {
+      // SHIM: Use ImageMagick for WebP images, since it’s tricky to produce
+      //       WebP images with Squoosh that are similar to JPEG in quality & file size
+      webpCommand = `&& magick '${sourceFile}' -resize ${resize.width}x${9999} -quality ${75} '${destinationFolder}/${fileNameBase}.webp'`;
+    }
 
     const command = `${squoosh} ${ options.join(" ")} ${sourceFile} ${webpCommand} ${avifCommand}`;
 
@@ -216,18 +221,10 @@ async function generateImages({ width, imagePath }) {
   try {
     await mkdirp(destinationFolder);
 
-    /*
-    await squoosh({
-      width: width === 'max-width' ? null : width,
-      sourceFolder,
-      destinationFolder,
-    });
-    */
-
     for (let sourceFile of files) {
       const pathBits = sourceFile.split("/");
       const fileName = pathBits[pathBits.length - 1];
-      await squooshOne({
+      await generateOneImage({
         width,
         sourceFile,
         destinationFolder,
@@ -238,12 +235,12 @@ async function generateImages({ width, imagePath }) {
     console.error(e);
   }
 
-  generateNext();
+  generateNextSize();
 }
 
 let nextCursor = 0;
 let nextImagePath;
-function generateNext() {
+function generateNextSize() {
   if (nextCursor < SIZES.length) {
     console.log('generateNext: ' + nextCursor + ' :: ' + SIZES[nextCursor] + ' :: ' + nextImagePath);
     generateImages({
@@ -263,7 +260,7 @@ function generateNextFolder() {
 
     nextCursor = 0;
     nextImagePath = `_pictures/${ albums[nextFolderCursor] }`;
-    generateNext();
+    generateNextSize();
 
     nextFolderCursor++;
   } else {
