@@ -31,15 +31,20 @@ You can [remix this Glitch project](https://glitch.com/edit/#!/picture-gallery?p
 
 If you’d like to work locally instead of using Glitch–you can follow these steps to create images and data for your albums.
 
+_NOTE: Some of these tools may only be available on macOS (in particular, ImageOptim and cavif)_
+
 1. Install Node 14.15.3 LTS or newer
 https://nodejs.org
 
 2. Install ImageOptim
 https://imageoptim.com
 
-3. [Clone this project](https://help.github.com/en/github/creating-cloning-and-archiving-repositories/cloning-a-repository) with Git (or download it)
+3. Install ImageMagick
+https://imagemagick.org
 
-4. Add your pictures to the `_pictures` folder, grouped by album name
+4. [Clone this project](https://help.github.com/en/github/creating-cloning-and-archiving-repositories/cloning-a-repository) with Git (or download it)
+
+5. Add your pictures to the `_pictures` folder, grouped by album name
 
 ```
 _pictures/
@@ -67,7 +72,7 @@ wildflowers
 
 _You can also make [groups of albums](#group-albums)._
 
-5. Add information about your gallery and featured albums to `_api/index.json`
+6. Add information about your gallery and featured albums to `_api/index.json`
 
 ```
 {
@@ -82,25 +87,25 @@ _You can also make [groups of albums](#group-albums)._
 
 You may also want to remove the `japan` and `wildflowers` examples from the list of albums.
 
-6. Open your project folder in a terminal and install dependencies:
+7. Open your project folder in a terminal and install dependencies:
 
 ```
 npm install
 ```
 
-7. Create data and [responsive images](https://developer.mozilla.org/en-US/docs/Learn/HTML/Multimedia_and_embedding/Responsive_images)
+8. Create data and [responsive images](https://developer.mozilla.org/en-US/docs/Learn/HTML/Multimedia_and_embedding/Responsive_images)
 
 ```
 npm run create
 ```
 
-8. Start the server
+9. Start the server
 
 ```
 npm start
 ```
 
-9. Visit `http://localhost:4000`
+10. Visit `http://localhost:4000`
 
 To stop the server, press “control C”
 
