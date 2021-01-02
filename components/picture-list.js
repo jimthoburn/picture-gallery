@@ -9,11 +9,11 @@ import { isBrowser,
          usingKeyboard,
          onKeyboardDetected } from "../helpers/environment.js";
 import { closest }            from "../helpers/closest.js";
+import { getSource }          from "../helpers/image-source-set.js";
+
 import { GalleryDispatch }    from "../components/picture-gallery.js";
 import { RenderedMarkdown }   from "../components/rendered-markdown.js";
-import { getSource,
-         getSourceSet,
-         IMAGE_LIST_SIZES }   from "../helpers/image-source-set.js";
+import { PictureElement }     from "../components/picture-element.js";
 
 
 let getSelectedPicture = function() {
@@ -129,18 +129,18 @@ function PictureList({ album, pictures, story, state }) {
                     height="${320 * (picture.height > picture.width  ? 1 : picture.height/picture.width) }"
                     src="data:image/jpeg;base64,${picture.previewBase64}" alt="" />`
                    : "" }
-                <img src="${getSource({album, picture})}"
-                     srcset="${getSourceSet({album, picture})}"
-                     sizes="${getSourceSet({album, picture}) ? sizes : null}"
-                     width="${ 320 * (picture.width  > picture.height ? 1 : picture.width/picture.height) }"
-                     height="${320 * (picture.height > picture.width  ? 1 : picture.height/picture.width) }"
-                     loading="lazy"
-                     alt="${
-                       (picture.description)
-                       ? picture.description
-                       : `Picture ${index + 1}`
-                     }"
-                     data-selected="${(state.context.selectedPictureIndex === index) ? "true" : ""}" />
+                 <${PictureElement} album="${album}" picture="${picture}" sizes="${sizes}">
+                   <img src="${getSource({album, picture, type: "jpeg"})}"
+                        width="${ 320 * (picture.width  > picture.height ? 1 : picture.width/picture.height) }"
+                        height="${320 * (picture.height > picture.width  ? 1 : picture.height/picture.width) }"
+                        loading="lazy"
+                        alt="${
+                          (picture.description)
+                          ? picture.description
+                          : `Picture ${index + 1}`
+                        }"
+                        data-selected="${(state.context.selectedPictureIndex === index) ? "true" : ""}" />
+                 </${PictureElement}>
               </responsive-image>
               ${""/*<span class="caption">${ picture.title }</span>*/}
             </a>

@@ -2,10 +2,9 @@
 import { createElement }  from "../web_modules/preact.js";
 import   htm              from "../web_modules/htm.js";
 const    html = htm.bind(createElement);
-import { getSource,
-         getSourceSet,
-         IMAGE_LIST_SIZES }   from "../helpers/image-source-set.js";
 
+import { getSource }      from "../helpers/image-source-set.js";
+import { PictureElement } from "../components/picture-element.js";
 
 function IndexPage({ title, date, albums }) {
 
@@ -22,7 +21,7 @@ function IndexPage({ title, date, albums }) {
 
       <ol>
         ${albums.map((album, index) => {
-          let match, picture, sourceData;
+          let match, picture, imageSourceAlbum;
 
           // If this is a group album
           if (album.albums) {
@@ -43,11 +42,7 @@ function IndexPage({ title, date, albums }) {
                 picture.source   === album.coverPicture.split("/")[1]
               );
               picture = match.length > 0 ? match[0] : album.albums[0].pictures[0];
-              sourceData = {
-                parent: album,
-                album: matchingAlbums[0],
-                picture
-              }
+              imageSourceAlbum = matchingAlbums[0];
 
             // If the group album has a remote cover picture specified
             } else if (album.coverPicture && album.coverPicture.indexOf("http") >= 0) {
@@ -60,11 +55,7 @@ function IndexPage({ title, date, albums }) {
                   }
                 }
               );
-              sourceData = {
-                parent: album,
-                album: matchingAlbum,
-                picture
-              }
+              imageSourceAlbum = matchingAlbum;
 
             // Default to the cover picture for the first album
             } else {
@@ -73,11 +64,7 @@ function IndexPage({ title, date, albums }) {
                 picture.source   === album.albums[0].coverPicture
               );
               picture = match.length > 0 ? match[0] : album.albums[0].pictures[0];
-              sourceData = {
-                parent: album,
-                album: album.albums[0],
-                picture
-              }
+              imageSourceAlbum = album.albums[0];
             }
 
           // Regular albums
@@ -87,10 +74,7 @@ function IndexPage({ title, date, albums }) {
               picture.source   === album.coverPicture
             );
             picture = match.length > 0 ? match[0] : album.pictures[0];
-            sourceData = {
-              album,
-              picture
-            }
+            imageSourceAlbum = album;
           }
 
           const sizes = (picture.width && picture.height)
@@ -116,19 +100,20 @@ function IndexPage({ title, date, albums }) {
                       height="${320 * (picture.height > picture.width  ? 1 : picture.height/picture.width) }"
                       src="data:image/jpeg;base64,${picture.previewBase64}" alt="" />`
                      : "" }
-                  <img
-                    src="${   getSource(   sourceData)}"
-                    srcset="${getSourceSet(sourceData)}"
-                    sizes="${ getSourceSet(sourceData) ? sizes : null}"
-                    loading="lazy"
-                    alt="${
-                      (picture.description)
-                      ? picture.description
-                      : `Picture ${index + 1}`
-                    }"
-                    width="${ 320 * (picture.width  > picture.height ? 1 : picture.width/picture.height) }"
-                    height="${320 * (picture.height > picture.width  ? 1 : picture.height/picture.width) }"
-                    />
+                  
+                  <${PictureElement} album="${imageSourceAlbum}" picture="${picture}" sizes="${sizes}">
+                    <img
+                      src="${getSource({ album: imageSourceAlbum, picture, type: "jpeg" })}"
+                      loading="lazy"
+                      alt="${
+                        (picture.description)
+                        ? picture.description
+                        : `Picture ${index + 1}`
+                      }"
+                      width="${ 320 * (picture.width  > picture.height ? 1 : picture.width/picture.height) }"
+                      height="${320 * (picture.height > picture.width  ? 1 : picture.height/picture.width) }"
+                      />
+                  </${PictureElement}>
                 </responsive-image>
                 <span class="caption">${ album.title }</span>
               </a>

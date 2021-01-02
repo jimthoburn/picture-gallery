@@ -2,9 +2,9 @@
 import { createElement }  from "../web_modules/preact.js";
 import   htm              from "../web_modules/htm.js";
 const    html = htm.bind(createElement);
-import { getSource,
-         getSourceSet,
-         IMAGE_LIST_SIZES }   from "../helpers/image-source-set.js";
+
+import { getSource }      from "../helpers/image-source-set.js";
+import { PictureElement } from "../components/picture-element.js";
 
 function ParentAlbumPage({ parent, children }) {
 
@@ -44,19 +44,20 @@ function ParentAlbumPage({ parent, children }) {
                     height="${320 * (picture.height > picture.width  ? 1 : picture.height/picture.width) }"
                     src="data:image/jpeg;base64,${picture.previewBase64}" alt="" />`
                    : "" }
-                <img
-                  src="${getSource({album, picture})}"
-                  srcset="${getSourceSet({album, picture})}"
-                  sizes="${getSourceSet({album, picture}) ? sizes : null}"
-                  loading="lazy"
-                  alt="${
-                    (picture.description)
-                    ? picture.description
-                    : `Picture ${index + 1}`
-                  }"
-                  width="${ 320 * (picture.width  > picture.height ? 1 : picture.width/picture.height) }"
-                  height="${320 * (picture.height > picture.width  ? 1 : picture.height/picture.width) }"
-                  />
+                   
+                 <${PictureElement} album="${album}" picture="${picture}" sizes="${sizes}">
+                   <img
+                     src="${getSource({album, picture, type: "jpeg"})}"
+                     loading="lazy"
+                     alt="${
+                       (picture.description)
+                       ? picture.description
+                       : `Picture ${index + 1}`
+                     }"
+                     width="${ 320 * (picture.width  > picture.height ? 1 : picture.width/picture.height) }"
+                     height="${320 * (picture.height > picture.width  ? 1 : picture.height/picture.width) }"
+                     />
+                 </${PictureElement}>
               </responsive-image>
               <span class="caption">${ album.title }</span>
             </a>
