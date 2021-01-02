@@ -44,21 +44,9 @@ function getImageMetadata(imageFilePath) {
   });
 }
 
-function fileExists(path) {
+function getPreviewBase64(url) {
   return new Promise((resolve, reject) => {
-    fs.stat(path, function(err, stat) {
-      if (err == null) {
-        resolve(true);
-      } else {
-        resolve(false);
-      }
-    });
-  });
-}
-
-function getPreviewBase64(path) {
-  return new Promise((resolve, reject) => {
-    base64.encode(path, { string: true, local: true }, (error, result) => {
+    base64.encode(url, { string: true, local: true }, (error, result) => {
       if (error) {
         reject(error);
       } else {
@@ -91,14 +79,7 @@ async function createAlbumJSON({ source, sourceForPreviewBase64, destination, al
     // https://www.npmjs.com/package/exif
     const meta = await getImageMetadata(filePath);
 
-    let previewImage = `${sourceForPreviewBase64}/${photoFileName}`;
-
-    // SHIM: Handle case where the original image has a different extension than the preview image
-    if (await fileExists(previewImage) === false) { 
-      previewImage = previewImage.replace(".jpeg", ".jpg");
-    }
-
-    const previewBase64 = await getPreviewBase64(previewImage);
+    const previewBase64 = await getPreviewBase64(`${sourceForPreviewBase64}/${photoFileName.replace(".jpeg", ".jpg")}`);
 
     const picture = {
       filename: encodeURIComponent(photoFileName),
