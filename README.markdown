@@ -34,15 +34,12 @@ If you’d like to work locally instead of using Glitch–you can follow these s
 1. Install Node 14.15.3 LTS or newer
 https://nodejs.org
 
-2. Install GraphicsMagick  
-http://www.graphicsmagick.org
-
-3. Install ImageOptim  
+2. Install ImageOptim
 https://imageoptim.com
 
-4. [Clone this project](https://help.github.com/en/github/creating-cloning-and-archiving-repositories/cloning-a-repository) with Git (or download it)
+3. [Clone this project](https://help.github.com/en/github/creating-cloning-and-archiving-repositories/cloning-a-repository) with Git (or download it)
 
-5. Add your pictures to the `_pictures` folder, grouped by album name
+4. Add your pictures to the `_pictures` folder, grouped by album name
 
 ```
 _pictures/
@@ -70,7 +67,7 @@ wildflowers
 
 _You can also make [groups of albums](#group-albums)._
 
-6. Add information about your gallery and featured albums to `_api/index.json`
+5. Add information about your gallery and featured albums to `_api/index.json`
 
 ```
 {
@@ -85,25 +82,25 @@ _You can also make [groups of albums](#group-albums)._
 
 You may also want to remove the `japan` and `wildflowers` examples from the list of albums.
 
-7. Open your project folder in a terminal and install dependencies:
+6. Open your project folder in a terminal and install dependencies:
 
 ```
 npm install
 ```
 
-8. Create data and [responsive images](https://developer.mozilla.org/en-US/docs/Learn/HTML/Multimedia_and_embedding/Responsive_images)
+7. Create data and [responsive images](https://developer.mozilla.org/en-US/docs/Learn/HTML/Multimedia_and_embedding/Responsive_images)
 
 ```
 npm run create
 ```
 
-9. Start the server
+8. Start the server
 
 ```
 npm start
 ```
 
-10. Visit `http://localhost:4000`
+9. Visit `http://localhost:4000`
 
 To stop the server, press “control C”
 
