@@ -20,7 +20,7 @@ function optimizeNextSize() {
   console.log(`Optimizing images at size: ${size}`);
 
   // https://stackoverflow.com/questions/20643470/execute-a-command-line-binary-with-node-js#answer-20643568
-  exec(`imageoptim '_pictures/**/${size}-wide/*.jpg'`, (err, stdout, stderr) => {
+  exec(`imageoptim '_pictures/**/${size}-wide/*.jpeg'`, (err, stdout, stderr) => {
     if (err) {
       // node couldn't execute the command
       return;
