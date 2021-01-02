@@ -79,7 +79,7 @@ async function createAlbumJSON({ source, sourceForPreviewBase64, destination, al
     // https://www.npmjs.com/package/exif
     const meta = await getImageMetadata(filePath);
 
-    const previewBase64 = await getPreviewBase64(`${sourceForPreviewBase64}/${photoFileName.replace(".jpeg", ".jpg")}`);
+    const previewBase64 = await getPreviewBase64(`${sourceForPreviewBase64}/${photoFileName}`);
 
     const picture = {
       filename: encodeURIComponent(photoFileName),
