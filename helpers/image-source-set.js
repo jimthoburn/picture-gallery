@@ -1,28 +1,35 @@
 
-export const IMAGE_LIST_SIZES    = "100vw"; //"(min-width: 40em) 320px, 44vw";
-export const IMAGE_DETAILS_SIZES = "100vw"; //"(min-aspect-ratio: 1/1) 100vh, 100vw";
-
-export function getSource({album, picture, largestSize = false}) {
+export function getSource({album, picture, type, largestSize = false}) {
   const albumURI = album.uri;
   return (picture.filename)
-    ? `/pictures/${ albumURI }/${ largestSize ? "6000" : "384" }-wide/${ picture.filename }`
+    ? `/pictures/${ albumURI }/${ largestSize ? "6000" : "384" }-wide/${ picture.filename.replace(/\..+$/, `.${type}`) }`
     : picture.source;
 }
 
-export function getSourceSet({album, picture}) {
+export function getSourceSet({album, picture, type}) {
   const albumURI = album.uri;
-  return (picture.filename)
-    ? `/pictures/${ albumURI }/384-wide/${ picture.filename } 384w,
-       /pictures/${ albumURI }/512-wide/${ picture.filename } 512w,
-       /pictures/${ albumURI }/768-wide/${ picture.filename } 768w,
-       /pictures/${ albumURI }/1024-wide/${ picture.filename } 1024w,
-       /pictures/${ albumURI }/1536-wide/${ picture.filename } 1536w,
-       /pictures/${ albumURI }/2048-wide/${ picture.filename } 2048w,
-       /pictures/${ albumURI }/6000-wide/${ picture.filename } 6000w`
+
+  // https://regex101.com/r/Hz0ar1/2
+  // image.jpg ==> image.avif
+  // image.jpg ==> image.webp
+  const filename =
+    (type != null) ?
+    picture.filename.replace(/\..+$/, `.${type}`)
+    :
+    picture.filename;
+
+  return (filename)
+    ? `/pictures/${ albumURI }/384-wide/${ filename } 384w,
+       /pictures/${ albumURI }/512-wide/${ filename } 512w,
+       /pictures/${ albumURI }/768-wide/${ filename } 768w,
+       /pictures/${ albumURI }/1024-wide/${ filename } 1024w,
+       /pictures/${ albumURI }/1536-wide/${ filename } 1536w,
+       /pictures/${ albumURI }/2048-wide/${ filename } 2048w,
+       /pictures/${ albumURI }/6000-wide/${ filename } 6000w`
     : null;
 }
 
-export function getCoverPhoto({album,}) {
+export function getCoverPhoto({album}) {
   const match = album.pictures.filter(picture =>
     picture.filename === album.coverPicture || 
     picture.source   === album.coverPicture
