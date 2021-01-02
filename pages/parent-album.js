@@ -47,7 +47,7 @@ function ParentAlbumPage({ parent, children }) {
                    
                  <${PictureElement} album="${album}" picture="${picture}" sizes="${sizes}">
                    <img
-                     src="${getSource({album, picture, type: "jpg"})}"
+                     src="${getSource({album, picture, type: "jpeg"})}"
                      loading="lazy"
                      alt="${
                        (picture.description)

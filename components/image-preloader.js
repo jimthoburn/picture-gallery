@@ -16,7 +16,7 @@ function ImagePreloader({ album, picture }) {
     <div style="width: 0; height: 0; overflow: hidden; position: absolute; opacity: 0;">
       <${PictureElement} album="${album}" picture="${picture}" sizes="${sizes}">
         <img
-          src="${getSource({ album, picture, type: "jpg" })}"
+          src="${getSource({ album, picture, type: "jpeg" })}"
           alt=""
         />
       </${PictureElement}>

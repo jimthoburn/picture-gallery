@@ -124,7 +124,7 @@ function PictureImage({ album, picture, state }) {
 
         <${PictureElement} album="${album}" picture="${picture}" sizes="${sizes}">
           <img
-            src="${getSource({album, picture, type: "jpg"})}"
+            src="${getSource({album, picture, type: "jpeg"})}"
             alt="${alt}"
             width="${ (picture.width)  ? 320 * (picture.width  > picture.height ? 1 : picture.width / picture.height) : null }"
             height="${(picture.height) ? 320 * (picture.height > picture.width  ? 1 : picture.height / picture.width) : null }"
