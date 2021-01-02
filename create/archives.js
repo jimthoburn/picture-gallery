@@ -76,7 +76,7 @@ async function createZip(source, destination, callback) {
   try {
     await mkdirp("_archives");
     albums.forEach(album => {
-      createZip(`_pictures/${album}/6000-wide/*.jpg`, `_archives/${album}.zip`);
+      createZip(`_pictures/${album}/6000-wide/*.jpeg`, `_archives/${album}.zip`);
     });
   } catch(e) {
     console.error(e);
