@@ -157,11 +157,11 @@ function squooshOne({ width, sourceFile, destinationFolder }) {
     // SHIM: Use Cavif for the largest size AVIF images, since 
     //       Squoosh seems to have an upper limit of 4500 pixels
     let avifCommand = "";
-    if (width >= 4500) {
+    if (width > 2048) {
       // https://github.com/kornelski/cavif-rs
       const cavif = "./lib/cavif-0.6.4/mac/cavif";
       const avifOptions = [
-        `--quality=80`,
+        `--quality=65`,
         `--speed=1`, // Encoding speed between 1 (best, but slowest) and 10 (fastest)
         `--overwrite`,
         // `--color=rgb`,
