@@ -1,0 +1,260 @@
+[
+  {
+    "filename": "1.jpeg",
+    "description": null,
+    "caption": null,
+    "uri": "1",
+    "width": 3648,
+    "height": 2736,
+    "previewBase64": "/9j/4AAQSkZJRgABAQAAAQABAAD/2wCEAAgICAgJCAkKCgkNDgwODRMREBARExwUFhQWFBwrGx8bGx8bKyYuJSMlLiZENS8vNUROQj5CTl9VVV93cXecnNEBCAgICAkICQoKCQ0ODA4NExEQEBETHBQWFBYUHCsbHxsbHxsrJi4lIyUuJkQ1Ly81RE5CPkJOX1VVX3dxd5yc0f/AABEIAAwAEAMBIgACEQEDEQH/xABcAAADAQAAAAAAAAAAAAAAAAACAwUHEAABBAIDAQAAAAAAAAAAAAADAAECERMxISJBYQEBAQAAAAAAAAAAAAAAAAAAAwQRAAIDAAAAAAAAAAAAAAAAAAABAgMh/9oADAMBAAIRAxEAPwDJIDd6+IHDZKpVgDj043abihk14q1WE5Yf/9k=",
+    "meta": {
+      "image": {
+        "ImageDescription": "                               ",
+        "Make": "Canon",
+        "Model": "Canon PowerShot G11",
+        "XResolution": 180,
+        "YResolution": 180,
+        "ResolutionUnit": 2,
+        "ModifyDate": "2011:09:09 09:30:30",
+        "ExifOffset": 204
+      },
+      "thumbnail": {},
+      "exif": {
+        "ExposureTime": 15,
+        "FNumber": 2.8,
+        "ExposureProgram": 1,
+        "ISO": 400,
+        "ExifVersion": {
+          "type": "Buffer",
+          "data": [
+            48,
+            50,
+            50,
+            49
+          ]
+        },
+        "DateTimeOriginal": "2011:09:09 09:30:30",
+        "CreateDate": "2011:09:09 09:30:30",
+        "ComponentsConfiguration": {
+          "type": "Buffer",
+          "data": [
+            1,
+            2,
+            3,
+            0
+          ]
+        },
+        "CompressedBitsPerPixel": 3,
+        "ShutterSpeedValue": -3.90625,
+        "ApertureValue": 2.96875,
+        "ExposureCompensation": 1.3333333333333333,
+        "MaxApertureValue": 2.96875,
+        "MeteringMode": 5,
+        "Flash": 16,
+        "FocalLength": 6.1,
+        "FlashpixVersion": {
+          "type": "Buffer",
+          "data": [
+            48,
+            49,
+            48,
+            48
+          ]
+        },
+        "ColorSpace": 1,
+        "ExifImageWidth": 3648,
+        "ExifImageHeight": 2736,
+        "FocalPlaneXResolution": 12493.150684931506,
+        "FocalPlaneYResolution": 12493.150684931506,
+        "FocalPlaneResolutionUnit": 2,
+        "SensingMethod": 2,
+        "FileSource": {
+          "type": "Buffer",
+          "data": [
+            3
+          ]
+        },
+        "CustomRendered": 0,
+        "ExposureMode": 1,
+        "WhiteBalance": 0,
+        "DigitalZoomRatio": 1,
+        "SceneCaptureType": 0
+      },
+      "gps": {},
+      "interoperability": {},
+      "makernote": {}
+    }
+  },
+  {
+    "filename": "2.jpeg",
+    "description": null,
+    "caption": null,
+    "uri": "2",
+    "width": 3648,
+    "height": 2736,
+    "previewBase64": "/9j/4AAQSkZJRgABAQAAAQABAAD/2wCEAAgICAgJCAkKCgkNDgwODRMREBARExwUFhQWFBwrGx8bGx8bKyYuJSMlLiZENS8vNUROQj5CTl9VVV93cXecnNEBCAgICAkICQoKCQ0ODA4NExEQEBETHBQWFBYUHCsbHxsbHxsrJi4lIyUuJkQ1Ly81RE5CPkJOX1VVX3dxd5yc0f/AABEIAAwAEAMBIgACEQEDEQH/xABbAAEBAQAAAAAAAAAAAAAAAAADBQcQAAICAQUBAAAAAAAAAAAAAAIDAAEiEhMhMVJxAQEBAAAAAAAAAAAAAAAAAAACBBEAAgMAAAAAAAAAAAAAAAAAAAEDESH/2gAMAwEAAhEDEQA/AMlQORD6CxgGjKVwWOsflXEYoNy+O5UowXh//9k=",
+    "meta": {
+      "image": {
+        "ImageDescription": "                               ",
+        "Make": "Canon",
+        "Model": "Canon PowerShot G11",
+        "XResolution": 180,
+        "YResolution": 180,
+        "ResolutionUnit": 2,
+        "ModifyDate": "2011:09:09 09:31:46",
+        "ExifOffset": 204
+      },
+      "thumbnail": {},
+      "exif": {
+        "ExposureTime": 15,
+        "FNumber": 2.8,
+        "ExposureProgram": 1,
+        "ISO": 400,
+        "ExifVersion": {
+          "type": "Buffer",
+          "data": [
+            48,
+            50,
+            50,
+            49
+          ]
+        },
+        "DateTimeOriginal": "2011:09:09 09:31:46",
+        "CreateDate": "2011:09:09 09:31:46",
+        "ComponentsConfiguration": {
+          "type": "Buffer",
+          "data": [
+            1,
+            2,
+            3,
+            0
+          ]
+        },
+        "CompressedBitsPerPixel": 3,
+        "ShutterSpeedValue": -3.90625,
+        "ApertureValue": 2.96875,
+        "ExposureCompensation": 1.3333333333333333,
+        "MaxApertureValue": 2.96875,
+        "MeteringMode": 5,
+        "Flash": 16,
+        "FocalLength": 6.1,
+        "FlashpixVersion": {
+          "type": "Buffer",
+          "data": [
+            48,
+            49,
+            48,
+            48
+          ]
+        },
+        "ColorSpace": 1,
+        "ExifImageWidth": 3648,
+        "ExifImageHeight": 2736,
+        "FocalPlaneXResolution": 12493.150684931506,
+        "FocalPlaneYResolution": 12493.150684931506,
+        "FocalPlaneResolutionUnit": 2,
+        "SensingMethod": 2,
+        "FileSource": {
+          "type": "Buffer",
+          "data": [
+            3
+          ]
+        },
+        "CustomRendered": 0,
+        "ExposureMode": 1,
+        "WhiteBalance": 0,
+        "DigitalZoomRatio": 1,
+        "SceneCaptureType": 0
+      },
+      "gps": {},
+      "interoperability": {},
+      "makernote": {}
+    }
+  },
+  {
+    "filename": "3.jpeg",
+    "description": null,
+    "caption": null,
+    "uri": "3",
+    "width": 2736,
+    "height": 3648,
+    "previewBase64": "/9j/4AAQSkZJRgABAQAAAQABAAD/2wCEAAgICAgJCAkKCgkNDgwODRMREBARExwUFhQWFBwrGx8bGx8bKyYuJSMlLiZENS8vNUROQj5CTl9VVV93cXecnNEBCAgICAkICQoKCQ0ODA4NExEQEBETHBQWFBYUHCsbHxsbHxsrJi4lIyUuJkQ1Ly81RE5CPkJOX1VVX3dxd5yc0f/AABEIABUAEAMBIgACEQEDEQH/xABeAAADAQAAAAAAAAAAAAAAAAAABAUHEAACAgICAwEAAAAAAAAAAAABAgADITIEERMiUWEBAQEBAAAAAAAAAAAAAAAAAAMBBBEBAQEBAQAAAAAAAAAAAAAAAQAhAkH/2gAMAwEAAhEDEQA/AMjtpKFW6i91OcanIl2lBaPDZsdTEruO1bMpGYwLntBqtdauC3wxrnoHHHuOz1e36VPXcITSG8R3/9k=",
+    "meta": {
+      "image": {
+        "ImageDescription": "                               ",
+        "Make": "Canon",
+        "Model": "Canon PowerShot G11",
+        "XResolution": 180,
+        "YResolution": 180,
+        "ResolutionUnit": 2,
+        "ModifyDate": "2011:09:09 09:32:51",
+        "ExifOffset": 204
+      },
+      "thumbnail": {},
+      "exif": {
+        "ExposureTime": 15,
+        "FNumber": 2.8,
+        "ExposureProgram": 1,
+        "ISO": 400,
+        "ExifVersion": {
+          "type": "Buffer",
+          "data": [
+            48,
+            50,
+            50,
+            49
+          ]
+        },
+        "DateTimeOriginal": "2011:09:09 09:32:51",
+        "CreateDate": "2011:09:09 09:32:51",
+        "ComponentsConfiguration": {
+          "type": "Buffer",
+          "data": [
+            1,
+            2,
+            3,
+            0
+          ]
+        },
+        "CompressedBitsPerPixel": 3,
+        "ShutterSpeedValue": -3.90625,
+        "ApertureValue": 2.96875,
+        "ExposureCompensation": 1.3333333333333333,
+        "MaxApertureValue": 2.96875,
+        "MeteringMode": 5,
+        "Flash": 16,
+        "FocalLength": 6.1,
+        "FlashpixVersion": {
+          "type": "Buffer",
+          "data": [
+            48,
+            49,
+            48,
+            48
+          ]
+        },
+        "ColorSpace": 1,
+        "ExifImageWidth": 2736,
+        "ExifImageHeight": 3648,
+        "FocalPlaneXResolution": 12493.150684931506,
+        "FocalPlaneYResolution": 12493.150684931506,
+        "FocalPlaneResolutionUnit": 2,
+        "SensingMethod": 2,
+        "FileSource": {
+          "type": "Buffer",
+          "data": [
+            3
+          ]
+        },
+        "CustomRendered": 0,
+        "ExposureMode": 1,
+        "WhiteBalance": 0,
+        "DigitalZoomRatio": 1,
+        "SceneCaptureType": 0
+      },
+      "gps": {},
+      "interoperability": {},
+      "makernote": {}
+    }
+  }
+]
