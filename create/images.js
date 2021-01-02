@@ -1,8 +1,7 @@
 
 import fs from "fs";
 import mkdirp from "mkdirp";
-
-import gm from "gm";
+import { exec } from "child_process";
 
 import { getAlbumNamesFromPicturesFolder } from "../data-file-system/albums-from-pictures-folder.js";
 
@@ -24,66 +23,160 @@ const SIZES = [
   6000
 ];
 
-function getSize(gmFile) {
-  return new Promise((resolve, reject) => {
-    gmFile
-      .size((err, size) => {
-        if (!err) {
-          resolve(size);
-        } else {
-          console.error(err);
-          reject();
-        }
-      });
-  });
-}
-
-// KUDOS: https://github.com/scalableminds/gulp-image-resize
-function generateImage({ targetWidth, sourceFile, destinationFile }) {
+// https://web.dev/squoosh-v2/
+// https://github.com/GoogleChromeLabs/squoosh/tree/dev/cli
+// https://github.com/GoogleChromeLabs/squoosh/blob/dev/cli/src/codecs.js
+function squoosh({ width, sourceFolder, destinationFolder }) {
   return new Promise(async (resolve, reject) => {
-    const gmFile = gm(sourceFile);
-    const imageSize = await getSize(gmFile);
-    if (!imageSize) reject();
 
-    const options = {
-      width: Math.min(targetWidth, imageSize.width),
-      height: imageSize.height,
+    // SHIM: Use the installed squoosh-cli
+    const squoosh = `node node_modules/.bin/squoosh-cli`;
+    // const squoosh = `npx @squoosh/cli@^0.6.0`;
+
+    const mozjpeg = {
+      quality: 75,
+      baseline: false,
+      arithmetic: false,
+      progressive: true,
+      optimize_coding: true,
+      smoothing: 0,
+      color_space: 3 /*YCbCr*/,
+      quant_table: 3,
+      trellis_multipass: false,
+      trellis_opt_zero: false,
+      trellis_opt_table: false,
+      trellis_loops: 1,
+      auto_subsample: true,
+      chroma_subsample: 2,
+      separate_chroma_quality: false,
+      chroma_quality: 75,
     };
 
-    gmFile
-      .resize(options.width, options.height)
-      .write(destinationFile, (err) => {
-        if (!err) {
-          resolve();
-        } else {
-          console.error(err);
-          reject();
-        }
-      });
+    // https://developers.google.com/speed/webp/docs/api
+    const webp = {
+      quality: 75,       // between 0 and 100. For lossy, 0 gives the smallest
+                          // size and 100 the largest. For lossless, this
+                          // parameter is the amount of effort put into the
+                          // compression: 0 is the fastest but gives larger
+                          // files compared to the slowest, but best, 100.
+      target_size: 0,
+      target_PSNR: 0,
+      method: 4,          // quality/speed trade-off (0=fast, 6=slower-better).
+      sns_strength: 50,
+      filter_strength: 60,
+      filter_sharpness: 0,
+      filter_type: 1,
+      partitions: 0,
+      segments: 4,
+      pass: 1,
+      show_compressed: 0,
+      preprocessing: 0,
+      autofilter: 0,
+      partition_limit: 0,
+      alpha_compression: 1,
+      alpha_filtering: 1,
+      alpha_quality: 100,
+      lossless: 0,         // Lossless encoding (0=lossy(default), 1=lossless).
+      exact: 0,
+      image_hint: 0,
+      emulate_jpeg_size: 0,
+      thread_level: 0,
+      low_memory: 0,
+      near_lossless: 100,
+      use_delta_palette: 0,
+      use_sharp_yuv: 0,
+    };
 
+    // https://research.mozilla.org/av1-media-codecs/
+    // https://jakearchibald.com/2020/avif-has-landed/
+    // https://netflixtechblog.com/avif-for-next-generation-image-coding-b1d75675fe4
+    const avif = {
+      minQuantizer: 0,
+      maxQuantizer: 33,
+      minQuantizerAlpha: 0,
+      maxQuantizerAlpha: 63,
+      tileColsLog2: 0,
+      tileRowsLog2: 0,
+      speed: 1, // 8 ==> fastest
+      subsample: 1,
+    };
+
+    const oxipng  = {
+      level: 1
+    };
+
+    const resize = {
+      width,
+      // height,
+      // method: 'lanczos3', // triangle, catrom, mitchell, lanczos3
+      // method: 'stretch', // contain, stretch
+      // premultiply: true,
+      // linearRGB: true,
+    }
+
+    function stringify(options) {
+      // Remove quotes
+      return `'${JSON.stringify(options).replace(/\"/g, ``)}'`;
+    }
+
+    const options = [
+      // `--oxipng ${stringify(oxipng)}`,
+      `--mozjpeg ${stringify(mozjpeg)}`,
+      // `--webp ${stringify(webp)}`,
+      // `--avif ${stringify(avif)}`,
+
+      `-d ${destinationFolder}`,
+    ];
+
+    if (width) {
+      options.push(
+        `--resize ${stringify(resize)}`
+      );
+    }
+
+    const command = `${squoosh} ${ options.join(" ")} ${sourceFolder}/*`;
+
+    // https://stackoverflow.com/questions/20643470/execute-a-command-line-binary-with-node-js#answer-20643568
+    console.log(command);
+    exec(`${command} && echo 'successfully created images'`, (err, stdout, stderr) => {
+      if (err) {
+        // node couldn't execute the command
+        console.error(err);
+        reject(err);
+        return;
+      }
+
+      // the *entire* stdout and stderr (buffered)
+      if (stdout) {
+        console.log(stdout);
+        resolve();
+      }
+      if (stderr) {
+        console.log(stderr);
+        reject(stderr);
+      }
+    });
   });
 }
 
-async function generateImages(targetWidth, imagePath) {
-  console.log('generateImages: ' + targetWidth + ' :: ' + imagePath);
+
+async function generateImages({ width, imagePath }) {
+  console.log('generateImages: ' + width + ' :: ' + imagePath);
 
   const sourceFolder      = `${imagePath}/original`;
-  const destinationFolder = `${imagePath}/${targetWidth}-wide`
-  
+  const destinationFolder = `${imagePath}/${width}-wide`
+
   const files = getAllFilesFromFolder(sourceFolder);
 
   try {
     await mkdirp(destinationFolder);
 
-    for (let sourceFile of files) {
-      const pathBits = sourceFile.split("/");
-      const fileName = pathBits[pathBits.length - 1];
-      await generateImage({
-        targetWidth,
-        sourceFile,
-        destinationFile: `${destinationFolder}/${fileName}`,
-      });
-    }
+    await squoosh({
+      width: width <= 2048 ? width : null, // SHIM: Avoid re-sizing 6000 wide images
+      sourceFolder,
+      destinationFolder,
+    });
+
   } catch(e) {
     console.error(e);
   }
@@ -96,7 +189,10 @@ let nextImagePath;
 function generateNext() {
   if (nextCursor < SIZES.length) {
     console.log('generateNext: ' + nextCursor + ' :: ' + SIZES[nextCursor] + ' :: ' + nextImagePath);
-    generateImages(SIZES[nextCursor], nextImagePath);
+    generateImages({
+      width: SIZES[nextCursor],
+      imagePath: nextImagePath
+    });
     nextCursor++;
   } else {
     generateNextFolder();
