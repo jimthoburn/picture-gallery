@@ -31,14 +31,16 @@ You can [remix this Glitch project](https://glitch.com/edit/#!/picture-gallery?p
 
 If you’d like to work locally instead of using Glitch–you can follow these steps to create images and data for your albums.
 
+_NOTE: Some of these tools may only be available on macOS (in particular, ImageOptim and cavif)_
+
 1. Install Node 14.15.3 LTS or newer
 https://nodejs.org
 
-2. Install GraphicsMagick  
-http://www.graphicsmagick.org
-
-3. Install ImageOptim  
+2. Install ImageOptim
 https://imageoptim.com
+
+3. Install ImageMagick
+https://imagemagick.org
 
 4. [Clone this project](https://help.github.com/en/github/creating-cloning-and-archiving-repositories/cloning-a-repository) with Git (or download it)
 
@@ -58,14 +60,14 @@ _pictures/
             3.jpg
 ```
 
-You may also want to delete the example albums, and the LICENSE file:
+You may also want to delete the example pictures, and the LICENSE file:
 
 ```
-japan
-LICENSE
-northern-lights
-secret-recipes
-wildflowers
+_pictures/
+    LICENSE
+    northern-lights
+    secret-recipes
+    wildflowers
 ```
 
 _You can also make [groups of albums](#group-albums)._
@@ -83,7 +85,7 @@ _You can also make [groups of albums](#group-albums)._
 }
 ```
 
-You may also want to remove the `japan` and `wildflowers` examples from the list of albums.
+You may also want to remove the `japan` and `wildflowers` examples from the list in `_api/index.json`.
 
 7. Open your project folder in a terminal and install dependencies:
 
