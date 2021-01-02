@@ -60,7 +60,10 @@ async function createZip(source, destination, callback) {
     archive.pipe(output)
      
     // append files from a sub-directory, putting its contents at the root of archive 
-    archive.directory(source, false)
+    // archive.directory(source, false)
+
+    // append files from a glob pattern
+    archive.glob(source);
      
     // finalize the archive (ie we are done appending files but streams have to finish yet) 
     archive.finalize()
@@ -73,7 +76,7 @@ async function createZip(source, destination, callback) {
   try {
     await mkdirp("_archives");
     albums.forEach(album => {
-      createZip(`./_pictures/${album}/6000-wide/`, `./_archives/${album}.zip`);
+      createZip(`_pictures/${album}/6000-wide/*.jpg`, `_archives/${album}.zip`);
     });
   } catch(e) {
     console.error(e);
