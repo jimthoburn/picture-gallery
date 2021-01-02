@@ -22,14 +22,26 @@ const SIZES = [
   1024,
   1536,
   2048,
-  6000
+  6000,
 ];
+
 
 // https://web.dev/squoosh-v2/
 // https://github.com/GoogleChromeLabs/squoosh/tree/dev/cli
 // https://github.com/GoogleChromeLabs/squoosh/blob/dev/cli/src/codecs.js
-function squoosh({ width, sourceFolder, destinationFolder }) {
+function squooshOne({ width, sourceFile, destinationFolder }) {
   return new Promise(async (resolve, reject) => {
+
+    const pathBits = sourceFile.split("/");
+    const fileName = pathBits[pathBits.length - 1];
+    const fileNameBits = fileName.split(".");
+    const fileNameBase = fileNameBits.slice(0, fileNameBits.length - 1).join(".");
+    const fileExtension = fileNameBits[fileNameBits.length - 1];
+
+    const sourceFileSize = sizeOf(sourceFile); // https://github.com/image-size/image-size
+
+    console.log("sourceFileSize: ")
+    console.log({sourceFileSize});
 
     // SHIM: Use the installed squoosh-cli
     const squoosh = `node node_modules/.bin/squoosh-cli`;
@@ -108,7 +120,7 @@ function squoosh({ width, sourceFolder, destinationFolder }) {
     };
 
     const resize = {
-      width,
+      width: Math.min(width, sourceFileSize.width), // SHIM: Avoid scaling the image up
       // height,
       // method: 'lanczos3', // triangle, catrom, mitchell, lanczos3
       // method: 'stretch', // contain, stretch
@@ -116,31 +128,58 @@ function squoosh({ width, sourceFolder, destinationFolder }) {
       // linearRGB: true,
     }
 
+    const rotate = {
+      numRotations: 0, // degrees = (numRotations * 90) % 360
+    }
+
+    const quant = {
+      numColors: 255,
+      dither: 1.0,
+    }
+
     function stringify(options) {
       // Remove quotes
       return `'${JSON.stringify(options).replace(/\"/g, ``)}'`;
     }
 
-    const options = [
+    let options = [
       // `--oxipng ${stringify(oxipng)}`,
       `--mozjpeg ${stringify(mozjpeg)}`,
       // `--webp ${stringify(webp)}`,
-      // `--avif ${stringify(avif)}`,
+      `--avif ${stringify(avif)}`,
 
       `-d ${destinationFolder}`,
     ];
 
-    if (width) {
-      options.push(
-        `--resize ${stringify(resize)}`
-      );
+    options.push(
+      `--resize ${stringify(resize)}`
+    );
+
+    let command = `${squoosh} ${ options.join(" ")} ${sourceFile}`;
+
+    // SHIM: Use Cavif for the largest size AVIF images, since 
+    //       Squoosh seems to have an upper limit of 4500 pixels
+    if (width >= 4500) {
+      // https://github.com/kornelski/cavif-rs
+      const cavif = "./lib/cavif-0.6.4/mac/cavif";
+      options = [
+        `--quality=80`,
+        `--speed=1`, // Encoding speed between 1 (best, but slowest) and 10 (fastest)
+        `--overwrite`,
+        // `--color=rgb`,
+
+        `-o '${destinationFolder}/${fileNameBase}.avif'`,
+      ];
+      command = `${cavif} ${ options.join(" ")} '${sourceFile}'`
     }
 
-    const command = `${squoosh} ${ options.join(" ")} ${sourceFolder}/*`;
+    // SHIM: Use ImageMagick for WebP images, since it’s tricky to produce
+    //       WebP images with Squoosh that are similar to JPEG in quality & file size
+    const webpCommand = `magick '${sourceFile}' -resize ${resize.width}x${9999} -quality ${75} '${destinationFolder}/${fileNameBase}.webp'`;
 
     // https://stackoverflow.com/questions/20643470/execute-a-command-line-binary-with-node-js#answer-20643568
     console.log(command);
-    exec(`${command} && echo 'successfully created images'`, (err, stdout, stderr) => {
+    exec(`${command} && ${webpCommand} && echo 'successfully created images'`, (err, stdout, stderr) => {
       if (err) {
         // node couldn't execute the command
         console.error(err);
@@ -166,18 +205,30 @@ async function generateImages({ width, imagePath }) {
   console.log('generateImages: ' + width + ' :: ' + imagePath);
 
   const sourceFolder      = `${imagePath}/original`;
-  const destinationFolder = `${imagePath}/${width}-wide`
+  const destinationFolder = `${imagePath}/${width}-wide`;
 
   const files = getAllFilesFromFolder(sourceFolder);
 
   try {
     await mkdirp(destinationFolder);
 
+    /*
     await squoosh({
-      width: width <= 2048 ? width : null, // SHIM: Avoid re-sizing 6000 wide images
+      width: width === 'max-width' ? null : width,
       sourceFolder,
       destinationFolder,
     });
+    */
+
+    for (let sourceFile of files) {
+      const pathBits = sourceFile.split("/");
+      const fileName = pathBits[pathBits.length - 1];
+      await squooshOne({
+        width,
+        sourceFile,
+        destinationFolder,
+      });
+    }
 
   } catch(e) {
     console.error(e);
