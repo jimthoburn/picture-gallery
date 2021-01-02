@@ -25,9 +25,10 @@ export function getSourceSet({album, picture, type}) {
        /pictures/${ albumURI }/1024-wide/${ filename } 1024w,
        /pictures/${ albumURI }/1536-wide/${ filename } 1536w,
        /pictures/${ albumURI }/2048-wide/${ filename } 2048w,
-       /pictures/${ albumURI }/6000-wide/${ filename } 6000w`
+       /pictures/${ albumURI }/6000-wide/${ filename } ${picture.width}w`
     : null;
 }
+
 
 export function getCoverPhoto({album}) {
   const match = album.pictures.filter(picture =>
