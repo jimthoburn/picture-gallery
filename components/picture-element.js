@@ -12,22 +12,18 @@ function PictureElement({ album, picture, sizes, children }) {
       <picture>
 
         ${/* AVIF */''}
-        ${/* 
         <source
           srcset="${getSourceSet({album, picture, type: "avif"})}"
           sizes=" ${getSourceSet({album, picture}) ? sizes : null}"
           type="image/avif"
           />
-        */''}
 
         ${/* WebP */''}
-        ${/* 
         <source
           srcset="${getSourceSet({album, picture, type: "webp"})}"
           sizes=" ${getSourceSet({album, picture}) ? sizes : null}"
           type="image/webp"
           />
-        */''}
 
         ${/* JPG */''}
         <source
