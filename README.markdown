@@ -9,6 +9,7 @@ I’m using it to practice with new tools and to share photos with friends 🦊 
 * Here’s a [visualization of the gallery’s state machine](https://xstate.js.org/viz/?gist=18995ef2fca6c1949991f21b1b68c6d0)
 * [Project goals](#goals)
 * Helpful [resources](#resources)
+* Guide about [improving image loading](https://dev.to/jimthoburn/how-to-improve-ux-for-images-while-they-re-loading-on-the-web-3b12) for this project
 
 ## How to make your own gallery
 
