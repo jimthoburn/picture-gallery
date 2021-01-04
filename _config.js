@@ -25,12 +25,6 @@ export const config = {
     "web_modules",
   ],
 
-  // "jpeg" is included too, as a default
-  "imageFormats"  : {
-    "webp": true,
-    "avif": true,
-  },
-
   "test": {
     "hostURL"              : "http://localhost:4000",
     "homeURL"              : "/",
