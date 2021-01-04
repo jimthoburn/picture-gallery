@@ -6,7 +6,7 @@ const    html = htm.bind(createElement);
 import { getSource }      from "../helpers/image-source-set.js";
 import { PictureElement } from "../components/picture-element.js";
 
-function ParentAlbumPage({ parent, children }) {
+function ParentAlbumPage({ parent, children, config }) {
 
   return html`
     <section class="picture-list picture-list__has-captions">
@@ -45,7 +45,7 @@ function ParentAlbumPage({ parent, children }) {
                     src="data:image/jpeg;base64,${picture.previewBase64}" alt="" />`
                    : "" }
                    
-                 <${PictureElement} album="${album}" picture="${picture}" sizes="${sizes}">
+                 <${PictureElement} album="${album}" picture="${picture}" sizes="${sizes}" config="${config}">
                    <img
                      src="${getSource({album, picture, type: "jpeg"})}"
                      loading="lazy"

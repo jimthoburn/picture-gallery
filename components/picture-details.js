@@ -7,7 +7,7 @@ import { PictureNavigation }    from "../components/picture-navigation.js";
 import { CloseButton }          from "../components/close-button.js";
 
 
-function PictureDetails({ pictures, album, state, pictureListShouldRender }) {
+function PictureDetails({ pictures, album, state, config, pictureListShouldRender }) {
 
   const picture = pictures[state.context.selectedPictureIndex];
 
@@ -50,12 +50,12 @@ function PictureDetails({ pictures, album, state, pictureListShouldRender }) {
           //         continuing to show the old image while the new image loads).
           [""].map(item => {
           return html`
-          <${PictureImage} key="${picture.uri}" album="${album}" picture="${picture}" state="${state}" />
+          <${PictureImage} key="${picture.uri}" album="${album}" picture="${picture}" state="${state}" config="${config}" />
           `
         })}
       </a>
 
-      <${PictureNavigation} pictures=${pictures} album=${album} state=${state}></${PictureNavigation}>
+      <${PictureNavigation} pictures=${pictures} album=${album} state=${state} config="${config}"></${PictureNavigation}>
     </section>
   `;
 }

@@ -6,6 +6,7 @@ import { PictureGallery, getInitialPageTitle } from "./components/picture-galler
 import { Catcher } from "./components/catcher.js";
 
 import { getAlbumByURL } from "./data/album-by-url.js";
+import { getConfigData } from "./data/config.js";
 
 function getPageURL() {
   return window.location.href;
@@ -13,6 +14,7 @@ function getPageURL() {
 
 async function start() {
   const album = await getAlbumByURL({ url: getPageURL(), fetch });
+  const config = await getConfigData({ fetch });
   console.log({album});
 
   hydrate(
@@ -23,6 +25,7 @@ async function start() {
           pictures="${album.pictures}"
           story="${album.story}"
           album="${album}"
+          config="${config}"
         />
       </${Catcher}>
     `,

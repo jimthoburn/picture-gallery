@@ -25,7 +25,7 @@ let getMachine = function() {
 } 
 
 
-function PictureGallery({ album, pictures, story, getPageURL }) {
+function PictureGallery({ album, pictures, story, getPageURL, config }) {
 
   if (isBrowser()) {
     console.log(`🖼 ✨ Render`);
@@ -170,6 +170,7 @@ function PictureGallery({ album, pictures, story, getPageURL }) {
             album="${album}"
             pictures="${pictures}"
             state="${state}"
+            config="${config}"
             pictureListShouldRender="${pictureListShouldRender}" />`
         : ""}
       ${(!state.matches("showing_details.idle") || pictureListShouldRender === true)
@@ -178,7 +179,8 @@ function PictureGallery({ album, pictures, story, getPageURL }) {
             album="${album}"
             pictures="${pictures}"
             story="${story}"
-            state="${state}" />`
+            state="${state}"
+            config="${config}" />`
         : ""}
     </${GalleryDispatch.Provider}>
   `;

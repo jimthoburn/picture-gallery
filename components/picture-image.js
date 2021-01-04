@@ -20,7 +20,7 @@ let getPicture = function() {
 }
 
 
-function PictureImage({ album, picture, state }) {
+function PictureImage({ album, picture, state, config }) {
 
   const dispatch = useContext(GalleryDispatch);
   const image = useRef(null);
@@ -122,7 +122,7 @@ function PictureImage({ album, picture, state }) {
               src="data:image/jpeg;base64,${picture.previewBase64}" alt="" />`
           : "" }
 
-        <${PictureElement} album="${album}" picture="${picture}" sizes="${sizes}">
+        <${PictureElement} album="${album}" picture="${picture}" sizes="${sizes}" config="${config}">
           <img
             src="${getSource({album, picture, type: "jpeg"})}"
             alt="${alt}"

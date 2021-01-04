@@ -3,17 +3,15 @@ import { createElement }        from "../web_modules/preact.js";
 import   htm                    from "../web_modules/htm.js";
 const    html = htm.bind(createElement);
 
-import { config }               from "../_config.js";
-
 import { getSource,
          getSourceSet }         from "../helpers/image-source-set.js";
 
-function PictureElement({ album, picture, sizes, children }) {
+function PictureElement({ album, picture, sizes, children, config }) {
   if (picture.filename) {
     return html`
       <picture>
 
-        ${ (config.imageFormats.avif) ?
+        ${ (config && config.imageFormats && config.imageFormats.avif) ?
           html`
           <source
             srcset="${getSourceSet({album, picture, type: "avif"})}"
@@ -22,7 +20,7 @@ function PictureElement({ album, picture, sizes, children }) {
             />
           ` : "" }
 
-        ${ (config.imageFormats.webp) ?
+        ${ (config && config.imageFormats && config.imageFormats.webp) ?
           html`
           <source
             srcset="${getSourceSet({album, picture, type: "webp"})}"
