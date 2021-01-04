@@ -341,7 +341,7 @@ Developer experience
 - [x] Large features can be broken up into smaller components and modules
 - [x] Code for templates and logic can be used on the client or server side
 - [x] The application can be continuously deployed in a way that is reliable, scalable and secure
-- [ ] New features can be added with confidence that things won’t break
+- [x] New features can be added with confidence that things won’t break
 - [ ] The code is easy to read
 - [ ] The app can be ported to another framework without too much rework
 
