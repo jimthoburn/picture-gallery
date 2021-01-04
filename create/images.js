@@ -5,10 +5,10 @@ import { exec } from "child_process";
 import sizeOf from "image-size";
 import chalk  from "chalk";
 
-import { config } from "../_config.js";
 import { getAlbumNamesFromPicturesFolder } from "../data-file-system/albums-from-pictures-folder.js";
 
 
+const configData  = JSON.parse(fs.readFileSync("./_api/config.json", "utf8"));
 const galleryData = JSON.parse(fs.readFileSync("./_api/index.json", "utf8"));
 
 const [secretAlbums, secretAlbumGroups] = getAlbumNamesFromPicturesFolder();
@@ -208,7 +208,7 @@ function generateOneImage({ width, sourceFile, destinationFolder }) {
     if (width > 16) { // Skip WebP and AVIF for the smallest size (16px), since it’s only used for preview images
 
       // WebP
-      if (config.imageFormats && config.imageFormats.webp) {
+      if (configData.imageFormats && configData.imageFormats.webp) {
         console.log(``);
         console.log(`🖼  Generating WebP`);
         // SHIM: Use ImageMagick for WebP images, since it’s tricky to produce
@@ -220,7 +220,7 @@ function generateOneImage({ width, sourceFile, destinationFolder }) {
         ].join(" ") }`);
       }
       
-      if (config.imageFormats && config.imageFormats.avif) {
+      if (configData.imageFormats && configData.imageFormats.avif) {
 
         // AVIF
         console.log(``);
@@ -348,6 +348,6 @@ function getAllFilesFromFolder(dir) {
 
 
 // Generate images
-nextFolderCursor = 0;
+nextFolderCursor = 2;
 generateNextFolder();
 

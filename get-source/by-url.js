@@ -10,6 +10,7 @@ import { getInitialPageTitle,
 import { fetchFromFileSystem as fetch }
                              from "../helpers/fetch-from-file-system.js";
 
+import { getConfigData }     from "../data/config.js";
 import { getGalleryData }    from "../data/gallery.js";
 import { getPublicURLs,
          isGroupAlbum,
@@ -25,10 +26,11 @@ import { ParentAlbumPage }   from "../pages/parent-album.js";
 
 
 function getAlbumHTML(url) {
-  return new Promise((resolve, reject) => {
+  return new Promise(async (resolve, reject) => {
     const album = getAlbum(url);
 
     const getPageURL = () => url;
+    const configData = await getConfigData({ fetch });
 
     const title   = getInitialPageTitle({
       getPageURL,
@@ -39,7 +41,8 @@ function getAlbumHTML(url) {
       getPageURL,
       pictures: album.pictures,
       story: album.story,
-      album
+      album,
+      config: configData
     }));
     const openGraphImage = getOpenGraphImage({
       getPageURL,
@@ -66,13 +69,14 @@ function getAlbumHTML(url) {
 }
 
 function getGroupAlbumHTML(url) {
-  return new Promise((resolve, reject) => {
+  return new Promise(async (resolve, reject) => {
+    const configData = await getConfigData({ fetch });
     // console.log("getGroupAlbumHTML");
     // console.log(url);
     const album = getAlbum(url);
     // console.log(album);
     const { title, askSearchEnginesNotToIndex } = album;
-    const content = render(ParentAlbumPage({ parent: album, children: album.albums }));
+    const content = render(ParentAlbumPage({ parent: album, children: album.albums, config: configData }));
     const openGraphImage = getOpenGraphImage({
       getPageURL: () => url,
       pictures: album.albums[0].pictures,
@@ -101,12 +105,13 @@ function getGroupAlbumHTML(url) {
 function getIndexHTML() {
   
   return new Promise(async (resolve, reject) => {
-    
+
+    const configData = await getConfigData({ fetch });
     const gallery = await getGalleryData({ fetch });
     const albums = gallery.albums.map(albumURI => getAlbum(`/${albumURI}/`));
 
     const { title, askSearchEnginesNotToIndex } = gallery;
-    const content = render(IndexPage({ ...gallery, albums }));
+    const content = render(IndexPage({ ...gallery, albums, config: configData }));
 
     const firstAlbum = 
       albums[0].albums

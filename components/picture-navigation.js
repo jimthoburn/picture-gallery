@@ -8,7 +8,7 @@ import { Icon }                 from "../components/icon.js";
 import { ImagePreloader }       from "../components/image-preloader.js";
 
 
-function PictureNavigation({ pictures, album, state }) {
+function PictureNavigation({ pictures, album, state, config }) {
 
   const dispatch = useContext(GalleryDispatch);
   
@@ -70,8 +70,8 @@ function PictureNavigation({ pictures, album, state }) {
       ${"" /* If the current image has already loaded,
               preload the next and previous images */ }
       ${state.context.detailsPictureLoaded ? html`
-        <${ImagePreloader} album=${album} picture=${nextData}></${ImagePreloader}>
-        <${ImagePreloader} album=${album} picture=${previousData}></${ImagePreloader}>
+        <${ImagePreloader} album=${album} picture=${nextData} config="${config}"></${ImagePreloader}>
+        <${ImagePreloader} album=${album} picture=${previousData} config="${config}"></${ImagePreloader}>
       ` : ""}
     `;
   } else {

@@ -6,7 +6,7 @@ const    html = htm.bind(createElement);
 import { getSource }      from "../helpers/image-source-set.js";
 import { PictureElement } from "../components/picture-element.js";
 
-function IndexPage({ title, date, albums }) {
+function IndexPage({ title, date, albums, config }) {
 
   // console.log("IndexPage");
   // console.log(albums);
@@ -101,7 +101,7 @@ function IndexPage({ title, date, albums }) {
                       src="data:image/jpeg;base64,${picture.previewBase64}" alt="" />`
                      : "" }
                   
-                  <${PictureElement} album="${imageSourceAlbum}" picture="${picture}" sizes="${sizes}">
+                  <${PictureElement} album="${imageSourceAlbum}" picture="${picture}" sizes="${sizes}" config="${config}">
                     <img
                       src="${getSource({ album: imageSourceAlbum, picture, type: "jpeg" })}"
                       loading="lazy"

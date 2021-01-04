@@ -21,7 +21,7 @@ let getSelectedPicture = function() {
 }
 
 
-function PictureList({ album, pictures, story, state }) {
+function PictureList({ album, pictures, story, state, config }) {
   const dispatch = useContext(GalleryDispatch);
 
   const selectedPicture = useRef(null);
@@ -129,7 +129,7 @@ function PictureList({ album, pictures, story, state }) {
                     height="${320 * (picture.height > picture.width  ? 1 : picture.height/picture.width) }"
                     src="data:image/jpeg;base64,${picture.previewBase64}" alt="" />`
                    : "" }
-                 <${PictureElement} album="${album}" picture="${picture}" sizes="${sizes}">
+                 <${PictureElement} album="${album}" picture="${picture}" sizes="${sizes}" config="${config}">
                    <img src="${getSource({album, picture, type: "jpeg"})}"
                         width="${ 320 * (picture.width  > picture.height ? 1 : picture.width/picture.height) }"
                         height="${320 * (picture.height > picture.width  ? 1 : picture.height/picture.width) }"
