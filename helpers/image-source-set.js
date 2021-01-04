@@ -1,12 +1,12 @@
 
-export function getSource({album, picture, type, largestSize = false}) {
+export function getSource({album, picture, type = "jpeg", largestSize = false}) {
   const albumURI = album.uri;
   return (picture.filename)
     ? `/pictures/${ albumURI }/${ largestSize ? "6000" : "384" }-wide/${ picture.filename.replace(/\..+$/, `.${type}`) }`
     : picture.source;
 }
 
-export function getSourceSet({album, picture, type}) {
+export function getSourceSet({album, picture, type = "jpeg"}) {
   const albumURI = album.uri;
 
   // https://regex101.com/r/Hz0ar1/2
@@ -36,6 +36,6 @@ export function getCoverPhoto({album}) {
     picture.source   === album.coverPicture
   );
   const picture = match.length > 0 ? match[0] : album.pictures[0];
-  return getSource({ album, picture, largestSize: true });
+  return getSource({ album, picture, type: "jpeg", largestSize: true });
 }
 
