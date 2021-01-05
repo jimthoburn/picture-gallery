@@ -18,19 +18,15 @@ async function createFile({ pageURL, filename, output }) {
   const writePath = GENERATED_FILES_FOLDER + pageURL;
   const fileName = `${writePath}/${filename ? filename : "index.html"}`;
 
-  try {
-    await mkdirp(writePath);
-    fs.writeFileSync(fileName, output, 'utf8', (err) => {
-      if (err) {
-        console.log(err);
-      }
-    });
-  } catch(e) {
-    console.error(e);
-  }
+  await mkdirp(writePath).catch(err => { throw err; });
+  fs.writeFileSync(fileName, output, 'utf8', (err) => {
+    if (err) {
+      throw err;
+    }
+  });
 }
 
-function removeFile({ pageURL, filename }) {
+async function removeFile({ pageURL, filename }) {
   const writePath = GENERATED_FILES_FOLDER + pageURL;
 
   const path = `${writePath}/${filename ? filename : "index.html"}`;
@@ -40,18 +36,22 @@ function removeFile({ pageURL, filename }) {
 }
 
 function copy({source, destination}) {
-  // console.log(`📂 Copying files from: ${source}`);
+  return new Promise((resolve, reject) => {
+    console.log(`📂 Copying files from: ${source}`);
 
-  // https://www.npmjs.com/package/fs-extra
-  fs.copy(source, destination, function (err) {
-    if (err){
-      console.log('An error occured while copying the folder.')
-      return console.error(err)
-    }
+    // https://www.npmjs.com/package/fs-extra
+    fs.copy(source, destination, function (err) {
+      if (err){
+        console.log('An error occured while copying the folder.')
+        console.error(err);
+        reject(err);
+      }
+      resolve();
+    });
   });
 }
 
-function buildStaticFiles() {
+async function buildStaticFiles() {
   console.log(`📂 Preparing static files`);
   for (let folder of config.staticFolders) {
 
@@ -60,55 +60,67 @@ function buildStaticFiles() {
     const source      = `./${folder}`;
     const destination = `${GENERATED_FILES_FOLDER}/${folderWithoutLeadingUnderscore}`;
 
-    copy({source, destination});
+    await copy({source, destination}).catch(err => { throw err; });
   }
 
   const extras = ["client.js"];
 
   for (let source of extras) {
     const destination = `${GENERATED_FILES_FOLDER}/${source}`;
-    copy({ source, destination });
+    await copy({ source, destination }).catch(err => { throw err; });
   }
 
   // _public is a general folder for any static file to be served from “/”
   const source      = `./_public`;
   const destination = `${GENERATED_FILES_FOLDER}`;
 
-  copy({source, destination});
+  await copy({source, destination}).catch(err => { throw err; });
 }
 
-function buildGallery(urls) {
+async function buildGallery(urls) {
   console.log(`📗 Preparing albums`);
   for (let url of urls) {
-    getSourceByURL(url)
-      .then(html => createFile({ pageURL: url, output: html }))
-      .catch(err => console.error(err));
+    const html = await getSourceByURL(url).catch(err => { throw err; });
+    await createFile({
+      pageURL: url,
+      output: html
+    }).catch(err => { throw err; });
   }
 }
 
-function buildRobotsText() {
+async function buildRobotsText() {
   console.log(`🤖 Preparing robots.txt`);
-  getSourceByURL("/robots.txt")
-    .then(text => createFile({ pageURL: "/", filename: "robots.txt", output: text }))
-    .catch(err => console.error(err));
+  const text = await getSourceByURL("/robots.txt").catch(err => { throw err; });
+  await createFile({
+    pageURL: "/",
+    filename: "robots.txt",
+    output: text
+  }).catch(err => { throw err; });
 }
 
-function buildSiteMap() {
+async function buildSiteMap() {
   console.log(`🗺  Preparing sitemap.xml`);
-  getSourceByURL("/sitemap.xml")
-    .then(xml => createFile({ pageURL: "/", filename: "sitemap.xml", output: xml }))
-    .catch(err => console.error(err));
+  const xml = await getSourceByURL("/sitemap.xml").catch(err => { throw err; });
+  await createFile({
+    pageURL: "/",
+    filename: "sitemap.xml",
+    output: xml
+  }).catch(err => { throw err; });
 }
 
-function buildError404Page() {
+async function buildError404Page() {
   console.log(`🚥 Preparing 404 "not found" page`);
-  createFile({ pageURL: "/", filename: "404.html", output: getError404HTML() });
+  await createFile({
+    pageURL: "/",
+    filename: "404.html",
+    output: getError404HTML()
+  }).catch(err => { throw err; });
 }
 
-function build(urls) {
+async function build(urls) {
 
-  buildGallery(urls);
-  buildStaticFiles();
+  await buildGallery(urls);
+  await buildStaticFiles();
 
   if (config.askSearchEnginesNotToIndex !== true && config.host) {
     buildRobotsText();
@@ -118,7 +130,7 @@ function build(urls) {
     if (!config.host) console.log("⚠️ ", chalk.italic("host"), "is not set in", chalk.italic("_config.js"));
     console.log("⚠️  Skipping sitemap.xml");
     removeFile({ pageURL: "/", filename: "sitemap.xml" });
-
+  
     console.log("⚠️  Skipping robots.txt");
     removeFile({ pageURL: "/", filename: "robots.txt" });
   }
