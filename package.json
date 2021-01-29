@@ -15,7 +15,7 @@
     "optimize:images": "node create/images-optimize.js",
     "create:albums": "node create/albums.js",
     "create:archives": "node create/archives.js",
-    "create": "npm run create:images && rename:images && npm run optimize:images && npm run create:albums && npm run create:archives",
+    "create": "npm run create:images && npm run rename:images && npm run optimize:images && npm run create:albums && npm run create:archives",
     "build": "node build.js",
     "serve": "serve ./_site/ --listen=4000",
     "start": "node server.js",
