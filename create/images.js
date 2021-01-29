@@ -348,6 +348,6 @@ function getAllFilesFromFolder(dir) {
 
 
 // Generate images
-nextFolderCursor = 2;
+nextFolderCursor = 0;
 generateNextFolder();
 
