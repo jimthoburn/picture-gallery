@@ -15,7 +15,7 @@ function fetchFromFileSystem(url) {
       const text = fs.readFileSync(filePath, "utf8");
 
       resolve({
-        text: () => text,
+        text: () => new Promise((resolve, reject) => resolve(text)),
         ok: true,
         status: "File was found (file system)"
       });
