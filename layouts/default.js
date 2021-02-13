@@ -17,7 +17,8 @@ export const DefaultLayout = ({ title, content, askSearchEnginesNotToIndex, incl
           : ""}
         <title>${ title }</title>
 
-        <link href="https://fonts.googleapis.com/css?family=Fredericka+the+Great&amp;display=swap" rel="stylesheet" />
+        <link rel="preconnect" href="https://fonts.gstatic.com" />
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Fredericka+the+Great&amp;display=swap" />
         <link rel="stylesheet" href="/css/shared.css" />
         <link rel="stylesheet" href="/css/album.css" />
         <link rel="stylesheet" href="/css/picture.css" />
