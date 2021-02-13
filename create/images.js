@@ -7,6 +7,8 @@ import chalk  from "chalk";
 
 import { getAlbumNamesFromPicturesFolder } from "../data-file-system/albums-from-pictures-folder.js";
 
+const overwrite = false; // Set this “true” to re-generate existing image files.
+const startTime = Date.now();
 
 const configData  = JSON.parse(fs.readFileSync("./_api/config.json", "utf8"));
 const galleryData = JSON.parse(fs.readFileSync("./_api/index.json", "utf8"));
@@ -142,6 +144,9 @@ function generateOneImage({ width, sourceFile, destinationFolder }) {
     console.log(chalk.cyan("- - - - - - - - - - - - - - - - - - - - - - -"));
     console.log("⏱️ ", chalk.cyan(`generateOneImage: sourceFileSize: `), { sourceFileSize });
     console.log(chalk.cyan("- - - - - - - - - - - - - - - - - - - - - - -"));
+    console.log("");
+    console.log(`Time elapsed:\n${Date.now() - startTime} milliseconds\n`);
+    console.log("");
 
     const mozjpeg = {
       quality: 65,
@@ -201,51 +206,62 @@ function generateOneImage({ width, sourceFile, destinationFolder }) {
     }
 
     // JPEG
-    console.log(``);
-    console.log(`🖼  Generating JPEG`);
-    await doCommand(`${squoosh} ${ [`--mozjpeg ${stringify(mozjpeg)}`,...squooshOptions].join(" ") } ${sourceFile}`);
+    if (fs.existsSync(`${destinationFolder}/${fileNameBase}.jpeg`) && overwrite !== true) {
+      console.log(`${destinationFolder}/${fileNameBase}.jpeg already exists. Skipping…`);
+    } else {
+      console.log(``);
+      console.log(`🖼  Generating JPEG`);
+      await doCommand(`${squoosh} ${ [`--mozjpeg ${stringify(mozjpeg)}`,...squooshOptions].join(" ") } ${sourceFile}`);
+    }
 
     if (width > 16) { // Skip WebP and AVIF for the smallest size (16px), since it’s only used for preview images
 
       // WebP
-      if (configData.imageFormats && configData.imageFormats.webp) {
-        console.log(``);
-        console.log(`🖼  Generating WebP`);
-        // SHIM: Use ImageMagick for WebP images, since it’s tricky to produce
-        //       WebP images with Squoosh that are similar to JPEG in quality & file size
-        await doCommand(`${imageMagick} ${ [
-          ...imageMagickOptions,
-          `-quality ${50}`,
-          `'${destinationFolder}/${fileNameBase}.webp'`,
-        ].join(" ") }`);
-      }
-      
-      if (configData.imageFormats && configData.imageFormats.avif) {
-
-        // AVIF
-        console.log(``);
-        console.log(`🖼  Generating AVIF`);
-        // SHIM: Use Cavif for the AVIF images, since 
-        //       Squoosh seems to have an upper limit of 4500 pixels
-        //       https://github.com/kornelski/cavif-rs
-        
-        if (resize.width != sourceFileSize.width) { 
-          // SHIM: Use a temporary TIFF file as the source image, since cavif doesn’t have a resize feature
+      if (fs.existsSync(`${destinationFolder}/${fileNameBase}.webp`) && overwrite !== true) {
+        console.log(`${destinationFolder}/${fileNameBase}.webp already exists. Skipping…`);
+      } else {
+        if (configData.imageFormats && configData.imageFormats.webp) {
+          console.log(``);
+          console.log(`🖼  Generating WebP`);
+          // SHIM: Use ImageMagick for WebP images, since it’s tricky to produce
+          //       WebP images with Squoosh that are similar to JPEG in quality & file size
           await doCommand(`${imageMagick} ${ [
             ...imageMagickOptions,
-            `'${destinationFolder}/${fileNameBase}.tiff'`,
+            `-quality ${50}`,
+            `'${destinationFolder}/${fileNameBase}.webp'`,
           ].join(" ") }`);
-
-          await doCommand(`${cavif} ${ cavifOptions.join(" ") } '${destinationFolder}/${fileNameBase}.tiff'`);
-
-          // Delete temporary TIFF
-          fs.unlinkSync(`${destinationFolder}/${fileNameBase}.tiff`);
-  
-        } else {
-          await doCommand(`${cavif} ${ cavifOptions.join(" ") } '${sourceFile}'`);
         }
       }
+      
+      if (fs.existsSync(`${destinationFolder}/${fileNameBase}.avif`) && overwrite !== true) {
+        console.log(`${destinationFolder}/${fileNameBase}.avif already exists. Skipping…`);
+      } else {
+        if (configData.imageFormats && configData.imageFormats.avif) {
 
+          // AVIF
+          console.log(``);
+          console.log(`🖼  Generating AVIF`);
+          // SHIM: Use Cavif for the AVIF images, since 
+          //       Squoosh seems to have an upper limit of 4500 pixels
+          //       https://github.com/kornelski/cavif-rs
+          
+          if (resize.width != sourceFileSize.width) { 
+            // SHIM: Use a temporary TIFF file as the source image, since cavif doesn’t have a resize feature
+            await doCommand(`${imageMagick} ${ [
+              ...imageMagickOptions,
+              `'${destinationFolder}/${fileNameBase}.tiff'`,
+            ].join(" ") }`);
+
+            await doCommand(`${cavif} ${ cavifOptions.join(" ") } '${destinationFolder}/${fileNameBase}.tiff'`);
+
+            // Delete temporary TIFF
+            fs.unlinkSync(`${destinationFolder}/${fileNameBase}.tiff`);
+    
+          } else {
+            await doCommand(`${cavif} ${ cavifOptions.join(" ") } '${sourceFile}'`);
+          }
+        }
+      }
     }
 
     resolve();
@@ -259,6 +275,9 @@ async function generateImages({ width, imagePath }) {
   console.log(chalk.cyan("- - - - - - - - - - - - - - - - - - - - - - -"));
   console.log("⏱️ ", chalk.cyan('generateImages: ' + width + ' :: ' + imagePath));
   console.log(chalk.cyan("- - - - - - - - - - - - - - - - - - - - - - -"));
+  console.log("");
+  console.log(`Time elapsed:\n${Date.now() - startTime} milliseconds\n`);
+  console.log("");
 
   const sourceFolder      = `${imagePath}/original`;
   const destinationFolder = `${imagePath}/${width}-wide`;
@@ -315,10 +334,13 @@ function generateNextFolder() {
 
     nextFolderCursor++;
   } else {
+
     console.log("");
     console.log(chalk.cyan("- - - - - - - - - - - - - - - - - - - - - - -"));
     console.log("🏁", chalk.cyan(`Finished creating images`));
     console.log(chalk.cyan("- - - - - - - - - - - - - - - - - - - - - - -"));
+    console.log("");
+    console.log(`Total time elapsed: ${Date.now() - startTime} milliseconds`);
     console.log("");
   }
 }
@@ -345,7 +367,6 @@ function getAllFilesFromFolder(dir) {
 
   return results
 }
-
 
 // Generate images
 nextFolderCursor = 0;
