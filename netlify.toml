@@ -1,5 +1,14 @@
 
 # https://docs.netlify.com/configure-builds/file-based-configuration/#sample-file
 [build]
-  publish = "_site/"
+  publish = "_site"
   command = "npm run build"
+
+# https://www.netlify.com/products/dev/
+# https://github.com/netlify/cli/blob/master/docs/netlify-dev.md
+[dev]
+  publish    = "_public" # If you use a _redirect file, provide the path to your static content folder
+  command    = "npm start"
+  targetPort = 4000
+  port       = 8888
+  autoLaunch = true
