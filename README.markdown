@@ -140,6 +140,9 @@ _pictures
 
 These files are your data and will only change if you re-run the `npm run create` script or edit them yourself.
 
+_Running `npm run create` a second time will skip any existing files, even if 
+they would ideally be updated–for example, `.zip` files in the `_archives` folder. You can work around this by removing any files or folders that you want to re-create._
+
 ### How to add a new album
 
 1. Add your pictures to the `_pictures` folder:

@@ -13,6 +13,7 @@ import capitalize from "capitalize";
 
 import { getAlbumNamesFromPicturesFolder } from "../data-file-system/albums-from-pictures-folder.js";
 
+const overwriteReadyOnlyFiles = false; // Set this “true” to re-generate existing read-only data files in the “_pictures” folder.
 
 const galleryData = JSON.parse(fs.readFileSync("./_api/index.json", "utf8"));
 
@@ -188,7 +189,24 @@ const destination = "./_api";
 
 
 albums.forEach(async (album) => {
-  let uri = album.split("/").pop();
+
+let pathBits = album.split("/");
+pathBits.pop();
+let basepath = pathBits.join("/");
+let uri = album.split("/").pop();
+
+if (
+  fs.existsSync(`${destination}${basepath != "" ? `/${basepath}` : ''}/${uri}.json`)
+  &&
+  fs.existsSync(`./_pictures/${album}/data.json`)
+  &&
+  fs.existsSync(`./_pictures/${album}/exif.json`)
+  &&
+  overwriteReadyOnlyFiles !== true
+) {
+  console.log(`All data files for ./_pictures/${album} already exist. Skipping…`);
+} else {
+
   let {userEditableData, readOnlyData, readOnlyExif} = await createAlbumJSON({
     source: `./_pictures/${album}/original`,
     sourceForPreviewBase64: `./_pictures/${album}/16-wide`,
@@ -205,13 +223,11 @@ albums.forEach(async (album) => {
     }
   });
 
-  let pathBits = album.split("/");
-  pathBits.pop();
-  let basepath = pathBits.join("/");
-
-  saveJSON({ destination: `${destination}/${basepath}`, fileName: `${uri}.json`, data: userEditableData });
+  saveJSON({ destination: `${destination}${basepath != "" ? `/${basepath}` : ''}`, fileName: `${uri}.json`, data: userEditableData });
   saveJSON({ destination: `./_pictures/${album}`, fileName: `data.json`, data: readOnlyData, overwrite: true });
   saveJSON({ destination: `./_pictures/${album}`, fileName: `exif.json`, data: readOnlyExif, overwrite: true });
+
+}
 });
 
 if (albumGroups.length > 0) {

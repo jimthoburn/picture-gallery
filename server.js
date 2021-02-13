@@ -9,7 +9,7 @@ import chalk                from "chalk";
 
 import { config }           from "./_config.js";
 
-import { getAlbumsByURL }     from "./data-file-system/albums-by-url.js";
+import { getAlbumsByURL }   from "./data-file-system/albums-by-url.js";
 import { getSourceByURL }   from "./get-source/by-url.js";
 import { getError404HTML,
          getError500HTML }  from "./get-source/error.js";

@@ -10,6 +10,7 @@ import mkdirp from "mkdirp";
 import archiver from "archiver";
 import { getAlbumNamesFromPicturesFolder } from "../data-file-system/albums-from-pictures-folder.js";
 
+const overwrite = false; // Set this “true” to re-generate existing zip files.
 
 const galleryData = JSON.parse(fs.readFileSync("./_api/index.json", "utf8"));
 
@@ -76,7 +77,12 @@ async function createZip(source, destination, callback) {
   try {
     await mkdirp("_archives");
     albums.forEach(album => {
-      createZip(`_pictures/${album}/6000-wide/*.jpeg`, `_archives/${album}.zip`);
+      const destination = `_archives/${album}.zip`;
+      if (fs.existsSync(destination) && overwrite !== true) {
+        console.log(`${destination} already exists. Skipping…`);
+      } else {
+        createZip(`_pictures/${album}/6000-wide/*.jpeg`, destination);
+      }
     });
   } catch(e) {
     console.error(e);
