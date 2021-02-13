@@ -40,8 +40,8 @@ function ParentAlbumPage({ parent, children, config }) {
                    ? html`
                   <img
                     class="preview"
-                    width="${ 320 * (picture.width  > picture.height ? 1 : picture.width/picture.height) }"
-                    height="${320 * (picture.height > picture.width  ? 1 : picture.height/picture.width) }"
+                    width="0"
+                    height="0"
                     src="data:image/jpeg;base64,${picture.previewBase64}" alt="" />`
                    : "" }
                    
