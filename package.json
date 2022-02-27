@@ -25,7 +25,7 @@
   "dependencies": {
     "htm": "^3.0.4",
     "lit-element": "^2.4.0",
-    "markdown-it": "^12.0.4",
+    "markdown-it": "^12.3.2",
     "markdown-it-deflist": "^2.1.0",
     "preact": "^10.5.7",
     "preact-render-to-string": "^5.1.12",
