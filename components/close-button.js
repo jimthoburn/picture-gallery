@@ -19,6 +19,8 @@ function CloseButton({ state, album }) {
   // ⌨️ If the details view just appeared, move focus to the close button
   useEffect(() => {
     if (usingKeyboard() &&
+        closeButton.current &&
+        state && state.history && state.history.matches &&
         state.matches("showing_details") && 
         state.history.matches("transitioning_to_details")) {
       closeButton.current.focus();
