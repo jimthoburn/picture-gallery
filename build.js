@@ -1,6 +1,6 @@
 
 import fs                   from "fs-extra";
-import mkdirp               from "mkdirp";
+import { mkdirp }           from "mkdirp";
 import chalk                from "chalk";
 
 import { config }           from "./_config.js";
