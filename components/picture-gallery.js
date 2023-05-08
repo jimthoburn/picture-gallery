@@ -24,6 +24,9 @@ let getMachine = function() {
   return null;
 } 
 
+function formatPageTitle({ imageNumber, imageCaption, albumTitle }) {
+  return `Picture ${ imageNumber }${ imageCaption ? `. ${imageCaption}` : "" }. ${albumTitle}`;
+}
 
 function PictureGallery({ album, pictures, story, getPageURL, config }) {
 
@@ -88,9 +91,12 @@ function PictureGallery({ album, pictures, story, getPageURL, config }) {
         }
 
         const selectedPicture = pictures[state.context.selectedPictureIndex];
-        const selectedPictureTitle = selectedPicture.caption 
-                                  || selectedPicture.description
-                                  || `Picture ${ state.context.selectedPictureIndex + 1 }`;
+        const selectedPictureTitle = formatPageTitle({
+          imageNumber: state.context.selectedPictureIndex + 1,
+          imageCaption: selectedPicture.caption,
+          albumTitle: album.title
+        });
+
         document.title = selectedPictureTitle;
 
         if (state.context.didPopHistoryState != true) {
@@ -213,7 +219,11 @@ function getSelectedPictureIndexFromURL({ album, pictures, getPageURL }) {
 function getInitialPageTitle({ album, pictures, getPageURL }) {
   let selectedPictureIndex = getSelectedPictureIndexFromURL({ album, pictures, getPageURL });
   if (selectedPictureIndex != null) {
-    return pictures[selectedPictureIndex].caption || `Picture ${ selectedPictureIndex + 1 }`;
+    return formatPageTitle({
+      imageNumber: selectedPictureIndex + 1,
+      imageCaption: pictures[selectedPictureIndex].caption,
+      albumTitle: album.title
+    });
   } else {
     return album.title;
   }

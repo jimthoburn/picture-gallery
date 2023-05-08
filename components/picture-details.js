@@ -24,8 +24,11 @@ function PictureDetails({ pictures, album, state, config, pictureListShouldRende
 
   const stateStrings = state.toStrings();
 
+  const headingText = `Picture ${ state.context.selectedPictureIndex + 1 }.${ picture.caption ? ` ${picture.caption}` : "" }`;
+
   return html`
-    <section class="picture-details"
+    <section aria-atomic="true"
+             class="picture-details"
              data-picture-list-rendered="${pictureListShouldRender}"
              data-state="${stateStrings[stateStrings.length - 1]}"
              style="--scale: ${state.context.transform.scale};
@@ -33,7 +36,7 @@ function PictureDetails({ pictures, album, state, config, pictureListShouldRende
                     --translateY: ${state.context.transform.translateY};">
       <header>
         <div class="all">
-          <h1>${ picture.caption ? picture.caption : picture.description ? picture.description : `Picture ${ state.context.selectedPictureIndex + 1 }` }</h1>
+          <h1 aria-live="polite">${headingText}</h1>
           <p><${CloseButton} album="${album}" state="${state}" /></p>
         </div>
         <p class="download">
@@ -43,7 +46,7 @@ function PictureDetails({ pictures, album, state, config, pictureListShouldRende
         </p>
       </header>
 
-      <a href="${ downloadURL }">
+      <a href="${ downloadURL }" aria-live="polite">
         ${// 📚 SHIM: Use an array and a key, even though there’s only one item
           //         so that the image element will be removed and re-added to
           //         the DOM when the data changes (to prevent the browser from

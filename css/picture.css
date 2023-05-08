@@ -49,12 +49,8 @@
   display: flex;
   justify-content: flex-end;
   flex-wrap: wrap;
-  flex-direction: row-reverse;
+  flex-direction: column-reverse;
   padding: 1em 1.5em;
-}
-.picture-details .all p::after {
-  content: "/";
-  margin: 0 0.375em;
 }
 /* .picture-details .download a {
   color: inherit;
