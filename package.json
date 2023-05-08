@@ -5,7 +5,7 @@
   "repository": "github:jimthoburn/picture-gallery",
   "license": "MIT",
   "engines": {
-    "node": ">=14.15.3"
+    "node": ">=16.20.0"
   },
   "type": "module",
   "scripts": {

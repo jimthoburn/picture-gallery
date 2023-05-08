@@ -34,7 +34,7 @@ If you’d like to work locally instead of using Glitch–you can follow these s
 
 _NOTE: Some of these tools may only be available on macOS (in particular, ImageOptim and cavif)_
 
-1. Install Node 14.15.3 LTS or newer
+1. Install Node 16.20.0 LTS or newer
 https://nodejs.org
 
 2. Install ImageOptim
