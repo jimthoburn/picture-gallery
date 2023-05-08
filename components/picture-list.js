@@ -106,6 +106,8 @@ function PictureList({ album, pictures, story, state, config }) {
             ? `(min-width: 30em) 50vw, 100vw`
             : `100vw`;
 
+          const linkLabel = `Picture ${ index + 1 }.${ picture.caption ? ` ${picture.caption}` : "" }`;
+
           return html`
           <li key="${picture.uri}">
             <a href="/${album.uri}/${picture.uri}/"
@@ -134,11 +136,7 @@ function PictureList({ album, pictures, story, state, config }) {
                         width="${ 320 * (picture.width  > picture.height ? 1 : picture.width/picture.height) }"
                         height="${320 * (picture.height > picture.width  ? 1 : picture.height/picture.width) }"
                         loading="lazy"
-                        alt="${
-                          (picture.description)
-                          ? picture.description
-                          : `Picture ${index + 1}`
-                        }"
+                        alt="${linkLabel}"
                         data-selected="${(state.context.selectedPictureIndex === index) ? "true" : ""}" />
                  </${PictureElement}>
               </responsive-image>
