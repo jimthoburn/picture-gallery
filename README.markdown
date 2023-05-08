@@ -22,6 +22,7 @@ I’m using it to practice with new tools and to share photos with friends 🦊 
 * [Group albums](#group-albums)
 * [Social sharing image](#social-sharing-image)
 * [How to add a story about an album](#how-to-add-a-story-about-an-album)
+* [Image captions](#image-captions)
 * [Image file storage](#image-file-storage)
 
 ### Quick start
@@ -169,7 +170,7 @@ _api/
     your-new-album.json
 ```
 
-3. Add your album to the `index.json` file to feature it on your gallery’s home page (optional):
+4. Add your album to the `index.json` file to feature it on your gallery’s home page (optional):
 
 ```
 {
@@ -282,6 +283,38 @@ _api/
 ```
 
 Your story will appear along with the images, on the page for your album.
+
+### Image captions
+
+You can write captions and descriptions for your images by editing the data file for your album:
+
+```
+_api/
+    your-new-album.json
+```
+
+```
+{
+    "filename": "44.jpeg",
+    "description": "close-up of a tiny plant with purple flowers growing out of ground covered in pebbles",
+    "caption": "Desert Canterbury Bells at Mastodon Peak",
+    "uri": "44-mastodon-peak-desert-canterbury-bells"
+},
+```
+
+The `caption` will appear as part of the [page title for the image](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/title). And the `description` will be used as the [`alt` text for the image](https://developer.mozilla.org/en-US/docs/Web/API/HTMLImageElement/alt).
+
+You can also edit the `uri` to match your caption. This will appear as part of the URL for the image. For example: `https://pictures.tobbi.co/wildflowers/44-mastodon-peak-desert-canterbury-bells/`
+
+If you have a lot of images, you may be able to get a head start writing descriptions by using something like [Azure Computer Vision](
+https://learn.microsoft.com/en-us/azure/cognitive-services/Computer-vision/quickstarts-sdk/image-analysis-client-library?pivots=programming-language-rest-api&tabs=visual-studio).
+
+1. Sign in to your Azure account (or sign up for a new account).
+2. Create a “Computer Vision” instance (or choose one you already have).
+3. Copy the `.env-example` file in your local copy of this repo to a new file named `.env`
+4. Edit the  `.env` file you created and add the endpoint and key for your “Computer Vision” instance.
+
+If you create a new album, descriptions will be generated and added to the data file for your album. You can improve or make corrections to the descriptions by manually editing the file.
 
 ### Image file storage
 
