@@ -1,5 +1,8 @@
 
 import fs from "fs";
+import fetch, {
+  fileFromSync,
+} from "node-fetch";
 
 // https://stackoverflow.com/questions/46745014/alternative-for-dirname-in-node-when-using-the-experimental-modules-flag
 import { dirname } from 'path';
@@ -57,7 +60,54 @@ function getPreviewBase64(url) {
   });
 }
 
-async function createAlbumJSON({ source, sourceForPreviewBase64, destination, album }) {
+// Send a request to the Azure Computer Vision API to
+// get a description of the image located at filePath
+async function getDescription(filePath) {
+  if (process.env.AZURE_COMPUTER_VISION_API_ENDPOINT
+      && 
+      process.env.AZURE_COMPUTER_VISION_API_KEY) {
+
+    console.log("getDescription for " + filePath);
+
+    // Wait 4 seconds to avoid rate limiting
+    await new Promise((resolve, reject) => {
+      console.log("Waiting to send request for image description...");
+      setTimeout(resolve, 4 * 1000);
+    });
+    console.log("Sending request for image description...");
+
+    const url = process.env.AZURE_COMPUTER_VISION_API_ENDPOINT;
+    const params = {
+      "features": "caption,read",
+      "language": "en",
+      "model-version": "latest",
+      "api-version": "2023-02-01-preview",
+    };
+    const headers = {
+      "Content-Type": "application/octet-stream",
+      "Ocp-Apim-Subscription-Key": process.env.AZURE_COMPUTER_VISION_API_KEY,
+    };
+
+    const mimetype = "image/jpeg";
+    const blob = fileFromSync(filePath, mimetype);
+
+    const searchParams = new URLSearchParams(params).toString();
+
+    const response = await fetch(`${url}?${searchParams}`, { method: "POST", headers, body: blob })
+    if (!response.ok) {
+      console.log(response);
+      throw new Error("Network response was not ok");
+    }
+
+    const responseData = await  response.json();
+    console.log("Received image description: " + responseData.captionResult.text);
+    return responseData.captionResult.text;
+  }
+
+  return null;
+};
+
+async function createAlbumJSON({ source, sourceForPreviewBase64, sourceForDescription, destination, album }) {
   console.log("createAlbumJSON");
   console.log(arguments);
   const files = getAllFilesFromFolder(source)
@@ -80,11 +130,14 @@ async function createAlbumJSON({ source, sourceForPreviewBase64, destination, al
     // https://www.npmjs.com/package/exif
     const meta = await getImageMetadata(filePath);
 
+    // get a description of an image located at filePath using open ai
+    const description = await getDescription(`${sourceForDescription}/${photoFileName}`);
+
     const previewBase64 = await getPreviewBase64(`${sourceForPreviewBase64}/${photoFileName}`);
 
     const picture = {
       filename: encodeURIComponent(photoFileName),
-      description: null,
+      description,
       caption: null,
       uri: encodeURIComponent(photoFileName.split(".").shift()),
     };
@@ -210,6 +263,7 @@ if (
   let {userEditableData, readOnlyData, readOnlyExif} = await createAlbumJSON({
     source: `./_pictures/${album}/original`,
     sourceForPreviewBase64: `./_pictures/${album}/16-wide`,
+    sourceForDescription: `./_pictures/${album}/2048-wide`,
     album: {
       uri,
       title: capitalize(uri.replace(/\-/g, " ")),
