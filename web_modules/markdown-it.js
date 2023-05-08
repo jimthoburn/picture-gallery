@@ -5579,7 +5579,7 @@ Renderer.prototype.renderToken = function renderToken(tokens, idx, options) {
 
 /**
  * Renderer.renderInline(tokens, options, env) -> String
- * - tokens (Array): list on block tokens to renter
+ * - tokens (Array): list on block tokens to render
  * - options (Object): params of parser instance
  * - env (Object): additional data from parsed input (references, for example)
  *
@@ -5606,7 +5606,7 @@ Renderer.prototype.renderInline = function (tokens, options, env) {
 
 /** internal
  * Renderer.renderInlineAsText(tokens, options, env) -> String
- * - tokens (Array): list on block tokens to renter
+ * - tokens (Array): list on block tokens to render
  * - options (Object): params of parser instance
  * - env (Object): additional data from parsed input (references, for example)
  *
@@ -5622,6 +5622,8 @@ Renderer.prototype.renderInlineAsText = function (tokens, options, env) {
       result += tokens[i].content;
     } else if (tokens[i].type === 'image') {
       result += this.renderInlineAsText(tokens[i].children, options, env);
+    } else if (tokens[i].type === 'softbreak') {
+      result += '\n';
     }
   }
 
@@ -5631,7 +5633,7 @@ Renderer.prototype.renderInlineAsText = function (tokens, options, env) {
 
 /**
  * Renderer.render(tokens, options, env) -> String
- * - tokens (Array): list on block tokens to renter
+ * - tokens (Array): list on block tokens to render
  * - options (Object): params of parser instance
  * - env (Object): additional data from parsed input (references, for example)
  *
@@ -6563,7 +6565,11 @@ function Token(type, tag, nesting) {
   /**
    * Token#info -> String
    *
-   * fence infostring
+   * Additional information:
+   *
+   * - Info string for "fence" tokens
+   * - The value "auto" for autolink "link_open" and "link_close" tokens
+   * - The string value of the item marker for ordered-list "list_item_open" tokens
    **/
   this.info     = '';
 
@@ -6786,7 +6792,7 @@ function escapedSplit(str) {
 var table = function table(state, startLine, endLine, silent) {
   var ch, lineText, pos, i, l, nextLine, columns, columnCount, token,
       aligns, t, tableLines, tbodyLines, oldParentType, terminate,
-      terminatorRules;
+      terminatorRules, firstCh, secondCh;
 
   // should have at least two lines
   if (startLine + 2 > endLine) { return false; }
@@ -6805,8 +6811,19 @@ var table = function table(state, startLine, endLine, silent) {
   pos = state.bMarks[nextLine] + state.tShift[nextLine];
   if (pos >= state.eMarks[nextLine]) { return false; }
 
-  ch = state.src.charCodeAt(pos++);
-  if (ch !== 0x7C/* | */ && ch !== 0x2D/* - */ && ch !== 0x3A/* : */) { return false; }
+  firstCh = state.src.charCodeAt(pos++);
+  if (firstCh !== 0x7C/* | */ && firstCh !== 0x2D/* - */ && firstCh !== 0x3A/* : */) { return false; }
+
+  if (pos >= state.eMarks[nextLine]) { return false; }
+
+  secondCh = state.src.charCodeAt(pos++);
+  if (secondCh !== 0x7C/* | */ && secondCh !== 0x2D/* - */ && secondCh !== 0x3A/* : */ && !isSpace(secondCh)) {
+    return false;
+  }
+
+  // if first character is '-', then second character must not be a space
+  // (due to parsing ambiguity with list)
+  if (firstCh === 0x2D/* - */ && isSpace(secondCh)) { return false; }
 
   while (pos < state.eMarks[nextLine]) {
     ch = state.src.charCodeAt(pos);
@@ -6970,7 +6987,7 @@ var code = function code(state, startLine, endLine/*, silent*/) {
   state.line = last;
 
   token         = state.push('code_block', 'code', 0);
-  token.content = state.getLines(startLine, last, 4 + state.blkIndent, true);
+  token.content = state.getLines(startLine, last, 4 + state.blkIndent, false) + '\n';
   token.map     = [ startLine, state.line ];
 
   return true;
@@ -7546,7 +7563,7 @@ var list = function list(state, startLine, endLine, silent) {
     // This code can fail if plugins use blkIndent as well as lists,
     // but I hope the spec gets fixed long before that happens.
     //
-    if (state.tShift[startLine] >= state.blkIndent) {
+    if (state.sCount[startLine] >= state.blkIndent) {
       isTerminatingParagraph = true;
     }
   }
@@ -7555,7 +7572,7 @@ var list = function list(state, startLine, endLine, silent) {
   if ((posAfterMarker = skipOrderedListMarker(state, startLine)) >= 0) {
     isOrdered = true;
     start = state.bMarks[startLine] + state.tShift[startLine];
-    markerValue = Number(state.src.substr(start, posAfterMarker - start - 1));
+    markerValue = Number(state.src.slice(start, posAfterMarker - 1));
 
     // If we're starting a new ordered list right after
     // a paragraph, it should start with 1.
@@ -7648,6 +7665,9 @@ var list = function list(state, startLine, endLine, silent) {
     token        = state.push('list_item_open', 'li', 1);
     token.markup = String.fromCharCode(markerCharCode);
     token.map    = itemLines = [ startLine, 0 ];
+    if (isOrdered) {
+      token.info = state.src.slice(start, posAfterMarker - 1);
+    }
 
     // change current state, then restore it after parser subcall
     oldTight = state.tight;
@@ -7724,6 +7744,7 @@ var list = function list(state, startLine, endLine, silent) {
     if (isOrdered) {
       posAfterMarker = skipOrderedListMarker(state, nextLine);
       if (posAfterMarker < 0) { break; }
+      start = state.bMarks[nextLine] + state.tShift[nextLine];
     } else {
       posAfterMarker = skipBulletListMarker(state, nextLine);
       if (posAfterMarker < 0) { break; }
@@ -7945,6 +7966,175 @@ var reference = function reference(state, startLine, _endLine, silent) {
   return true;
 };
 
+// List of valid html blocks names, accorting to commonmark spec
+
+
+var html_blocks = [
+  'address',
+  'article',
+  'aside',
+  'base',
+  'basefont',
+  'blockquote',
+  'body',
+  'caption',
+  'center',
+  'col',
+  'colgroup',
+  'dd',
+  'details',
+  'dialog',
+  'dir',
+  'div',
+  'dl',
+  'dt',
+  'fieldset',
+  'figcaption',
+  'figure',
+  'footer',
+  'form',
+  'frame',
+  'frameset',
+  'h1',
+  'h2',
+  'h3',
+  'h4',
+  'h5',
+  'h6',
+  'head',
+  'header',
+  'hr',
+  'html',
+  'iframe',
+  'legend',
+  'li',
+  'link',
+  'main',
+  'menu',
+  'menuitem',
+  'nav',
+  'noframes',
+  'ol',
+  'optgroup',
+  'option',
+  'p',
+  'param',
+  'section',
+  'source',
+  'summary',
+  'table',
+  'tbody',
+  'td',
+  'tfoot',
+  'th',
+  'thead',
+  'title',
+  'tr',
+  'track',
+  'ul'
+];
+
+// Regexps to match html elements
+
+var attr_name     = '[a-zA-Z_:][a-zA-Z0-9:._-]*';
+
+var unquoted      = '[^"\'=<>`\\x00-\\x20]+';
+var single_quoted = "'[^']*'";
+var double_quoted = '"[^"]*"';
+
+var attr_value  = '(?:' + unquoted + '|' + single_quoted + '|' + double_quoted + ')';
+
+var attribute   = '(?:\\s+' + attr_name + '(?:\\s*=\\s*' + attr_value + ')?)';
+
+var open_tag    = '<[A-Za-z][A-Za-z0-9\\-]*' + attribute + '*\\s*\\/?>';
+
+var close_tag   = '<\\/[A-Za-z][A-Za-z0-9\\-]*\\s*>';
+var comment     = '<!---->|<!--(?:-?[^>-])(?:-?[^-])*-->';
+var processing  = '<[?][\\s\\S]*?[?]>';
+var declaration = '<![A-Z]+\\s+[^>]*>';
+var cdata       = '<!\\[CDATA\\[[\\s\\S]*?\\]\\]>';
+
+var HTML_TAG_RE = new RegExp('^(?:' + open_tag + '|' + close_tag + '|' + comment +
+                        '|' + processing + '|' + declaration + '|' + cdata + ')');
+var HTML_OPEN_CLOSE_TAG_RE = new RegExp('^(?:' + open_tag + '|' + close_tag + ')');
+
+var HTML_TAG_RE_1 = HTML_TAG_RE;
+var HTML_OPEN_CLOSE_TAG_RE_1 = HTML_OPEN_CLOSE_TAG_RE;
+
+var html_re = {
+	HTML_TAG_RE: HTML_TAG_RE_1,
+	HTML_OPEN_CLOSE_TAG_RE: HTML_OPEN_CLOSE_TAG_RE_1
+};
+
+var HTML_OPEN_CLOSE_TAG_RE$1 = html_re.HTML_OPEN_CLOSE_TAG_RE;
+
+// An array of opening and corresponding closing sequences for html tags,
+// last argument defines whether it can terminate a paragraph or not
+//
+var HTML_SEQUENCES = [
+  [ /^<(script|pre|style|textarea)(?=(\s|>|$))/i, /<\/(script|pre|style|textarea)>/i, true ],
+  [ /^<!--/,        /-->/,   true ],
+  [ /^<\?/,         /\?>/,   true ],
+  [ /^<![A-Z]/,     />/,     true ],
+  [ /^<!\[CDATA\[/, /\]\]>/, true ],
+  [ new RegExp('^</?(' + html_blocks.join('|') + ')(?=(\\s|/?>|$))', 'i'), /^$/, true ],
+  [ new RegExp(HTML_OPEN_CLOSE_TAG_RE$1.source + '\\s*$'),  /^$/, false ]
+];
+
+
+var html_block = function html_block(state, startLine, endLine, silent) {
+  var i, nextLine, token, lineText,
+      pos = state.bMarks[startLine] + state.tShift[startLine],
+      max = state.eMarks[startLine];
+
+  // if it's indented more than 3 spaces, it should be a code block
+  if (state.sCount[startLine] - state.blkIndent >= 4) { return false; }
+
+  if (!state.md.options.html) { return false; }
+
+  if (state.src.charCodeAt(pos) !== 0x3C/* < */) { return false; }
+
+  lineText = state.src.slice(pos, max);
+
+  for (i = 0; i < HTML_SEQUENCES.length; i++) {
+    if (HTML_SEQUENCES[i][0].test(lineText)) { break; }
+  }
+
+  if (i === HTML_SEQUENCES.length) { return false; }
+
+  if (silent) {
+    // true if this sequence can be a terminator, false otherwise
+    return HTML_SEQUENCES[i][2];
+  }
+
+  nextLine = startLine + 1;
+
+  // If we are here - we detected HTML block.
+  // Let's roll down till block end.
+  if (!HTML_SEQUENCES[i][1].test(lineText)) {
+    for (; nextLine < endLine; nextLine++) {
+      if (state.sCount[nextLine] < state.blkIndent) { break; }
+
+      pos = state.bMarks[nextLine] + state.tShift[nextLine];
+      max = state.eMarks[nextLine];
+      lineText = state.src.slice(pos, max);
+
+      if (HTML_SEQUENCES[i][1].test(lineText)) {
+        if (lineText.length !== 0) { nextLine++; }
+        break;
+      }
+    }
+  }
+
+  state.line = nextLine;
+
+  token         = state.push('html_block', '', 0);
+  token.map     = [ startLine, nextLine ];
+  token.content = state.getLines(startLine, nextLine, state.blkIndent, true);
+
+  return true;
+};
+
 var isSpace$5 = utils.isSpace;
 
 
@@ -8075,175 +8265,6 @@ var lheading = function lheading(state, startLine, endLine/*, silent*/) {
   token.markup   = String.fromCharCode(marker);
 
   state.parentType = oldParentType;
-
-  return true;
-};
-
-// List of valid html blocks names, accorting to commonmark spec
-
-
-var html_blocks = [
-  'address',
-  'article',
-  'aside',
-  'base',
-  'basefont',
-  'blockquote',
-  'body',
-  'caption',
-  'center',
-  'col',
-  'colgroup',
-  'dd',
-  'details',
-  'dialog',
-  'dir',
-  'div',
-  'dl',
-  'dt',
-  'fieldset',
-  'figcaption',
-  'figure',
-  'footer',
-  'form',
-  'frame',
-  'frameset',
-  'h1',
-  'h2',
-  'h3',
-  'h4',
-  'h5',
-  'h6',
-  'head',
-  'header',
-  'hr',
-  'html',
-  'iframe',
-  'legend',
-  'li',
-  'link',
-  'main',
-  'menu',
-  'menuitem',
-  'nav',
-  'noframes',
-  'ol',
-  'optgroup',
-  'option',
-  'p',
-  'param',
-  'section',
-  'source',
-  'summary',
-  'table',
-  'tbody',
-  'td',
-  'tfoot',
-  'th',
-  'thead',
-  'title',
-  'tr',
-  'track',
-  'ul'
-];
-
-// Regexps to match html elements
-
-var attr_name     = '[a-zA-Z_:][a-zA-Z0-9:._-]*';
-
-var unquoted      = '[^"\'=<>`\\x00-\\x20]+';
-var single_quoted = "'[^']*'";
-var double_quoted = '"[^"]*"';
-
-var attr_value  = '(?:' + unquoted + '|' + single_quoted + '|' + double_quoted + ')';
-
-var attribute   = '(?:\\s+' + attr_name + '(?:\\s*=\\s*' + attr_value + ')?)';
-
-var open_tag    = '<[A-Za-z][A-Za-z0-9\\-]*' + attribute + '*\\s*\\/?>';
-
-var close_tag   = '<\\/[A-Za-z][A-Za-z0-9\\-]*\\s*>';
-var comment     = '<!---->|<!--(?:-?[^>-])(?:-?[^-])*-->';
-var processing  = '<[?][\\s\\S]*?[?]>';
-var declaration = '<![A-Z]+\\s+[^>]*>';
-var cdata       = '<!\\[CDATA\\[[\\s\\S]*?\\]\\]>';
-
-var HTML_TAG_RE = new RegExp('^(?:' + open_tag + '|' + close_tag + '|' + comment +
-                        '|' + processing + '|' + declaration + '|' + cdata + ')');
-var HTML_OPEN_CLOSE_TAG_RE = new RegExp('^(?:' + open_tag + '|' + close_tag + ')');
-
-var HTML_TAG_RE_1 = HTML_TAG_RE;
-var HTML_OPEN_CLOSE_TAG_RE_1 = HTML_OPEN_CLOSE_TAG_RE;
-
-var html_re = {
-	HTML_TAG_RE: HTML_TAG_RE_1,
-	HTML_OPEN_CLOSE_TAG_RE: HTML_OPEN_CLOSE_TAG_RE_1
-};
-
-var HTML_OPEN_CLOSE_TAG_RE$1 = html_re.HTML_OPEN_CLOSE_TAG_RE;
-
-// An array of opening and corresponding closing sequences for html tags,
-// last argument defines whether it can terminate a paragraph or not
-//
-var HTML_SEQUENCES = [
-  [ /^<(script|pre|style)(?=(\s|>|$))/i, /<\/(script|pre|style)>/i, true ],
-  [ /^<!--/,        /-->/,   true ],
-  [ /^<\?/,         /\?>/,   true ],
-  [ /^<![A-Z]/,     />/,     true ],
-  [ /^<!\[CDATA\[/, /\]\]>/, true ],
-  [ new RegExp('^</?(' + html_blocks.join('|') + ')(?=(\\s|/?>|$))', 'i'), /^$/, true ],
-  [ new RegExp(HTML_OPEN_CLOSE_TAG_RE$1.source + '\\s*$'),  /^$/, false ]
-];
-
-
-var html_block = function html_block(state, startLine, endLine, silent) {
-  var i, nextLine, token, lineText,
-      pos = state.bMarks[startLine] + state.tShift[startLine],
-      max = state.eMarks[startLine];
-
-  // if it's indented more than 3 spaces, it should be a code block
-  if (state.sCount[startLine] - state.blkIndent >= 4) { return false; }
-
-  if (!state.md.options.html) { return false; }
-
-  if (state.src.charCodeAt(pos) !== 0x3C/* < */) { return false; }
-
-  lineText = state.src.slice(pos, max);
-
-  for (i = 0; i < HTML_SEQUENCES.length; i++) {
-    if (HTML_SEQUENCES[i][0].test(lineText)) { break; }
-  }
-
-  if (i === HTML_SEQUENCES.length) { return false; }
-
-  if (silent) {
-    // true if this sequence can be a terminator, false otherwise
-    return HTML_SEQUENCES[i][2];
-  }
-
-  nextLine = startLine + 1;
-
-  // If we are here - we detected HTML block.
-  // Let's roll down till block end.
-  if (!HTML_SEQUENCES[i][1].test(lineText)) {
-    for (; nextLine < endLine; nextLine++) {
-      if (state.sCount[nextLine] < state.blkIndent) { break; }
-
-      pos = state.bMarks[nextLine] + state.tShift[nextLine];
-      max = state.eMarks[nextLine];
-      lineText = state.src.slice(pos, max);
-
-      if (HTML_SEQUENCES[i][1].test(lineText)) {
-        if (lineText.length !== 0) { nextLine++; }
-        break;
-      }
-    }
-  }
-
-  state.line = nextLine;
-
-  token         = state.push('html_block', '', 0);
-  token.map     = [ startLine, nextLine ];
-  token.content = state.getLines(startLine, nextLine, state.blkIndent, true);
 
   return true;
 };
@@ -8536,9 +8557,9 @@ var _rules$1 = [
   [ 'hr',         hr,         [ 'paragraph', 'reference', 'blockquote', 'list' ] ],
   [ 'list',       list,       [ 'paragraph', 'reference', 'blockquote' ] ],
   [ 'reference',  reference ],
+  [ 'html_block', html_block, [ 'paragraph', 'reference', 'blockquote' ] ],
   [ 'heading',    heading,    [ 'paragraph', 'reference', 'blockquote' ] ],
   [ 'lheading',   lheading ],
-  [ 'html_block', html_block, [ 'paragraph', 'reference', 'blockquote' ] ],
   [ 'paragraph',  paragraph ]
 ];
 
@@ -8699,7 +8720,7 @@ var isSpace$7 = utils.isSpace;
 
 
 var newline = function newline(state, silent) {
-  var pmax, max, pos = state.pos;
+  var pmax, max, ws, pos = state.pos;
 
   if (state.src.charCodeAt(pos) !== 0x0A/* \n */) { return false; }
 
@@ -8713,7 +8734,11 @@ var newline = function newline(state, silent) {
   if (!silent) {
     if (pmax >= 0 && state.pending.charCodeAt(pmax) === 0x20) {
       if (pmax >= 1 && state.pending.charCodeAt(pmax - 1) === 0x20) {
-        state.pending = state.pending.replace(/ +$/, '');
+        // Find whitespaces tail of pending chars.
+        ws = pmax - 1;
+        while (ws >= 1 && state.pending.charCodeAt(ws - 1) === 0x20) ws--;
+
+        state.pending = state.pending.slice(0, ws);
         state.push('hardbreak', 'br', 0);
       } else {
         state.pending = state.pending.slice(0, -1);
@@ -8878,7 +8903,6 @@ var tokenize = function strikethrough(state, silent) {
     state.delimiters.push({
       marker: marker,
       length: 0,     // disable "rule of 3" length checks meant for emphasis
-      jump:   i / 2, // for `~~` 1 marker = 2 characters
       token:  state.tokens.length - 1,
       end:    -1,
       open:   scanned.can_open,
@@ -9009,15 +9033,6 @@ var tokenize$1 = function emphasis(state, silent) {
       //
       length: scanned.length,
 
-      // An amount of characters before this one that's equivalent to
-      // current one. In plain English: if this delimiter does not open
-      // an emphasis, neither do previous `jump` characters.
-      //
-      // Used to skip sequences like "*****" in one step, for 1st asterisk
-      // value will be 0, for 2nd it's 1 and so on.
-      //
-      jump:   i,
-
       // A position of the token this delimiter corresponds to.
       //
       token:  state.tokens.length - 1,
@@ -9071,9 +9086,11 @@ function postProcess$1(state, delimiters) {
     //
     isStrong = i > 0 &&
                delimiters[i - 1].end === startDelim.end + 1 &&
+               // check that first two markers match and adjacent
+               delimiters[i - 1].marker === startDelim.marker &&
                delimiters[i - 1].token === startDelim.token - 1 &&
-               delimiters[startDelim.end + 1].token === endDelim.token + 1 &&
-               delimiters[i - 1].marker === startDelim.marker;
+               // check that last two markers are adjacent (we can safely assume they match)
+               delimiters[startDelim.end + 1].token === endDelim.token + 1;
 
     ch = String.fromCharCode(startDelim.marker);
 
@@ -9586,8 +9603,27 @@ function processDelimiters(state, delimiters) {
       openersBottom = {},
       max = delimiters.length;
 
+  if (!max) return;
+
+  // headerIdx is the first delimiter of the current (where closer is) delimiter run
+  var headerIdx = 0;
+  var lastTokenIdx = -2; // needs any value lower than -1
+  var jumps = [];
+
   for (closerIdx = 0; closerIdx < max; closerIdx++) {
     closer = delimiters[closerIdx];
+
+    jumps.push(0);
+
+    // markers belong to same delimiter run if:
+    //  - they have adjacent tokens
+    //  - AND markers are the same
+    //
+    if (delimiters[headerIdx].marker !== closer.marker || lastTokenIdx !== closer.token - 1) {
+      headerIdx = closerIdx;
+    }
+
+    lastTokenIdx = closer.token;
 
     // Length is only used for emphasis-specific "rule of 3",
     // if it's not defined (in strikethrough or 3rd party plugins),
@@ -9598,21 +9634,20 @@ function processDelimiters(state, delimiters) {
     if (!closer.close) continue;
 
     // Previously calculated lower bounds (previous fails)
-    // for each marker and each delimiter length modulo 3.
+    // for each marker, each delimiter length modulo 3,
+    // and for whether this closer can be an opener;
+    // https://github.com/commonmark/cmark/commit/34250e12ccebdc6372b8b49c44fab57c72443460
     if (!openersBottom.hasOwnProperty(closer.marker)) {
-      openersBottom[closer.marker] = [ -1, -1, -1 ];
+      openersBottom[closer.marker] = [ -1, -1, -1, -1, -1, -1 ];
     }
 
-    minOpenerIdx = openersBottom[closer.marker][closer.length % 3];
+    minOpenerIdx = openersBottom[closer.marker][(closer.open ? 3 : 0) + (closer.length % 3)];
 
-    openerIdx = closerIdx - closer.jump - 1;
-
-    // avoid crash if `closer.jump` is pointing outside of the array, see #742
-    if (openerIdx < -1) openerIdx = -1;
+    openerIdx = headerIdx - jumps[headerIdx] - 1;
 
     newMinOpenerIdx = openerIdx;
 
-    for (; openerIdx > minOpenerIdx; openerIdx -= opener.jump + 1) {
+    for (; openerIdx > minOpenerIdx; openerIdx -= jumps[openerIdx] + 1) {
       opener = delimiters[openerIdx];
 
       if (opener.marker !== closer.marker) continue;
@@ -9642,15 +9677,19 @@ function processDelimiters(state, delimiters) {
           // sure algorithm has linear complexity (see *_*_*_*_*_... case).
           //
           lastJump = openerIdx > 0 && !delimiters[openerIdx - 1].open ?
-            delimiters[openerIdx - 1].jump + 1 :
+            jumps[openerIdx - 1] + 1 :
             0;
 
-          closer.jump  = closerIdx - openerIdx + lastJump;
+          jumps[closerIdx] = closerIdx - openerIdx + lastJump;
+          jumps[openerIdx] = lastJump;
+
           closer.open  = false;
           opener.end   = closerIdx;
-          opener.jump  = lastJump;
           opener.close = false;
           newMinOpenerIdx = -1;
+          // treat next token as start of run,
+          // it optimizes skips in **<...>**a**<...>** pathological case
+          lastTokenIdx = -2;
           break;
         }
       }
@@ -9664,7 +9703,7 @@ function processDelimiters(state, delimiters) {
       // See details here:
       // https://github.com/commonmark/cmark/issues/178#issuecomment-270417442
       //
-      openersBottom[closer.marker][(closer.length || 0) % 3] = newMinOpenerIdx;
+      openersBottom[closer.marker][(closer.open ? 3 : 0) + ((closer.length || 0) % 3)] = newMinOpenerIdx;
     }
   }
 }
@@ -11686,7 +11725,7 @@ function normalizeLinkText(url) {
  *   highlight: function (str, lang) {
  *     if (lang && hljs.getLanguage(lang)) {
  *       try {
- *         return hljs.highlight(lang, str, true).value;
+ *         return hljs.highlight(str, { language: lang, ignoreIllegals: true }).value;
  *       } catch (__) {}
  *     }
  *
@@ -11706,7 +11745,7 @@ function normalizeLinkText(url) {
  *     if (lang && hljs.getLanguage(lang)) {
  *       try {
  *         return '<pre class="hljs"><code>' +
- *                hljs.highlight(lang, str, true).value +
+ *                hljs.highlight(str, { language: lang, ignoreIllegals: true }).value +
  *                '</code></pre>';
  *       } catch (__) {}
  *     }
