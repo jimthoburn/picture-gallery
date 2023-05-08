@@ -9,7 +9,7 @@ import { dirname } from 'path';
 import { fileURLToPath } from 'url';
 const __dirname = dirname(fileURLToPath(import.meta.url));
 
-import mkdirp from "mkdirp";
+import { mkdirp } from "mkdirp";
 import exif from "exif";
 import base64 from "../helpers/node-base64-image.js";
 import capitalize from "capitalize";

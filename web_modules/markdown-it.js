@@ -6124,8 +6124,17 @@ var linkify = function linkify(state) {
         level = currentToken.level;
         lastPos = 0;
 
-        for (ln = 0; ln < links.length; ln++) {
+        // forbid escape sequence at the start of the string,
+        // this avoids http\://example.com/ from being linkified as
+        // http:<a href="//example.com/">//example.com/</a>
+        if (links.length > 0 &&
+            links[0].index === 0 &&
+            i > 0 &&
+            tokens[i - 1].type === 'text_special') {
+          links = links.slice(1);
+        }
 
+        for (ln = 0; ln < links.length; ln++) {
           url = links[ln].url;
           fullUrl = state.md.normalizeLink(url);
           if (!state.md.validateLink(fullUrl)) { continue; }
@@ -6191,19 +6200,18 @@ var linkify = function linkify(state) {
 
 // TODO:
 // - fractionals 1/2, 1/4, 3/4 -> ½, ¼, ¾
-// - miltiplication 2 x 4 -> 2 × 4
+// - multiplications 2 x 4 -> 2 × 4
 
 var RARE_RE = /\+-|\.\.|\?\?\?\?|!!!!|,,|--/;
 
 // Workaround for phantomjs - need regex without /g flag,
 // or root check will fail every second time
-var SCOPED_ABBR_TEST_RE = /\((c|tm|r|p)\)/i;
+var SCOPED_ABBR_TEST_RE = /\((c|tm|r)\)/i;
 
-var SCOPED_ABBR_RE = /\((c|tm|r|p)\)/ig;
+var SCOPED_ABBR_RE = /\((c|tm|r)\)/ig;
 var SCOPED_ABBR = {
   c: '©',
   r: '®',
-  p: '§',
   tm: '™'
 };
 
@@ -6294,7 +6302,7 @@ var APOSTROPHE = '\u2019'; /* ’ */
 
 
 function replaceAt(str, index, ch) {
-  return str.substr(0, index) + ch + str.substr(index + 1);
+  return str.slice(0, index) + ch + str.slice(index + 1);
 }
 
 function process_inlines(tokens, state) {
@@ -6478,6 +6486,45 @@ var smartquotes = function smartquotes(state) {
     }
 
     process_inlines(state.tokens[blkIdx].children, state);
+  }
+};
+
+// Join raw text tokens with the rest of the text
+
+
+var text_join = function text_join(state) {
+  var j, l, tokens, curr, max, last,
+      blockTokens = state.tokens;
+
+  for (j = 0, l = blockTokens.length; j < l; j++) {
+    if (blockTokens[j].type !== 'inline') continue;
+
+    tokens = blockTokens[j].children;
+    max = tokens.length;
+
+    for (curr = 0; curr < max; curr++) {
+      if (tokens[curr].type === 'text_special') {
+        tokens[curr].type = 'text';
+      }
+    }
+
+    for (curr = last = 0; curr < max; curr++) {
+      if (tokens[curr].type === 'text' &&
+          curr + 1 < max &&
+          tokens[curr + 1].type === 'text') {
+
+        // collapse two adjacent text nodes
+        tokens[curr + 1].content = tokens[curr].content + tokens[curr + 1].content;
+      } else {
+        if (curr !== last) { tokens[last] = tokens[curr]; }
+
+        last++;
+      }
+    }
+
+    if (curr !== last) {
+      tokens.length = last;
+    }
   }
 };
 
@@ -6701,7 +6748,10 @@ var _rules = [
   [ 'inline',         inline         ],
   [ 'linkify',        linkify        ],
   [ 'replacements',   replacements   ],
-  [ 'smartquotes',    smartquotes    ]
+  [ 'smartquotes',    smartquotes    ],
+  // `text_join` finds `text_special` tokens (for escape sequences)
+  // and joins them with the rest of the text
+  [ 'text_join',      text_join      ]
 ];
 
 
@@ -6749,7 +6799,7 @@ function getLine(state, line) {
   var pos = state.bMarks[line] + state.tShift[line],
       max = state.eMarks[line];
 
-  return state.src.substr(pos, max - pos);
+  return state.src.slice(pos, max);
 }
 
 function escapedSplit(str) {
@@ -8716,6 +8766,63 @@ var text = function text(state, silent) {
   return true;
 };
 
+// Process links like https://example.org/
+
+
+// RFC3986: scheme = ALPHA *( ALPHA / DIGIT / "+" / "-" / "." )
+var SCHEME_RE = /(?:^|[^a-z0-9.+-])([a-z][a-z0-9.+-]*)$/i;
+
+
+var linkify$1 = function linkify(state, silent) {
+  var pos, max, match, proto, link, url, fullUrl, token;
+
+  if (!state.md.options.linkify) return false;
+  if (state.linkLevel > 0) return false;
+
+  pos = state.pos;
+  max = state.posMax;
+
+  if (pos + 3 > max) return false;
+  if (state.src.charCodeAt(pos) !== 0x3A/* : */) return false;
+  if (state.src.charCodeAt(pos + 1) !== 0x2F/* / */) return false;
+  if (state.src.charCodeAt(pos + 2) !== 0x2F/* / */) return false;
+
+  match = state.pending.match(SCHEME_RE);
+  if (!match) return false;
+
+  proto = match[1];
+
+  link = state.md.linkify.matchAtStart(state.src.slice(pos - proto.length));
+  if (!link) return false;
+
+  url = link.url;
+
+  // disallow '*' at the end of the link (conflicts with emphasis)
+  url = url.replace(/\*+$/, '');
+
+  fullUrl = state.md.normalizeLink(url);
+  if (!state.md.validateLink(fullUrl)) return false;
+
+  if (!silent) {
+    state.pending = state.pending.slice(0, -proto.length);
+
+    token         = state.push('link_open', 'a', 1);
+    token.attrs   = [ [ 'href', fullUrl ] ];
+    token.markup  = 'linkify';
+    token.info    = 'auto';
+
+    token         = state.push('text', '', 0);
+    token.content = state.md.normalizeLinkText(url);
+
+    token         = state.push('link_close', 'a', -1);
+    token.markup  = 'linkify';
+    token.info    = 'auto';
+  }
+
+  state.pos += url.length - proto.length;
+  return true;
+};
+
 var isSpace$7 = utils.isSpace;
 
 
@@ -8770,41 +8877,60 @@ for (var i = 0; i < 256; i++) { ESCAPED.push(0); }
 
 
 var _escape = function escape(state, silent) {
-  var ch, pos = state.pos, max = state.posMax;
+  var ch1, ch2, origStr, escapedStr, token, pos = state.pos, max = state.posMax;
 
-  if (state.src.charCodeAt(pos) !== 0x5C/* \ */) { return false; }
-
+  if (state.src.charCodeAt(pos) !== 0x5C/* \ */) return false;
   pos++;
 
-  if (pos < max) {
-    ch = state.src.charCodeAt(pos);
+  // '\' at the end of the inline block
+  if (pos >= max) return false;
 
-    if (ch < 256 && ESCAPED[ch] !== 0) {
-      if (!silent) { state.pending += state.src[pos]; }
-      state.pos += 2;
-      return true;
+  ch1 = state.src.charCodeAt(pos);
+
+  if (ch1 === 0x0A) {
+    if (!silent) {
+      state.push('hardbreak', 'br', 0);
     }
 
-    if (ch === 0x0A) {
-      if (!silent) {
-        state.push('hardbreak', 'br', 0);
-      }
-
+    pos++;
+    // skip leading whitespaces from next line
+    while (pos < max) {
+      ch1 = state.src.charCodeAt(pos);
+      if (!isSpace$8(ch1)) break;
       pos++;
-      // skip leading whitespaces from next line
-      while (pos < max) {
-        ch = state.src.charCodeAt(pos);
-        if (!isSpace$8(ch)) { break; }
-        pos++;
-      }
+    }
 
-      state.pos = pos;
-      return true;
+    state.pos = pos;
+    return true;
+  }
+
+  escapedStr = state.src[pos];
+
+  if (ch1 >= 0xD800 && ch1 <= 0xDBFF && pos + 1 < max) {
+    ch2 = state.src.charCodeAt(pos + 1);
+
+    if (ch2 >= 0xDC00 && ch2 <= 0xDFFF) {
+      escapedStr += state.src[pos + 1];
+      pos++;
     }
   }
 
-  if (!silent) { state.pending += '\\'; }
-  state.pos++;
+  origStr = '\\' + escapedStr;
+
+  if (!silent) {
+    token = state.push('text_special', '', 0);
+
+    if (ch1 < 256 && ESCAPED[ch1] !== 0) {
+      token.content = escapedStr;
+    } else {
+      token.content = origStr;
+    }
+
+    token.markup = origStr;
+    token.info   = 'escape';
+  }
+
+  state.pos = pos + 1;
   return true;
 };
 
@@ -9273,7 +9399,9 @@ var link = function link(state, silent) {
       attrs.push([ 'title', title ]);
     }
 
+    state.linkLevel++;
     state.md.inline.tokenize(state);
+    state.linkLevel--;
 
     token        = state.push('link_close', 'a', -1);
   }
@@ -9510,6 +9638,14 @@ var autolink = function autolink(state, silent) {
 var HTML_TAG_RE$1 = html_re.HTML_TAG_RE;
 
 
+function isLinkOpen$1(str) {
+  return /^<a[>\s]/i.test(str);
+}
+function isLinkClose$1(str) {
+  return /^<\/a\s*>/i.test(str);
+}
+
+
 function isLetter(ch) {
   /*eslint no-bitwise:0*/
   var lc = ch | 0x20; // to lower case
@@ -9545,6 +9681,9 @@ var html_inline = function html_inline(state, silent) {
   if (!silent) {
     token         = state.push('html_inline', '', 0);
     token.content = state.src.slice(pos, pos + match[0].length);
+
+    if (isLinkOpen$1(token.content))  state.linkLevel++;
+    if (isLinkClose$1(token.content)) state.linkLevel--;
   }
   state.pos += match[0].length;
   return true;
@@ -9560,38 +9699,45 @@ var NAMED_RE   = /^&([a-z][a-z0-9]{1,31});/i;
 
 
 var entity = function entity(state, silent) {
-  var ch, code, match, pos = state.pos, max = state.posMax;
+  var ch, code, match, token, pos = state.pos, max = state.posMax;
 
-  if (state.src.charCodeAt(pos) !== 0x26/* & */) { return false; }
+  if (state.src.charCodeAt(pos) !== 0x26/* & */) return false;
 
-  if (pos + 1 < max) {
-    ch = state.src.charCodeAt(pos + 1);
+  if (pos + 1 >= max) return false;
 
-    if (ch === 0x23 /* # */) {
-      match = state.src.slice(pos).match(DIGITAL_RE);
-      if (match) {
+  ch = state.src.charCodeAt(pos + 1);
+
+  if (ch === 0x23 /* # */) {
+    match = state.src.slice(pos).match(DIGITAL_RE);
+    if (match) {
+      if (!silent) {
+        code = match[1][0].toLowerCase() === 'x' ? parseInt(match[1].slice(1), 16) : parseInt(match[1], 10);
+
+        token         = state.push('text_special', '', 0);
+        token.content = isValidEntityCode(code) ? fromCodePoint(code) : fromCodePoint(0xFFFD);
+        token.markup  = match[0];
+        token.info    = 'entity';
+      }
+      state.pos += match[0].length;
+      return true;
+    }
+  } else {
+    match = state.src.slice(pos).match(NAMED_RE);
+    if (match) {
+      if (has(entities, match[1])) {
         if (!silent) {
-          code = match[1][0].toLowerCase() === 'x' ? parseInt(match[1].slice(1), 16) : parseInt(match[1], 10);
-          state.pending += isValidEntityCode(code) ? fromCodePoint(code) : fromCodePoint(0xFFFD);
+          token         = state.push('text_special', '', 0);
+          token.content = entities[match[1]];
+          token.markup  = match[0];
+          token.info    = 'entity';
         }
         state.pos += match[0].length;
         return true;
       }
-    } else {
-      match = state.src.slice(pos).match(NAMED_RE);
-      if (match) {
-        if (has(entities, match[1])) {
-          if (!silent) { state.pending += entities[match[1]]; }
-          state.pos += match[0].length;
-          return true;
-        }
-      }
     }
   }
 
-  if (!silent) { state.pending += '&'; }
-  state.pos++;
-  return true;
+  return false;
 };
 
 // For each opening emphasis-like marker find a matching closing one
@@ -9726,7 +9872,7 @@ var balance_pairs = function link_pairs(state) {
 // Clean up tokens after emphasis and strikethrough postprocessing:
 
 
-var text_collapse = function text_collapse(state) {
+var fragments_join = function fragments_join(state) {
   var curr, last,
       level = 0,
       tokens = state.tokens,
@@ -9788,6 +9934,10 @@ function StateInline(src, md, env, outTokens) {
   // backtick length => last seen position
   this.backticks = {};
   this.backticksScanned = false;
+
+  // Counter used to disable inline linkify-it execution
+  // inside <a> and markdown links
+  this.linkLevel = 0;
 }
 
 
@@ -9911,6 +10061,7 @@ var state_inline = StateInline;
 
 var _rules$2 = [
   [ 'text',            text ],
+  [ 'linkify',         linkify$1 ],
   [ 'newline',         newline ],
   [ 'escape',          _escape ],
   [ 'backticks',       backticks ],
@@ -9923,11 +10074,18 @@ var _rules$2 = [
   [ 'entity',          entity ]
 ];
 
+// `rule2` ruleset was created specifically for emphasis/strikethrough
+// post-processing and may be changed in the future.
+//
+// Don't use this for anything except pairs (plugins working with `balance_pairs`).
+//
 var _rules2 = [
   [ 'balance_pairs',   balance_pairs ],
   [ 'strikethrough',   strikethrough.postProcess ],
   [ 'emphasis',        emphasis.postProcess ],
-  [ 'text_collapse',   text_collapse ]
+  // rules for pairs separate '**' into its own text tokens, which may be left unused,
+  // rule below merges unused segments back with the rest of the text
+  [ 'fragments_join',  fragments_join ]
 ];
 
 
@@ -10075,6 +10233,7 @@ var parser_inline = ParserInline;
 
 var re = function (opts) {
   var re = {};
+  opts = opts || {};
 
   // Use direct extract instead of `regenerate` to reduse browserified size
   re.src_Any = regex$1.source;
@@ -10114,20 +10273,21 @@ var re = function (opts) {
 
   re.src_host_terminator =
 
-    '(?=$|' + text_separators + '|' + re.src_ZPCc + ')(?!-|_|:\\d|\\.-|\\.(?!$|' + re.src_ZPCc + '))';
+    '(?=$|' + text_separators + '|' + re.src_ZPCc + ')' +
+    '(?!' + (opts['---'] ? '-(?!--)|' : '-|') + '_|:\\d|\\.-|\\.(?!$|' + re.src_ZPCc + '))';
 
   re.src_path =
 
     '(?:' +
       '[/?#]' +
         '(?:' +
-          '(?!' + re.src_ZCc + '|' + text_separators + '|[()[\\]{}.,"\'?!\\-]).|' +
+          '(?!' + re.src_ZCc + '|' + text_separators + '|[()[\\]{}.,"\'?!\\-;]).|' +
           '\\[(?:(?!' + re.src_ZCc + '|\\]).)*\\]|' +
           '\\((?:(?!' + re.src_ZCc + '|[)]).)*\\)|' +
           '\\{(?:(?!' + re.src_ZCc + '|[}]).)*\\}|' +
           '\\"(?:(?!' + re.src_ZCc + '|["]).)+\\"|' +
           "\\'(?:(?!" + re.src_ZCc + "|[']).)+\\'|" +
-          "\\'(?=" + re.src_pseudo_letter + '|[-]).|' +  // allow `I'm_king` if no pair found
+          "\\'(?=" + re.src_pseudo_letter + '|[-])|' +  // allow `I'm_king` if no pair found
           '\\.{2,}[a-zA-Z0-9%/&]|' + // google has many dots in "google search" links (#66, #81).
                                      // github has ... in commit range links,
                                      // Restrict to
@@ -10136,15 +10296,16 @@ var re = function (opts) {
                                      // - parts of file path
                                      // - params separator
                                      // until more examples found.
-          '\\.(?!' + re.src_ZCc + '|[.]).|' +
-          (opts && opts['---'] ?
+          '\\.(?!' + re.src_ZCc + '|[.]|$)|' +
+          (opts['---'] ?
             '\\-(?!--(?:[^-]|$))(?:-*)|' // `---` => long dash, terminate
             :
             '\\-+|'
           ) +
-          '\\,(?!' + re.src_ZCc + ').|' +       // allow `,,,` in paths
-          '\\!+(?!' + re.src_ZCc + '|[!]).|' +  // allow `!!!` in paths, but not at the end
-          '\\?(?!' + re.src_ZCc + '|[?]).' +
+          ',(?!' + re.src_ZCc + '|$)|' +       // allow `,,,` in paths
+          ';(?!' + re.src_ZCc + '|$)|' +       // allow `;` if not followed by space-like char
+          '\\!+(?!' + re.src_ZCc + '|[!]|$)|' +  // allow `!!!` in paths, but not at the end
+          '\\?(?!' + re.src_ZCc + '|[?]|$)' +
         ')+' +
       '|\\/' +
     ')?';
@@ -10504,8 +10665,9 @@ function compile(self) {
                       .map(escapeRE)
                       .join('|');
   // (?!_) cause 1.5x slowdown
-  self.re.schema_test   = RegExp('(^|(?!_)(?:[><\uff5c]|' + re$1.src_ZPCc + '))(' + slist + ')', 'i');
-  self.re.schema_search = RegExp('(^|(?!_)(?:[><\uff5c]|' + re$1.src_ZPCc + '))(' + slist + ')', 'ig');
+  self.re.schema_test     = RegExp('(^|(?!_)(?:[><\uff5c]|' + re$1.src_ZPCc + '))(' + slist + ')', 'i');
+  self.re.schema_search   = RegExp('(^|(?!_)(?:[><\uff5c]|' + re$1.src_ZPCc + '))(' + slist + ')', 'ig');
+  self.re.schema_at_start = RegExp('^' + self.re.schema_search.source, 'i');
 
   self.re.pretest = RegExp(
     '(' + self.re.schema_test.source + ')|(' + self.re.host_fuzzy_test.source + ')|@',
@@ -10817,6 +10979,33 @@ LinkifyIt.prototype.match = function match(text) {
   }
 
   return null;
+};
+
+
+/**
+ * LinkifyIt#matchAtStart(text) -> Match|null
+ *
+ * Returns fully-formed (not fuzzy) link if it starts at the beginning
+ * of the string, and null otherwise.
+ **/
+LinkifyIt.prototype.matchAtStart = function matchAtStart(text) {
+  // Reset scan cache
+  this.__text_cache__ = text;
+  this.__index__      = -1;
+
+  if (!text.length) return null;
+
+  var m = this.re.schema_at_start.exec(text);
+  if (!m) return null;
+
+  var len = this.testSchemaAt(text, m[2], m[0].length);
+  if (!len) return null;
+
+  this.__schema__     = m[2];
+  this.__index__      = m.index + m[1].length;
+  this.__last_index__ = m.index + m[0].length + len;
+
+  return createMatch(this, 0);
 };
 
 
@@ -11450,7 +11639,8 @@ var zero = {
       rules: [
         'normalize',
         'block',
-        'inline'
+        'inline',
+        'text_join'
       ]
     },
 
@@ -11466,7 +11656,7 @@ var zero = {
       ],
       rules2: [
         'balance_pairs',
-        'text_collapse'
+        'fragments_join'
       ]
     }
   }
@@ -11510,7 +11700,8 @@ var commonmark = {
       rules: [
         'normalize',
         'block',
-        'inline'
+        'inline',
+        'text_join'
       ]
     },
 
@@ -11545,7 +11736,7 @@ var commonmark = {
       rules2: [
         'balance_pairs',
         'emphasis',
-        'text_collapse'
+        'fragments_join'
       ]
     }
   }

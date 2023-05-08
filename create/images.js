@@ -1,6 +1,6 @@
 
 import fs from "fs";
-import mkdirp from "mkdirp";
+import { mkdirp } from "mkdirp";
 import { exec } from "child_process";
 import sizeOf from "image-size";
 import chalk  from "chalk";
