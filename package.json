@@ -1,6 +1,6 @@
 {
   "name": "picture-gallery",
-  "version": "0.5.0-beta",
+  "version": "0.6.0-beta",
   "description": "🖼 ✨ Universal JavaScript app, made with ECMAScript modules",
   "repository": "github:jimthoburn/picture-gallery",
   "license": "MIT",
