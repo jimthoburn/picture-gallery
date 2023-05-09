@@ -11,7 +11,6 @@ const __dirname = dirname(fileURLToPath(import.meta.url));
 
 import { mkdirp } from "mkdirp";
 import exif from "exif";
-import base64 from "../helpers/node-base64-image.js";
 import capitalize from "capitalize";
 
 import { getAlbumNamesFromPicturesFolder } from "../data-file-system/albums-from-pictures-folder.js";
@@ -48,16 +47,12 @@ function getImageMetadata(imageFilePath) {
   });
 }
 
-function getPreviewBase64(url) {
-  return new Promise((resolve, reject) => {
-    base64.encode(url, { string: true, local: true }, (error, result) => {
-      if (error) {
-        reject(error);
-      } else {
-        resolve(result);
-      }
-    });
-  });
+// Load an image from the file system and return it as
+// a base64 string. This is useful for including a small
+// preview image as part of an initial web page download.
+async function getPreviewBase64(filePath) {
+  const fileBuffer = fs.readFileSync(filePath);
+  return fileBuffer.toString('base64');
 }
 
 // Send a request to the Azure Computer Vision API to

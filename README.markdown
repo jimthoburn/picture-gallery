@@ -334,17 +334,6 @@ $ git status
 $ git push --force-with-lease
 ```
 
-## Snowpack
-
-This project was originally created with _Snowpack 1_, and hasn’t yet been
-migrated to [Snowpack 2](https://www.snowpack.dev/posts/2020-05-26-snowpack-2-0-release).
-
-In the mean time, you can run this command to update the `web_modules` folder:
-
-```
-sh web_modules_build.sh
-```
-
 ## State machine visualization
 
 https://xstate.js.org/viz/?gist=18995ef2fca6c1949991f21b1b68c6d0
