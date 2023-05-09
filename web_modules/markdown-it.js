@@ -1,11 +1,15 @@
 function createCommonjsModule(fn, basedir, module) {
 	return module = {
-	  path: basedir,
-	  exports: {},
-	  require: function (path, base) {
-      return commonjsRequire(path, (base === undefined || base === null) ? module.path : base);
-    }
+		path: basedir,
+		exports: {},
+		require: function (path, base) {
+			return commonjsRequire(path, (base === undefined || base === null) ? module.path : base);
+		}
 	}, fn(module, module.exports), module.exports;
+}
+
+function getDefaultExportFromNamespaceIfNotNamed (n) {
+	return n && Object.prototype.hasOwnProperty.call(n, 'default') && Object.keys(n).length === 1 ? n['default'] : n;
 }
 
 function commonjsRequire () {
@@ -11541,7 +11545,7 @@ var ucs2 = {
   decode: ucs2decode,
   encode: ucs2encode
 };
-var punycode = {
+var _polyfillNode_punycode = {
   version: version,
   ucs2: ucs2,
   toASCII: toASCII,
@@ -11550,7 +11554,7 @@ var punycode = {
   decode: decode$2
 };
 
-var punycode$1 = /*#__PURE__*/Object.freeze({
+var _polyfillNode_punycode$1 = /*#__PURE__*/Object.freeze({
 	__proto__: null,
 	decode: decode$2,
 	encode: encode$2,
@@ -11558,7 +11562,7 @@ var punycode$1 = /*#__PURE__*/Object.freeze({
 	toASCII: toASCII,
 	version: version,
 	ucs2: ucs2,
-	'default': punycode
+	'default': _polyfillNode_punycode
 });
 
 // markdown-it default options
@@ -11742,6 +11746,8 @@ var commonmark = {
   }
 };
 
+var punycode = /*@__PURE__*/getDefaultExportFromNamespaceIfNotNamed(_polyfillNode_punycode$1);
+
 var config = {
   default: _default,
   zero: zero,
@@ -11784,7 +11790,7 @@ function normalizeLink(url) {
     //
     if (!parsed.protocol || RECODE_HOSTNAME_FOR.indexOf(parsed.protocol) >= 0) {
       try {
-        parsed.hostname = punycode$1.toASCII(parsed.hostname);
+        parsed.hostname = punycode.toASCII(parsed.hostname);
       } catch (er) { /**/ }
     }
   }
@@ -11804,7 +11810,7 @@ function normalizeLinkText(url) {
     //
     if (!parsed.protocol || RECODE_HOSTNAME_FOR.indexOf(parsed.protocol) >= 0) {
       try {
-        parsed.hostname = punycode$1.toUnicode(parsed.hostname);
+        parsed.hostname = punycode.toUnicode(parsed.hostname);
       } catch (er) { /**/ }
     }
   }

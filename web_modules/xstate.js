@@ -2061,7 +2061,7 @@ var registry = {
   }
 };
 
-var global$1 = (typeof global !== "undefined" ? global :
+var global = (typeof global !== "undefined" ? global :
   typeof self !== "undefined" ? self :
   typeof window !== "undefined" ? window : {});
 
@@ -2078,8 +2078,8 @@ function getGlobal() {
     return window;
   }
 
-  if (typeof global$1 !== 'undefined') {
-    return global$1;
+  if (typeof global !== 'undefined') {
+    return global;
   }
 }
 
