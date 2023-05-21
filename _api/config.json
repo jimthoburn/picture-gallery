@@ -1,7 +1,7 @@
 {
   "imageFormats": {
-    "webp": false,
-    "avif": false
+    "webp": true,
+    "avif": true
   },
   "comment": "jpeg is included too, as a default"
 }
