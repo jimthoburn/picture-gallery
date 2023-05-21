@@ -1,9 +1,9 @@
 
-import fs from "fs";
+import fs from "node:fs";
 import { mkdirp } from "mkdirp";
-import { exec } from "child_process";
 import sizeOf from "image-size";
-import chalk  from "chalk";
+import chalk from "chalk";
+import sharp from "sharp";
 
 import { getAlbumNamesFromPicturesFolder } from "../data-file-system/albums-from-pictures-folder.js";
 
@@ -11,9 +11,8 @@ const overwrite = false; // Set this “true” to re-generate existing image fi
 const startTime = Date.now();
 
 const configData  = JSON.parse(fs.readFileSync("./_api/config.json", "utf8"));
-const galleryData = JSON.parse(fs.readFileSync("./_api/index.json", "utf8"));
 
-const [secretAlbums, secretAlbumGroups] = getAlbumNamesFromPicturesFolder();
+const [secretAlbums] = getAlbumNamesFromPicturesFolder();
 
 const albums = secretAlbums;
 
@@ -28,107 +27,6 @@ const SIZES = [
   6000,
 ];
 
-const cavif = "./lib/cavif-0.6.4/mac/cavif";
-
-const imageMagick = "magick";
-
-// SHIM: Use the installed squoosh-cli
-const squoosh = `node node_modules/.bin/squoosh-cli`;
-// const squoosh = `npx @squoosh/cli@^0.6.0`;
-
-/*
-// https://developers.google.com/speed/webp/docs/api
-const webp = {
-  quality: 75,       // between 0 and 100. For lossy, 0 gives the smallest
-                      // size and 100 the largest. For lossless, this
-                      // parameter is the amount of effort put into the
-                      // compression: 0 is the fastest but gives larger
-                      // files compared to the slowest, but best, 100.
-  target_size: 0,
-  target_PSNR: 0,
-  method: 4,          // quality/speed trade-off (0=fast, 6=slower-better).
-  sns_strength: 50,
-  filter_strength: 60,
-  filter_sharpness: 0,
-  filter_type: 1,
-  partitions: 0,
-  segments: 4,
-  pass: 1,
-  show_compressed: 0,
-  preprocessing: 0,
-  autofilter: 0,
-  partition_limit: 0,
-  alpha_compression: 1,
-  alpha_filtering: 1,
-  alpha_quality: 100,
-  lossless: 0,         // Lossless encoding (0=lossy(default), 1=lossless).
-  exact: 0,
-  image_hint: 0,
-  emulate_jpeg_size: 0,
-  thread_level: 0,
-  low_memory: 0,
-  near_lossless: 100,
-  use_delta_palette: 0,
-  use_sharp_yuv: 0,
-};
-
-// https://research.mozilla.org/av1-media-codecs/
-// https://jakearchibald.com/2020/avif-has-landed/
-// https://netflixtechblog.com/avif-for-next-generation-image-coding-b1d75675fe4
-const avif = {
-  minQuantizer: 0,
-  maxQuantizer: 33,
-  minQuantizerAlpha: 0,
-  maxQuantizerAlpha: 63,
-  tileColsLog2: 0,
-  tileRowsLog2: 0,
-  speed: 1, // 8 ==> fastest
-  subsample: 1,
-};
-
-const rotate = {
-  numRotations: 0, // degrees = (numRotations * 90) % 360
-}
-
-const quant = {
-  numColors: 255,
-  dither: 1.0,
-}
-*/
-
-function doCommand(command) {
-  return new Promise((resolve, reject) => {
-    // https://stackoverflow.com/questions/20643470/execute-a-command-line-binary-with-node-js#answer-20643568
-    console.log(command);
-    exec(`${command} && echo 'finished task'`, (err, stdout, stderr) => {
-      if (err) {
-        // node couldn't execute the command
-        console.error(err);
-        reject(err);
-        return;
-      }
-
-      // the *entire* stdout and stderr (buffered)
-      if (stdout) {
-        console.log(stdout);
-        resolve();
-      }
-      if (stderr) {
-        console.log(stderr);
-        reject(stderr);
-      }
-    });
-  });
-}
-
-function stringify(options) {
-  // Remove quotes
-  return `'${JSON.stringify(options).replace(/\"/g, ``)}'`;
-}
-
-// https://web.dev/squoosh-v2/
-// https://github.com/GoogleChromeLabs/squoosh/tree/dev/cli
-// https://github.com/GoogleChromeLabs/squoosh/blob/dev/cli/src/codecs.js
 function generateOneImage({ width, sourceFile, destinationFolder }) {
   return new Promise(async (resolve, reject) => {
 
@@ -136,7 +34,6 @@ function generateOneImage({ width, sourceFile, destinationFolder }) {
     const fileName = pathBits[pathBits.length - 1];
     const fileNameBits = fileName.split(".");
     const fileNameBase = fileNameBits.slice(0, fileNameBits.length - 1).join(".");
-    const fileExtension = fileNameBits[fileNameBits.length - 1];
 
     const sourceFileSize = sizeOf(sourceFile); // https://github.com/image-size/image-size
 
@@ -148,118 +45,67 @@ function generateOneImage({ width, sourceFile, destinationFolder }) {
     console.log(`Time elapsed:\n${Date.now() - startTime} milliseconds\n`);
     console.log("");
 
-    const mozjpeg = {
-      quality: 65,
-      baseline: false,
-      arithmetic: false,
-      progressive: true,
-      optimize_coding: true,
-      smoothing: 0,
-      color_space: 3 /*YCbCr*/,
-      quant_table: 3,
-      trellis_multipass: false,
-      trellis_opt_zero: false,
-      trellis_opt_table: false,
-      trellis_loops: 1,
-      auto_subsample: true,
-      chroma_subsample: 2,
-      separate_chroma_quality: false,
-      chroma_quality: 75,
-    };
-
-    const oxipng  = {
-      level: 1
-    };
-
-    const resize = {
-      width: Math.min(width, sourceFileSize.width), // SHIM: Avoid scaling the image up
-      // height,
-    }
-
-    const squooshOptions = [
-      `-d ${destinationFolder}`,
-    ];
-    if (resize.width != sourceFileSize.width) {
-      squooshOptions.push(
-        `--resize ${stringify(resize)}`,
-      );
-    }
-
-    const cavifOptions = [
-      `--quality=${50}`,
-      `--speed=1`, // Encoding speed between 1 (best, but slowest) and 10 (fastest)
-      `--overwrite`,
-      // `--color=rgb`,
-
-      `-o '${destinationFolder}/${fileNameBase}.avif'`,
-    ];
-    
-    // https://imagemagick.org/script/defines.php
-    const imageMagickOptions = [
-      `'${sourceFile}'`,
-    ];
-    if (resize.width != sourceFileSize.width) {
-      const infinity = 9999;
-      imageMagickOptions.push(
-        `-resize ${resize.width}x${infinity}`
-      );
-    }
-
     // JPEG
-    if (fs.existsSync(`${destinationFolder}/${fileNameBase}.jpeg`) && overwrite !== true) {
-      console.log(`${destinationFolder}/${fileNameBase}.jpeg already exists. Skipping…`);
+    const jpegFileName = `${destinationFolder}/${fileNameBase}.jpeg`;
+    if (fs.existsSync(jpegFileName) && overwrite !== true) {
+      console.log(``);
+      console.log(`${jpegFileName} already exists. Skipping…`);
     } else {
       console.log(``);
       console.log(`🖼  Generating JPEG`);
-      await doCommand(`${squoosh} ${ [`--mozjpeg ${stringify(mozjpeg)}`,...squooshOptions].join(" ") } ${sourceFile}`);
+
+      const originalImage = await sharp(sourceFile);
+      const resizedImage =
+        (width != sourceFileSize.width)
+        ? await originalImage.resize({ width, withoutEnlargement: true })
+        : originalImage;
+      const jpegImage = resizedImage.jpeg({ mozjpeg: true, quality: 65 });
+
+      jpegImage.toFile(jpegFileName);
     }
 
     if (width > 16) { // Skip WebP and AVIF for the smallest size (16px), since it’s only used for preview images
 
       // WebP
-      if (fs.existsSync(`${destinationFolder}/${fileNameBase}.webp`) && overwrite !== true) {
-        console.log(`${destinationFolder}/${fileNameBase}.webp already exists. Skipping…`);
-      } else {
-        if (configData.imageFormats && configData.imageFormats.webp) {
+      if (configData.imageFormats && configData.imageFormats.webp) {
+        const webpFileName = `${destinationFolder}/${fileNameBase}.webp`;
+        if (fs.existsSync(webpFileName) && overwrite !== true) {
+          console.log(``);
+          console.log(`${webpFileName} already exists. Skipping…`);
+        } else {
           console.log(``);
           console.log(`🖼  Generating WebP`);
-          // SHIM: Use ImageMagick for WebP images, since it’s tricky to produce
-          //       WebP images with Squoosh that are similar to JPEG in quality & file size
-          await doCommand(`${imageMagick} ${ [
-            ...imageMagickOptions,
-            `-quality ${50}`,
-            `'${destinationFolder}/${fileNameBase}.webp'`,
-          ].join(" ") }`);
+
+          const originalImage = await sharp(sourceFile);
+          const resizedImage =
+            (width != sourceFileSize.width)
+            ? await originalImage.resize(width, null, { withoutEnlargement: true })
+            : originalImage;
+          const webpImage = resizedImage.webp({ quality: 50 });
+    
+          webpImage.toFile(webpFileName);
         }
       }
       
-      if (fs.existsSync(`${destinationFolder}/${fileNameBase}.avif`) && overwrite !== true) {
-        console.log(`${destinationFolder}/${fileNameBase}.avif already exists. Skipping…`);
-      } else {
-        if (configData.imageFormats && configData.imageFormats.avif) {
+      // AVIF
+      if (configData.imageFormats && configData.imageFormats.avif) {
+        const avifFileName = `${destinationFolder}/${fileNameBase}.avif`;
+        if (fs.existsSync(avifFileName) && overwrite !== true) {
+          console.log(``);
+          console.log(`${avifFileName} already exists. Skipping…`);
+        } else {
 
-          // AVIF
           console.log(``);
           console.log(`🖼  Generating AVIF`);
-          // SHIM: Use Cavif for the AVIF images, since 
-          //       Squoosh seems to have an upper limit of 4500 pixels
-          //       https://github.com/kornelski/cavif-rs
-          
-          if (resize.width != sourceFileSize.width) { 
-            // SHIM: Use a temporary TIFF file as the source image, since cavif doesn’t have a resize feature
-            await doCommand(`${imageMagick} ${ [
-              ...imageMagickOptions,
-              `'${destinationFolder}/${fileNameBase}.tiff'`,
-            ].join(" ") }`);
 
-            await doCommand(`${cavif} ${ cavifOptions.join(" ") } '${destinationFolder}/${fileNameBase}.tiff'`);
-
-            // Delete temporary TIFF
-            fs.unlinkSync(`${destinationFolder}/${fileNameBase}.tiff`);
+          const originalImage = await sharp(sourceFile);
+          const resizedImage =
+            (width != sourceFileSize.width)
+            ? await originalImage.resize(width, null, { withoutEnlargement: true })
+            : originalImage;
+          const avifImage = resizedImage.avif({ quality: 50, effort: 1 });
     
-          } else {
-            await doCommand(`${cavif} ${ cavifOptions.join(" ") } '${sourceFile}'`);
-          }
+          avifImage.toFile(avifFileName);
         }
       }
     }

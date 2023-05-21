@@ -1,7 +1,7 @@
 
 // https://stackoverflow.com/questions/46745014/alternative-for-dirname-in-node-when-using-the-experimental-modules-flag
-import { dirname }          from 'path';
-import { fileURLToPath }    from 'url';
+import { dirname }          from "node:path";
+import { fileURLToPath }    from "node:url";
 const __dirname = dirname(fileURLToPath(import.meta.url));
 
 import express              from "express";
@@ -15,7 +15,7 @@ import { getError404HTML,
          getError500HTML }  from "./get-source/error.js";
 
 
-const port = parseInt(process.env.PORT, 10) || config.serverPort;
+const port = config.serverPort;
 const server = express();
 
 

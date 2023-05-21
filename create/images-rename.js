@@ -1,5 +1,5 @@
 
-import fs from "fs";
+import fs from "node:fs";
 
 // https://stackoverflow.com/questions/20822273/best-way-to-get-folder-and-file-list-in-javascript#21459809
 function getAllFilesFromFolder(dir) {

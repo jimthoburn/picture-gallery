@@ -1,5 +1,6 @@
+import { readFile } from "node:fs/promises";
+
 import { install } from "esinstall";
-import { readFile } from "fs/promises";
 
 // KUDOS: https://www.bryanbraun.com/2021/08/27/a-minimalist-development-workflow-using-es-modules-and-esinstall/
 
