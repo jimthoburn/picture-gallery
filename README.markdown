@@ -91,7 +91,7 @@ You may also want to remove the `japan` and `wildflowers` examples from the list
 
 In the root of your project run...
 
-```
+```shell
 deno task create
 ```
 
@@ -100,7 +100,7 @@ _You may see the following error:_
 
 To work around this, run...
 
-```
+```shell
 deno task postinstall:sharp
 ```
 
@@ -108,7 +108,7 @@ And then re-run `deno task create`
 
 7. Start the server
 
-```
+```shell
 deno task dev
 ```
 
@@ -164,7 +164,7 @@ _pictures/
 
 2. Create data for your new album:
 
-```
+```shell
 deno task create
 ```
 
@@ -191,13 +191,13 @@ _api/
 
 The `build` command will create a `_site` folder that can be published on any web server.
 
-```
+```shell
 deno task build
 ```
 
 You can browse the static site locally with this command:
 
-```
+```shell
 deno task serve
 ```
 
@@ -333,9 +333,27 @@ You may want to use Git LFS, if your repository is getting close to 1 GB in size
 Here are some commands that I used to migrate large files to Git LFS, when they were already in my Git commit history.
 
 ```
-$ git lfs migrate import --everything --include="*.jpg,*.jpeg,*.webp,*.avif,*.png,*.zip"
-$ git status
-$ git push --force-with-lease
+git lfs migrate import --everything --include="*.jpg,*.jpeg,*.webp,*.avif,*.png,*.zip"
+git status
+git push --force-with-lease
+```
+
+## How to update the `web_modules` folder
+
+The `web_modules` folder is automatically generated with [esinstall](https://github.com/FredKSchott/snowpack/tree/main/esinstall). If you’d like to update it, here are the basic steps...
+
+1. Install [Node.js](https://nodejs.org)
+
+2. Install dependencies
+
+```shell
+npm install
+```
+
+3. Use the `dependencies` listed in the package.json file to update the web_modules folder:
+
+```shell
+npm run install-web-modules
 ```
 
 ## State machine visualization
