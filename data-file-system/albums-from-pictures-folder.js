@@ -1,5 +1,5 @@
 
-import fs from "fs";
+import fs from "node:fs";
 
 import { onlyUnique } from "../helpers/array.js";
 

@@ -1,5 +1,5 @@
 
-import fs from "fs";
+import fs from "node:fs";
 
 // Get files from the file system with the same API as fetch
 function fetchFromFileSystem(url) {

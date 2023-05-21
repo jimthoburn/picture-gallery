@@ -33,20 +33,18 @@ You can [remix this Glitch project](https://glitch.com/edit/#!/picture-gallery?p
 
 If you’d like to work locally instead of using Glitch–you can follow these steps to create images and data for your albums.
 
-_NOTE: Some of these tools may only be available on macOS (in particular, ImageOptim and cavif)_
+1. Install Deno 1.33.4 or newer
 
-1. Install Node 16.20.0 LTS or newer
-https://nodejs.org
+* https://deno.com/manual@v1.33.4/getting_started/installation
 
-2. Install ImageOptim
-https://imageoptim.com
+2. Install `ImageOptim.app`  and `imageoptim-cli` (optional)
 
-3. Install ImageMagick
-https://imagemagick.org
+* https://imageoptim.com
+* https://www.npmjs.com/package/imageoptim-cli
 
-4. [Clone this project](https://help.github.com/en/github/creating-cloning-and-archiving-repositories/cloning-a-repository) with Git (or download it)
+3. [Clone this project](https://help.github.com/en/github/creating-cloning-and-archiving-repositories/cloning-a-repository) with Git (or download it)
 
-5. Add your pictures to the `_pictures` folder, grouped by album name
+4. Add your pictures to the `_pictures` folder, grouped by album name
 
 ```
 _pictures/
@@ -74,7 +72,7 @@ _pictures/
 
 _You can also make [groups of albums](#group-albums)._
 
-6. Add information about your gallery and featured albums to `_api/index.json`
+5. Add information about your gallery and featured albums to `_api/index.json`
 
 ```
 {
@@ -89,25 +87,32 @@ _You can also make [groups of albums](#group-albums)._
 
 You may also want to remove the `japan` and `wildflowers` examples from the list in `_api/index.json`.
 
-7. Open your project folder in a terminal and install dependencies:
+6. Create data and [responsive images](https://developer.mozilla.org/en-US/docs/Learn/HTML/Multimedia_and_embedding/Responsive_images) for your new gallery.
+
+In the root of your project run...
 
 ```
-npm install
+deno task create
 ```
 
-8. Create data and [responsive images](https://developer.mozilla.org/en-US/docs/Learn/HTML/Multimedia_and_embedding/Responsive_images)
+_You may see the following error:_
+> Something went wrong installing the "sharp" module
+
+To work around this, run...
 
 ```
-npm run create
+deno task postinstall:sharp
 ```
 
-9. Start the server
+And then re-run `deno task create`
+
+7. Start the server
 
 ```
-npm start
+deno task dev
 ```
 
-10. Visit `http://localhost:4000`
+8. Visit `http://localhost:4000`
 
 To stop the server, press “control C”
 
@@ -129,7 +134,7 @@ For example, you may want to change the `title` and add a `date` for each album:
 "date": "February & March, 2020",
 ```
 
-To see your changes, you may need to stop the server (press “control C”) and then restart the server (`npm start`).
+To see your changes, you may need to stop the server (press “control C”) and then restart the server (`deno task dev`).
 
 It’s okay to commit the generated files in these folders:
 
@@ -139,9 +144,9 @@ _archives
 _pictures
 ```
 
-These files are your data and will only change if you re-run the `npm run create` script or edit them yourself.
+These files are your data and will only change if you re-run the `deno task create` script or edit them yourself.
 
-_Running `npm run create` a second time will skip any existing files, even if 
+_Running `deno task create` a second time will skip any existing files, even if 
 they would ideally be updated–for example, `.zip` files in the `_archives` folder. You can work around this by removing any files or folders that you want to re-create._
 
 ### How to add a new album
@@ -160,7 +165,7 @@ _pictures/
 2. Create data for your new album:
 
 ```
-npm run create
+deno task create
 ```
 
 3. Edit the data file for your album (optional):
@@ -187,28 +192,27 @@ _api/
 The `build` command will create a `_site` folder that can be published on any web server.
 
 ```
-npm run build
+deno task build
 ```
 
 You can browse the static site locally with this command:
 
 ```
-npm run serve
+deno task serve
 ```
 
 And then visit `http://localhost:4000`
 
-You can publish your copy of this project to a static host like [Netlify](https://www.netlify.com/) using these settings:
+You can publish your copy of this project to a static host like [Netlify](https://www.netlify.com/) or [Vercel](https://vercel.com) using these settings:
+
+Install command  
+`npm run install`
 
 Build command  
 `npm run build`
 
 Publish directory  
-`_site/`
-
-This will [automatically rebuild and publish your site](https://docs.netlify.com/site-deploys/create-deploys/#deploy-with-git) as you push changes to your copy of this GitHub repository.
-
-[![Deploy to Netlify](https://www.netlify.com/img/deploy/button.svg)](https://app.netlify.com/start/deploy?repository=https://github.com/jimthoburn/picture-gallery)
+`_site`
 
 ### Secret albums
 
@@ -320,16 +324,16 @@ If you create a new album, descriptions will be generated and added to the data 
 
 You may want to use Git LFS, if your repository is getting close to 1 GB in size. See [GitHub disk quota](https://help.github.com/en/github/managing-large-files/what-is-my-disk-quota)
 
-* https://git-lfs.github.com/  
-* https://www.netlify.com/products/large-media/
-
+* https://git-lfs.github.com
+* https://www.netlify.com/products/large-media
+* https://vercel.com/docs/concepts/projects/overview#git-large-file-storage-lfs
 
 #### How to move existing files into Git LFS
 
 Here are some commands that I used to migrate large files to Git LFS, when they were already in my Git commit history.
 
 ```
-$ git lfs migrate import --everything --include="*.jpg,*.jpeg,*.png,*.zip"
+$ git lfs migrate import --everything --include="*.jpg,*.jpeg,*.webp,*.avif,*.png,*.zip"
 $ git status
 $ git push --force-with-lease
 ```

@@ -15,7 +15,20 @@ function usingKeyboard() {
 
 
 function isBrowser() {
-  return (typeof window !== "undefined");
+  return (
+    // Browser or Deno
+    typeof globalThis.window !== "undefined"
+
+    &&
+
+    // Deno
+    typeof globalThis.Deno === "undefined"
+
+    &&
+
+    // Node
+    typeof globalThis.process === "undefined"
+  );
 }
 
 

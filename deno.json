@@ -1,0 +1,36 @@
+{
+  "imports": {
+    "archiver": "npm:archiver@5.3.1",
+    "capitalize": "https://esm.sh/capitalize@2.0.4",
+    "chalk": "https://esm.sh/chalk@5.2.0",
+    "dotenv/": "https://deno.land/std@0.188.0/dotenv/",
+    "exif": "https://esm.sh/exif@0.6.0",
+    "express": "npm:express@4.18.2",
+    "fs-extra": "npm:fs-extra@11.1.1",
+    "image-size": "https://esm.sh/image-size@1.0.2",
+    "js-beautify": "https://esm.sh/js-beautify@1.14.7",
+    "mkdirp": "https://esm.sh/mkdirp@3.0.1",
+    "node-fetch": "https://esm.sh/node-fetch@3.3.1",
+    "sharp": "npm:sharp@0.32.1"
+  },
+  "tasks": {
+    "dev": "deno run --allow-env --allow-read=./ --allow-net=0.0.0.0:4000 server.js",
+    "build": "deno run --allow-env --allow-read=./ --allow-write=./_site --allow-sys=uid build.js",
+    "serve": "cd ./_site && deno run --allow-read=./ --allow-net=0.0.0.0:4000 https://deno.land/std@0.188.0/http/file_server.ts  ./ --port=4000",
+
+    "create": "deno task create:images && deno task rename:images && deno task optimize:images && deno task create:albums && deno task create:archives",
+    "create:images": "deno run --allow-ffi --node-modules-dir --allow-env --allow-read --allow-write=./_pictures --allow-run=/bin/sh create/images.js",
+    "rename:images": "deno run --allow-read=./_pictures --allow-write=./_pictures create/images-rename.js",
+    "optimize:images": "deno run --allow-env --allow-read --allow-run=/bin/sh create/images-optimize.js",
+    "create:albums": "deno run --allow-env --allow-read=./ --allow-write=./_api,./_pictures create/albums-deno.js",
+    "create:archives": "deno run --allow-env=__TESTING_MKDIRP_PLATFORM__,__TESTING_MKDIRP_NODE_VERSION__ --allow-read=./ --allow-write=./_archives create/archives.js",
+
+    "postinstall:sharp": "sh ./deno-postinstall-sharp.sh",
+
+    "comment__install-web-modules": "https://github.com/denoland/deno/issues/19162",
+    "comment__install-web-modules_2": "https://deno.com/manual@v1.33.4/tools/vendor",
+    "not-implemented__install-web-modules": "deno run --allow-env --allow-read --allow-write=./web_modules install-web-modules.js",
+
+    "not-implemented__test": "BROWSER=chromium jest --detectOpenHandles --verbose"
+  }
+}

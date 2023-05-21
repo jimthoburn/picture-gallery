@@ -1,7 +1,17 @@
-node_modules
-_site
+# Mac OS
 .DS_Store
+
+# Node.js and Deno
+node_modules
+
+# Files created by `npm run build` or `deno task build`
+_site
+
+# Environment variables
 .env
 
-# Local Netlify folder
+# Netlify CLI
 .netlify
+
+# VS Code
+.vscode
