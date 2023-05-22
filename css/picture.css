@@ -15,18 +15,17 @@
   font-size: inherit;
   font-weight: inherit;
 }
-@media (min-width: 20em) {
-  .picture-details .download {
-    /* text-align: center; */
-    position: absolute;
-    bottom: 0;
-    right: 0;
-    z-index: 1;
-  }
+.picture-details h1::after {
+  content: "/";
+  margin: 0 0.5em;
+}
+.picture-details .download {
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  z-index: 1;
 }
 .picture-details a {
-  color: rgb(255, 49, 102); /* @strawberry */
-  color: rgb(101, 156, 247); /* @boysenberry */
   color: hsl(193, 70%, 60%); /* @aqua */
 }
 .picture-details .all a {
@@ -38,7 +37,6 @@
   z-index: 1;
 }
 .picture-details .disabled a:visited {
-  color: rgb(101, 156, 247); /* @boysenberry */
   color: hsl(193, 70%, 60%); /* @aqua */
 }
 .picture-details .all {
@@ -47,14 +45,9 @@
   top: 0;
   left: 0;
   display: flex;
-  justify-content: flex-end;
   flex-wrap: wrap;
-  flex-direction: column-reverse;
   padding: 1em 1.5em;
 }
-/* .picture-details .download a {
-  color: inherit;
-} */
 .picture-details svg {
   width: 1em;
   height: 1em;
@@ -109,41 +102,6 @@
   padding-left: 1.5em;
   box-sizing: border-box;
 }
-/*
-@media (max-aspect-ratio: 3/2) {
-  nav .picture-details li a {
-    background: black;
-    color: white;
-  }
-}
-*/
-.picture-details header {
-  /* position: absolute; */
-  /* top: 0; */
-  /* left: 0; */
-  /* width: 100%; */
-  /* z-index: 1; */
-}
 .picture-details figure {
   margin: 0;
-  /* margin: 0 auto;
-  height: 100vmin;
-  width: 100vmin */
 }
-.picture-details figure img {
-  /* Attempt to avoid overlapping the header if the image doesn’t load */
-  
-}
-/* .picture-details video,
-.picture-details img {
-  max-width: 100%;
-  height: auto;
-} */
-/* @supports (object-fit: contain) {
-  .picture-details video,
-  .picture-details img {
-    width: 100%;
-    height: calc(100vh - 7em);
-    object-fit: contain;
-  }
-} */

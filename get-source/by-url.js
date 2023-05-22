@@ -35,7 +35,8 @@ function getAlbumHTML(url) {
     const title   = getInitialPageTitle({
       getPageURL,
       pictures: album.pictures,
-      album
+      album,
+      parent: album.parent,
     });
     const content = render(AlbumPage({
       getPageURL,
