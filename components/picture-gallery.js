@@ -25,7 +25,7 @@ let getMachine = function() {
 } 
 
 function formatPageTitle({ imageNumber, imageCaption, albumTitle }) {
-  return `Picture ${ imageNumber }${ imageCaption ? `. ${imageCaption}` : "" }. ${albumTitle}`;
+  return `Picture ${ imageNumber }.${ imageCaption ? ` ${imageCaption}` : "" } / ${albumTitle}`;
 }
 
 function PictureGallery({ album, pictures, story, getPageURL, config }) {
@@ -216,7 +216,7 @@ function getSelectedPictureIndexFromURL({ album, pictures, getPageURL }) {
   }
 }
 
-function getInitialPageTitle({ album, pictures, getPageURL }) {
+function getInitialPageTitle({ album, parent, pictures, getPageURL }) {
   let selectedPictureIndex = getSelectedPictureIndexFromURL({ album, pictures, getPageURL });
   if (selectedPictureIndex != null) {
     return formatPageTitle({
@@ -224,6 +224,8 @@ function getInitialPageTitle({ album, pictures, getPageURL }) {
       imageCaption: pictures[selectedPictureIndex].caption,
       albumTitle: album.title
     });
+  } else if (parent) {
+    return `${album.title} / ${parent.title}`;
   } else {
     return album.title;
   }
