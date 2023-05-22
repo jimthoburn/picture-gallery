@@ -114,7 +114,11 @@ function PictureGallery({ album, pictures, story, getPageURL, config }) {
         }
       } else if (state.event.type === "DETAILS_CLOSED" ||
                  state.event.type === "LET_GO_OF_PICTURE") {
-        document.title = album.title;
+        if (album.parent) {
+          document.title = `${album.title} / ${album.parent.title}`;
+        } else {
+          document.title = album.title;
+        }
 
         if (state.context.didPopHistoryState != true) {
           console.log("🎉 Pushing state to browser history");
