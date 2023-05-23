@@ -37,7 +37,7 @@ If you’d like to work locally instead of using Glitch–you can follow these s
 
 2. Install [ImageOptim.app](https://imageoptim.com/mac) and [imageoptim-cli](https://www.npmjs.com/package/imageoptim-cli) (optional)
 
-3. [Clone this project](https://help.github.com/en/github/creating-cloning-and-archiving-repositories/cloning-a-repository) with Git (or download it)
+3. [Make a copy of this project on GitHub](https://github.com/jimthoburn/picture-gallery/generate) (or download it)
 
 4. Add your pictures to the `_pictures` folder, grouped by album name
 
