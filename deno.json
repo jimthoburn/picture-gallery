@@ -14,7 +14,8 @@
     "sharp": "npm:sharp@0.32.1"
   },
   "tasks": {
-    "dev": "deno run --allow-env --allow-read=./ --allow-net=0.0.0.0:4000 server.js",
+    "start": "deno run --allow-env --allow-read=./ --allow-net=0.0.0.0:4000 server.js",
+    "dev": "deno run --watch --allow-env --allow-read=./ --allow-net=0.0.0.0:4000 server.js",
     "build": "deno run --allow-env --allow-read=./ --allow-write=./_site --allow-sys=uid build.js",
     "serve": "cd ./_site && deno run --allow-read=./ --allow-net=0.0.0.0:4000 https://deno.land/std@0.188.0/http/file_server.ts  ./ --port=4000",
 

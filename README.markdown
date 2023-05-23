@@ -33,14 +33,9 @@ You can [remix this Glitch project](https://glitch.com/edit/#!/picture-gallery?p
 
 If you’d like to work locally instead of using Glitch–you can follow these steps to create images and data for your albums.
 
-1. Install Deno 1.33.4 or newer
+1. Install [Node.js](https://nodejs.org) and [Deno](https://deno.com/runtime)
 
-* https://deno.com/manual@v1.33.4/getting_started/installation
-
-2. Install `ImageOptim.app`  and `imageoptim-cli` (optional)
-
-* https://imageoptim.com
-* https://www.npmjs.com/package/imageoptim-cli
+2. Install [ImageOptim.app](https://imageoptim.com/mac) and [imageoptim-cli](https://www.npmjs.com/package/imageoptim-cli) (optional)
 
 3. [Clone this project](https://help.github.com/en/github/creating-cloning-and-archiving-repositories/cloning-a-repository) with Git (or download it)
 
@@ -342,15 +337,13 @@ git push --force-with-lease
 
 The `web_modules` folder is automatically generated with [esinstall](https://github.com/FredKSchott/snowpack/tree/main/esinstall). If you’d like to update it, here are the basic steps...
 
-1. Install [Node.js](https://nodejs.org)
-
-2. Install dependencies
+1. Install [Node.js](https://nodejs.org) dependencies
 
 ```shell
 npm install
 ```
 
-3. Use the `dependencies` listed in the package.json file to update the web_modules folder:
+2. Use the `dependencies` listed in the package.json file to update the web_modules folder:
 
 ```shell
 npm run install-web-modules

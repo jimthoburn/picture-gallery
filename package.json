@@ -9,9 +9,10 @@
   },
   "type": "module",
   "scripts": {
+    "start": "node server.js",
     "build": "node build.js",
-    "install-web-modules": "node install-web-modules.js",
 
+    "install-web-modules": "node install-web-modules.js",
     "__comment__test__experimental-vm-modules": "https://github.com/facebook/jest/issues/9430",
     "test": "BROWSER=chromium node --experimental-vm-modules node_modules/.bin/jest --detectOpenHandles --verbose"
   },
@@ -27,6 +28,7 @@
   "devDependencies": {
     "chalk": "^5.2.0",
     "esinstall": "^1.1.7",
+    "express": "^4.18.2",
     "fs-extra": "^11.1.1",
     "is-url": "^1.2.4",
     "js-beautify": "^1.14.7",
