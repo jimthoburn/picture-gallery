@@ -14,6 +14,7 @@ I’m using it to practice with new tools and to share photos with friends 🦊 
 ## How to make your own gallery
 
 * [Quick start](#quick-start)
+* [Setting up a local environment](#setting-up)
 * [Creating a gallery](#creating-a-gallery)
 * [Editing a gallery](#editing-a-gallery)
 * [How to add a new album](#how-to-add-a-new-album)
@@ -27,19 +28,29 @@ I’m using it to practice with new tools and to share photos with friends 🦊 
 
 ### Quick start
 
-You can [remix this Glitch project](https://glitch.com/edit/#!/picture-gallery?path=glitch_README.markdown) to make your own gallery 🎏
+You can [create a codespace on GitHub](https://docs.github.com/en/codespaces/developing-in-codespaces/creating-a-codespace-from-a-template#creating-a-codespace-from-a-template-repository) or [remix this Glitch project](https://glitch.com/edit/#!/picture-gallery?path=glitch_README.markdown) to make your own gallery 🎏
+
+### <span id="setting-up"></span> Setting up a local environment
+
+1. [Make a copy of this project on GitHub](https://github.com/jimthoburn/picture-gallery/generate) (or download it)
+
+2. Install [Node.js](https://nodejs.org) and [Deno](https://deno.com/runtime)
+
+3. Install [ImageOptim.app](https://imageoptim.com/mac) and [imageoptim-cli](https://www.npmjs.com/package/imageoptim-cli) (optional)
+
+4. From the root of your project, start a server for development...
+
+```shell
+deno task dev
+```
+
+_If you see an error related to [deno.lock](https://deno.com/manual/basics/modules/integrity_checking), you can delete this file at the root of your project folder (it will be created again automatically)._
+
+5. Visit `http://localhost:4000`
 
 ### Creating a gallery
 
-If you’d like to work locally instead of using Glitch–you can follow these steps to create images and data for your albums.
-
-1. Install [Node.js](https://nodejs.org) and [Deno](https://deno.com/runtime)
-
-2. Install [ImageOptim.app](https://imageoptim.com/mac) and [imageoptim-cli](https://www.npmjs.com/package/imageoptim-cli) (optional)
-
-3. [Make a copy of this project on GitHub](https://github.com/jimthoburn/picture-gallery/generate) (or download it)
-
-4. Add your pictures to the `_pictures` folder, grouped by album name
+1. Add your pictures to the `_pictures` folder, grouped by album name
 
 ```
 _pictures/
@@ -67,7 +78,7 @@ _pictures/
 
 _You can also make [groups of albums](#group-albums)._
 
-5. Add information about your gallery and featured albums to `_api/index.json`
+2. Add information about your gallery and featured albums to `_api/index.json`
 
 ```
 {
@@ -82,7 +93,7 @@ _You can also make [groups of albums](#group-albums)._
 
 You may also want to remove the `japan` and `wildflowers` examples from the list in `_api/index.json`.
 
-6. Create data and [responsive images](https://developer.mozilla.org/en-US/docs/Learn/HTML/Multimedia_and_embedding/Responsive_images) for your new gallery.
+3. Create data and [responsive images](https://developer.mozilla.org/en-US/docs/Learn/HTML/Multimedia_and_embedding/Responsive_images) for your new gallery.
 
 In the root of your project run...
 
@@ -100,16 +111,6 @@ deno task postinstall:sharp
 ```
 
 And then re-run `deno task create`
-
-7. Start the server
-
-```shell
-deno task dev
-```
-
-8. Visit `http://localhost:4000`
-
-To stop the server, press “control C”
 
 ### Editing a gallery
 
