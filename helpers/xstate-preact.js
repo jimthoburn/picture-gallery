@@ -22,7 +22,7 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 */
 
-// 1) Copied from: https://github.com/davidkpiano/xstate/blob/master/packages/xstate-react/src/index.ts
+// 1) Copied from: https://github.com/davidkpiano/xstate/blob/main/packages/xstate-react/src/index.ts
 //                 https://github.com/davidkpiano/xstate/blob/8cc6b1c6aa719cbae77ea5687dd8475951e1ce91/packages/xstate-react/src/index.ts
 // 2) Converted to JS by https://www.typescriptlang.org/play/?target=6
 

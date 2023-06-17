@@ -1,7 +1,7 @@
 
 # Picture Gallery _beta_
 
-* 📝 [Project goals](https://github.com/jimthoburn/picture-gallery/blob/master/README.markdown)
+* 📝 [Project goals](https://github.com/jimthoburn/picture-gallery/blob/main/README.markdown)
 
 * 🖼 See [a live demo](https://picture-gallery.glitch.me)
 
