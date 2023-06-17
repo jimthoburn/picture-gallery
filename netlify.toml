@@ -6,7 +6,7 @@
   environment = { NODE_VERSION = "18.16.0" }
 
 # https://www.netlify.com/products/dev/
-# https://github.com/netlify/cli/blob/master/docs/netlify-dev.md
+# https://github.com/netlify/cli/blob/main/docs/netlify-dev.md
 [dev]
   command = "deno task dev" # Command to start your dev server
   targetPort = 4000 # The port for your application server, framework or site generator

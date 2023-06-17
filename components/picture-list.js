@@ -140,7 +140,6 @@ function PictureList({ album, pictures, story, state, config }) {
                         data-selected="${(state.context.selectedPictureIndex === index) ? "true" : ""}" />
                  </${PictureElement}>
               </responsive-image>
-              ${""/*<span class="caption">${ picture.title }</span>*/}
             </a>
           </li>
           `

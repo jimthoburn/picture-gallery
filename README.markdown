@@ -28,7 +28,7 @@ I’m using it to practice with new tools and to share photos with friends 🦊 
 
 ### Quick start
 
-You can [create a codespace on GitHub](https://docs.github.com/en/codespaces/developing-in-codespaces/creating-a-codespace-from-a-template#creating-a-codespace-from-a-template-repository) or [remix this Glitch project](https://glitch.com/edit/#!/picture-gallery?path=glitch_README.markdown) to make your own gallery 🎏
+To create your own gallery, you can open this project in a [codespace](https://docs.github.com/en/codespaces/developing-in-codespaces/creating-a-codespace-from-a-template#creating-a-codespace-from-a-template-repository) on GitHub or [remix](https://glitch.com/edit/#!/picture-gallery?path=glitch_README.markdown) on Glitch 🎏
 
 ### <span id="setting-up"></span> Setting up a local environment
 
@@ -234,7 +234,7 @@ You can also ask search engines not to index your album by setting `askSearchEng
 
 This will add a [noindex](https://support.google.com/webmasters/answer/93710?hl=en) meta element to your page.
 
-And you can ask search engines not to index your entire gallery (including the home page) by setting `askSearchEnginesNotToIndex` to `true` in the [_config.js](https://github.com/jimthoburn/picture-gallery/blob/master/_config.js) file:
+And you can ask search engines not to index your entire gallery (including the home page) by setting `askSearchEnginesNotToIndex` to `true` in the [_config.js](https://github.com/jimthoburn/picture-gallery/blob/main/_config.js) file:
 
 ```
 "askSearchEnginesNotToIndex": true
@@ -266,7 +266,7 @@ And then visit `http://localhost:4000/your-group-of-related-albums/`
 
 ### Social sharing image
 
-To make an [open graph image](https://ogp.me/) available for each page in your gallery, add your domain name to the [_config.js](https://github.com/jimthoburn/picture-gallery/blob/master/_config.js) file:
+To make an [open graph image](https://ogp.me/) available for each page in your gallery, add your domain name to the [_config.js](https://github.com/jimthoburn/picture-gallery/blob/main/_config.js) file:
 
 ```
 "host": "https://your-domain-name.com"
