@@ -15,3 +15,6 @@ _site
 
 # VS Code
 .vscode
+
+# Playwright
+playwright-report

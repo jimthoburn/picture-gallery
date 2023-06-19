@@ -1,9 +1,4 @@
 {
-  "name": "picture-gallery",
-  "version": "0.7.1-beta",
-  "description": "🖼 ✨ Universal JavaScript app, made with ECMAScript modules",
-  "repository": "github:jimthoburn/picture-gallery",
-  "license": "MIT",
   "engines": {
     "node": ">=18.0.0 <20.0.0"
   },
@@ -11,10 +6,21 @@
   "scripts": {
     "start": "node server.js",
     "build": "node build.js",
-
     "install-web-modules": "node install-web-modules.js",
-    "__comment__test__experimental-vm-modules": "https://github.com/facebook/jest/issues/9430",
-    "test": "BROWSER=chromium node --experimental-vm-modules node_modules/.bin/jest --detectOpenHandles --verbose"
+    "test": "playwright test",
+    "test:report": "npm run test && playwright show-report"
+  },
+  "devDependencies": {
+    "@playwright/test": "^1.35.1",
+    "chalk": "^5.2.0",
+    "esinstall": "^1.1.7",
+    "express": "^4.18.2",
+    "fs-extra": "^11.1.1",
+    "is-url": "^1.2.4",
+    "js-beautify": "^1.14.8",
+    "mkdirp": "^3.0.1",
+    "node-fetch": "^3.3.1",
+    "playwright": "^1.35.1"
   },
   "dependencies": {
     "htm": "^3.1.1",
@@ -24,22 +30,6 @@
     "preact": "^10.15.1",
     "preact-render-to-string": "^6.1.0",
     "xstate": "^4.37.2"
-  },
-  "devDependencies": {
-    "chalk": "^5.2.0",
-    "esinstall": "^1.1.7",
-    "express": "^4.18.2",
-    "fs-extra": "^11.1.1",
-    "is-url": "^1.2.4",
-    "js-beautify": "^1.14.8",
-    "jest": "^29.5.0",
-    "jest-playwright-preset": "^3.0.1",
-    "mkdirp": "^3.0.1",
-    "node-fetch": "^3.3.1",
-    "playwright": "^1.35.1"
-  },
-  "jest": {
-    "preset": "jest-playwright-preset"
   },
   "install-web-modules": [
     "htm",
