@@ -1,9 +1,11 @@
+// @ts-check
+import { test, expect } from "@playwright/test";
 import { config } from "../_config.js";
 
-describe("📒 Secret album", function() {
+test.describe("📒 Secret album", function() {
   const url = config.test.secretAlbumURL;
 
-  it("is not listed on the home page", async () => {
+  test("is not listed on the home page", async ({ page }) => {
     await page.goto(config.test.hostURL + config.test.homeURL);
     let element = null;
     try {
@@ -13,7 +15,7 @@ describe("📒 Secret album", function() {
     }
   });
 
-  it("asks search engines not to index it", async () => {
+  test("asks search engines not to index it", async ({ page }) => {
     await page.goto(config.test.hostURL + url);
     const content = await page.$eval(`meta[name="robots"]`, element =>
       element.getAttribute("content")
@@ -21,7 +23,7 @@ describe("📒 Secret album", function() {
     expect(content).toBe("noindex");
   });
 
-  it("is not listed in the site map", async () => {
+  test("is not listed in the site map", async ({ page }) => {
     await page.goto(config.test.hostURL + "/sitemap.xml");
     const pageSource = await page.content();
     const matches = pageSource.match(new RegExp(`<loc>.*${url}<\/loc>`));

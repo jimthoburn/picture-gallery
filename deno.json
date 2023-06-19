@@ -30,8 +30,6 @@
 
     "comment__install-web-modules": "https://github.com/denoland/deno/issues/19162",
     "comment__install-web-modules_2": "https://deno.com/manual@v1.33.4/tools/vendor",
-    "not-implemented__install-web-modules": "deno run --allow-env --allow-read --allow-write=./web_modules install-web-modules.js",
-
-    "not-implemented__test": "BROWSER=chromium jest --detectOpenHandles --verbose"
+    "not-implemented__install-web-modules": "deno run --allow-env --allow-read --allow-write=./web_modules install-web-modules.js"
   }
 }

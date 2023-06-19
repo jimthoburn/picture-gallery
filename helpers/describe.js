@@ -1,4 +1,5 @@
-
+// @ts-check
+import { test, expect } from "@playwright/test";
 import { config } from "../_config.js";
 
 import isUrl from "is-url";
@@ -6,8 +7,8 @@ import fetch from "node-fetch";
 
 
 function describeHasContent({ name, url }) {
-  describe(`${name}, has content 🖼`, function() {
-    it("has an image with a valid URL", async () => {
+  test.describe(`${name}, has content 🖼`, function() {
+    test("has an image with a valid URL", async ({ page }) => {
       await page.goto(config.test.hostURL + url);
       const src = await page.$eval(`img:not([src*="data:image"])`, element =>
         element.getAttribute("src")
@@ -20,7 +21,7 @@ function describeHasContent({ name, url }) {
 
 function hasAnOpenGraphImage({ url }) {
   if (config.host && config.host.indexOf("http") === 0) {
-    it("has an open graph image, based on “host” specified in “_config.js”", async () => {
+    test("has an open graph image, based on “host” specified in “_config.js”", async ({ page }) => {
       await page.goto(config.test.hostURL + url);
       const content = await page.$eval(`meta[property="og:image"]`, element =>
         element.getAttribute("content")
@@ -34,7 +35,7 @@ function hasAnOpenGraphImage({ url }) {
       // expect(isValidURL).toBe(true);
     });
   } else {
-    it("has a valid open graph image that starts with “http”, or does not have an open graph image specified–since “host” is empty or invalid in “_config.js”", async () => {
+    test("has a valid open graph image that starts with “http”, or does not have an open graph image specified–since “host” is empty or invalid in “_config.js”", async ({ page }) => {
       await page.goto(config.test.hostURL + url);
       let metaElement = null;
       try {
@@ -57,12 +58,12 @@ function hasAnOpenGraphImage({ url }) {
 }
 
 function describeFindability({ name, url }) {
-  describe(`${name}, findability 🔦`, function() {
+  test.describe(`${name}, findability 🔦`, function() {
 
     hasAnOpenGraphImage({ url });
 
     if (config.askSearchEnginesNotToIndex) {
-      it("asks search engines not to index it, since config.askSearchEnginesNotToIndex is set to “true”", async () => {
+      test("asks search engines not to index it, since config.askSearchEnginesNotToIndex is set to “true”", async ({ page }) => {
         await page.goto(config.test.hostURL + url);
         const content = await page.$eval(`meta[name="robots"]`, element =>
           element.getAttribute("content")
@@ -70,14 +71,14 @@ function describeFindability({ name, url }) {
         expect(content).toBe("noindex");
       });
 
-      it("is not listed in the site map, since config.askSearchEnginesNotToIndex is set to “true”", async () => {
+      test("is not listed in the site map, since config.askSearchEnginesNotToIndex is set to “true”", async ({ page }) => {
         await page.goto(config.test.hostURL + "/sitemap.xml");
         const pageSource = await page.content();
         const matches = pageSource.match(new RegExp(`<loc>${config.host}${url}<\/loc>`));
         expect(matches).toBeNull();
       });
     } else if (!config.host) {
-      it("doesn’t ask search engines not to index it", async () => {
+      test("doesn’t ask search engines not to index it", async ({ page }) => {
         await page.goto(config.test.hostURL + url);
         let element = null;
         try {
@@ -87,12 +88,12 @@ function describeFindability({ name, url }) {
         }
       });
 
-      it("is not listed in the site map, since config.host is empty and the site map does not exist", async () => {
+      test("is not listed in the site map, since config.host is empty and the site map does not exist", async ({ page }) => {
         const response = await page.goto(config.test.hostURL + "/sitemap.xml");
         expect(response.status()).toBe(404);
       });
     } else {
-      it("doesn’t ask search engines not to index it", async () => {
+      test("doesn’t ask search engines not to index it", async ({ page }) => {
         await page.goto(config.test.hostURL + url);
         let element = null;
         try {
@@ -102,7 +103,7 @@ function describeFindability({ name, url }) {
         }
       });
 
-      it("is listed in the site map", async () => {
+      test("is listed in the site map", async ({ page }) => {
         await page.goto(config.test.hostURL + "/sitemap.xml");
         const pageSource = await page.content();
         const matches = pageSource.match(new RegExp(`<loc>${config.host}${url}<\/loc>`));
@@ -113,8 +114,8 @@ function describeFindability({ name, url }) {
 }
 
 function describeAccessibility({ name, url }) {
-  describe(`${name}, accessibility ⌨️`, function() {
-    it("has an “alt” attribute with descriptive text for each image", async () => {
+  test.describe(`${name}, accessibility ⌨️`, function() {
+    test("has an “alt” attribute with descriptive text for each image", async ({ page }) => {
       await page.goto(config.test.hostURL + url);
       const alt = await page.$eval(`img:not([src*="data:image"])`, element =>
         element.getAttribute("alt")

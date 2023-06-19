@@ -1,3 +1,5 @@
+// @ts-check
+import { test, expect } from "@playwright/test";
 import { config } from "../_config.js";
 
 import { describeHasContent, describeAccessibility, describeFindability } from "../helpers/describe.js";
