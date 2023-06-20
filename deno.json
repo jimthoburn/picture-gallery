@@ -28,8 +28,10 @@
 
     "postinstall:sharp": "sh ./deno-postinstall-sharp.sh",
 
-    "comment__install-web-modules": "https://github.com/denoland/deno/issues/19162",
-    "comment__install-web-modules_2": "https://deno.com/manual@v1.33.4/tools/vendor",
+    "comment__install-web-modules_1": "https://esm.sh/#cli",
+    "comment__install-web-modules_2": "https://github.com/denoland/deno_emit",
+    "comment__install-web-modules_3": "https://deno.com/manual/tools/vendor",
+    "comment__install-web-modules_4": "https://github.com/denoland/deno/issues/19162",
     "not-implemented__install-web-modules": "deno run --allow-env --allow-read --allow-write=./web_modules install-web-modules.js"
   }
 }
