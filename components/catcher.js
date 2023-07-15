@@ -1,6 +1,6 @@
 
-import { createElement, Component } from "../web_modules/preact.js";
-import htm from "../web_modules/htm.js"; const html = htm.bind(createElement);
+import { createElement, Component } from "preact";
+import htm from "htm"; const html = htm.bind(createElement);
 
 import { getMachine }      from "../components/picture-gallery.js";
 import { getLastDispatch } from "../helpers/xstate-preact.js";

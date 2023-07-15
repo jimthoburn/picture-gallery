@@ -1,8 +1,8 @@
 
-import { createElement }        from "../web_modules/preact.js";
+import { createElement }        from "preact";
 import { useRef,
-         useLayoutEffect }      from "../web_modules/preact/hooks.js";
-import   htm                    from "../web_modules/htm.js";
+         useLayoutEffect }      from "preact/hooks";
+import   htm                    from "htm";
 const    html = htm.bind(createElement);
 import { isBrowser }            from "../helpers/environment.js";
 

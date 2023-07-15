@@ -3,7 +3,7 @@ import jsBeautify            from "js-beautify";
 
 import { config }            from "../_config.js";
 
-import { render }            from "../web_modules/preact-render-to-string.js";
+import { render }            from "preact-render-to-string";
 import { getInitialPageTitle,
          getOpenGraphImage } from "../components/picture-gallery.js";
 

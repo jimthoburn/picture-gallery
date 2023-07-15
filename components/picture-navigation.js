@@ -1,7 +1,7 @@
 
-import { createElement }        from "../web_modules/preact.js";
-import { useContext }           from "../web_modules/preact/hooks.js";
-import   htm                    from "../web_modules/htm.js";
+import { createElement }        from "preact";
+import { useContext }           from "preact/hooks";
+import   htm                    from "htm";
 const    html = htm.bind(createElement);
 import { GalleryDispatch }      from "../components/picture-gallery.js";
 import { Icon }                 from "../components/icon.js";

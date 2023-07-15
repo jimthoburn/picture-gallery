@@ -7,7 +7,9 @@ export const DefaultLayout = ({ title, content, askSearchEnginesNotToIndex, incl
     <html lang="en" dir="ltr">
       <head>
         ${ /* web components */ '' }
-        <link rel="preload" crossorigin href="/web_modules/lit-element.js" as="script" />
+        
+        <link rel="preload" crossorigin href="https://esm.sh/v128/lit-element@3.3.2?bundle" as="script" />
+        <link rel="preload" crossorigin href="https://esm.sh/v128/lit-element@3.3.2/es2021/lit-element.bundle.mjs" as="script" />
         <link rel="preload" crossorigin href="/components/responsive-image.js" as="script" />
 
         <meta charset="utf-8" />
@@ -26,10 +28,26 @@ export const DefaultLayout = ({ title, content, askSearchEnginesNotToIndex, incl
 
         <link rel="icon" href="${ config.favicon }" />
         
-        <script type="module" crossorigin src="/web_modules/lit-element.js"></script>
+        <script type="importmap">
+          {
+            "imports": {
+              "htm": "https://esm.sh/v128/htm@3.1.1?bundle",
+              "lit-element": "https://esm.sh/v128/lit-element@3.3.2?bundle",
+              "markdown-it": "https://esm.sh/v128/markdown-it@13.0.1?bundle",
+              "markdown-it-deflist": "https://esm.sh/v128/markdown-it-deflist@2.1.0?bundle",
+              "preact": "https://esm.sh/v128/preact@10.16.0?bundle",
+              "preact/hooks": "https://esm.sh/v128/preact@10.16.0/hooks?bundle",
+              "xstate": "https://esm.sh/v128/xstate@4.38.0?bundle"
+            }
+          }
+        </script>
+        <script type="module" crossorigin src="https://esm.sh/v128/lit-element@3.3.2?bundle"></script>
+        <script type="module" crossorigin src="https://esm.sh/v128/lit-element@3.3.2/es2021/lit-element.bundle.mjs"></script>
         <script type="module" crossorigin src="/components/responsive-image.js"></script>
         ${ includeClientJS 
-          ? `<script type="module" crossorigin src="/client.js"></script>`
+          ? `
+          <script type="module" crossorigin src="/client.js"></script>
+          `
           : ""}
 
         ${ openGraphImage 

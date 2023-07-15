@@ -334,22 +334,6 @@ git status
 git push --force-with-lease
 ```
 
-## How to update the `web_modules` folder
-
-The `web_modules` folder is automatically generated with [esinstall](https://github.com/FredKSchott/snowpack/tree/main/esinstall). If you’d like to update it, here are the basic steps...
-
-1. Install [Node.js](https://nodejs.org) dependencies
-
-```shell
-npm install
-```
-
-2. Use the `dependencies` listed in the package.json file to update the web_modules folder:
-
-```shell
-npm run install-web-modules
-```
-
 ## State machine visualization
 
 https://xstate.js.org/viz/?gist=18995ef2fca6c1949991f21b1b68c6d0

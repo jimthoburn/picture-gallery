@@ -1,17 +1,25 @@
 {
   "imports": {
     "archiver": "npm:archiver@5.3.1",
-    "capitalize": "https://esm.sh/capitalize@2.0.4",
-    "chalk": "https://esm.sh/chalk@5.2.0",
+    "capitalize": "https://esm.sh/v128/capitalize@2.0.4",
+    "chalk": "https://esm.sh/v128/chalk@5.2.0",
     "dotenv/": "https://deno.land/std@0.192.0/dotenv/",
-    "exif": "https://esm.sh/exif@0.6.0",
-    "express": "npm:express@4.18.2",
+    "exif": "https://esm.sh/v128/exif@0.6.0",
+    "express": "https://esm.sh/v128/express@4.18.2",
     "fs-extra": "npm:fs-extra@11.1.1",
-    "image-size": "https://esm.sh/image-size@1.0.2",
-    "js-beautify": "https://esm.sh/js-beautify@1.14.8",
-    "mkdirp": "https://esm.sh/mkdirp@3.0.1",
-    "node-fetch": "https://esm.sh/node-fetch@3.3.1",
-    "sharp": "npm:sharp@0.32.1"
+    "image-size": "https://esm.sh/v128/image-size@1.0.2",
+    "js-beautify": "https://esm.sh/v128/js-beautify@1.14.8",
+    "mkdirp": "https://esm.sh/v128/mkdirp@3.0.1",
+    "node-fetch": "https://esm.sh/v128/node-fetch@3.3.1",
+    "sharp": "npm:sharp@0.32.1",
+    "htm": "https://esm.sh/v128/htm@3.1.1",
+    "lit-element": "https://esm.sh/v128/lit-element@3.3.2",
+    "markdown-it": "https://esm.sh/v128/markdown-it@13.0.1",
+    "markdown-it-deflist": "https://esm.sh/v128/markdown-it-deflist@2.1.0",
+    "preact": "https://esm.sh/v128/preact@10.16.0",
+    "preact/hooks": "https://esm.sh/v128/preact@10.16.0/hooks?external=preact",
+    "preact-render-to-string": "https://esm.sh/v128/preact-render-to-string@6.1.0?external=preact",
+    "xstate": "https://esm.sh/v128/xstate@4.38.0"
   },
   "tasks": {
     "start": "deno run --allow-env --allow-read=./ --allow-net=0.0.0.0:4000 server.js",
@@ -26,12 +34,6 @@
     "create:albums": "deno run --allow-env --allow-read=./ --allow-write=./_api,./_pictures create/albums-deno.js",
     "create:archives": "deno run --allow-env=__TESTING_MKDIRP_PLATFORM__,__TESTING_MKDIRP_NODE_VERSION__ --allow-read=./ --allow-write=./_archives create/archives.js",
 
-    "postinstall:sharp": "sh ./deno-postinstall-sharp.sh",
-
-    "comment__install-web-modules_1": "https://esm.sh/#cli",
-    "comment__install-web-modules_2": "https://github.com/denoland/deno_emit",
-    "comment__install-web-modules_3": "https://deno.com/manual/tools/vendor",
-    "comment__install-web-modules_4": "https://github.com/denoland/deno/issues/19162",
-    "not-implemented__install-web-modules": "deno run --allow-env --allow-read --allow-write=./web_modules install-web-modules.js"
+    "postinstall:sharp": "sh ./deno-postinstall-sharp.sh"
   }
 }

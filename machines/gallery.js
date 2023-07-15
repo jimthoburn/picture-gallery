@@ -1,7 +1,7 @@
 // See a visualization of this machine at:
 // https://xstate.js.org/viz/?gist=18995ef2fca6c1949991f21b1b68c6d0
 
-import { Machine } from "../web_modules/xstate.js";
+import { Machine } from "xstate";
 
 const LOADING_PICTURE_TIMEOUT_SECONDS = 0.01;
 const TRANSITION_TIMEOUT_SECONDS = 1;

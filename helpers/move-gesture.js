@@ -1,5 +1,5 @@
 
-import { useEffect } from "../web_modules/preact/hooks.js";
+import { useEffect } from "preact/hooks";
 
 import { getTouchPosition, multiTouch } from "../helpers/touch.js";
 import { isBrowser } from "../helpers/environment.js";

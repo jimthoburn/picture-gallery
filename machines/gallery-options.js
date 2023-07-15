@@ -1,5 +1,5 @@
 
-import { assign } from "../web_modules/xstate.js";
+import { assign } from "xstate";
 
 import { getSelectedPicture as getListPicture } from "../components/picture-list.js";
 import { getPicture as getDetailsPicture }      from "../components/picture-image.js";
