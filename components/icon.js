@@ -21,20 +21,6 @@ function Icon({ shape, label }) {
   const svgElement = useRef(null);
   const shapeElements = getShapeElements({ shape });
 
-  // 📚 SHIM: Remove and re-add the SVG element, to work around an issue in
-  //          in Firefox where the SVG element are invisible when rendered
-  //          client-side. (Removing the <switch> and <foreignobject> elements
-  //          also solves the issue, without needing this fix.)
-  useLayoutEffect(() => {
-    if (isBrowser()) {
-      const element = svgElement.current;
-      if (element) {
-        const parent = element.parentNode;
-        parent.innerHTML = element.outerHTML;
-      }
-    }
-  });
-
   if (shapeElements) {
     if (label) {
       return html`
@@ -47,8 +33,8 @@ function Icon({ shape, label }) {
         >
           <title>${ label }</title>
           <switch>
-            ${shapeElements}
-            <foreignobject>${ label }</foreignobject>
+            <g>${shapeElements}</g>
+            <g><foreignObject>${ label }</foreignObject></g>
           </switch>
         </svg>
       `;
