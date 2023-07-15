@@ -307,7 +307,7 @@ The `caption` will appear as part of the [page title for the image](https://deve
 You can also edit the `uri` to match your caption. This will appear as part of the URL for the image. For example: `https://pictures.tobbi.co/wildflowers/44-mastodon-peak-desert-canterbury-bells/`
 
 If you have a lot of images, you may be able to get a head start writing descriptions by using something like [Azure Computer Vision](
-https://learn.microsoft.com/en-us/azure/cognitive-services/Computer-vision/quickstarts-sdk/image-analysis-client-library?pivots=programming-language-rest-api&tabs=visual-studio).
+https://learn.microsoft.com/en-us/azure/cognitive-services/computer-vision/overview-image-analysis).
 
 1. Sign in to your Azure account (or sign up for a new account).
 2. Create a “Computer Vision” instance (or choose one you already have).

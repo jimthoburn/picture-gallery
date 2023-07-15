@@ -1,8 +1,5 @@
 
 import fs from "node:fs";
-import fetch, {
-  fileFromSync,
-} from "node-fetch";
 
 // https://stackoverflow.com/questions/46745014/alternative-for-dirname-in-node-when-using-the-experimental-modules-flag
 import { dirname } from "node:path";
@@ -56,7 +53,7 @@ function getPreviewBase64(filePath) {
 
 // Send a request to the Azure Computer Vision API to
 // get a description of the image located at filePath
-async function getDescription({ filePath, env }) {
+async function getDescription({ filePath, env, fetch, readFile }) {
   if (env.AZURE_COMPUTER_VISION_API_ENDPOINT && env.AZURE_COMPUTER_VISION_API_KEY) {
 
     console.log("getDescription for " + filePath);
@@ -80,12 +77,24 @@ async function getDescription({ filePath, env }) {
       "Ocp-Apim-Subscription-Key": env.AZURE_COMPUTER_VISION_API_KEY,
     };
 
-    const mimetype = "image/jpeg";
-    const blob = fileFromSync(filePath, mimetype);
+    /*
+      For testing...
+      headers { "Content-Type": "application/json" }
+      body: JSON.stringify({ url: "https://learn.microsoft.com/azure/cognitive-services/computer-vision/media/quickstarts/presentation.png" }),
+    */
+
+    const blob = await readFile(filePath);
 
     const searchParams = new URLSearchParams(params).toString();
 
-    const response = await fetch(`${url}?${searchParams}`, { method: "POST", headers, body: blob })
+    const response = await fetch(
+      `${url}?${searchParams}`,
+      {
+        method: "POST",
+        headers,
+        body: blob,
+      }
+    );
     if (!response.ok) {
       console.log(response);
       throw new Error("Network response was not ok");
@@ -101,14 +110,14 @@ async function getDescription({ filePath, env }) {
   return null;
 }
 
-async function getDataForFile({ filePath, sourceForPreviewBase64, sourceForDescription, env }) {  
+async function getDataForFile({ filePath, sourceForPreviewBase64, sourceForDescription, env, fetch, readFile }) {  
   const photoFileName = filePath.split("/").pop()
 
   // https://www.npmjs.com/package/exif
   const meta = await getImageMetadata(filePath);
 
   // get a description of an image located at filePath using open ai
-  const description = await getDescription({ filePath: `${sourceForDescription}/${photoFileName}`, env });
+  const description = await getDescription({ filePath: `${sourceForDescription}/${photoFileName}`, env, fetch, readFile });
 
   const previewBase64 = getPreviewBase64(`${sourceForPreviewBase64}/${photoFileName}`);
 
@@ -139,16 +148,16 @@ async function getDataForFile({ filePath, sourceForPreviewBase64, sourceForDescr
   };
 }
 
-async function getDataForAlbum({ files, pictures, picturesWithDataPreview, picturesWithExif, source, sourceForPreviewBase64, sourceForDescription, env, album}) {
+async function getDataForAlbum({ files, pictures, picturesWithDataPreview, picturesWithExif, source, sourceForPreviewBase64, sourceForDescription, env, fetch, readFile, album}) {
   for (const filePath of files) {
-    const { picture, pictureWithDataPreview, pictureWithMeta } = await getDataForFile({ filePath, pictures, picturesWithDataPreview, picturesWithExif, source, sourceForPreviewBase64, sourceForDescription, env, album });
+    const { picture, pictureWithDataPreview, pictureWithMeta } = await getDataForFile({ filePath, pictures, picturesWithDataPreview, picturesWithExif, source, sourceForPreviewBase64, sourceForDescription, env, fetch, readFile, album });
     pictures.push(picture);
     picturesWithDataPreview.push(pictureWithDataPreview);
     picturesWithExif.push(pictureWithMeta);
   }
 }
 
-async function createAlbumJSON({ env, source, sourceForPreviewBase64, sourceForDescription, destination, album }) {
+async function createAlbumJSON({ env, fetch, readFile, source, sourceForPreviewBase64, sourceForDescription, destination, album }) {
   console.log("createAlbumJSON");
   console.log({ source, sourceForPreviewBase64, sourceForDescription, destination, album });
   const files = getAllFilesFromFolder(source)
@@ -164,7 +173,7 @@ async function createAlbumJSON({ env, source, sourceForPreviewBase64, sourceForD
 
   console.log("files");
 
-  await getDataForAlbum({ files, pictures, picturesWithDataPreview, picturesWithExif, source, sourceForPreviewBase64, sourceForDescription, env, album });
+  await getDataForAlbum({ files, pictures, picturesWithDataPreview, picturesWithExif, source, sourceForPreviewBase64, sourceForDescription, env, fetch, readFile, album });
 
   const userEditableData = {
     ...album,
@@ -222,7 +231,7 @@ async function saveJSON({ destination, fileName, data, overwrite }) {
   }
 }
 
-async function processAlbum({ env, album, destination }) {
+async function processAlbum({ env, fetch, readFile, album, destination }) {
   let pathBits = album.split("/");
   pathBits.pop();
   let basepath = pathBits.join("/");
@@ -241,7 +250,7 @@ async function processAlbum({ env, album, destination }) {
   } else {
 
     let {userEditableData, readOnlyData, readOnlyExif} = await createAlbumJSON({
-      env,
+      env, fetch, readFile,
       source: `./_pictures/${album}/original`,
       sourceForPreviewBase64: `./_pictures/${album}/16-wide`,
       sourceForDescription: `./_pictures/${album}/2048-wide`,
@@ -265,11 +274,11 @@ async function processAlbum({ env, album, destination }) {
   }
 }
 
-async function createAlbums({ env }) {
+async function createAlbums({ env, fetch, readFile }) {
   const destination = "./_api";
 
   for (const album of albums) {
-    await processAlbum({ env, album, destination });
+    await processAlbum({ env, fetch, readFile, album, destination });
   }
 
   if (albumGroups.length > 0) {
