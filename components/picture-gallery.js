@@ -1,10 +1,10 @@
 
 import { createElement,
-         createContext }  from "../web_modules/preact.js";
+         createContext }  from "preact";
 import { useState,
          useLayoutEffect,
-         useEffect}       from "../web_modules/preact/hooks.js";
-import   htm              from "../web_modules/htm.js";
+         useEffect}       from "preact/hooks";
+import   htm              from "htm";
 const    html = htm.bind(createElement);
 import { isBrowser }      from "../helpers/environment.js";
 import { useMachine }     from "../helpers/xstate-preact.js";

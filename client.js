@@ -1,6 +1,6 @@
 
-import { createElement, hydrate, Component } from "./web_modules/preact.js";
-import htm from "./web_modules/htm.js"; const html = htm.bind(createElement);
+import { createElement, hydrate, Component } from "preact";
+import htm from "htm"; const html = htm.bind(createElement);
 
 import { PictureGallery, getInitialPageTitle } from "./components/picture-gallery.js";
 import { Catcher } from "./components/catcher.js";

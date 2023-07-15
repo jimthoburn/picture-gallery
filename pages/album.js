@@ -1,6 +1,6 @@
 
-import { createElement }  from "../web_modules/preact.js";
-import   htm              from "../web_modules/htm.js";
+import { createElement }  from "preact";
+import   htm              from "htm";
 const    html = htm.bind(createElement);
 import { PictureGallery } from "../components/picture-gallery.js";
 

@@ -1,9 +1,9 @@
 
-import { createElement }        from "../web_modules/preact.js";
+import { createElement }        from "preact";
 import { useRef,
          useEffect,
-         useContext }           from "../web_modules/preact/hooks.js";
-import   htm                    from "../web_modules/htm.js";
+         useContext }           from "preact/hooks";
+import   htm                    from "htm";
 const    html = htm.bind(createElement);
 import { usingKeyboard,
          onKeyboardDetected }   from "../helpers/environment.js";

@@ -22,7 +22,6 @@ export const config = {
     "data",
     "helpers",
     "machines",
-    "web_modules",
   ],
 
   "test": {

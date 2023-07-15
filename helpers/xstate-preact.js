@@ -26,13 +26,13 @@ SOFTWARE.
 //                 https://github.com/davidkpiano/xstate/blob/8cc6b1c6aa719cbae77ea5687dd8475951e1ce91/packages/xstate-react/src/index.ts
 // 2) Converted to JS by https://www.typescriptlang.org/play/?target=6
 
-// 3) Switch from React to Preact and use web_modules
+// 3) Switch from React to Preact
 // BEFORE:
 // import { useState, useRef, useEffect } from 'react';
-// import { interpret } from 'xstate';
 // AFTER:
-import { useState, useRef, useEffect } from '../web_modules/preact/hooks.js';
-import { interpret } from '../web_modules/xstate.js';
+import { useState, useRef, useEffect } from "preact/hooks";
+
+import { interpret } from "xstate";
 
 let lastDispatch;
 export const getLastDispatch = function() {

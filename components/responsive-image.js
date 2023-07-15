@@ -1,6 +1,6 @@
 
 
-import { LitElement, html, css } from "../web_modules/lit-element.js";
+import { LitElement, html, css } from "lit-element";
 
 
 class ResponsiveImage extends LitElement {

@@ -1,7 +1,7 @@
 
 import jsBeautify from "js-beautify";
 
-import { render }            from "../web_modules/preact-render-to-string.js";
+import { render }            from "preact-render-to-string";
 import { config }            from "../_config.js";
 import { Error404Page,
          error404PageTitle } from "../pages/404.js";
