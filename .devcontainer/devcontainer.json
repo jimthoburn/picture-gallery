@@ -17,7 +17,7 @@
   // "forwardPorts": [],
 
   // Use 'postCreateCommand' to run commands after the container is created.
-  "postCreateCommand": "deno cache server.js && deno cache create/images.js && deno task postinstall:sharp"
+  "postCreateCommand": "deno cache create/images.js && deno task postinstall:sharp"
 
   // Configure tool-specific properties.
   // "customizations": {},

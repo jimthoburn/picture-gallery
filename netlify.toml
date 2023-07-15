@@ -3,7 +3,12 @@
 [build]
   publish = "_site"
   command = "npm run build"
-  environment = { NODE_VERSION = "18.16.0" }
+  environment = {
+    NODE_VERSION = "18.16.0",
+
+    # https://docs.netlify.com/configure-builds/manage-dependencies/
+    NODE_ENV = "production",
+  }
 
 # https://www.netlify.com/products/dev/
 # https://github.com/netlify/cli/blob/main/docs/netlify-dev.md
