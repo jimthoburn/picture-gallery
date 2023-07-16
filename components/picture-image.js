@@ -12,6 +12,7 @@ import { getSource }            from "../helpers/image-source-set.js";
 
 import { GalleryDispatch }      from "../components/picture-gallery.js";
 import { PictureElement }       from "../components/picture-element.js";
+import { responsiveImageHTML }  from "../components/responsive-image-html.js";
 import { getSelectedPicture as getListPicture } from "../components/picture-list.js";
 
 
@@ -102,17 +103,20 @@ function PictureImage({ album, picture, state, config }) {
     ? `(min-aspect-ratio: ${picture.width}/${picture.height}) calc(${picture.width / picture.height} * 100vh), 100vw`
     : `100vw`;
 
+  const aspectRatio = (picture.width && picture.height)
+    ? `${picture.width}/${picture.height}`
+    : "1/1"
+
   return html`
     <figure>
       <responsive-image
-        aspect-ratio="${
-          (picture.width && picture.height)
-          ? `${picture.width}/${picture.height}`
-          : "1/1"
-        }"
+        aspect-ratio="${aspectRatio}"
         max-width="100vw"
         max-height="100vh"
         ref="${image}">
+        <template shadowrootmode="open">
+          ${responsiveImageHTML({ aspectRatio, maxWidth: "100vw", maxHeight: "100vh", html })}
+        </template>
         ${ (picture.previewBase64)
           ? html`
             <img
@@ -129,7 +133,9 @@ function PictureImage({ album, picture, state, config }) {
             width="${ (picture.width)  ? 320 * (picture.width  > picture.height ? 1 : picture.width / picture.height) : null }"
             height="${(picture.height) ? 320 * (picture.height > picture.width  ? 1 : picture.height / picture.width) : null }"
             onLoad="${onImageLoaded}"
-            />
+            ${/* SHIM: Make <picture><img /></picture> fill the available space (but only if <picture /> exists) */ ''}
+            style="${picture.filename ? "width: 100%; height: auto;" : ""}"
+          />
         </${PictureElement}>
       </responsive-image>
     </figure>

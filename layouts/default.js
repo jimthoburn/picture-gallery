@@ -7,9 +7,9 @@ export const DefaultLayout = ({ title, content, askSearchEnginesNotToIndex, incl
     <html lang="en" dir="ltr">
       <head>
         ${ /* web components */ '' }
-        
         <link rel="preload" crossorigin href="https://esm.sh/v128/lit@2.7.6?bundle" as="script" />
         <link rel="preload" crossorigin href="https://esm.sh/v128/lit@2.7.6/es2021/lit.bundle.mjs" as="script" />
+        <link rel="preload" crossorigin href="/components/responsive-image-html.js" as="script" />
         <link rel="preload" crossorigin href="/components/responsive-image.js" as="script" />
 
         <meta charset="utf-8" />
@@ -43,6 +43,7 @@ export const DefaultLayout = ({ title, content, askSearchEnginesNotToIndex, incl
         </script>
         <script type="module" crossorigin src="https://esm.sh/v128/lit@2.7.6?bundle"></script>
         <script type="module" crossorigin src="https://esm.sh/v128/lit@2.7.6/es2021/lit.bundle.mjs"></script>
+        <script type="module" crossorigin src="/components/responsive-image-html.js"></script>
         <script type="module" crossorigin src="/components/responsive-image.js"></script>
         ${ includeClientJS 
           ? `
