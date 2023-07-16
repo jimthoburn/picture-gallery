@@ -29,6 +29,6 @@
     "markdown-it-deflist": "^2.1.0",
     "preact": "^10.16.0",
     "preact-render-to-string": "^6.2.0",
-    "xstate": "^4.38.0"
+    "xstate": "^4.38.1"
   }
 }
