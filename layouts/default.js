@@ -8,8 +8,8 @@ export const DefaultLayout = ({ title, content, askSearchEnginesNotToIndex, incl
       <head>
         ${ /* web components */ '' }
         
-        <link rel="preload" crossorigin href="https://esm.sh/v128/lit-element@3.3.2?bundle" as="script" />
-        <link rel="preload" crossorigin href="https://esm.sh/v128/lit-element@3.3.2/es2021/lit-element.bundle.mjs" as="script" />
+        <link rel="preload" crossorigin href="https://esm.sh/v128/lit@2.7.6?bundle" as="script" />
+        <link rel="preload" crossorigin href="https://esm.sh/v128/lit@2.7.6/es2021/lit.bundle.mjs" as="script" />
         <link rel="preload" crossorigin href="/components/responsive-image.js" as="script" />
 
         <meta charset="utf-8" />
@@ -32,7 +32,7 @@ export const DefaultLayout = ({ title, content, askSearchEnginesNotToIndex, incl
           {
             "imports": {
               "htm": "https://esm.sh/v128/htm@3.1.1?bundle",
-              "lit-element": "https://esm.sh/v128/lit-element@3.3.2?bundle",
+              "lit": "https://esm.sh/v128/lit@2.7.6?bundle",
               "markdown-it": "https://esm.sh/v128/markdown-it@13.0.1?bundle",
               "markdown-it-deflist": "https://esm.sh/v128/markdown-it-deflist@2.1.0?bundle",
               "preact": "https://esm.sh/v128/preact@10.16.0?bundle",
@@ -41,8 +41,8 @@ export const DefaultLayout = ({ title, content, askSearchEnginesNotToIndex, incl
             }
           }
         </script>
-        <script type="module" crossorigin src="https://esm.sh/v128/lit-element@3.3.2?bundle"></script>
-        <script type="module" crossorigin src="https://esm.sh/v128/lit-element@3.3.2/es2021/lit-element.bundle.mjs"></script>
+        <script type="module" crossorigin src="https://esm.sh/v128/lit@2.7.6?bundle"></script>
+        <script type="module" crossorigin src="https://esm.sh/v128/lit@2.7.6/es2021/lit.bundle.mjs"></script>
         <script type="module" crossorigin src="/components/responsive-image.js"></script>
         ${ includeClientJS 
           ? `
