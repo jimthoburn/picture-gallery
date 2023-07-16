@@ -1,12 +1,12 @@
 // See a visualization of this machine at:
 // https://xstate.js.org/viz/?gist=18995ef2fca6c1949991f21b1b68c6d0
 
-import { Machine } from "xstate";
+import { createMachine } from "xstate";
 
 const LOADING_PICTURE_TIMEOUT_SECONDS = 0.01;
 const TRANSITION_TIMEOUT_SECONDS = 1;
 
-const galleryMachine = Machine(
+const galleryMachine = createMachine(
   {
     id: "gallery",
     context: {
@@ -28,12 +28,10 @@ const galleryMachine = Machine(
     initial: "setting_up",
     states: {
       setting_up: {
-        on: {
-          "": [
-            { target: "showing_details", cond: "hasSelectedPictureIndex" },
-            { target: "showing_list" }
-          ]
-        }
+        always: [
+          { target: "showing_details", cond: "hasSelectedPictureIndex" },
+          { target: "showing_list" }
+        ],
       },
       showing_list: {
         on: {
