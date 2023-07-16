@@ -22,7 +22,7 @@
     "preact": "https://esm.sh/v128/preact@10.16.0",
     "preact/hooks": "https://esm.sh/v128/preact@10.16.0/hooks?external=preact",
     "preact-render-to-string": "https://esm.sh/v128/preact-render-to-string@6.2.0?external=preact",
-    "xstate": "https://esm.sh/v128/xstate@4.38.0"
+    "xstate": "https://esm.sh/v128/xstate@4.38.1"
   },
   "tasks": {
     "start": "deno run --allow-env --allow-read=./ --allow-net=0.0.0.0:4000 server.js",

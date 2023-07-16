@@ -95,7 +95,9 @@
     "https://esm.sh/v128/utils-merge@1.0.1/denonext/utils-merge.mjs": "0a8a3925b476b5a94da272bb8fbb63728b725185a80b28492825dfb3ca3a3542",
     "https://esm.sh/v128/vary@1.1.2/denonext/vary.mjs": "119fef5a9e3d5a74c698ded1a4edd8acfdf75db69c6daabf631bd773964ac860",
     "https://esm.sh/v128/xstate@4.38.0": "f55cdcb677ebd228310e9cba3d6a21eed9fd58e98627bba8dcf31f98632f910b",
-    "https://esm.sh/v128/xstate@4.38.0/denonext/xstate.mjs": "235f535efadd30a1bff3771dabab368581aa25663a56b3888dec89112b2cfd17"
+    "https://esm.sh/v128/xstate@4.38.0/denonext/xstate.mjs": "235f535efadd30a1bff3771dabab368581aa25663a56b3888dec89112b2cfd17",
+    "https://esm.sh/v128/xstate@4.38.1": "a5b2274412dd01d15dd03b56c23ae5909097c7f7c3f328296f4e6eb948349c4f",
+    "https://esm.sh/v128/xstate@4.38.1/denonext/xstate.mjs": "26d5c64e1172ee08282d684c92bad6a06634ab0fabad61220d53be29f9703eea"
   },
   "npm": {
     "specifiers": {
