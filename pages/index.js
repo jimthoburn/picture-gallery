@@ -5,11 +5,9 @@ const    html = htm.bind(createElement);
 
 import { getSource }      from "../helpers/image-source-set.js";
 import { PictureElement } from "../components/picture-element.js";
+import { responsiveImageHTML } from "../components/responsive-image-html.js";
 
 function IndexPage({ title, date, albums, config }) {
-
-  // console.log("IndexPage");
-  // console.log(albums);
 
   return html`
     <section class="picture-list picture-list__has-captions">
@@ -81,17 +79,20 @@ function IndexPage({ title, date, albums, config }) {
             ? `(min-width: 60em) 33vw, (min-width: 30em) 50vw, 100vw`
             : `100vw`;
 
+          const aspectRatio = (picture.width && picture.height)
+            ? `${picture.width}/${picture.height}`
+            : "1/1"
+            
           return html`
             <li>
               <a href="/${album.uri}/">
                 <responsive-image
-                  aspect-ratio="${
-                    (picture.width && picture.height)
-                    ? `${picture.width}/${picture.height}`
-                    : "1/1"
-                  }"
+                  aspect-ratio="${aspectRatio}"
                   max-width="100%"
                   max-height="100%">
+                  <template shadowrootmode="open">
+                    ${responsiveImageHTML({ aspectRatio, maxWidth: "100%", maxHeight: "100%", html })}
+                  </template>
                   ${ (picture.previewBase64)
                      ? html`
                     <img
@@ -110,9 +111,11 @@ function IndexPage({ title, date, albums, config }) {
                         ? picture.description
                         : `Picture ${index + 1}`
                       }"
-                      width="${ 320 * (picture.width  > picture.height ? 1 : picture.width/picture.height) }"
-                      height="${320 * (picture.height > picture.width  ? 1 : picture.height/picture.width) }"
-                      />
+                      width="${ (picture.width)  ? 320 * (picture.width  > picture.height ? 1 : picture.width / picture.height) : null }"
+                      height="${(picture.height) ? 320 * (picture.height > picture.width  ? 1 : picture.height / picture.width) : null }"
+                      ${/* SHIM: Make <picture><img /></picture> fill the available space (but only if <picture /> exists) */ ''}
+                      style="${picture.filename ? "width: 100%; height: auto;" : ""}"
+                    />
                   </${PictureElement}>
                 </responsive-image>
                 <span class="caption">${ album.title }</span>

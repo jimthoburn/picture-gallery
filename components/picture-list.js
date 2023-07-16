@@ -14,6 +14,7 @@ import { getSource }          from "../helpers/image-source-set.js";
 import { GalleryDispatch }    from "../components/picture-gallery.js";
 import { RenderedMarkdown }   from "../components/rendered-markdown.js";
 import { PictureElement }     from "../components/picture-element.js";
+import { responsiveImageHTML } from "../components/responsive-image-html.js";
 
 
 let getSelectedPicture = function() {
@@ -108,6 +109,10 @@ function PictureList({ album, pictures, story, state, config }) {
 
           const linkLabel = `Picture ${ index + 1 }.${ picture.caption ? ` ${picture.caption}` : "" }`;
 
+          const aspectRatio = (picture.width && picture.height)
+            ? `${picture.width}/${picture.height}`
+            : "1/1"
+
           return html`
           <li key="${picture.uri}">
             <a href="/${album.uri}/${picture.uri}/"
@@ -115,14 +120,13 @@ function PictureList({ album, pictures, story, state, config }) {
                onKeyUp="${onKeyboardDetected}"
                onFocus="${onListImageFocus}">
               <responsive-image
-                aspect-ratio="${
-                  (picture.width && picture.height)
-                  ? `${picture.width}/${picture.height}`
-                  : "1/1"
-                }"
+                aspect-ratio="${aspectRatio}"
                 max-width="100%"
                 max-height="100%"
                 ref="${state.context.selectedPictureIndex === index ? selectedPicture : null}">
+                <template shadowrootmode="open">
+                  ${responsiveImageHTML({ aspectRatio, maxWidth: "100%", maxHeight: "100%", html })}
+                </template>
                 ${ (picture.previewBase64)
                    ? html`
                   <img
@@ -133,10 +137,12 @@ function PictureList({ album, pictures, story, state, config }) {
                    : "" }
                  <${PictureElement} album="${album}" picture="${picture}" sizes="${sizes}" config="${config}">
                    <img src="${getSource({album, picture, type: "jpeg"})}"
-                        width="${ 320 * (picture.width  > picture.height ? 1 : picture.width/picture.height) }"
-                        height="${320 * (picture.height > picture.width  ? 1 : picture.height/picture.width) }"
+                        width="${ (picture.width)  ? 320 * (picture.width  > picture.height ? 1 : picture.width / picture.height) : null }"
+                        height="${(picture.height) ? 320 * (picture.height > picture.width  ? 1 : picture.height / picture.width) : null }"
                         loading="lazy"
                         alt="${linkLabel}"
+                        ${/* SHIM: Make <picture><img /></picture> fill the available space (but only if <picture /> exists) */ ''}
+                        style="${picture.filename ? "width: 100%; height: auto;" : ""}"
                         data-selected="${(state.context.selectedPictureIndex === index) ? "true" : ""}" />
                  </${PictureElement}>
               </responsive-image>
