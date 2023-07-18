@@ -164,3 +164,8 @@
   }
 }
 
+@media (prefers-color-scheme: dark) {
+  .picture-list .caption {
+    background: black;
+  }
+}
