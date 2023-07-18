@@ -44,7 +44,7 @@ if (isBrowser()) {
   // console.log(mediaQuery);
 
   update();
-  mediaQuery.addListener(update);
+  mediaQuery.addEventListener("change", update);
 }
 
 
