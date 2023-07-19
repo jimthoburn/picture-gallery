@@ -25,7 +25,7 @@ function getError404HTML() {
 
 function getError500HTML(err) {
   const title   = error500PageTitle;
-  const content = render(Error500Page({ errorMessage: err.stack }));
+  const content = render(Error500Page({ errorMessage: err?.message ?? err?.stack ?? "Something went wrong" }));
 
   const beautifiedHTML = jsBeautify.html_beautify(DefaultLayout({
     title,

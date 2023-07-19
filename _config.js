@@ -8,11 +8,17 @@ export const config = {
   // https://emojipedia-us.s3.dualstack.us-west-1.amazonaws.com/thumbs/120/twitter/233/frame-with-picture_1f5bc.png
   "favicon": "/favicon/emojipedia-frame-with-picture.png",
 
-  // Override the settings in individual albums, and “noindex” the entire site
+  // Set to `true` to override the settings in individual albums, and “noindex” the entire site
   // "askSearchEnginesNotToIndex": true,
 
-  "buildFolder"   : "_site",
+  // For the development server
   "serverPort"    : "4000",
+  "serverHostname" : "0.0.0.0",
+
+  // Folder for publishing the gallery
+  "buildFolder"   : "_site",
+
+  // These folders are copied into the build folder
   "staticFolders" : [
     "_api",
     "_archives",
