@@ -5,7 +5,6 @@
     "capitalize": "https://esm.sh/v128/capitalize@2.0.4",
     "chalk": "https://esm.sh/v128/chalk@5.2.0",
     "exif": "https://esm.sh/v128/exif@0.6.0",
-    "express": "https://esm.sh/v128/express@4.18.2",
     "image-size": "https://esm.sh/v128/image-size@1.0.2",
     "js-beautify": "https://esm.sh/v128/js-beautify@1.14.8",
     "mkdirp": "https://esm.sh/v128/mkdirp@3.0.1",
@@ -25,8 +24,7 @@
     "xstate": "https://esm.sh/v128/xstate@4.38.1"
   },
   "tasks": {
-    "start": "deno run --allow-env --allow-read=./ --allow-net=0.0.0.0:4000 server.js",
-    "dev": "deno run --watch --allow-env --allow-read=./ --allow-net=0.0.0.0:4000 server.js",
+    "dev": "deno run --watch --allow-read=./_public,./client.js,./components,./css,./data,./helpers,./machines,./_api,./_archives,./_pictures --allow-net=0.0.0.0:4000 server-deno.js",
     "build": "deno run --allow-env --allow-read=./ --allow-write=./_site --allow-sys=uid build.js",
     "serve": "cd ./_site && deno run --allow-read=./ --allow-net=0.0.0.0:4000 https://deno.land/std@0.194.0/http/file_server.ts  ./ --port=4000",
 
