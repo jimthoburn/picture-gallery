@@ -42,3 +42,7 @@ h1, h2, h3, h4, h5, h6 {
 body > section:not([class]) {
   padding: 1.5em;
 }
+
+a {
+  color: hsl(193, 70%, 60%); /* @aqua */
+}

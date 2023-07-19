@@ -5,7 +5,7 @@
   },
   "type": "module",
   "scripts": {
-    "start": "node server.js",
+    "start": "node server-node.js",
     "build": "node build.js",
     "test": "playwright test",
     "test:report": "npm run test && playwright show-report"
