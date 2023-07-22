@@ -10,9 +10,10 @@
     "mkdirp": "https://esm.sh/v128/mkdirp@3.0.1",
     "node-fetch": "https://esm.sh/v128/node-fetch@3.3.1",
 
+    "wasm-vips/": "https://unpkg.com/wasm-vips@0.0.5/",
+
     "archiver": "npm:archiver@5.3.1",
     "fs-extra": "npm:fs-extra@11.1.1",
-    "sharp": "npm:sharp@0.32.3",
 
     "htm": "https://esm.sh/v128/htm@3.1.1",
     "lit": "https://esm.sh/v128/lit@2.7.6",
@@ -29,7 +30,7 @@
     "serve": "cd ./_site && deno run --allow-read=./ --allow-net=0.0.0.0:4000 https://deno.land/std@0.194.0/http/file_server.ts  ./ --port=4000",
 
     "create": "deno task create:images && deno task rename:images && deno task optimize:images && deno task create:albums && deno task create:archives",
-    "create:images": "deno run --allow-ffi --node-modules-dir --allow-env --allow-read --allow-write=./_pictures --allow-run=/bin/sh create/images.js",
+    "create:images": "deno run --allow-read=./ --allow-write=./_pictures --allow-net=unpkg.com create/images.js",
     "rename:images": "deno run --allow-read=./_pictures --allow-write=./_pictures create/images-rename.js",
     "optimize:images": "deno run --allow-env --allow-read --allow-run=/bin/sh create/images-optimize.js",
     "create:albums": "deno run --allow-env --allow-read=./ --allow-write=./_api,./_pictures create/albums-deno.js",
@@ -37,8 +38,6 @@
 
     "esm:add": "deno run --allow-read=./deno.json,import_map.json --allow-write=./import_map.json --allow-net=esm.sh https://esm.sh/v128 add",
     "esm:update": "deno run --allow-read=./deno.json,import_map.json --allow-write=./import_map.json --allow-net=esm.sh https://esm.sh/v128 update",
-    "esm:remove": "deno run --allow-read=./deno.json,import_map.json --allow-write=./import_map.json --allow-net=esm.sh https://esm.sh/v128 remove",
-
-    "postinstall:sharp": "sh ./deno-postinstall-sharp.sh"
+    "esm:remove": "deno run --allow-read=./deno.json,import_map.json --allow-write=./import_map.json --allow-net=esm.sh https://esm.sh/v128 remove"
   }
 }
