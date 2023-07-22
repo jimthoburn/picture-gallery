@@ -34,11 +34,13 @@ To create your own gallery, you can open this project in a [codespace](https://d
 
 1. [Make a copy of this project on GitHub](https://github.com/jimthoburn/picture-gallery/generate) (or download it)
 
-2. Install [Node.js](https://nodejs.org) and [Deno](https://deno.com/runtime)
+2. Install [Deno](https://deno.com/runtime)
 
-3. Install [ImageOptim.app](https://imageoptim.com/mac) and [imageoptim-cli](https://www.npmjs.com/package/imageoptim-cli) (optional)
+3. Install [Node.js](https://nodejs.org) (optional)
 
-4. From the root of your project, start a server for development...
+4. Install [ImageOptim.app](https://imageoptim.com/mac) and [imageoptim-cli](https://www.npmjs.com/package/imageoptim-cli) (optional)
+
+5. From the root of your project, start a server for development...
 
 ```shell
 deno task dev
@@ -100,17 +102,6 @@ In the root of your project run...
 ```shell
 deno task create
 ```
-
-_You may see the following error:_
-> Something went wrong installing the "sharp" module
-
-To work around this, run...
-
-```shell
-deno task postinstall:sharp
-```
-
-And then re-run `deno task create`
 
 ### Editing a gallery
 
