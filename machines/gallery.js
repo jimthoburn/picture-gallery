@@ -9,6 +9,8 @@ const TRANSITION_TIMEOUT_SECONDS = 1;
 const galleryMachine = createMachine(
   {
     id: "gallery",
+    // https://xstate.js.org/docs/guides/actions.html
+    predictableActionArguments: true,
     context: {
       didPopHistoryState: null,
       selectedPictureIndex: null,
