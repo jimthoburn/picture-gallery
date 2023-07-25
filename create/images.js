@@ -178,7 +178,7 @@ function generateOneImage({ width, sourceFile, destinationFolder }) {
         Deno.writeFile(outputFile, outputImageBlob);
       }
 
-      const withMetaData = true; // width >= 2048;
+      const withMetaData = width >= 2048;
 
       if (imageFormatsToCreate.jpeg) {
         console.log(``);

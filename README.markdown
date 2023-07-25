@@ -36,19 +36,15 @@ To create your own gallery, you can open this project in a [codespace](https://d
 
 2. Install [Deno](https://deno.com/runtime)
 
-3. Install [Node.js](https://nodejs.org) (optional)
-
-4. Install [ImageOptim.app](https://imageoptim.com/mac) and [imageoptim-cli](https://www.npmjs.com/package/imageoptim-cli) (optional)
-
-5. From the root of your project, start a server for development...
+3. From the root of your project, start a server for development...
 
 ```shell
 deno task dev
 ```
 
-_If you see an error related to [deno.lock](https://deno.com/manual/basics/modules/integrity_checking), you can delete this file at the root of your project folder (it will be created again automatically)._
+4. Visit `http://localhost:4000`
 
-5. Visit `http://localhost:4000`
+_If you see an error related to [deno.lock](https://deno.com/manual/basics/modules/integrity_checking), you can delete this file at the root of your project folder (it will be created again automatically)._
 
 ### Creating a gallery
 

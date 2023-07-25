@@ -29,10 +29,8 @@
     "build": "deno run --allow-env --allow-read=./ --allow-write=./_site --allow-sys=uid build.js",
     "serve": "cd ./_site && deno run --allow-read=./ --allow-net=0.0.0.0:4000 https://deno.land/std@0.194.0/http/file_server.ts  ./ --port=4000",
 
-    "create": "deno task create:images && deno task rename:images && deno task optimize:images && deno task create:albums && deno task create:archives",
+    "create": "deno task create:images && deno task create:albums && deno task create:archives",
     "create:images": "deno run --allow-read=./ --allow-write=./_pictures --allow-net=unpkg.com create/images.js",
-    "rename:images": "deno run --allow-read=./_pictures --allow-write=./_pictures create/images-rename.js",
-    "optimize:images": "deno run --allow-env --allow-read --allow-run=/bin/sh create/images-optimize.js",
     "create:albums": "deno run --allow-env --allow-read=./ --allow-write=./_api,./_pictures create/albums-deno.js",
     "create:archives": "deno run --allow-env=__TESTING_MKDIRP_PLATFORM__,__TESTING_MKDIRP_NODE_VERSION__ --allow-read=./ --allow-write=./_archives create/archives.js",
 
