@@ -12,7 +12,7 @@ function PictureDetails({ pictures, album, state, config, pictureListShouldRende
   const picture = pictures[state.context.selectedPictureIndex];
 
   const downloadURL = picture.filename
-    ? `/pictures/${ album.uri }/6000-wide/${ picture.filename }`
+    ? `/pictures/${ album.uri }/original/${ picture.filename }`
     : picture.source;
 
   // 1) Remove “https://”
