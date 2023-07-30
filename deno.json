@@ -10,9 +10,7 @@
     "mkdirp": "https://esm.sh/v128/mkdirp@3.0.1",
     "node-fetch": "https://esm.sh/v128/node-fetch@3.3.1",
 
-    "__comment__wasm-vips-1": "https://npmjs.com/package/wasm-vips/v/0.0.5",
-    "__comment__wasm-vips-2": "Manually copied from ./node_modules/wasm-vips/",
-    "wasm-vips/lib/vips-es6.js": "./vendor/npmjs.com/wasm-vips@0.0.5/lib/vips-es6.js",
+    "wasm-vips/lib/vips-es6.js": "./library/wasm-vips@0.0.5/lib/vips-es6.js",
 
     "archiver": "npm:archiver@5.3.1",
     "fs-extra": "npm:fs-extra@11.1.1",
@@ -35,8 +33,6 @@
     "create:images": "deno run --allow-read=./ --allow-write=./_pictures create/images.js",
     "create:albums": "deno run --allow-env --allow-read=./ --allow-write=./_api,./_pictures create/albums-deno.js",
     "create:archives": "deno run --allow-env=__TESTING_MKDIRP_PLATFORM__,__TESTING_MKDIRP_NODE_VERSION__ --allow-read=./ --allow-write=./_archives create/archives.js",
-
-    "vendor:create:images": "deno vendor create/images-worker.js",
 
     "esm:add": "deno run --allow-read=./deno.json,import_map.json --allow-write=./import_map.json --allow-net=esm.sh https://esm.sh/v128 add",
     "esm:update": "deno run --allow-read=./deno.json,import_map.json --allow-write=./import_map.json --allow-net=esm.sh https://esm.sh/v128 update",
