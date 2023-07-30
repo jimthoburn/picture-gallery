@@ -137,7 +137,7 @@ function PictureList({ album, pictures, story, state, config }) {
                    : "" }
                  <${PictureElement} album="${album}" picture="${picture}" sizes="${sizes}" config="${config}">
                    <img src="${getSource({album, picture, type: "jpeg"})}"
-                        width="${ (picture.width)  ? 320 * (picture.width  > picture.height ? 1 : picture.width / picture.height) : null }"
+                        width="${ (picture.width)  ? 320 * (picture.width  > picture.height ? 1 : picture.width / picture.height) : 320 }"
                         height="${(picture.height) ? 320 * (picture.height > picture.width  ? 1 : picture.height / picture.width) : null }"
                         loading="lazy"
                         alt="${linkLabel}"

@@ -62,7 +62,7 @@ function ParentAlbumPage({ parent, children, config }) {
                     ? picture.description
                     : `Picture ${index + 1}`
                     }"
-                    width="${ (picture.width)  ? 320 * (picture.width  > picture.height ? 1 : picture.width / picture.height) : null }"
+                    width="${ (picture.width)  ? 320 * (picture.width  > picture.height ? 1 : picture.width / picture.height) : 320 }"
                     height="${(picture.height) ? 320 * (picture.height > picture.width  ? 1 : picture.height / picture.width) : null }"
                     ${/* SHIM: Make <picture><img /></picture> fill the available space (but only if <picture /> exists) */ ''}
                     style="${picture.filename ? "width: 100%; height: auto;" : ""}"
