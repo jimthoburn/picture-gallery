@@ -130,7 +130,7 @@ function PictureImage({ album, picture, state, config }) {
           <img
             src="${getSource({album, picture, type: "jpeg"})}"
             alt="${alt}"
-            width="${ (picture.width)  ? 320 * (picture.width  > picture.height ? 1 : picture.width / picture.height) : null }"
+            width="${ (picture.width)  ? 320 * (picture.width  > picture.height ? 1 : picture.width / picture.height) : 320 }"
             height="${(picture.height) ? 320 * (picture.height > picture.width  ? 1 : picture.height / picture.width) : null }"
             onLoad="${onImageLoaded}"
             ${/* SHIM: Make <picture><img /></picture> fill the available space (but only if <picture /> exists) */ ''}
