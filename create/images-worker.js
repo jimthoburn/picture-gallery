@@ -56,9 +56,6 @@ const wasmImageProcessingOptions = {
 
 
 async function generateOneImageSize({ imagesToCreate, width, originalImageBlob, sourceFileSize, imageDescription }) {
-  // console.log(`🖼  Generating image at size ${width}px`);
-
-
 
   console.log(``);
   console.log(`🤖 WebAssembly instance starting for ${imageDescription}`);
@@ -74,6 +71,8 @@ async function generateOneImageSize({ imagesToCreate, width, originalImageBlob, 
   // console.log("🏁", "WebAssembly instance ready");
   // console.log("- - - - - - - - - - - - - - - - - - - - - - -");
   // console.log("");
+
+  const originalImageBlob = await Deno.readFile(sourceFile);
 
   // Load an image from a preloaded file
   const source = wasmImageProcessingInstance.Source.newFromMemory(originalImageBlob);
@@ -169,11 +168,15 @@ async function generateOneImageSize({ imagesToCreate, width, originalImageBlob, 
   // console.log("");
   // console.log("- - - - - - - - - - - - - - - - - - - - - - -");
   // console.log("⏳ ", "Shutting down WebAssembly instance...");
-  // wasmImageProcessingInstance.shutdown();
+  wasmImageProcessingInstance.shutdown();
   // console.log("");
   // console.log("✅ ", "WebAssembly instance shutdown finished");
   // console.log("- - - - - - - - - - - - - - - - - - - - - - -");
   // console.log("");
+
+  console.log(``);
+  console.log(`🤖 WebAssembly instance shutdown for ${imageDescription}`);
+  console.log(``);
 
   // For WebAssembly
   // https://esbuild.github.io/getting-started/#deno
@@ -183,13 +186,13 @@ async function generateOneImageSize({ imagesToCreate, width, originalImageBlob, 
 self.onmessage = async (e) => {
   // console.log("📦", "Message received from main thread");
 
-  const { imagesToCreate, width, originalImageBlob, sourceFileSize, imageDescription } = e.data;
+  const { imagesToCreate, width, sourceFile, sourceFileSize, imageDescription } = e.data;
 
   console.log(``);
   console.log(`🧵 Worker starting for ${imageDescription}`);
   console.log(``);
 
-  await generateOneImageSize({ imagesToCreate, width, originalImageBlob, sourceFileSize, imageDescription })
+  await generateOneImageSize({ imagesToCreate, width, sourceFile, sourceFileSize, imageDescription })
 
   console.log(``);
   console.log(`🧵 Worker finished for ${imageDescription}`);
