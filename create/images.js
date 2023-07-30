@@ -164,25 +164,25 @@ async function createAlbumFolders({ albumPath }) {
 async function createAlbumImages({ albumIndex, albumPath, originalImageFiles }) {
   
   // Create sizes and formats for each of the images
-  await Promise.all(originalImageFiles.map(
-    async (sourceFile, imageIndex) => {
-      console.log("");
-      console.log(chalk.cyan("- - - - - - - - - - - - - - - - - - - - - - -"));
-      console.log("⏱️ ", chalk.cyan('Creating images for album: ' + albumPath));
-      console.log(chalk.cyan("- - - - - - - - - - - - - - - - - - - - - - -"));
-      console.log("");
-      console.log(`Time elapsed:\n${Date.now() - startTime} milliseconds\n`);
-      console.log("");
-    
-      console.log(chalk.cyan(`${albumIndex + 1} of ${albums.length} albums`));
-      console.log(chalk.cyan(`${imageIndex + 1} of ${originalImageFiles.length} pictures`));
+  for (let imageIndex = 0; imageIndex < originalImageFiles.length; imageIndex++) {
+    const sourceFile = originalImageFiles[imageIndex];
 
-      await createOneImage({
-        sourceFile,
-        destinationFolder: albumPath,
-      });
-    }
-  ));
+    console.log("");
+    console.log(chalk.cyan("- - - - - - - - - - - - - - - - - - - - - - -"));
+    console.log("⏱️ ", chalk.cyan('Creating images for album: ' + albumPath));
+    console.log(chalk.cyan("- - - - - - - - - - - - - - - - - - - - - - -"));
+    console.log("");
+    console.log(`Time elapsed:\n${Date.now() - startTime} milliseconds\n`);
+    console.log("");
+  
+    console.log(chalk.cyan(`${albumIndex + 1} of ${albums.length} albums`));
+    console.log(chalk.cyan(`${imageIndex + 1} of ${originalImageFiles.length} pictures`));
+
+    await createOneImage({
+      sourceFile,
+      destinationFolder: albumPath,
+    });
+  }
 }
 
 async function createImages() {
