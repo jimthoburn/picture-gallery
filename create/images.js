@@ -55,7 +55,7 @@ async function createOneImage({ sourceFile, destinationFolder }) {
       imagesToCreate[width].jpeg = jpegFileName;
     } else {
       console.log(``);
-      console.log(`✅ `, `Found ${jpegFileName} file (keeping existing image)`);
+      console.log(`✅ `, `Found ${jpegFileName} (keeping existing file)`);
       console.log(``);
     }
 
@@ -64,7 +64,7 @@ async function createOneImage({ sourceFile, destinationFolder }) {
     } else {
       if (fs.existsSync(webpFileName)) {
         console.log(``);
-        console.log(`✅ `, `Found ${webpFileName} file (keeping existing image)`);
+        console.log(`✅ `, `Found ${webpFileName} (keeping existing file)`);
         console.log(``);
       };
     }
@@ -74,7 +74,7 @@ async function createOneImage({ sourceFile, destinationFolder }) {
     } else {
       if (fs.existsSync(avifFileName)) {
         console.log(``);
-        console.log(`✅ `, `Found ${avifFileName} file (keeping existing image)`);
+        console.log(`✅ `, `Found ${avifFileName} (keeping existing file)`);
         console.log(``);
       }
     }
@@ -84,12 +84,6 @@ async function createOneImage({ sourceFile, destinationFolder }) {
   const sizesWithImagesToCreate = SIZES.filter(width => imagesToCreate[width].jpeg || imagesToCreate[width].webp || imagesToCreate[width].avif);
 
   if (sizesWithImagesToCreate.length > 0) {
-
-    // Load an image from a file
-    const originalImageBlob = await Deno.readFile(sourceFile);
-    // console.log({ originalImageBlob });
-
-    // console.log({ imagesToCreate });
 
     await Promise.all(sizesWithImagesToCreate.map(
       (width) => {
@@ -114,7 +108,7 @@ async function createOneImage({ sourceFile, destinationFolder }) {
 
             resolve();
           };
-          worker.postMessage({ imagesToCreate, width, originalImageBlob, sourceFileSize, imageDescription });
+          worker.postMessage({ imagesToCreate, width, sourceFile, sourceFileSize, imageDescription });
         });
       }
     ));
