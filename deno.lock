@@ -44,9 +44,7 @@
     "https://esm.sh/v128/uc.micro@1.0.6/denonext/properties/Any/regex.js": "39772aade14982218cc5839862acfe73c64e1c55a0cb24b6af4b803f4d3cf12c",
     "https://esm.sh/v128/uc.micro@1.0.6/denonext/uc.micro.mjs": "f93d7591524a941caa7a92d0801dfc27e0a055265c430493a94c4d72bf86cd69",
     "https://esm.sh/v128/xstate@4.38.1": "a5b2274412dd01d15dd03b56c23ae5909097c7f7c3f328296f4e6eb948349c4f",
-    "https://esm.sh/v128/xstate@4.38.1/denonext/xstate.mjs": "26d5c64e1172ee08282d684c92bad6a06634ab0fabad61220d53be29f9703eea",
-    "https://unpkg.com/wasm-vips@0.0.5/lib/vips-es6.js": "f92729cfabd03370d491d3b5b63b9835f8ee9becf312ce55bf8c3505209ede74",
-    "https://unpkg.com/wasm-vips@0.0.5/lib/vips-es6.worker.js": "9dabc1e4f0f8722aa7aea7547b07e670492642e79f30e3f631ae280d5da7ca5c"
+    "https://esm.sh/v128/xstate@4.38.1/denonext/xstate.mjs": "26d5c64e1172ee08282d684c92bad6a06634ab0fabad61220d53be29f9703eea"
   },
   "npm": {
     "specifiers": {
