@@ -181,7 +181,7 @@ deno task build
 You can browse the static site locally with this command:
 
 ```shell
-deno task serve
+deno task start
 ```
 
 And then visit `http://localhost:4000`
