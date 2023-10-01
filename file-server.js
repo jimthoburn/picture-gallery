@@ -1,6 +1,3 @@
-const port = 4000;
-const hostname = "0.0.0.0";
-
 const handlers = {};
 
 function withoutTrailingSlash(url) {
@@ -78,19 +75,19 @@ function getStaticFileHandler ({ folder, pathPrefix }) {
   }
 }
 
-function serveStaticFiles() {
+function serveStaticFiles({ folder }) {
   console.log(`📂 Preparing static files`);
-  handlers["/*"] = getStaticFileHandler({ folder: ".", pathPrefix: "" });
+  handlers["/*"] = getStaticFileHandler({ folder, pathPrefix: "" });
 }
 
-function serveError404Page() {
+function serveError404Page({ folder }) {
   console.log(`🚥 Preparing 404 "not found" page`);
   console.log("");
   handlers["/404/"] = async function ({ request }) {
 
     // Try returning a 404.html file, if one exists
     try {
-      const filepath = "./404.html";
+      const filepath = `${folder}/404.html`;
       const file = await Deno.open(filepath, { read: true });
 
       // Build a readable stream so the file doesn't have to be fully loaded into
@@ -115,9 +112,15 @@ function serveError404Page() {
   };
 }
 
-function serve() {
-  serveStaticFiles();
-  serveError404Page();
+function serve({ port = 4000, hostname = "0.0.0.0", folder = "." }) {
+  console.log("");
+  console.log("- - - - - - - - - - - - - - - - - - - - - - -");
+  console.log("⏱️ ", "Starting server");
+  console.log("- - - - - - - - - - - - - - - - - - - - - - -");
+  console.log("");
+
+  serveStaticFiles({ folder });
+  serveError404Page({ folder });
 
   Deno.serve({ port, hostname }, (request) => {
     const url = new URL(request.url);
@@ -147,10 +150,4 @@ function serve() {
   console.log("");
 }
 
-console.log("");
-console.log("- - - - - - - - - - - - - - - - - - - - - - -");
-console.log("⏱️ ", "Starting server");
-console.log("- - - - - - - - - - - - - - - - - - - - - - -");
-console.log("");
-
-serve();
+export { serve }
