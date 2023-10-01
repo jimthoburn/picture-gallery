@@ -27,7 +27,7 @@
   "tasks": {
     "dev": "deno run --watch --allow-read=./_public,./client.js,./components,./css,./data,./helpers,./machines,./_api,./_archives,./_pictures --allow-net=0.0.0.0:4000 server-deno.js",
     "build": "deno run --allow-env --allow-read=./ --allow-write=./_site --allow-sys=uid build.js",
-    "start": "cd ./_site && deno run --allow-read=./ --allow-net=0.0.0.0:4000 ../file-server.js",
+    "start": "cd ./_site && deno run --allow-read=./ --allow-net=0.0.0.0:4000 ../start-current-directory.js",
 
     "create": "deno task create:images && deno task create:albums && deno task create:archives",
     "create:images": "deno run --allow-read=./ --allow-write=./_pictures create/images.js",
