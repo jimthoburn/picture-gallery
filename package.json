@@ -26,7 +26,7 @@
     "mkdirp": "^3.0.1",
 
     "htm": "^3.1.1",
-    "lit": "^2.7.6",
+    "lit": "^2.8.0",
     "markdown-it": "^13.0.1",
     "markdown-it-deflist": "^2.1.0",
     "preact": "^10.16.0",
