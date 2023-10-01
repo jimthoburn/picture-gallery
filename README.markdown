@@ -197,6 +197,15 @@ Build command
 Publish directory  
 `_site`
 
+To publish with [Deno Deploy](https://deno.com/deploy), you can use this configuration for the build step (GitHub action):
+```
+entrypoint: "start.js"
+root: "."
+```
+
+
+
+
 ### Secret albums
 
 If you want to publish an album to share with friends without making it public,
