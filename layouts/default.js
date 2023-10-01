@@ -33,18 +33,18 @@ export const DefaultLayout = ({ title, content, askSearchEnginesNotToIndex, incl
           {
             "imports": {
               "htm": "https://esm.sh/v128/htm@3.1.1?bundle",
-              "lit": "https://esm.sh/v128/lit@2.7.6?bundle",
+              "lit": "https://esm.sh/v128/lit@2.8.0?bundle",
               "markdown-it": "https://esm.sh/v128/markdown-it@13.0.1?bundle",
               "markdown-it-deflist": "https://esm.sh/v128/markdown-it-deflist@2.1.0?bundle",
               "preact": "https://esm.sh/v128/preact@10.16.0?bundle",
               "preact/hooks": "https://esm.sh/v128/preact@10.16.0/hooks?bundle",
-              "xstate": "https://esm.sh/v128/xstate@4.38.1?bundle"
+              "xstate": "https://esm.sh/v128/xstate@4.38.2?bundle"
             }
           }
         </script>
 
         ${ /* web components */ '' }
-        <link rel="modulepreload" href="https://esm.sh/v128/lit@2.7.6?bundle" />
+        <link rel="modulepreload" href="https://esm.sh/v128/lit@2.8.0?bundle" />
         <script type="module" src="/components/responsive-image-html.js"></script>
         <script type="module" src="/components/responsive-image.js"></script>
 
