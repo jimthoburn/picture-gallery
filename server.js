@@ -190,8 +190,15 @@ function serveError500Page() {
   };
 }
 
-function serve(urls) {
-  // console.log(urls);
+async function serve() {
+  console.log("");
+  console.log(chalk.cyan("- - - - - - - - - - - - - - - - - - - - - - -"));
+  console.log("⏱️ ", chalk.cyan("Starting server"));
+  console.log(chalk.cyan("- - - - - - - - - - - - - - - - - - - - - - -"));
+  console.log("");
+  
+  const albumURLs = await getAlbumsByURL();
+  const urls = ["/", ...albumURLs];
 
   serveGallery(urls);
   serveStaticFiles();
@@ -237,13 +244,4 @@ function serve(urls) {
   console.log("");
 }
 
-console.log("");
-console.log(chalk.cyan("- - - - - - - - - - - - - - - - - - - - - - -"));
-console.log("⏱️ ", chalk.cyan("Starting server"));
-console.log(chalk.cyan("- - - - - - - - - - - - - - - - - - - - - - -"));
-console.log("");
-
-getAlbumsByURL().then(albumURLs => {
-  serve(["/", ...albumURLs]);
-});
-
+serve();

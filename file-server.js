@@ -1,3 +1,5 @@
+import { config } from "./_config.js";
+
 const handlers = {};
 
 function withoutTrailingSlash(url) {
@@ -112,7 +114,7 @@ function serveError404Page({ folder }) {
   };
 }
 
-function serve({ port = 4000, hostname = "0.0.0.0", folder = "." }) {
+function serve({ folder, port, hostname }) {
   console.log("");
   console.log("- - - - - - - - - - - - - - - - - - - - - - -");
   console.log("⏱️ ", "Starting server");
@@ -150,4 +152,8 @@ function serve({ port = 4000, hostname = "0.0.0.0", folder = "." }) {
   console.log("");
 }
 
-export { serve }
+const port = !isNaN(Number(config.serverPort)) ? Number(config.serverPort) : 4000;
+const hostname = config.serverHostname;
+const folder = "."; 
+
+serve({ folder, port, hostname });
