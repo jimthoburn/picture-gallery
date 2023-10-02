@@ -28,7 +28,7 @@ I’m using it to practice with new tools and to share photos with friends 🦊 
 
 ### Quick start
 
-To create your own gallery, you can open this project in a [codespace](https://docs.github.com/en/codespaces/developing-in-codespaces/creating-a-codespace-from-a-template#creating-a-codespace-from-a-template-repository) on GitHub or [remix](https://glitch.com/edit/#!/picture-gallery?path=glitch_README.markdown) on Glitch 🎏
+To create your own gallery, you can open this project in a [codespace](https://docs.github.com/en/codespaces/developing-in-codespaces/creating-a-codespace-from-a-template#creating-a-codespace-from-a-template-repository) on GitHub.
 
 ### <span id="setting-up"></span> Setting up a local environment
 

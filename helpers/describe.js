@@ -28,11 +28,6 @@ function hasAnOpenGraphImage({ url }) {
       );
       const response = await fetch(content);
       expect(response.ok).toBe(true);
-      // const isValidURL = isUrl(content)
-      //     // Double check for strings with two instances of “https://”
-      //     // https://pictures.tobbi.cohttps://cdn.glitch.com/0066dc23-cee2-4973-ae99-075586a1eded%2F17.jpg?v=1572802598055
-      //     && content.match(/https?:\/\//g).length == 1;
-      // expect(isValidURL).toBe(true);
     });
   } else {
     test("has a valid open graph image that starts with “http”, or does not have an open graph image specified–since “host” is empty or invalid in “_config.js”", async ({ page }) => {
@@ -45,11 +40,6 @@ function hasAnOpenGraphImage({ url }) {
         );
         const response = await fetch(content);
         expect(response.ok).toBe(true);
-        // const isValidURL = isUrl(content)
-        //     // Double check for strings with two instances of “https://”
-        //     // https://pictures.tobbi.cohttps://cdn.glitch.com/0066dc23-cee2-4973-ae99-075586a1eded%2F17.jpg?v=1572802598055
-        //     && content.match(/https?:\/\//g).length == 1;
-        // expect(isValidURL).toBe(true);
       } catch {
         expect(metaElement).toBeNull();
       }
