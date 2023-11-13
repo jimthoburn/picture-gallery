@@ -11,7 +11,7 @@
     "start": "deno run --allow-read=./_public,./client.js,./components,./css,./data,./helpers,./machines,./_api,./_archives,./_pictures --allow-net=0.0.0.0:4000 server.js"
   },
   "devDependencies": {
-    "@playwright/test": "^1.38.1",
+    "@playwright/test": "^1.39.0",
     "playwright": "^1.39.0",
     "is-url": "^1.2.4",
     "node-fetch": "^3.3.2",
