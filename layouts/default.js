@@ -38,7 +38,7 @@ export const DefaultLayout = ({ title, content, askSearchEnginesNotToIndex, incl
               "markdown-it-deflist": "https://esm.sh/v128/markdown-it-deflist@2.1.0?bundle",
               "preact": "https://esm.sh/v128/preact@10.18.0?bundle",
               "preact/hooks": "https://esm.sh/v128/preact@10.18.0/hooks?bundle",
-              "xstate": "https://esm.sh/v128/xstate@4.38.2?bundle"
+              "xstate": "https://esm.sh/v128/xstate@4.38.3?bundle"
             }
           }
         </script>

@@ -358,6 +358,8 @@
     "https://esm.sh/v128/xstate@4.38.1": "a5b2274412dd01d15dd03b56c23ae5909097c7f7c3f328296f4e6eb948349c4f",
     "https://esm.sh/v128/xstate@4.38.1/denonext/xstate.mjs": "26d5c64e1172ee08282d684c92bad6a06634ab0fabad61220d53be29f9703eea",
     "https://esm.sh/v128/xstate@4.38.2": "1de6beefd708ffb887e86ca09495e8c1e4730ebe216a796b68254ffa9c0ccfc0",
-    "https://esm.sh/v128/xstate@4.38.2/denonext/xstate.mjs": "6be10ef82ff594f9659aa0b3ec6242d00b9cd1a79c895f9ee60355e9b17e0c0e"
+    "https://esm.sh/v128/xstate@4.38.2/denonext/xstate.mjs": "6be10ef82ff594f9659aa0b3ec6242d00b9cd1a79c895f9ee60355e9b17e0c0e",
+    "https://esm.sh/v128/xstate@4.38.3": "ba36c14f3d026fd8e7c2a6fa8cfec8774cedbebf70dba64750e5b101a64e3dd9",
+    "https://esm.sh/v128/xstate@4.38.3/denonext/xstate.mjs": "1bdb98fedbddf4c05927a91ec346647d5382b6b5b99c5cb79e80d8b1b2845c40"
   }
 }
