@@ -3,46 +3,34 @@ import { assign } from "xstate";
 
 import { getSelectedPicture as getListPicture } from "../components/picture-list.js";
 import { getPicture as getDetailsPicture }      from "../components/picture-image.js";
+import { formatPageTitle }                      from "../helpers/page-title.js";
 
 
 const PICTURE_MOVE_THRESHOLD_PIXELS = 25;
 
 
-const setDidPopHistoryState = assign({
-  didPopHistoryState: (context, event) => {
-    console.log("setDidPopHistoryState: " + event.didPopHistoryState);
-    return event.didPopHistoryState;
-  }
-});
-
 const setDetailsPictureLoaded = assign({
-  detailsPictureLoaded: (context, event) => {
+  detailsPictureLoaded: ({ event }) => {
     console.log("setDetailsPictureLoaded: " + (event.type === "PICTURE_LOADED"));
     return event.type === "PICTURE_LOADED";
   }
 });
 
 const setSelectedImageIndex = assign({
-  selectedPictureIndex: (context, event) => event.selectedPictureIndex
+  selectedPictureIndex: ({ event }) => event.selectedPictureIndex
 });
 
-const hasSelectedPictureIndex = function(context) {
+const hasSelectedPictureIndex = function({ context }) {
   return context.selectedPictureIndex != null;
 };
 
 const setBoundingClientRect = assign({
-  fromBoundingClientRect: (context, event) => {
-    // console.log("setBoundingClientRect: getDetailsPicture()");
-    // console.log(getDetailsPicture());
-    // console.log(getDetailsPicture().getBoundingClientRect());
+  fromBoundingClientRect: ({ context }) => {
     return (getDetailsPicture())
       ? getDetailsPicture().getBoundingClientRect()
       : context.fromBoundingClientRect
     },
-  toBoundingClientRect: (context, event) => {
-    // console.log("setBoundingClientRect: getListPicture()");
-    // console.log(getListPicture());
-    // console.log(getListPicture().getBoundingClientRect());
+  toBoundingClientRect: ({ context }) => {
     return (getListPicture())
       ? getListPicture().getBoundingClientRect()
       : context.toBoundingClientRect
@@ -50,10 +38,10 @@ const setBoundingClientRect = assign({
 });
 
 const setInitialTouch = assign({
-  initialTouch: (context, event) => event.touch
+  initialTouch: ({ event }) => event.touch
 });
 
-const movedPictureFarEnough = function(context, event) {
+const movedPictureFarEnough = function({ context, event }) {
   console.log("🎏 movedPictureFarEnough");
   if (
     !event.touch ||
@@ -71,7 +59,7 @@ const movedPictureFarEnough = function(context, event) {
 };
 
 const setMoveTransform = assign({
-  transform: (context, event) => {
+  transform: ({ context, event }) => {
     if (
       !event.touch ||
       !context.initialTouch ||
@@ -100,7 +88,7 @@ const setMoveTransform = assign({
 });
 
 const setShrinkTransform = assign({
-  transform: (context, event) => {
+  transform: ({ context }) => {
     // https://developer.mozilla.org/en-US/docs/Web/API/Element/getBoundingClientRect
 
     // From
@@ -141,7 +129,7 @@ const setShrinkTransform = assign({
 });
 
 const resetTransform = assign({
-  transform: (context, event) => {
+  transform: () => {
     return {
       translateX: 0,
       translateY: 0,
@@ -151,25 +139,83 @@ const resetTransform = assign({
 });
 
 
+// Update the page URL and title to match the current state
+const updateBrowserForListPage = ({ context, event }) => {
+  const album = context.album;
+  if (album.parent) {
+    document.title = `${album.title} / ${album.parent.title}`;
+  } else {
+    document.title = album.title;
+  }
+
+  if (event.didPopHistoryState != true) {
+    console.log("🎉 Pushing state to browser history");
+    console.log([
+      { },
+      album.title,
+      `/${album.uri}/`
+    ])
+    window.history.pushState(
+      { },
+      album.title,
+      `/${album.uri}/`
+    );
+  }
+};
+const updateBrowserForDetailsPage = ({ context, event }) => {
+  const { album, pictures } = context;
+
+  // 🤖 TEST:
+  if (new URLSearchParams(window.location.search).get("test") === "error-after-user-interaction") {
+    throw "Simulating a client-side error after user interaction";
+    return;
+  }
+
+  const selectedPicture = pictures[context.selectedPictureIndex];
+  const selectedPictureTitle = formatPageTitle({
+    imageNumber: context.selectedPictureIndex + 1,
+    imageCaption: selectedPicture.caption,
+    albumTitle: album.title
+  });
+
+  document.title = selectedPictureTitle;
+
+  if (event.didPopHistoryState != true) {
+    console.log("🎉 Pushing state to browser history");
+    console.log([
+      { selectedPictureIndex: context.selectedPictureIndex },
+      selectedPictureTitle,
+      `/${album.uri}/${selectedPicture.uri}/`
+    ])
+    window.history.pushState(
+      { selectedPictureIndex: context.selectedPictureIndex },
+      selectedPictureTitle,
+      `/${album.uri}/${selectedPicture.uri}/`
+    );
+  }
+};
+
+
 const actions = {
-  setDidPopHistoryState,
   setDetailsPictureLoaded,
   setSelectedImageIndex,
   setBoundingClientRect,
   setInitialTouch,
   setMoveTransform,
   setShrinkTransform,
-  resetTransform
+  resetTransform,
+  updateBrowserForDetailsPage,
+  updateBrowserForListPage,
 };
 
 const guards = {
   hasSelectedPictureIndex,
   movedPictureFarEnough
-}
+};
 
 
 export {
   actions,
-  guards
-}
+  guards,
+};
 

@@ -22,7 +22,10 @@ function PictureDetails({ pictures, album, state, config, pictureListShouldRende
   // 3) Replace slashes with dashes
   const downloadFilename = downloadURL.replace(/http[s]?\:\/\//, "").replace(/^\//, "").replace(/\//g, "-");
 
-  const stateStrings = state.toStrings();
+  const stateStrings = typeof state.value === "string" ? [state.value] : [Object.entries(state.value).reduce(
+    (accumulator, [key,entry]) => `${key}.${entry}`,
+    "",
+  )];
 
   const headingText = `Picture ${ state.context.selectedPictureIndex + 1 }.${ picture.caption ? ` ${picture.caption}` : "" }`;
 

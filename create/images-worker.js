@@ -55,7 +55,7 @@ const wasmImageProcessingOptions = {
 };
 
 
-async function generateOneImageSize({ imagesToCreate, width, originalImageBlob, sourceFileSize, imageDescription }) {
+async function generateOneImageSize({ imagesToCreate, width, sourceFile, sourceFileSize, imageDescription }) {
 
   console.log(``);
   console.log(`🤖 WebAssembly instance starting for ${imageDescription}`);

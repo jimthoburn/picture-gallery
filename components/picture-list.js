@@ -85,7 +85,10 @@ function PictureList({ album, pictures, story, state, config }) {
     return selectedPicture.current;
   }
 
-  const stateStrings = state.toStrings();
+  const stateStrings = typeof state.value === "string" ? [state.value] : [Object.entries(state.value).reduce(
+    (accumulator, [key,entry]) => `${key}.${entry}`,
+    "",
+  )];
 
   return html`
     <section class="picture-list"

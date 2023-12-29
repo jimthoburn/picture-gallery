@@ -3,7 +3,11 @@ import { createElement, Component } from "preact";
 import htm from "htm"; const html = htm.bind(createElement);
 
 import { getMachine }      from "../components/picture-gallery.js";
-import { getLastDispatch } from "../helpers/xstate-preact.js";
+
+// @todo
+function getLastDispatch() {
+  return null;
+}
 
 class Catcher extends Component {
 
@@ -37,7 +41,7 @@ class Catcher extends Component {
         );
         
         // 3) Ask the machine for the next state
-        const nextState = service.send(lastDispatch);
+        const nextState = service.sendTo(lastDispatch);
         console.log(nextState.value);
 
         // 4) Visit the URL for that state

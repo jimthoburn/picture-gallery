@@ -6,7 +6,7 @@ This is a work in progress 🚧
 I’m using it to practice with new tools and to share photos with friends 🦊 🐶
 
 * See [an example gallery](https://pictures.tobbi.co)
-* Here’s a [visualization of the gallery’s state machine](https://xstate.js.org/viz/?gist=18995ef2fca6c1949991f21b1b68c6d0)
+* Here’s a [visualization of the gallery’s state machine](https://stately.ai/registry/editor/83f73a9c-669c-4c94-ad55-b9a10acc0644)
 * [Project goals](#goals)
 * Helpful [resources](#resources)
 * Guide about [improving image loading](https://dev.to/jimthoburn/how-to-improve-ux-for-images-while-they-re-loading-on-the-web-3b12) for this project
@@ -34,7 +34,7 @@ To create your own gallery, you can open this project in a [codespace](https://d
 
 1. [Make a copy of this project on GitHub](https://github.com/jimthoburn/picture-gallery/generate) (or download it)
 
-2. Install [Deno](https://deno.com/runtime) (version `1.37.2` or greater).
+2. Install [Deno](https://deno.com/runtime) (version `1.39.0` or greater).
 
 3. From the root of your project, start a server for development...
 
@@ -186,17 +186,6 @@ deno task file-server
 
 And then visit `http://localhost:4000`
 
-You can publish your copy of this project to a static host like [Netlify](https://www.netlify.com/) or [Vercel](https://vercel.com) using these settings:
-
-Install command  
-`npm run install`
-
-Build command  
-`npm run build`
-
-Publish directory  
-`_site`
-
 To publish with [Deno Deploy](https://deno.com/deploy), you can skip a build step and use `server.js` for the `entrypoint`.
 
 ### Secret albums
@@ -343,9 +332,9 @@ git lfs push origin --all
 
 ## State machine visualization
 
-https://xstate.js.org/viz/?gist=18995ef2fca6c1949991f21b1b68c6d0
+https://stately.ai/registry/editor/83f73a9c-669c-4c94-ad55-b9a10acc0644
 
-<a href="https://xstate.js.org/viz/?gist=18995ef2fca6c1949991f21b1b68c6d0" rel="nofollow"><img width="544" alt="xstate" src="https://user-images.githubusercontent.com/926616/68066254-8bd83b80-fcf2-11e9-8c77-6427061b98a9.png">
+<a href="https://stately.ai/registry/editor/83f73a9c-669c-4c94-ad55-b9a10acc0644" rel="nofollow"><img width="544" alt="xstate" src="https://user-images.githubusercontent.com/926616/68066254-8bd83b80-fcf2-11e9-8c77-6427061b98a9.png">
 </a>
 
 ## <span id="goals"></span> Project goals
@@ -369,7 +358,7 @@ Editor experience
 - [x] The gallery can be hosted anywhere and kept private, if desired
 
 Developer experience
-- [x] The application’s logic is easy to understand and reason about ([Thanks XState!](https://xstate.js.org/viz/?gist=18995ef2fca6c1949991f21b1b68c6d0))
+- [x] The application’s logic is easy to understand and reason about ([Thanks XState!](https://stately.ai/registry/editor/83f73a9c-669c-4c94-ad55-b9a10acc0644))
 - [x] Large features can be broken up into smaller components and modules
 - [x] Code for templates and logic can be used on the client or server side
 - [x] The application can be continuously deployed in a way that is reliable, scalable and secure

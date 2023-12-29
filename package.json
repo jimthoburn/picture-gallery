@@ -1,35 +1,15 @@
 {
-  "name": "picture-gallery",
-  "engines": {
-    "node": ">=18.0.0 <20.0.0"
-  },
   "type": "module",
-  "scripts": {
-    "build": "node build.js",
-    "test": "playwright test",
-    "test:report": "npm run test && playwright show-report",
-    "start": "deno run --allow-read=./_public,./client.js,./components,./css,./data,./helpers,./machines,./_api,./_archives,./_pictures --allow-net=0.0.0.0:4000 server.js"
-  },
   "devDependencies": {
-    "@playwright/test": "^1.39.0",
-    "playwright": "^1.39.0",
+    "@playwright/test": "^1.40.1",
+    "playwright": "^1.40.1",
     "is-url": "^1.2.4",
     "node-fetch": "^3.3.2",
 
-    "wasm-vips": "^0.0.5"
+    "wasm-vips": "^0.0.7"
   },
-  "dependencies": {
-    "chalk": "^5.3.0",
-    "fs-extra": "^11.1.1",
-    "js-beautify": "^1.14.9",
-    "mkdirp": "^3.0.1",
-
-    "htm": "^3.1.1",
-    "lit": "^3.0.1",
-    "markdown-it": "^13.0.2",
-    "markdown-it-deflist": "^2.1.0",
-    "preact": "^10.18.0",
-    "preact-render-to-string": "^6.2.2",
-    "xstate": "^4.38.3"
+  "scripts": {
+    "test": "playwright test",
+    "test:report": "npm run test && playwright show-report"
   }
 }
