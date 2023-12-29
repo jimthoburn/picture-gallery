@@ -108,6 +108,16 @@ async function buildSiteMap() {
   }).catch(err => { throw err; });
 }
 
+async function buildRedirectsFile() {
+  console.log(`🗺  Preparing _redirects`);
+  const text = await getSourceByURL("/_redirects").catch(err => { throw err; });
+  await createFile({
+    pageURL: "/",
+    filename: "_redirects",
+    output: text,
+  }).catch(err => { throw err; });
+}
+
 async function buildError404Page() {
   console.log(`🚥 Preparing 404 "not found" page`);
   await createFile({
@@ -135,6 +145,7 @@ async function build(urls) {
     removeFile({ pageURL: "/", filename: "robots.txt" });
   }
 
+  buildRedirectsFile();
   buildError404Page();
   
   console.log("");
