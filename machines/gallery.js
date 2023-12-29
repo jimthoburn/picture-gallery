@@ -1,19 +1,25 @@
-// See a visualization of this machine at:
-// https://xstate.js.org/viz/?gist=18995ef2fca6c1949991f21b1b68c6d0
-
-import { createMachine } from "xstate";
+import { setup,
+         createMachine }   from "xstate";
+import { actions,
+         guards }          from "../machines/gallery-options.js";
 
 const LOADING_PICTURE_TIMEOUT_SECONDS = 0.01;
 const TRANSITION_TIMEOUT_SECONDS = 1;
 
-const galleryMachine = createMachine(
+const galleryMachine = setup({
+  actions,
+  guards,
+  delays: {
+    loading_picture_delay: LOADING_PICTURE_TIMEOUT_SECONDS * 1000,
+    transition_timeout_delay: TRANSITION_TIMEOUT_SECONDS * 1000,
+  }
+}).createMachine(
   {
     id: "gallery",
-    // https://xstate.js.org/docs/guides/actions.html
-    predictableActionArguments: true,
-    context: {
-      didPopHistoryState: null,
-      selectedPictureIndex: null,
+    context: ({ input }) => ({
+      album: input.album ?? null,
+      pictures: input.pictures ?? null,
+      selectedPictureIndex: input.selectedPictureIndex ?? null,
       detailsPictureLoaded: null,
       fromBoundingClientRect: null,
       toBoundingClientRect: null,
@@ -26,12 +32,12 @@ const galleryMachine = createMachine(
         translateY: 0,
         scale: 1
       }
-    },
+    }),
     initial: "setting_up",
     states: {
       setting_up: {
         always: [
-          { target: "showing_details", cond: "hasSelectedPictureIndex" },
+          { target: "showing_details", guard: "hasSelectedPictureIndex" },
           { target: "showing_list" }
         ],
       },
@@ -39,7 +45,7 @@ const galleryMachine = createMachine(
         on: {
           PICTURE_SELECTED: {
             target: "transitioning_to_details",
-            actions: ["setSelectedImageIndex", "setDetailsPictureLoaded", "setDidPopHistoryState"]
+            actions: ["setSelectedImageIndex", "setDetailsPictureLoaded", "updateBrowserForDetailsPage"]
           }
         }
       },
@@ -48,7 +54,7 @@ const galleryMachine = createMachine(
           DETAILS_CLOSED: [
             {
               target: "transitioning_to_list",
-              actions: ["setDidPopHistoryState"]
+              actions: ["updateBrowserForListPage"],
             }
           ],
           PICTURE_LOADED: [
@@ -68,12 +74,11 @@ const galleryMachine = createMachine(
                 }
               ]
             },
-            after: [
-              {
-                delay: LOADING_PICTURE_TIMEOUT_SECONDS * 1000,
+            after: {
+              loading_picture_delay: {
                 target: "preparing_transition"
               }
-            ]
+            },
           },
           preparing_transition: {
             entry: ["setBoundingClientRect", "setShrinkTransform"],
@@ -86,12 +91,11 @@ const galleryMachine = createMachine(
             on: {
               TRANSITION_END: "done"
             },
-            after: [
-              {
-                delay: TRANSITION_TIMEOUT_SECONDS * 1000,
+            after: {
+              transition_timeout_delay: {
                 target: "done"
-              }
-            ]
+              },
+            },
           },
           done: {
             type: "final"
@@ -104,12 +108,12 @@ const galleryMachine = createMachine(
           DETAILS_CLOSED: [
             {
               target: "transitioning_to_list",
-              actions: ["setDidPopHistoryState"]
+              actions: ["updateBrowserForListPage"],
             }
           ],
           PICTURE_SELECTED: {
             target: "showing_details",
-            actions: ["setSelectedImageIndex", "setDetailsPictureLoaded", "setDidPopHistoryState"]
+            actions: ["setSelectedImageIndex", "setDetailsPictureLoaded", "updateBrowserForDetailsPage"]
           },
           PICTURE_LOADED: [
             {
@@ -146,14 +150,14 @@ const galleryMachine = createMachine(
                 {
                   target: "gesturing",
                   actions: "setMoveTransform",
-                  cond: "movedPictureFarEnough"
+                  guard: "movedPictureFarEnough"
                 },
                 { target: "moving_picture", actions: "setMoveTransform" }
               ],
               LET_GO_OF_PICTURE: [
                 {
                   target: "idle",
-                  actions: "resetTransform"
+                  actions: ["resetTransform", "updateBrowserForListPage"],
                 }
               ]
             }
@@ -166,7 +170,12 @@ const galleryMachine = createMachine(
                   actions: "setMoveTransform"
                 }
               ],
-              LET_GO_OF_PICTURE: "done"
+              LET_GO_OF_PICTURE: [
+                {
+                  target: "done",
+                  actions: ["updateBrowserForListPage"],
+                }
+              ],
             }
           },
           done: {
@@ -179,7 +188,7 @@ const galleryMachine = createMachine(
         on: {
           PICTURE_SELECTED: {
             target: "transitioning_to_details",
-            actions: ["setSelectedImageIndex", "setDetailsPictureLoaded", "setDidPopHistoryState"]
+            actions: ["setSelectedImageIndex", "setDetailsPictureLoaded", "updateBrowserForDetailsPage"]
           }
         },
         onDone: "showing_list",
@@ -193,14 +202,13 @@ const galleryMachine = createMachine(
           transitioning: {
             entry: ["setBoundingClientRect", "setShrinkTransform"],
             on: {
-              TRANSITION_END: "done"
+              TRANSITION_END: {
+                target: "done",
+              },
             },
-            after: [
-              {
-                delay: TRANSITION_TIMEOUT_SECONDS * 1000,
-                target: "done"
-              }
-            ]
+            transition_timeout_delay: {
+              target: "done"
+            },
           },
           done: {
             type: "final"
@@ -209,22 +217,6 @@ const galleryMachine = createMachine(
       }
     }
   },
-  {
-    actions: {
-      setDidPopHistoryState: function() {},
-      setDetailsPictureLoaded: function() {},
-      setSelectedImageIndex: function() {},
-      setBoundingClientRect: function() {},
-      setInitialTouch: function() {},
-      setMoveTransform: function() {},
-      setShrinkTransform: function() {},
-      resetTransform: function() {}
-    },
-    guards: {
-      hasSelectedPictureIndex: function() {},
-      movedPictureFarEnough: function() {}
-    }
-  }
 );
 
 export { galleryMachine };

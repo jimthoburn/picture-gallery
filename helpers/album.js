@@ -57,9 +57,7 @@ function getAlbumURI({ pageURL, albumNames }) {
   }
 }
 
-
-
 export {
   getCombinedAlbumJSON,
-  getAlbumURI
+  getAlbumURI,
 }
