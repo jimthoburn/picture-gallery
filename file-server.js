@@ -6,14 +6,14 @@ function withoutTrailingSlash(url) {
   return url.replace(/\/$/, "");
 }
 
-// https://deno.land/manual@v1.35.1/examples/file_server
+// https://docs.deno.com/runtime/tutorials/file_server
 async function getStaticFile ({ filepath, request }) {
   console.log({ filepath });
 
   // Try opening the file
   let file;
   try {
-    // If it's a file, open it
+    // If it's a file (has a file extension), open it
     if (new RegExp(/\.[a-zA-Z]+$/).test(filepath)) {
       file = await Deno.open(filepath, { read: true });
     } else {
@@ -114,7 +114,36 @@ function serveError404Page({ folder }) {
   };
 }
 
-function serve({ folder, port, hostname }) {
+async function getRedirects({ folder, redirectsFilePath }) {
+
+  const redirects = [];
+  // Try opening a redirects file, if one exists
+  try {
+    // https://docs.deno.com/deploy/api/runtime-fs#denoreadtextfile
+    const redirectsText = await Deno.readTextFile(`${folder}${redirectsFilePath}`);
+
+    const redirectsLines = redirectsText.split("\n");
+
+    for (const line of redirectsLines) {
+      const [from, to] = line.split(/\s+/);
+      if (from && to) {
+        // handlers[from] = () => Response.redirect(to, 302);
+        redirects.push({ from, to });
+      }
+    }
+  } catch {
+    console.log(`Something went wrong while getting redirects from: ${folder}${redirectsFilePath}`);
+  }
+
+  return redirects;
+}
+
+function removeTrailingSlash(url) {
+  if (url === "/") return url;
+  return url.replace(/\/$/, "");
+}
+
+async function serve({ folder, redirectsFilePath, port, hostname }) {
   console.log("");
   console.log("- - - - - - - - - - - - - - - - - - - - - - -");
   console.log("⏱️ ", "Starting server");
@@ -124,9 +153,51 @@ function serve({ folder, port, hostname }) {
   serveStaticFiles({ folder });
   serveError404Page({ folder });
 
-  Deno.serve({ port, hostname }, (request) => {
+  Deno.serve({ port, hostname }, async (request) => {
     const url = new URL(request.url);
     console.log({ url, pathname: url.pathname });
+
+    const redirects = await getRedirects({ folder, redirectsFilePath });
+
+    for (const redirect of redirects) {
+      try {
+
+        // A) Simple redirect
+        if (removeTrailingSlash(url.pathname) === removeTrailingSlash(redirect.from)) {
+          const redirectTo =
+            redirect.to.startsWith("http")
+              ? redirect.to
+              : url.origin + redirect.to;
+          return Response.redirect(redirectTo, 302);
+        }
+
+        // B) Wildcard redirect (splat)
+        if (
+          redirect.from.startsWith("http") &&
+          redirect.from.endsWith("/*") &&
+          redirect.to.startsWith("http") &&
+          redirect.to.endsWith("/:splat")
+        ) {
+          // request.url:   https://www.example.com/ahoy/there/
+
+          // redirect.from: https://www.example.com/*
+          // redirect.to:   https://example.com/:splat
+
+          const fromURL = new URL(redirect.from);
+          // { hostname: "www.example.com", ... }
+
+          const to = redirect.to.replace(/\/:splat$/, "");
+          // https://example.com
+
+          if (url.hostname === fromURL.hostname) {
+            return Response.redirect(to + url.pathname + url.search + url.hash, 302);
+            // "https://example.com/ahoy/there"
+          }
+        };
+      } catch(e) {
+        console.error(e);
+      }
+    }
 
     // Add trailing slashes to URLs: /wildflowers => /wildflowers/
     if (handlers[url.pathname + "/"]) {
@@ -155,5 +226,6 @@ function serve({ folder, port, hostname }) {
 const port = !isNaN(Number(config.serverPort)) ? Number(config.serverPort) : 4000;
 const hostname = config.serverHostname;
 const folder = "."; 
+const redirectsFilePath = `/_redirects`;
 
-serve({ folder, port, hostname });
+serve({ folder, redirectsFilePath, port, hostname });

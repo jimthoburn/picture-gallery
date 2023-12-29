@@ -190,6 +190,11 @@ function serveError500Page() {
   };
 }
 
+function removeTrailingSlash(url) {
+  if (url === "/") return url;
+  return url.replace(/\/$/, "");
+}
+
 async function serve() {
   console.log("");
   console.log(chalk.cyan("- - - - - - - - - - - - - - - - - - - - - - -"));
@@ -216,9 +221,49 @@ async function serve() {
   serveError404Page();
   serveError500Page();
 
-  Deno.serve({ port, hostname }, (request) => {
+  Deno.serve({ port, hostname }, async (request) => {
     const url = new URL(request.url);
     console.log({ url, pathname: url.pathname });
+
+    for (const redirect of config.redirects) {
+      try {
+
+        // A) Simple redirect
+        if (removeTrailingSlash(url.pathname) === removeTrailingSlash(redirect.from)) {
+          const redirectTo =
+            redirect.to.startsWith("http")
+              ? redirect.to
+              : url.origin + redirect.to;
+          return Response.redirect(redirectTo, 302);
+        }
+
+        // B) Wildcard redirect (splat)
+        if (
+          redirect.from.startsWith("http") &&
+          redirect.from.endsWith("/*") &&
+          redirect.to.startsWith("http") &&
+          redirect.to.endsWith("/:splat")
+        ) {
+          // request.url:   https://www.example.com/ahoy/there/
+
+          // redirect.from: https://www.example.com/*
+          // redirect.to:   https://example.com/:splat
+
+          const fromURL = new URL(redirect.from);
+          // { hostname: "www.example.com", ... }
+
+          const to = redirect.to.replace(/\/:splat$/, "");
+          // https://example.com
+
+          if (url.hostname === fromURL.hostname) {
+            return Response.redirect(to + url.pathname + url.search + url.hash, 302);
+            // "https://example.com/ahoy/there"
+          }
+        };
+      } catch(e) {
+        console.error(e);
+      }
+    }
 
     // Add trailing slashes to URLs: /wildflowers => /wildflowers/
     if (handlers[url.pathname + "/"]) {
