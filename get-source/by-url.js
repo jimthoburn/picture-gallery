@@ -20,6 +20,7 @@ import { getPublicURLs,
 import { DefaultLayout }     from "../layouts/default.js";
 import { RobotsText }        from "../layouts/robots.txt.js";
 import { SiteMapXML }        from "../layouts/sitemap.xml.js";
+import { RedirectsText }     from "../layouts/_redirects.js";
 import { IndexPage }         from "../pages/index.js";
 import { AlbumPage }         from "../pages/album.js";
 import { ParentAlbumPage }   from "../pages/parent-album.js";
@@ -52,6 +53,7 @@ function getAlbumHTML(url) {
     });
 
     const html = DefaultLayout({
+      url,
       title,
       content,
       askSearchEnginesNotToIndex:
@@ -63,6 +65,7 @@ function getAlbumHTML(url) {
             ? `${config.host}${openGraphImage}`
             : openGraphImage
           : null
+        
     });
 
     resolve(jsBeautify.html_beautify(html));
@@ -86,6 +89,7 @@ function getGroupAlbumHTML(url) {
     });
 
     const renderedHTML = DefaultLayout({
+      url,
       title,
       content,
       askSearchEnginesNotToIndex,
@@ -103,7 +107,7 @@ function getGroupAlbumHTML(url) {
   });
 }
 
-function getIndexHTML() {
+function getIndexHTML(url) {
   
   return new Promise(async (resolve, reject) => {
 
@@ -126,6 +130,7 @@ function getIndexHTML() {
     });
 
     const beautifiedHTML = jsBeautify.html_beautify(DefaultLayout({
+      url,
       title,
       content,
       askSearchEnginesNotToIndex,
@@ -166,17 +171,30 @@ function getSiteMapXML() {
   });
 }
 
+function getRedirectsText() {
+  console.log({"getRedirectsText": 1, redirects: config.redirects});
+  return new Promise((resolve, reject) => {
+    const text = RedirectsText({
+      redirects: config.redirects,
+    });
+    resolve(text);
+  });
+}
+
 
 function getSourceByURL(url) {
   return new Promise(async (resolve, reject) => {
     if (url === "/") {
-      getIndexHTML()
+      getIndexHTML(url)
         .then(resolve);
     } else if (url === "/sitemap.xml") {
       getSiteMapXML()
         .then(resolve);
     } else if (url === "/robots.txt") {
       getRobotsText()
+        .then(resolve);
+    } else if (url === "/_redirects") {
+      getRedirectsText()
         .then(resolve);
     } else if (isGroupAlbum(url)) {
       getGroupAlbumHTML(url)

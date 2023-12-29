@@ -1,7 +1,7 @@
 
 import { config } from "../_config.js";
 
-export const DefaultLayout = ({ title, content, askSearchEnginesNotToIndex, includeClientJS = true, openGraphImage }) => {
+export const DefaultLayout = ({ url, title, content, askSearchEnginesNotToIndex, includeClientJS = true, openGraphImage }) => {
   return `
     <!DOCTYPE html>
     <html lang="en" dir="ltr">
@@ -16,6 +16,10 @@ export const DefaultLayout = ({ title, content, askSearchEnginesNotToIndex, incl
 
         ${ openGraphImage 
           ? `<meta property="og:image" content="${ openGraphImage }" />`
+          : ""}
+
+        ${ url && config.host
+          ? `<link rel="canonical" href="${ config.host }${ url }" />`
           : ""}
 
         <link rel="icon" href="${ config.favicon }" />

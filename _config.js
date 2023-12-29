@@ -30,6 +30,17 @@ export const config = {
     "machines",
   ],
 
+  "redirects": [
+    // {
+    //   from: "/example/from",
+    //   to: "/example/to",
+    // },
+    // {
+    //   from: "https://www.example.com/*",
+    //   to: "https://example.com/:splat",
+    // },
+  ],
+
   "test": {
     "hostURL"              : "http://localhost:4000",
     "homeURL"              : "/",
