@@ -3,18 +3,17 @@ import { createElement,
          createContext }  from "preact";
 import { useState,
          useLayoutEffect,
-         useEffect}       from "preact/hooks";
+         useEffect }      from "preact/hooks";
+import { useMachine }     from "@xstate/react";
 import   htm              from "htm";
 const    html = htm.bind(createElement);
 import { isBrowser }      from "../helpers/environment.js";
-import { useMachine }     from "../helpers/xstate-preact.js";
 import { galleryMachine } from "../machines/gallery.js";
 import { PictureList }    from "../components/picture-list.js";
 import { PictureDetails } from "../components/picture-details.js";
-import { actions,
-         guards }         from "../machines/gallery-options.js";
 import { getSource,
          getCoverPhoto }  from "../helpers/image-source-set.js";
+import { formatPageTitle } from "../helpers/page-title.js";
 
 
 const GalleryDispatch = createContext(null);
@@ -23,10 +22,6 @@ const GalleryDispatch = createContext(null);
 let getMachine = function() {
   return null;
 } 
-
-function formatPageTitle({ imageNumber, imageCaption, albumTitle }) {
-  return `Picture ${ imageNumber }.${ imageCaption ? ` ${imageCaption}` : "" } / ${albumTitle}`;
-}
 
 function PictureGallery({ album, pictures, story, getPageURL, config }) {
 
@@ -39,13 +34,15 @@ function PictureGallery({ album, pictures, story, getPageURL, config }) {
   const [pictureListShouldRender, setPictureListShouldRender] = useState(false);
 
   const [state, dispatch, service] = useMachine(galleryMachine, {
-    context: { selectedPictureIndex },
-    actions: actions,
-    guards: guards
+    input: {
+      selectedPictureIndex,
+      album,
+      pictures,
+    },
   });
+
   if (isBrowser()) {
     console.log(state.value);
-    // console.log(state.context.detailsPictureLoaded);
   }
   
   // 💡 TBD: Is there a better way to make the machine available outside of this component?
@@ -69,73 +66,6 @@ function PictureGallery({ album, pictures, story, getPageURL, config }) {
       });
     }
   }, [state.value]);
-
-  
-  // 🎉 Update the page URL and title to match the current state
-  useEffect(() => {
-
-    // 💡 TBD: Should this code be called more directly, from the gallery machine?
-    //         https://xstate.js.org/docs/guides/communication.html
-
-    //         "PICTURE_SELECTED", "DETAILS_CLOSED", and “LET_GO_OF_PICTURE” are the
-    //         best events to watch for presently, but they aren’t super intuitive and
-    //         could stop working if the machine is updated.
-
-    if (isBrowser()) {
-      if (state.event.type === "PICTURE_SELECTED") {
-
-        // 🤖 TEST:
-        if (new URLSearchParams(window.location.search).get("test") === "error-after-user-interaction") {
-          throw "Simulating a client-side error after user interaction";
-          return;
-        }
-
-        const selectedPicture = pictures[state.context.selectedPictureIndex];
-        const selectedPictureTitle = formatPageTitle({
-          imageNumber: state.context.selectedPictureIndex + 1,
-          imageCaption: selectedPicture.caption,
-          albumTitle: album.title
-        });
-
-        document.title = selectedPictureTitle;
-
-        if (state.context.didPopHistoryState != true) {
-          console.log("🎉 Pushing state to browser history");
-          console.log([
-            { selectedPictureIndex: state.context.selectedPictureIndex },
-            selectedPictureTitle,
-            `/${album.uri}/${selectedPicture.uri}/`
-          ])
-          window.history.pushState(
-            { selectedPictureIndex: state.context.selectedPictureIndex },
-            selectedPictureTitle,
-            `/${album.uri}/${selectedPicture.uri}/`
-          );
-        }
-      } else if (state.event.type === "DETAILS_CLOSED" ||
-                 state.event.type === "LET_GO_OF_PICTURE") {
-        if (album.parent) {
-          document.title = `${album.title} / ${album.parent.title}`;
-        } else {
-          document.title = album.title;
-        }
-
-        if (state.context.didPopHistoryState != true) {
-          console.log("🎉 Pushing state to browser history");
-          console.log([
-            { },
-            album.title,
-            `/${album.uri}/`
-          ])
-          window.history.pushState(
-            { },
-            album.title,
-            `/${album.uri}/`
-          );
-        }
-      }
-    }
-  }, [pictures, state.value, state.event, state.context.selectedPictureIndex]);
 
 
   // 🎉 Respond to the browser’s forward & backward feature

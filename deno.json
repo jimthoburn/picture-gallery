@@ -1,28 +1,30 @@
 {
   "imports": {
-    "dotenv/": "https://deno.land/std@0.194.0/dotenv/",
+    "dotenv/": "https://deno.land/std@0.210.0/dotenv/",
 
-    "capitalize": "https://esm.sh/v128/capitalize@2.0.4",
-    "chalk": "https://esm.sh/v128/chalk@5.3.0",
-    "exif": "https://esm.sh/v128/exif@0.6.0",
-    "image-size": "https://esm.sh/v128/image-size@1.0.2",
-    "js-beautify": "https://esm.sh/v128/js-beautify@1.14.9",
-    "mkdirp": "https://esm.sh/v128/mkdirp@3.0.1",
-    "node-fetch": "https://esm.sh/v128/node-fetch@3.3.2",
+    "capitalize": "https://esm.sh/v135/capitalize@2.0.4",
+    "chalk": "https://esm.sh/v135/chalk@5.3.0",
+    "exif": "https://esm.sh/v135/exif@0.6.0",
+    "image-size": "https://esm.sh/v135/image-size@1.0.2",
+    "js-beautify": "https://esm.sh/v135/js-beautify@1.14.11",
+    "mkdirp": "https://esm.sh/v135/mkdirp@3.0.1",
+    "node-fetch": "https://esm.sh/v135/node-fetch@3.3.2",
 
-    "wasm-vips/lib/vips-es6.js": "./library/wasm-vips@0.0.5/lib/vips-es6.js",
+    "wasm-vips/lib/vips-es6.js": "./library/wasm-vips@0.0.7/lib/vips-es6.js",
 
-    "archiver": "npm:archiver@5.3.1",
-    "fs-extra": "npm:fs-extra@11.1.1",
+    "archiver": "npm:archiver@6.0.1",
+    "fs-extra": "npm:fs-extra@11.2.0",
 
-    "htm": "https://esm.sh/v128/htm@3.1.1",
-    "lit": "https://esm.sh/v128/lit@3.0.1",
-    "markdown-it": "https://esm.sh/v128/markdown-it@13.0.2",
-    "markdown-it-deflist": "https://esm.sh/v128/markdown-it-deflist@2.1.0",
-    "preact": "https://esm.sh/v128/preact@10.18.0",
-    "preact/hooks": "https://esm.sh/v128/preact@10.18.0/hooks?external=preact",
-    "preact-render-to-string": "https://esm.sh/v128/preact-render-to-string@6.2.2?external=preact",
-    "xstate": "https://esm.sh/v128/xstate@4.38.3"
+    "htm": "https://esm.sh/v135/htm@3.1.1",
+    "lit": "https://esm.sh/v135/lit@3.1.0",
+    "markdown-it": "https://esm.sh/v135/markdown-it@14.0.0",
+    "markdown-it-deflist": "https://esm.sh/v135/markdown-it-deflist@3.0.0",
+    "preact": "https://esm.sh/v135/preact@10.19.3",
+    "preact/hooks": "https://esm.sh/v135/preact@10.19.3/hooks?external=preact",
+    "preact-render-to-string": "https://esm.sh/v135/preact-render-to-string@6.3.1?external=preact",
+    "react": "https://esm.sh/preact@10.19.3/compat?external=preact",
+    "xstate": "https://esm.sh/v135/xstate@5.4.0",
+    "@xstate/react": "https://esm.sh/v135/@xstate/react@4.0.1?external=react,xstate"
   },
   "tasks": {
     "dev": "deno run --watch --allow-read=./_public,./client.js,./components,./css,./data,./helpers,./machines,./_api,./_archives,./_pictures --allow-net=0.0.0.0:4000 server.js",
@@ -36,8 +38,8 @@
     "create:albums": "deno run --allow-env --allow-read=./ --allow-write=./_api,./_pictures create/albums.js",
     "create:archives": "deno run --allow-env=__TESTING_MKDIRP_PLATFORM__,__TESTING_MKDIRP_NODE_VERSION__ --allow-read=./ --allow-write=./_archives create/archives.js",
 
-    "esm:add": "deno run --allow-read=./deno.json,import_map.json --allow-write=./import_map.json --allow-net=esm.sh https://esm.sh/v128 add",
-    "esm:update": "deno run --allow-read=./deno.json,import_map.json --allow-write=./import_map.json --allow-net=esm.sh https://esm.sh/v128 update",
-    "esm:remove": "deno run --allow-read=./deno.json,import_map.json --allow-write=./import_map.json --allow-net=esm.sh https://esm.sh/v128 remove"
+    "esm:add": "deno run --allow-read=./deno.json,import_map.json --allow-write=./import_map.json --allow-net=esm.sh https://esm.sh/v135 add",
+    "esm:update": "deno run --allow-read=./deno.json,import_map.json --allow-write=./import_map.json --allow-net=esm.sh https://esm.sh/v135 update",
+    "esm:remove": "deno run --allow-read=./deno.json,import_map.json --allow-write=./import_map.json --allow-net=esm.sh https://esm.sh/v135 remove"
   }
 }
