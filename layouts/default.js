@@ -36,21 +36,21 @@ export const DefaultLayout = ({ url, title, content, askSearchEnginesNotToIndex,
         <script type="importmap">
         {
           "imports": {
-            "htm": "https://esm.sh/v135/htm@3.1.1?bundle",
-            "lit": "https://esm.sh/v135/lit@3.1.0?bundle",
-            "markdown-it": "https://esm.sh/v135/markdown-it@14.0.0?bundle",
-            "markdown-it-deflist": "https://esm.sh/v135/markdown-it-deflist@3.0.0?bundle",
-            "preact": "https://esm.sh/v135/preact@10.19.3?bundle",
-            "preact/hooks": "https://esm.sh/v135/preact@10.19.3/hooks?bundle",
-            "react": "https://esm.sh/preact@10.19.3/compat?bundle&external=preact",
-            "xstate": "https://esm.sh/v135/xstate@5.4.0?bundle",
-            "@xstate/react": "https://esm.sh/v135/@xstate/react@4.0.1?bundle&external=react,xstate"
+            "htm": "https://esm.sh/v135/htm@3.1.1?bundle-deps",
+            "lit": "https://esm.sh/v135/lit@3.1.0?bundle-deps",
+            "markdown-it": "https://esm.sh/v135/markdown-it@14.0.0?bundle-deps",
+            "markdown-it-deflist": "https://esm.sh/v135/markdown-it-deflist@3.0.0?bundle-deps",
+            "preact": "https://esm.sh/v135/preact@10.19.3",
+            "preact/": "https://esm.sh/v135/preact@10.19.3/",
+            "react": "https://esm.sh/v135/preact@10.19.3/compat?external=preact",
+            "xstate": "https://esm.sh/v135/xstate@5.4.0?bundle-deps",
+            "@xstate/react": "https://esm.sh/v135/@xstate/react@4.0.1?bundle-deps&external=react,xstate"
           }
         }
         </script>
 
         ${ /* web components */ '' }
-        <link rel="modulepreload" href="https://esm.sh/v135/lit@3.1.0?bundle" />
+        <link rel="modulepreload" href="https://esm.sh/v135/lit@3.1.0?bundle-deps" />
         <script type="module" src="/components/responsive-image-html.js"></script>
         <script type="module" src="/components/responsive-image.js"></script>
 

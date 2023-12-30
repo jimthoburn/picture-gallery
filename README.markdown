@@ -34,7 +34,7 @@ To create your own gallery, you can open this project in a [codespace](https://d
 
 1. [Make a copy of this project on GitHub](https://github.com/jimthoburn/picture-gallery/generate) (or download it)
 
-2. Install [Deno](https://deno.com/runtime) (version `1.39.0` or greater).
+2. Install [Deno](https://deno.com/runtime) (version `1.39.1` or greater).
 
 3. From the root of your project, start a server for development...
 
@@ -187,6 +187,17 @@ deno task file-server
 And then visit `http://localhost:4000`
 
 To publish with [Deno Deploy](https://deno.com/deploy), you can skip a build step and use `server.js` for the `entrypoint`.
+
+You can publish to a static host like [Netlify](https://www.netlify.com/) or [Vercel](https://vercel.com) using these settings:
+
+Install command  
+`npm run install`
+
+Build command  
+`npm run build`
+
+Publish directory  
+`_site`
 
 ### Secret albums
 
