@@ -45,7 +45,7 @@ export const config = {
     "hostURL"              : "http://localhost:4000",
     "homeURL"              : "/",
     "albumURL"             : "/japan/",
-    "pictureURL"           : "/japan/tenryū-ji-temple/",
+    "pictureURL"           : "/japan/37-tenryū-ji-temple/",
     "groupAlbumURL"        : "/wildflowers/",
     "groupAlbumChildURL"   : "/wildflowers/joshua-tree/",
     "groupAlbumChildName"  : "Joshua Tree",

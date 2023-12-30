@@ -7,24 +7,6 @@
   "askSearchEnginesNotToIndex": null,
   "pictures": [
     {
-      "source": "https://jimthoburn.com/glitch/0066dc23-cee2-4973-ae99-075586a1eded-44.jpg?v=1572802609520",
-      "description": "Tiny plant with purple flowers surrounded by stones",
-      "caption": "Mastodon Peak in Joshua Tree National Park",
-      "uri": "mastodon-peak-1"
-    },
-    {
-      "source": "https://jimthoburn.com/glitch/0066dc23-cee2-4973-ae99-075586a1eded-51.jpg?v=1572804799654",
-      "description": "A lush group of plants with purple flowers, growing in the sunshine",
-      "caption": "Mastodon Peak in Joshua Tree National Park",
-      "uri": "mastodon-peak-2"
-    },
-    {
-      "source": "https://jimthoburn.com/glitch/0066dc23-cee2-4973-ae99-075586a1eded-57.jpg?v=1572804934013",
-      "description": "Purple flowers growing in front of a majestic stone",
-      "caption": "Mastodon Peak in Joshua Tree National Park",
-      "uri": "mastodon-peak-3"
-    },
-    {
       "filename": "18.jpeg",
       "description": "orange flowers on a plant",
       "caption": null,
@@ -41,6 +23,24 @@
       "description": "a rock on the ground",
       "caption": null,
       "uri": "23"
+    },
+    {
+      "filename": "44.jpeg",
+      "description": "Tiny plant with purple flowers surrounded by stones",
+      "caption": "Mastodon Peak in Joshua Tree National Park",
+      "uri": "44"
+    },
+    {
+      "filename": "51.jpeg",
+      "description": "A lush group of plants with purple flowers, growing in the sunshine",
+      "caption": "Mastodon Peak in Joshua Tree National Park",
+      "uri": "51"
+    },
+    {
+      "filename": "57.jpeg",
+      "description": "Purple flowers growing in front of a majestic stone",
+      "caption": "Mastodon Peak in Joshua Tree National Park",
+      "uri": "57"
     }
   ]
 }
