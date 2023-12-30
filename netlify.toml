@@ -1,7 +1,0 @@
-
-# https://docs.netlify.com/configure-builds/file-based-configuration/#sample-netlify-toml-file
-[build]
-  publish = "_site"
-  command = "npm run build"
-  # https://docs.netlify.com/configure-builds/manage-dependencies/
-  environment = { NODE_VERSION = "18.19.0", NODE_ENV = "production" }

@@ -43,8 +43,8 @@ export const DefaultLayout = ({ url, title, content, askSearchEnginesNotToIndex,
             "preact": "https://esm.sh/v135/preact@10.19.3",
             "preact/": "https://esm.sh/v135/preact@10.19.3/",
             "react": "https://esm.sh/v135/preact@10.19.3/compat?external=preact",
-            "xstate": "https://esm.sh/v135/xstate@5.4.0?bundle-deps",
-            "@xstate/react": "https://esm.sh/v135/@xstate/react@4.0.1?bundle-deps&external=react,xstate"
+            "xstate": "https://esm.sh/v135/xstate@5.4.1?bundle-deps",
+            "@xstate/react": "https://esm.sh/v135/@xstate/react@4.0.2?bundle-deps&external=react,xstate"
           }
         }
         </script>

@@ -188,17 +188,6 @@ And then visit `http://localhost:4000`
 
 To publish with [Deno Deploy](https://deno.com/deploy), you can skip a build step and use `server.js` for the `entrypoint`.
 
-You can publish to a static host like [Netlify](https://www.netlify.com/) or [Vercel](https://vercel.com) using these settings:
-
-Install command  
-`npm run install`
-
-Build command  
-`npm run build`
-
-Publish directory  
-`_site`
-
 ### Secret albums
 
 If you want to publish an album to share with friends without making it public,
