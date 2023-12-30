@@ -153,7 +153,7 @@ async function serve({ folder, redirectsFilePath, port, hostname }) {
   serveStaticFiles({ folder });
   serveError404Page({ folder });
 
-  Deno.serve({ port, hostname }, async (request) => {
+  const server = Deno.serve({ port, hostname }, async (request) => {
     const url = new URL(request.url);
     console.log({ url, pathname: url.pathname });
 
@@ -214,6 +214,17 @@ async function serve({ folder, redirectsFilePath, port, hostname }) {
       }
       return handlers["/404/"]({ request });
     }
+  });
+
+  // Shutdown the server gracefully when the process is interrupted.
+  Deno.addSignalListener("SIGINT", () => {
+    console.log("");
+    console.log("- - - - - - - - - - - - - - - - - - - - - - -");
+    console.log("💁", `Received "SIGINT". Server shutting down...`);
+    console.log("- - - - - - - - - - - - - - - - - - - - - - -");
+    console.log("");
+
+    server.shutdown();
   });
 
   console.log("");

@@ -221,7 +221,7 @@ async function serve() {
   serveError404Page();
   serveError500Page();
 
-  Deno.serve({ port, hostname }, async (request) => {
+  const server = Deno.serve({ port, hostname }, async (request) => {
     const url = new URL(request.url);
     console.log({ url, pathname: url.pathname });
 
@@ -280,6 +280,17 @@ async function serve() {
       }
       return handlers["/404/"]({ request });
     }
+  });
+
+  // Shutdown the server gracefully when the process is interrupted.
+  Deno.addSignalListener("SIGINT", () => {
+    console.log("");
+    console.log(chalk.cyan("- - - - - - - - - - - - - - - - - - - - - - -"));
+    console.log("💁", chalk.cyan(`Received "SIGINT". Server shutting down...`));
+    console.log(chalk.cyan("- - - - - - - - - - - - - - - - - - - - - - -"));
+    console.log("");
+
+    server.shutdown();
   });
 
   console.log("");
