@@ -30,12 +30,12 @@
     "dev": "deno run --watch --allow-read=./_public,./client.js,./components,./css,./data,./helpers,./machines,./_api,./_archives,./_pictures --allow-net=0.0.0.0:4000 server.js",
     "start": "deno run --allow-read=./_public,./client.js,./components,./css,./data,./helpers,./machines,./_api,./_archives,./_pictures --allow-net=0.0.0.0:4000 server.js",
 
-    "build": "deno run --allow-env --allow-read=./ --allow-write=./_site --allow-sys=uid build.js",
+    "build": "deno run --allow-read=./ --allow-write=./_site --allow-sys=uid build.js",
     "file-server": "cd ./_site && deno run --allow-read=./ --allow-net=0.0.0.0:4000 ../file-server.js",
 
     "create": "deno task create:images && deno task create:albums && deno task create:archives",
     "create:images": "deno run --allow-read=./ --allow-write=./_pictures create/images.js",
-    "create:albums": "deno run --allow-env --allow-read=./ --allow-write=./_api,./_pictures create/albums.js",
+    "create:albums": "deno run --allow-env=AZURE_COMPUTER_VISION_API_ENDPOINT,AZURE_COMPUTER_VISION_API_KEY --allow-read=./ --allow-write=./_api,./_pictures create/albums.js",
     "create:archives": "deno run --allow-env=__TESTING_MKDIRP_PLATFORM__,__TESTING_MKDIRP_NODE_VERSION__ --allow-read=./ --allow-write=./_archives create/archives.js",
 
     "esm:add": "deno run --allow-read=./deno.json,import_map.json --allow-write=./import_map.json --allow-net=esm.sh https://esm.sh/v135 add",
