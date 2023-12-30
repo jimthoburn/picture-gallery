@@ -2,43 +2,43 @@
   "uri": "joshua-tree",
   "title": "Joshua Tree",
   "date": "Spring 2019",
-  "zipFileSize": "41.8 MB",
+  "zipFileSize": "81.5 MB",
   "coverPicture": "18.jpg",
   "askSearchEnginesNotToIndex": null,
   "pictures": [
     {
       "filename": "18.jpeg",
-      "description": "orange flowers on a plant",
+      "description": "Orange wildflowers blooming among greenery with a backdrop of textured rock formations.",
       "caption": null,
       "uri": "18"
     },
     {
       "filename": "22.jpeg",
-      "description": "a small purple flower growing out of the ground",
+      "description": "A solitary purple flower basking in the sunlight with a lens flare effect, set against a backdrop of a large rock and shrubs, all resting on a dry, pebbly ground.",
       "caption": null,
       "uri": "22"
     },
     {
       "filename": "23.jpeg",
-      "description": "a rock on the ground",
+      "description": "A close-up image of coarse, sandy soil with a few large rocks and colorful wildflowers, including yellow poppies and purple blooms, under bright sunlight with blurred natural vegetation in the background.",
       "caption": null,
       "uri": "23"
     },
     {
       "filename": "44.jpeg",
-      "description": "Tiny plant with purple flowers surrounded by stones",
+      "description": "A close-up of a small purple flower with delicate petals and prominent stamens, growing in gritty soil with a soft-focused background.",
       "caption": "Mastodon Peak in Joshua Tree National Park",
       "uri": "44"
     },
     {
       "filename": "51.jpeg",
-      "description": "A lush group of plants with purple flowers, growing in the sunshine",
+      "description": "Light streams through a meadow highlighting delicate blue and purple wildflowers with a soft focus on the background greenery.",
       "caption": "Mastodon Peak in Joshua Tree National Park",
       "uri": "51"
     },
     {
       "filename": "57.jpeg",
-      "description": "Purple flowers growing in front of a majestic stone",
+      "description": "Close-up of a stem of purple wildflowers with multiple blooms with a brown, textured rock in the background.",
       "caption": "Mastodon Peak in Joshua Tree National Park",
       "uri": "57"
     }

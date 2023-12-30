@@ -1,0 +1,310 @@
+[
+  {
+    "filename": "17.jpeg",
+    "description": "A dense forest with tall trees and a ground partially covered in snow.",
+    "caption": null,
+    "uri": "17",
+    "height": 4000,
+    "width": 6000,
+    "type": "jpg",
+    "previewBase64": "/9j/2wBDABsbGxscGx4hIR4qLSgtKj04MzM4PV1CR0JHQl2NWGdYWGdYjX2Xe3N7l33gsJycsOD/2c7Z////////////////2wBDARsbGxscGx4hIR4qLSgtKj04MzM4PV1CR0JHQl2NWGdYWGdYjX2Xe3N7l33gsJycsOD/2c7Z////////////////wgARCAALABADASIAAhEBAxEB/8QAFQABAQAAAAAAAAAAAAAAAAAABAX/xAAUAQEAAAAAAAAAAAAAAAAAAAAB/9oADAMBAAIQAxAAAACShKB//8QAHBAAAgICAwAAAAAAAAAAAAAAAQIAIQMREzFR/9oACAEBAAE/AEwOxWu46cSNRozESSN+mG9kz//EABURAQEAAAAAAAAAAAAAAAAAAAAR/9oACAECAQE/AI//xAAUEQEAAAAAAAAAAAAAAAAAAAAA/9oACAEDAQE/AH//2Q==",
+    "meta": {
+      "image": {
+        "ImageDescription": "                               ",
+        "Make": "Canon",
+        "Model": "Canon EOS M3",
+        "XResolution": 72,
+        "YResolution": 72,
+        "ResolutionUnit": 2,
+        "Software": "Photos 4.0",
+        "ModifyDate": "2016:02:26 14:04:26",
+        "ExifOffset": 222
+      },
+      "thumbnail": {},
+      "exif": {
+        "ExposureTime": 0.016666666666666666,
+        "FNumber": 3.5,
+        "ExposureProgram": 2,
+        "ISO": 100,
+        "SensitivityType": 2,
+        "RecommendedExposureIndex": 100,
+        "ExifVersion": {
+          "type": "Buffer",
+          "data": [
+            48,
+            50,
+            51,
+            48
+          ]
+        },
+        "DateTimeOriginal": "2016:02:26 14:04:26",
+        "CreateDate": "2016:02:26 14:04:26",
+        "ComponentsConfiguration": {
+          "type": "Buffer",
+          "data": [
+            1,
+            2,
+            3,
+            0
+          ]
+        },
+        "CompressedBitsPerPixel": 3,
+        "ShutterSpeedValue": 5.90625,
+        "ApertureValue": 3.625,
+        "ExposureCompensation": 0,
+        "MaxApertureValue": 3.5635948210205637,
+        "MeteringMode": 5,
+        "Flash": 16,
+        "FocalLength": 18,
+        "SubSecTime": "86",
+        "SubSecTimeOriginal": "86",
+        "SubSecTimeDigitized": "86",
+        "FlashpixVersion": {
+          "type": "Buffer",
+          "data": [
+            48,
+            49,
+            48,
+            48
+          ]
+        },
+        "ColorSpace": 1,
+        "ExifImageWidth": 6000,
+        "ExifImageHeight": 4000,
+        "FocalPlaneXResolution": 6825.938566552901,
+        "FocalPlaneYResolution": 6825.938566552901,
+        "FocalPlaneResolutionUnit": 2,
+        "SensingMethod": 2,
+        "FileSource": {
+          "type": "Buffer",
+          "data": [
+            3
+          ]
+        },
+        "CustomRendered": 0,
+        "ExposureMode": 0,
+        "WhiteBalance": 0,
+        "DigitalZoomRatio": 1,
+        "SceneCaptureType": 0,
+        "SerialNumber": "092043000050",
+        "LensInfo": [
+          18,
+          55,
+          0,
+          0
+        ],
+        "LensModel": "EF-M18-55mm f/3.5-5.6 IS STM",
+        "LensSerialNumber": "00004594bc"
+      },
+      "gps": {},
+      "interoperability": {},
+      "makernote": {}
+    }
+  },
+  {
+    "filename": "37.jpeg",
+    "description": "A wooden signpost with Japanese and English text reading 'Keio cherry' in front of a bamboo forest.",
+    "caption": null,
+    "uri": "37",
+    "height": 6000,
+    "orientation": 1,
+    "width": 4000,
+    "type": "jpg",
+    "previewBase64": "/9j/2wBDABsbGxscGx4hIR4qLSgtKj04MzM4PV1CR0JHQl2NWGdYWGdYjX2Xe3N7l33gsJycsOD/2c7Z////////////////2wBDARsbGxscGx4hIR4qLSgtKj04MzM4PV1CR0JHQl2NWGdYWGdYjX2Xe3N7l33gsJycsOD/2c7Z////////////////wgARCAAYABADASIAAhEBAxEB/8QAGAAAAgMAAAAAAAAAAAAAAAAAAAMCBAX/xAAXAQADAQAAAAAAAAAAAAAAAAAAAQID/9oADAMBAAIQAxAAAADMnaZi1vCD/8QAHxAAAgICAQUAAAAAAAAAAAAAAQIAEQMSBCExMlFh/9oACAEBAAE/ALbZvdy2DDoZwwd9j9mdSWx01DWcfJak0fIwkN3n/8QAGBEAAwEBAAAAAAAAAAAAAAAAAAECETH/2gAIAQIBAT8AdLcK6z//xAAYEQACAwAAAAAAAAAAAAAAAAAAARESIf/aAAgBAwEBPwCuSNs//9k=",
+    "meta": {
+      "image": {
+        "ImageDescription": "                               ",
+        "Make": "Canon",
+        "Model": "Canon EOS M3",
+        "Orientation": 1,
+        "XResolution": 72,
+        "YResolution": 72,
+        "ResolutionUnit": 2,
+        "Software": "Photos 4.0",
+        "ModifyDate": "2016:02:29 11:47:06",
+        "ExifOffset": 234
+      },
+      "thumbnail": {},
+      "exif": {
+        "ExposureTime": 0.004,
+        "FNumber": 5.6,
+        "ExposureProgram": 2,
+        "ISO": 200,
+        "SensitivityType": 2,
+        "RecommendedExposureIndex": 200,
+        "ExifVersion": {
+          "type": "Buffer",
+          "data": [
+            48,
+            50,
+            51,
+            48
+          ]
+        },
+        "DateTimeOriginal": "2016:02:29 11:47:06",
+        "CreateDate": "2016:02:29 11:47:06",
+        "ComponentsConfiguration": {
+          "type": "Buffer",
+          "data": [
+            1,
+            2,
+            3,
+            0
+          ]
+        },
+        "CompressedBitsPerPixel": 3,
+        "ShutterSpeedValue": 7.96875,
+        "ApertureValue": 4.96875,
+        "ExposureCompensation": 0,
+        "MaxApertureValue": 3.5635948210205637,
+        "MeteringMode": 5,
+        "Flash": 16,
+        "FocalLength": 19,
+        "SubSecTime": "50",
+        "SubSecTimeOriginal": "50",
+        "SubSecTimeDigitized": "50",
+        "FlashpixVersion": {
+          "type": "Buffer",
+          "data": [
+            48,
+            49,
+            48,
+            48
+          ]
+        },
+        "ColorSpace": 1,
+        "ExifImageWidth": 4000,
+        "ExifImageHeight": 6000,
+        "FocalPlaneXResolution": 6825.938566552901,
+        "FocalPlaneYResolution": 6825.938566552901,
+        "FocalPlaneResolutionUnit": 2,
+        "SensingMethod": 2,
+        "FileSource": {
+          "type": "Buffer",
+          "data": [
+            3
+          ]
+        },
+        "CustomRendered": 0,
+        "ExposureMode": 0,
+        "WhiteBalance": 0,
+        "DigitalZoomRatio": 1,
+        "SceneCaptureType": 0,
+        "SerialNumber": "092043000050",
+        "LensInfo": [
+          18,
+          55,
+          0,
+          0
+        ],
+        "LensModel": "EF-M18-55mm f/3.5-5.6 IS STM",
+        "LensSerialNumber": "00004594bc"
+      },
+      "gps": {},
+      "interoperability": {},
+      "makernote": {}
+    }
+  },
+  {
+    "filename": "60.jpeg",
+    "description": "Traditional Japanese wooden temple structures with a multi-tiered pagoda under a clear blue sky, viewed from a pebbled ground perspective.",
+    "caption": null,
+    "uri": "60",
+    "height": 4000,
+    "width": 6000,
+    "type": "jpg",
+    "previewBase64": "/9j/2wBDABsbGxscGx4hIR4qLSgtKj04MzM4PV1CR0JHQl2NWGdYWGdYjX2Xe3N7l33gsJycsOD/2c7Z////////////////2wBDARsbGxscGx4hIR4qLSgtKj04MzM4PV1CR0JHQl2NWGdYWGdYjX2Xe3N7l33gsJycsOD/2c7Z////////////////wgARCAALABADASIAAhEBAxEB/8QAFgABAQEAAAAAAAAAAAAAAAAAAwUG/8QAFQEBAQAAAAAAAAAAAAAAAAAAAQL/2gAMAwEAAhADEAAAAHgacZf/xAAbEAACAwEBAQAAAAAAAAAAAAABAgADESEEEv/aAAgBAQABPwC/2VVBQgL7Lwbr3ZFbsJPxsfOnBP/EABYRAQEBAAAAAAAAAAAAAAAAAAEAA//aAAgBAgEBPwB0W//EABYRAQEBAAAAAAAAAAAAAAAAAAEAAv/aAAgBAwEBPwAwF//Z",
+    "meta": {
+      "image": {
+        "ImageDescription": "                               ",
+        "Make": "Canon",
+        "Model": "Canon EOS M3",
+        "XResolution": 72,
+        "YResolution": 72,
+        "ResolutionUnit": 2,
+        "Software": "Photos 4.0",
+        "ModifyDate": "2016:03:02 15:32:43",
+        "ExifOffset": 222
+      },
+      "thumbnail": {},
+      "exif": {
+        "ExposureTime": 0.0015625,
+        "FNumber": 5.6,
+        "ExposureProgram": 2,
+        "ISO": 200,
+        "SensitivityType": 2,
+        "RecommendedExposureIndex": 200,
+        "ExifVersion": {
+          "type": "Buffer",
+          "data": [
+            48,
+            50,
+            51,
+            48
+          ]
+        },
+        "DateTimeOriginal": "2016:03:02 15:32:43",
+        "CreateDate": "2016:03:02 15:32:43",
+        "ComponentsConfiguration": {
+          "type": "Buffer",
+          "data": [
+            1,
+            2,
+            3,
+            0
+          ]
+        },
+        "CompressedBitsPerPixel": 3,
+        "ShutterSpeedValue": 9.3125,
+        "ApertureValue": 4.96875,
+        "ExposureCompensation": 0,
+        "MaxApertureValue": 3.5635948210205637,
+        "MeteringMode": 5,
+        "Flash": 16,
+        "FocalLength": 18,
+        "SubSecTime": "67",
+        "SubSecTimeOriginal": "67",
+        "SubSecTimeDigitized": "67",
+        "FlashpixVersion": {
+          "type": "Buffer",
+          "data": [
+            48,
+            49,
+            48,
+            48
+          ]
+        },
+        "ColorSpace": 1,
+        "ExifImageWidth": 6000,
+        "ExifImageHeight": 4000,
+        "FocalPlaneXResolution": 6825.938566552901,
+        "FocalPlaneYResolution": 6825.938566552901,
+        "FocalPlaneResolutionUnit": 2,
+        "SensingMethod": 2,
+        "FileSource": {
+          "type": "Buffer",
+          "data": [
+            3
+          ]
+        },
+        "CustomRendered": 0,
+        "ExposureMode": 0,
+        "WhiteBalance": 0,
+        "DigitalZoomRatio": 1,
+        "SceneCaptureType": 0,
+        "SerialNumber": "092043000050",
+        "LensInfo": [
+          18,
+          55,
+          0,
+          0
+        ],
+        "LensModel": "EF-M18-55mm f/3.5-5.6 IS STM",
+        "LensSerialNumber": "00004594bc"
+      },
+      "gps": {},
+      "interoperability": {},
+      "makernote": {}
+    }
+  }
+]

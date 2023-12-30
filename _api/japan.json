@@ -2,25 +2,25 @@
   "uri": "japan",
   "title": "Japan in Winter",
   "date": "February & March, 2016",
-  "zipFileSize": null,
+  "zipFileSize": "45.8 MB",
   "coverPicture": "60.jpeg",
   "askSearchEnginesNotToIndex": null,
   "pictures": [
     {
       "filename": "17.jpeg",
-      "description": "Forest with snow on the ground",
+      "description": "Evergreen trees in a dense forest, on hilly ground partially covered in snow.",
       "caption": "Shiogama Shrine, near Mt. Fuji ",
       "uri": "17-shiogama-shrine-forest"
     },
     {
       "filename": "37.jpeg",
-      "description": "Sign that reads ”Keiō Cherry”, with rain water dripping from it–standing before a lush, green forest of bamboo",
+      "description": "Wooden signpost with Japanese and English text that reads ”Keiō Cherry”, with rain water dripping from it; standing before a lush, green bamboo forest.",
       "caption": "Tenryū-ji Temple, in Kyoto",
       "uri": "37-tenryū-ji-temple"
     },
     {
       "filename": "60.jpeg",
-      "description": "Ancient pagodas made of wood, standing on a ground of small stones",
+      "description": "Wooden temple structures with a multi-tiered pagoda, standing on a ground of small stones under a blue sky.",
       "caption": "Hōryū-ji Temple 法隆寺, in Ikaruga, Nara",
       "uri": "60-hōryū-ji-temple"
     }

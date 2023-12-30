@@ -1,7 +1,7 @@
 [
   {
     "filename": "18.jpeg",
-    "description": "orange flowers on a plant",
+    "description": "Orange wildflowers blooming among greenery with a backdrop of textured rock formations.",
     "caption": null,
     "uri": "18",
     "height": 4000,
@@ -11,7 +11,7 @@
   },
   {
     "filename": "22.jpeg",
-    "description": "a small purple flower growing out of the ground",
+    "description": "A solitary purple flower basking in the sunlight with a lens flare effect, set against a backdrop of a large rock and shrubs, all resting on a dry, pebbly ground.",
     "caption": null,
     "uri": "22",
     "height": 4000,
@@ -21,12 +21,43 @@
   },
   {
     "filename": "23.jpeg",
-    "description": "a rock on the ground",
+    "description": "A close-up image of coarse, sandy soil with a few large rocks and colorful wildflowers, including yellow poppies and purple blooms, under bright sunlight with blurred natural vegetation in the background.",
     "caption": null,
     "uri": "23",
     "height": 4000,
     "width": 6000,
     "type": "jpg",
     "previewBase64": "/9j/2wBDABsbGxscGx4hIR4qLSgtKj04MzM4PV1CR0JHQl2NWGdYWGdYjX2Xe3N7l33gsJycsOD/2c7Z////////////////2wBDARsbGxscGx4hIR4qLSgtKj04MzM4PV1CR0JHQl2NWGdYWGdYjX2Xe3N7l33gsJycsOD/2c7Z////////////////wgARCAALABADASIAAhEBAxEB/8QAFQABAQAAAAAAAAAAAAAAAAAAAwT/xAAVAQEBAAAAAAAAAAAAAAAAAAACA//aAAwDAQACEAMQAAAAphdpP//EABwQAAICAwEBAAAAAAAAAAAAAAECAAMEEUESgv/aAAgBAQABPwCzK41q/IleRW76YuRGVdqPI7yJVWu3CANoz//EABcRAQADAAAAAAAAAAAAAAAAAAEAETH/2gAIAQIBAT8AW9n/xAAXEQEAAwAAAAAAAAAAAAAAAAABABIx/9oACAEDAQE/AKhk/9k="
+  },
+  {
+    "filename": "44.jpeg",
+    "description": "A close-up of a small purple flower with delicate petals and prominent stamens, growing in gritty soil with a soft-focused background.",
+    "caption": null,
+    "uri": "44",
+    "height": 4000,
+    "width": 6000,
+    "type": "jpg",
+    "previewBase64": "/9j/2wBDABsbGxscGx4hIR4qLSgtKj04MzM4PV1CR0JHQl2NWGdYWGdYjX2Xe3N7l33gsJycsOD/2c7Z////////////////2wBDARsbGxscGx4hIR4qLSgtKj04MzM4PV1CR0JHQl2NWGdYWGdYjX2Xe3N7l33gsJycsOD/2c7Z////////////////wgARCAALABADASIAAhEBAxEB/8QAFgABAQEAAAAAAAAAAAAAAAAAAwQF/8QAFAEBAAAAAAAAAAAAAAAAAAAAAv/aAAwDAQACEAMQAAAAEticr//EAB0QAAIBBAMAAAAAAAAAAAAAAAECAAMEERIjYaH/2gAIAQEAAT8AS2rhzxOV7IjWtw+daU1HmYSQBP/EABURAQEAAAAAAAAAAAAAAAAAAAAR/9oACAECAQE/AK//xAAVEQEBAAAAAAAAAAAAAAAAAAAAEf/aAAgBAwEBPwCP/9k="
+  },
+  {
+    "filename": "51.jpeg",
+    "description": "Light streams through a meadow highlighting delicate blue and purple wildflowers with a soft focus on the background greenery.",
+    "caption": null,
+    "uri": "51",
+    "height": 4000,
+    "width": 6000,
+    "type": "jpg",
+    "previewBase64": "/9j/2wBDABsbGxscGx4hIR4qLSgtKj04MzM4PV1CR0JHQl2NWGdYWGdYjX2Xe3N7l33gsJycsOD/2c7Z////////////////2wBDARsbGxscGx4hIR4qLSgtKj04MzM4PV1CR0JHQl2NWGdYWGdYjX2Xe3N7l33gsJycsOD/2c7Z////////////////wgARCAALABADASIAAhEBAxEB/8QAFwAAAwEAAAAAAAAAAAAAAAAAAgMEBf/EABUBAQEAAAAAAAAAAAAAAAAAAAEC/9oADAMBAAIQAxAAAACYsp0n/8QAGxAAAQUBAQAAAAAAAAAAAAAAAQACAxExQQT/2gAIAQEAAT8A8k1dU0tuBvE1OJDN6v/EABYRAAMAAAAAAAAAAAAAAAAAAAABUf/aAAgBAgEBPwCs/8QAFBEBAAAAAAAAAAAAAAAAAAAAAP/aAAgBAwEBPwB//9k="
+  },
+  {
+    "filename": "57.jpeg",
+    "description": "\"Close-up of a stem of purple wildflowers with multiple blooms against a textured, brown earth background.\"",
+    "caption": null,
+    "uri": "57",
+    "height": 6000,
+    "orientation": 1,
+    "width": 4000,
+    "type": "jpg",
+    "previewBase64": "/9j/2wBDABsbGxscGx4hIR4qLSgtKj04MzM4PV1CR0JHQl2NWGdYWGdYjX2Xe3N7l33gsJycsOD/2c7Z////////////////2wBDARsbGxscGx4hIR4qLSgtKj04MzM4PV1CR0JHQl2NWGdYWGdYjX2Xe3N7l33gsJycsOD/2c7Z////////////////wgARCAAYABADASIAAhEBAxEB/8QAGAAAAgMAAAAAAAAAAAAAAAAAAAQBAgP/xAAWAQEBAQAAAAAAAAAAAAAAAAADAAH/2gAMAwEAAhADEAAAAMaMySoOhZ//xAAdEAACAgIDAQAAAAAAAAAAAAABAgASAxEhIjEj/9oACAEBAAE/AHwOpIVZ9ENG47eRcoQDbWMqWFjb3axXOtTGey95/8QAFxEBAAMAAAAAAAAAAAAAAAAAAAERIf/aAAgBAgEBPwDKS//EABQRAQAAAAAAAAAAAAAAAAAAABD/2gAIAQMBAT8AP//Z"
   }
 ]

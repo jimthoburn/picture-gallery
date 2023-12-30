@@ -4,23 +4,23 @@
   "date": null,
   "zipFileSize": "17.8 MB",
   "coverPicture": null,
-  "askSearchEnginesNotToIndex": true,
+  "askSearchEnginesNotToIndex": null,
   "pictures": [
     {
       "filename": "1.jpeg",
-      "description": "a green and purple aurora borealis in the night sky",
+      "description": "A night sky displaying the aurora borealis, with greenish streaks against a starry backdrop.",
       "caption": null,
       "uri": "1"
     },
     {
       "filename": "2.jpeg",
-      "description": "a green and purple aurora borealis in the night sky",
+      "description": "Northern Lights (Aurora Borealis) visible in a starry night sky.",
       "caption": null,
       "uri": "2"
     },
     {
       "filename": "3.jpeg",
-      "description": "a green and purple aurora borealis in the night sky",
+      "description": "A night sky displaying a natural aurora phenomenon with vibrant green and purple lights streaking among the stars.",
       "caption": null,
       "uri": "3"
     }

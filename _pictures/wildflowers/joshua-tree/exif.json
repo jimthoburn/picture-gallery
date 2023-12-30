@@ -1,7 +1,7 @@
 [
   {
     "filename": "18.jpeg",
-    "description": "orange flowers on a plant",
+    "description": "Orange wildflowers blooming among greenery with a backdrop of textured rock formations.",
     "caption": null,
     "uri": "18",
     "height": 4000,
@@ -103,7 +103,7 @@
   },
   {
     "filename": "22.jpeg",
-    "description": "a small purple flower growing out of the ground",
+    "description": "A solitary purple flower basking in the sunlight with a lens flare effect, set against a backdrop of a large rock and shrubs, all resting on a dry, pebbly ground.",
     "caption": null,
     "uri": "22",
     "height": 4000,
@@ -205,7 +205,7 @@
   },
   {
     "filename": "23.jpeg",
-    "description": "a rock on the ground",
+    "description": "A close-up image of coarse, sandy soil with a few large rocks and colorful wildflowers, including yellow poppies and purple blooms, under bright sunlight with blurred natural vegetation in the background.",
     "caption": null,
     "uri": "23",
     "height": 4000,
@@ -275,6 +275,314 @@
         "ColorSpace": 1,
         "ExifImageWidth": 6000,
         "ExifImageHeight": 4000,
+        "FocalPlaneXResolution": 6825.938566552901,
+        "FocalPlaneYResolution": 6825.938566552901,
+        "FocalPlaneResolutionUnit": 2,
+        "SensingMethod": 2,
+        "FileSource": {
+          "type": "Buffer",
+          "data": [
+            3
+          ]
+        },
+        "CustomRendered": 0,
+        "ExposureMode": 0,
+        "WhiteBalance": 0,
+        "DigitalZoomRatio": 1,
+        "SceneCaptureType": 0,
+        "SerialNumber": "092043000050",
+        "LensInfo": [
+          18,
+          55,
+          0,
+          0
+        ],
+        "LensModel": "EF-M18-55mm f/3.5-5.6 IS STM",
+        "LensSerialNumber": "00004594bc"
+      },
+      "gps": {},
+      "interoperability": {},
+      "makernote": {}
+    }
+  },
+  {
+    "filename": "44.jpeg",
+    "description": "A close-up of a small purple flower with delicate petals and prominent stamens, growing in gritty soil with a soft-focused background.",
+    "caption": null,
+    "uri": "44",
+    "height": 4000,
+    "width": 6000,
+    "type": "jpg",
+    "previewBase64": "/9j/2wBDABsbGxscGx4hIR4qLSgtKj04MzM4PV1CR0JHQl2NWGdYWGdYjX2Xe3N7l33gsJycsOD/2c7Z////////////////2wBDARsbGxscGx4hIR4qLSgtKj04MzM4PV1CR0JHQl2NWGdYWGdYjX2Xe3N7l33gsJycsOD/2c7Z////////////////wgARCAALABADASIAAhEBAxEB/8QAFgABAQEAAAAAAAAAAAAAAAAAAwQF/8QAFAEBAAAAAAAAAAAAAAAAAAAAAv/aAAwDAQACEAMQAAAAEticr//EAB0QAAIBBAMAAAAAAAAAAAAAAAECAAMEERIjYaH/2gAIAQEAAT8AS2rhzxOV7IjWtw+daU1HmYSQBP/EABURAQEAAAAAAAAAAAAAAAAAAAAR/9oACAECAQE/AK//xAAVEQEBAAAAAAAAAAAAAAAAAAAAEf/aAAgBAwEBPwCP/9k=",
+    "meta": {
+      "image": {
+        "ImageDescription": "                               ",
+        "Make": "Canon",
+        "Model": "Canon EOS M3",
+        "XResolution": 72,
+        "YResolution": 72,
+        "ResolutionUnit": 2,
+        "Software": "Photos 4.0",
+        "ModifyDate": "2019:03:31 15:51:32",
+        "ExifOffset": 222
+      },
+      "thumbnail": {},
+      "exif": {
+        "ExposureTime": 0.00625,
+        "FNumber": 8,
+        "ExposureProgram": 2,
+        "ISO": 100,
+        "SensitivityType": 2,
+        "RecommendedExposureIndex": 100,
+        "ExifVersion": {
+          "type": "Buffer",
+          "data": [
+            48,
+            50,
+            51,
+            48
+          ]
+        },
+        "DateTimeOriginal": "2019:03:31 15:51:32",
+        "CreateDate": "2019:03:31 15:51:32",
+        "ComponentsConfiguration": {
+          "type": "Buffer",
+          "data": [
+            1,
+            2,
+            3,
+            0
+          ]
+        },
+        "CompressedBitsPerPixel": 3,
+        "ShutterSpeedValue": 7.3125,
+        "ApertureValue": 6,
+        "ExposureCompensation": 0,
+        "MaxApertureValue": 5.595918691440368,
+        "MeteringMode": 5,
+        "Flash": 16,
+        "FocalLength": 55,
+        "SubSecTime": "85",
+        "SubSecTimeOriginal": "85",
+        "SubSecTimeDigitized": "85",
+        "FlashpixVersion": {
+          "type": "Buffer",
+          "data": [
+            48,
+            49,
+            48,
+            48
+          ]
+        },
+        "ColorSpace": 1,
+        "ExifImageWidth": 6000,
+        "ExifImageHeight": 4000,
+        "FocalPlaneXResolution": 6825.938566552901,
+        "FocalPlaneYResolution": 6825.938566552901,
+        "FocalPlaneResolutionUnit": 2,
+        "SensingMethod": 2,
+        "FileSource": {
+          "type": "Buffer",
+          "data": [
+            3
+          ]
+        },
+        "CustomRendered": 0,
+        "ExposureMode": 0,
+        "WhiteBalance": 0,
+        "DigitalZoomRatio": 1,
+        "SceneCaptureType": 0,
+        "SerialNumber": "092043000050",
+        "LensInfo": [
+          18,
+          55,
+          0,
+          0
+        ],
+        "LensModel": "EF-M18-55mm f/3.5-5.6 IS STM",
+        "LensSerialNumber": "00004594bc"
+      },
+      "gps": {},
+      "interoperability": {},
+      "makernote": {}
+    }
+  },
+  {
+    "filename": "51.jpeg",
+    "description": "Light streams through a meadow highlighting delicate blue and purple wildflowers with a soft focus on the background greenery.",
+    "caption": null,
+    "uri": "51",
+    "height": 4000,
+    "width": 6000,
+    "type": "jpg",
+    "previewBase64": "/9j/2wBDABsbGxscGx4hIR4qLSgtKj04MzM4PV1CR0JHQl2NWGdYWGdYjX2Xe3N7l33gsJycsOD/2c7Z////////////////2wBDARsbGxscGx4hIR4qLSgtKj04MzM4PV1CR0JHQl2NWGdYWGdYjX2Xe3N7l33gsJycsOD/2c7Z////////////////wgARCAALABADASIAAhEBAxEB/8QAFwAAAwEAAAAAAAAAAAAAAAAAAgMEBf/EABUBAQEAAAAAAAAAAAAAAAAAAAEC/9oADAMBAAIQAxAAAACYsp0n/8QAGxAAAQUBAQAAAAAAAAAAAAAAAQACAxExQQT/2gAIAQEAAT8A8k1dU0tuBvE1OJDN6v/EABYRAAMAAAAAAAAAAAAAAAAAAAABUf/aAAgBAgEBPwCs/8QAFBEBAAAAAAAAAAAAAAAAAAAAAP/aAAgBAwEBPwB//9k=",
+    "meta": {
+      "image": {
+        "ImageDescription": "                               ",
+        "Make": "Canon",
+        "Model": "Canon EOS M3",
+        "XResolution": 72,
+        "YResolution": 72,
+        "ResolutionUnit": 2,
+        "Software": "Photos 4.0",
+        "ModifyDate": "2019:03:31 16:02:58",
+        "ExifOffset": 222
+      },
+      "thumbnail": {},
+      "exif": {
+        "ExposureTime": 0.002,
+        "FNumber": 5.6,
+        "ExposureProgram": 2,
+        "ISO": 200,
+        "SensitivityType": 2,
+        "RecommendedExposureIndex": 200,
+        "ExifVersion": {
+          "type": "Buffer",
+          "data": [
+            48,
+            50,
+            51,
+            48
+          ]
+        },
+        "DateTimeOriginal": "2019:03:31 16:02:58",
+        "CreateDate": "2019:03:31 16:02:58",
+        "ComponentsConfiguration": {
+          "type": "Buffer",
+          "data": [
+            1,
+            2,
+            3,
+            0
+          ]
+        },
+        "CompressedBitsPerPixel": 3,
+        "ShutterSpeedValue": 8.96875,
+        "ApertureValue": 4.96875,
+        "ExposureCompensation": 0,
+        "MaxApertureValue": 4.50608647537744,
+        "MeteringMode": 5,
+        "Flash": 16,
+        "FocalLength": 33,
+        "SubSecTime": "63",
+        "SubSecTimeOriginal": "63",
+        "SubSecTimeDigitized": "63",
+        "FlashpixVersion": {
+          "type": "Buffer",
+          "data": [
+            48,
+            49,
+            48,
+            48
+          ]
+        },
+        "ColorSpace": 1,
+        "ExifImageWidth": 6000,
+        "ExifImageHeight": 4000,
+        "FocalPlaneXResolution": 6825.938566552901,
+        "FocalPlaneYResolution": 6825.938566552901,
+        "FocalPlaneResolutionUnit": 2,
+        "SensingMethod": 2,
+        "FileSource": {
+          "type": "Buffer",
+          "data": [
+            3
+          ]
+        },
+        "CustomRendered": 0,
+        "ExposureMode": 0,
+        "WhiteBalance": 0,
+        "DigitalZoomRatio": 1,
+        "SceneCaptureType": 0,
+        "SerialNumber": "092043000050",
+        "LensInfo": [
+          18,
+          55,
+          0,
+          0
+        ],
+        "LensModel": "EF-M18-55mm f/3.5-5.6 IS STM",
+        "LensSerialNumber": "00004594bc"
+      },
+      "gps": {},
+      "interoperability": {},
+      "makernote": {}
+    }
+  },
+  {
+    "filename": "57.jpeg",
+    "description": "\"Close-up of a stem of purple wildflowers with multiple blooms against a textured, brown earth background.\"",
+    "caption": null,
+    "uri": "57",
+    "height": 6000,
+    "orientation": 1,
+    "width": 4000,
+    "type": "jpg",
+    "previewBase64": "/9j/2wBDABsbGxscGx4hIR4qLSgtKj04MzM4PV1CR0JHQl2NWGdYWGdYjX2Xe3N7l33gsJycsOD/2c7Z////////////////2wBDARsbGxscGx4hIR4qLSgtKj04MzM4PV1CR0JHQl2NWGdYWGdYjX2Xe3N7l33gsJycsOD/2c7Z////////////////wgARCAAYABADASIAAhEBAxEB/8QAGAAAAgMAAAAAAAAAAAAAAAAAAAQBAgP/xAAWAQEBAQAAAAAAAAAAAAAAAAADAAH/2gAMAwEAAhADEAAAAMaMySoOhZ//xAAdEAACAgIDAQAAAAAAAAAAAAABAgASAxEhIjEj/9oACAEBAAE/AHwOpIVZ9ENG47eRcoQDbWMqWFjb3axXOtTGey95/8QAFxEBAAMAAAAAAAAAAAAAAAAAAAERIf/aAAgBAgEBPwDKS//EABQRAQAAAAAAAAAAAAAAAAAAABD/2gAIAQMBAT8AP//Z",
+    "meta": {
+      "image": {
+        "ImageDescription": "                               ",
+        "Make": "Canon",
+        "Model": "Canon EOS M3",
+        "Orientation": 1,
+        "XResolution": 72,
+        "YResolution": 72,
+        "ResolutionUnit": 2,
+        "Software": "Photos 4.0",
+        "ModifyDate": "2019:03:31 16:06:54",
+        "ExifOffset": 234
+      },
+      "thumbnail": {},
+      "exif": {
+        "ExposureTime": 0.003125,
+        "FNumber": 5.6,
+        "ExposureProgram": 2,
+        "ISO": 250,
+        "SensitivityType": 2,
+        "RecommendedExposureIndex": 250,
+        "ExifVersion": {
+          "type": "Buffer",
+          "data": [
+            48,
+            50,
+            51,
+            48
+          ]
+        },
+        "DateTimeOriginal": "2019:03:31 16:06:54",
+        "CreateDate": "2019:03:31 16:06:54",
+        "ComponentsConfiguration": {
+          "type": "Buffer",
+          "data": [
+            1,
+            2,
+            3,
+            0
+          ]
+        },
+        "CompressedBitsPerPixel": 3,
+        "ShutterSpeedValue": 8.3125,
+        "ApertureValue": 4.96875,
+        "ExposureCompensation": 0,
+        "MaxApertureValue": 5.595918691440368,
+        "MeteringMode": 5,
+        "Flash": 16,
+        "FocalLength": 55,
+        "SubSecTime": "45",
+        "SubSecTimeOriginal": "45",
+        "SubSecTimeDigitized": "45",
+        "FlashpixVersion": {
+          "type": "Buffer",
+          "data": [
+            48,
+            49,
+            48,
+            48
+          ]
+        },
+        "ColorSpace": 1,
+        "ExifImageWidth": 4000,
+        "ExifImageHeight": 6000,
         "FocalPlaneXResolution": 6825.938566552901,
         "FocalPlaneYResolution": 6825.938566552901,
         "FocalPlaneResolutionUnit": 2,
