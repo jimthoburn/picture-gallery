@@ -285,12 +285,14 @@ The `caption` will appear as part of the [page title for the image](https://deve
 You can also edit the `uri` to match your caption. This will appear as part of the URL for the image. For example: `https://pictures.tobbi.co/wildflowers/44-mastodon-peak-desert-canterbury-bells/`
 
 If you have a lot of images, you may be able to get a head start writing descriptions by using something like [Azure Computer Vision](
-https://learn.microsoft.com/en-us/azure/cognitive-services/computer-vision/overview-image-analysis).
+https://learn.microsoft.com/en-us/azure/cognitive-services/computer-vision/overview-image-analysis) or [OpenAI Vision](https://platform.openai.com/docs/guides/vision).
 
-1. Sign in to your Azure account (or sign up for a new account).
-2. Create a “Computer Vision” instance (or choose one you already have).
-3. Copy the `.env-example` file in your local copy of this repo to a new file named `.env`
-4. Edit the  `.env` file you created and add the endpoint and key for your “Computer Vision” instance.
+The basic steps for this are...
+
+1. Copy the `.env-example` file in your local copy of this repo to a new file named `.env`
+2. Add your API key for Azure or OpenAPI to the `.env` file.
+
+_Using OpenAI Vision may require a [paid account](https://help.openai.com/en/articles/7102672-how-can-i-access-gpt-4)._
 
 If you create a new album, descriptions will be generated and added to the data file for your album. You can improve or make corrections to the descriptions by manually editing the file.
 
@@ -299,8 +301,6 @@ If you create a new album, descriptions will be generated and added to the data 
 You may want to use Git LFS, if your repository is getting close to 1 GB in size. See [GitHub disk quota](https://help.github.com/en/github/managing-large-files/what-is-my-disk-quota)
 
 * https://git-lfs.github.com
-* https://www.netlify.com/products/large-media
-* https://vercel.com/docs/concepts/projects/overview#git-large-file-storage-lfs
 
 #### How to move existing files into Git LFS
 

@@ -1,5 +1,6 @@
 
 import fs from "node:fs";
+import { encodeBase64 } from "encoding/base64.ts";
 
 // https://stackoverflow.com/questions/46745014/alternative-for-dirname-in-node-when-using-the-experimental-modules-flag
 import { dirname } from "node:path";
@@ -13,6 +14,7 @@ import sizeOf from "image-size";
 
 import { getAlbumNamesFromPicturesFolder } from "../data-file-system/albums-from-pictures-folder.js";
 
+import OpenAI from "openai";
 
 const overwriteReadyOnlyFiles = false; // Set this “true” to re-generate existing read-only data files in the “_pictures” folder.
 
@@ -51,10 +53,91 @@ function getPreviewBase64(filePath) {
   return fileBuffer.toString('base64');
 }
 
+async function getDescriptionAzure({ filePath, env, fetch, readFile }) {
+  const url = env.AZURE_COMPUTER_VISION_API_ENDPOINT;
+  const params = {
+    "features": "caption,read",
+    "language": "en",
+    "model-version": "latest",
+    "api-version": "2023-02-01-preview",
+  };
+  const headers = {
+    "Content-Type": "application/octet-stream",
+    "Ocp-Apim-Subscription-Key": env.AZURE_COMPUTER_VISION_API_KEY,
+  };
+
+  /*
+    For testing...
+    headers { "Content-Type": "application/json" }
+    body: JSON.stringify({ url: "https://learn.microsoft.com/azure/cognitive-services/computer-vision/media/quickstarts/presentation.png" }),
+  */
+
+  const blob = await readFile(filePath);
+
+  const searchParams = new URLSearchParams(params).toString();
+
+  const response = await fetch(
+    `${url}?${searchParams}`,
+    {
+      method: "POST",
+      headers,
+      body: blob,
+    }
+  );
+  if (!response.ok) {
+    console.log(response);
+    throw new Error("Network response was not ok");
+  }
+
+  const responseData = await response.json();
+  console.log("Received image description: " + responseData.captionResult.text);
+
+  return responseData.captionResult.text;
+}
+
+async function  getDescriptionOpenAI({ filePath, env, readFile }) {
+
+  const blob = await readFile(filePath);
+
+  const base64Image = encodeBase64(blob);
+  console.log({ base64Image });
+
+  const clientOpenAI = new OpenAI({ apiKey: env.OPENAI_API_KEY });
+
+  const chatCompletion = await clientOpenAI.chat.completions.create({
+    model: "gpt-4-vision-preview",
+    messages: [
+      {
+        role: "user",
+        content: [
+          {
+            type: "text",
+            text: "Write a description of this image, for use within an HTML `img` `alt` attribute"
+          },
+          {
+            type: "image_url",
+            image_url: {
+              "url": `data:image/jpeg;base64,${base64Image}`
+            }
+          },
+        ],
+      },
+    ],
+    max_tokens: 300,
+  });
+
+  console.log({ chatCompletion });
+
+  console.log("Received image description: " + chatCompletion.choices[0].message.content);
+
+  return chatCompletion.choices[0].message.content;
+}
+
 // Send a request to the Azure Computer Vision API to
 // get a description of the image located at filePath
 async function getDescription({ filePath, env, fetch, readFile }) {
-  if (env.AZURE_COMPUTER_VISION_API_ENDPOINT && env.AZURE_COMPUTER_VISION_API_KEY) {
+
+  if (env.OPENAI_API_KEY) {
 
     console.log("getDescription for " + filePath);
 
@@ -63,48 +146,25 @@ async function getDescription({ filePath, env, fetch, readFile }) {
       console.log("Waiting to send request for image description...");
       setTimeout(resolve, 4 * 1000);
     });
+
     console.log("Sending request for image description...");
+    return getDescriptionOpenAI({ filePath, env, readFile });
 
-    const url = env.AZURE_COMPUTER_VISION_API_ENDPOINT;
-    const params = {
-      "features": "caption,read",
-      "language": "en",
-      "model-version": "latest",
-      "api-version": "2023-02-01-preview",
-    };
-    const headers = {
-      "Content-Type": "application/octet-stream",
-      "Ocp-Apim-Subscription-Key": env.AZURE_COMPUTER_VISION_API_KEY,
-    };
+  } else if (env.AZURE_COMPUTER_VISION_API_ENDPOINT && env.AZURE_COMPUTER_VISION_API_KEY) {
 
-    /*
-      For testing...
-      headers { "Content-Type": "application/json" }
-      body: JSON.stringify({ url: "https://learn.microsoft.com/azure/cognitive-services/computer-vision/media/quickstarts/presentation.png" }),
-    */
+    console.log("getDescription for " + filePath);
 
-    const blob = await readFile(filePath);
+    // Wait 4 seconds to avoid rate limiting
+    await new Promise((resolve, reject) => {
+      console.log("Waiting to send request for image description...");
+      setTimeout(resolve, 4 * 1000);
+    });
 
-    const searchParams = new URLSearchParams(params).toString();
+    console.log("Sending request for image description...");
+    return getDescriptionAzure({ filePath, env, fetch, readFile });
 
-    const response = await fetch(
-      `${url}?${searchParams}`,
-      {
-        method: "POST",
-        headers,
-        body: blob,
-      }
-    );
-    if (!response.ok) {
-      console.log(response);
-      throw new Error("Network response was not ok");
-    }
-
-    const responseData = await  response.json();
-    console.log("Received image description: " + responseData.captionResult.text);
-    return responseData.captionResult.text;
   } else {
-    console.log("Skipping request for image description because AZURE_COMPUTER_VISION_API_ENDPOINT and AZURE_COMPUTER_VISION_API_KEY are not set.");
+    console.log("An API key wasn’t found for image description. Skipping...");
   }
 
   return null;
@@ -253,7 +313,7 @@ async function processAlbum({ env, fetch, readFile, album, destination }) {
       env, fetch, readFile,
       source: `./_pictures/${album}/original`,
       sourceForPreviewBase64: `./_pictures/${album}/16-wide`,
-      sourceForDescription: `./_pictures/${album}/2048-wide`,
+      sourceForDescription: `./_pictures/${album}/1536-wide`,
       album: {
         uri,
         title: capitalize(uri.replace(/\-/g, " ")),
