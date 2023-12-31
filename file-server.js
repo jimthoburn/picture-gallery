@@ -216,16 +216,19 @@ async function serve({ folder, redirectsFilePath, port, hostname }) {
     }
   });
 
-  // Shutdown the server gracefully when the process is interrupted.
-  Deno.addSignalListener("SIGINT", () => {
-    console.log("");
-    console.log("- - - - - - - - - - - - - - - - - - - - - - -");
-    console.log("💁", `Received "SIGINT". Server shutting down...`);
-    console.log("- - - - - - - - - - - - - - - - - - - - - - -");
-    console.log("");
+  // If we’re not in development mode (using --watch)
+  if (!Deno.args.includes("--dev")) {
+    // Shutdown the server gracefully when the process is interrupted.
+    Deno.addSignalListener("SIGINT", () => {
+      console.log("");
+      console.log(chalk.cyan("- - - - - - - - - - - - - - - - - - - - - - -"));
+      console.log("💁", chalk.cyan(`Received "SIGINT". Server shutting down...`));
+      console.log(chalk.cyan("- - - - - - - - - - - - - - - - - - - - - - -"));
+      console.log("");
 
-    server.shutdown();
-  });
+      server.shutdown();
+    });
+  }
 
   console.log("");
   console.log("- - - - - - - - - - - - - - - - - - - - - - -");

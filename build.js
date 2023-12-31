@@ -1,5 +1,5 @@
 
-import fs                   from "fs-extra";
+import fs                   from "node:fs";
 import { mkdirp }           from "mkdirp";
 import chalk                from "chalk";
 
@@ -8,6 +8,8 @@ import { config }           from "./_config.js";
 import { getAlbumsByURL }   from "./data-file-system/albums-by-url.js";
 import { getSourceByURL }   from "./get-source/by-url.js";
 import { getError404HTML }  from "./get-source/error.js";
+import { copyFolder,
+         copyFile       }   from "./helpers/copy.js";
 
 
 const GENERATED_FILES_FOLDER = `./${config.buildFolder}`;
@@ -35,22 +37,6 @@ async function removeFile({ pageURL, filename }) {
   }
 }
 
-function copy({source, destination}) {
-  return new Promise((resolve, reject) => {
-    console.log(`📂 Copying files from: ${source}`);
-
-    // https://www.npmjs.com/package/fs-extra
-    fs.copy(source, destination, function (err) {
-      if (err){
-        console.log('An error occured while copying the folder.')
-        console.error(err);
-        reject(err);
-      }
-      resolve();
-    });
-  });
-}
-
 async function buildStaticFiles() {
   console.log(`📂 Preparing static files`);
   for (let folder of config.staticFolders) {
@@ -60,21 +46,21 @@ async function buildStaticFiles() {
     const source      = `./${folder}`;
     const destination = `${GENERATED_FILES_FOLDER}/${folderWithoutLeadingUnderscore}`;
 
-    await copy({source, destination}).catch(err => { throw err; });
+    await copyFolder({ source, destination }).catch(err => { throw err; });
   }
 
-  const extras = ["client.js"];
+  const extraFiles = ["client.js"];
 
-  for (let source of extras) {
-    const destination = `${GENERATED_FILES_FOLDER}/${source}`;
-    await copy({ source, destination }).catch(err => { throw err; });
+  for (let file of extraFiles) {
+    const destination = `${GENERATED_FILES_FOLDER}/${file}`;
+    await copyFile({ file, destination }).catch(err => { throw err; });
   }
 
   // _public is a general folder for any static file to be served from “/”
   const source      = `./_public`;
   const destination = `${GENERATED_FILES_FOLDER}`;
 
-  await copy({source, destination}).catch(err => { throw err; });
+  await copyFolder({ source, destination }).catch(err => { throw err; });
 }
 
 async function buildGallery(urls) {

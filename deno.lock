@@ -2,8 +2,7 @@
   "version": "3",
   "packages": {
     "specifiers": {
-      "npm:archiver@6.0.1": "npm:archiver@6.0.1",
-      "npm:fs-extra@11.2.0": "npm:fs-extra@11.2.0"
+      "npm:archiver@6.0.1": "npm:archiver@6.0.1"
     },
     "npm": {
       "archiver-utils@4.0.1": {
@@ -79,14 +78,6 @@
         "integrity": "sha512-/d9sfos4yxzpwkDkuN7k2SqFKtYNmCTzgfEpz82x34IM9/zc8KGxQoXg1liNC/izpRM/MBdt44Nmx41ZWqk+FQ==",
         "dependencies": {}
       },
-      "fs-extra@11.2.0": {
-        "integrity": "sha512-PmDi3uwK5nFuXh7XDTlVnS17xJS7vW36is2+w3xcv8SVxiB4NyATf4ctkVY5bkSjX0Y4nbvZCq1/EjtEyr9ktw==",
-        "dependencies": {
-          "graceful-fs": "graceful-fs@4.2.11",
-          "jsonfile": "jsonfile@6.1.0",
-          "universalify": "universalify@2.0.1"
-        }
-      },
       "fs.realpath@1.0.0": {
         "integrity": "sha512-OO0pH2lK6a0hZnAdau5ItzHPI6pUlvI7jMVnxUQRtw4owF2wk8lOSabtGDCTP4Ggrg2MbGnWO9X8K1t4+fGMDw==",
         "dependencies": {}
@@ -119,13 +110,6 @@
       "isarray@1.0.0": {
         "integrity": "sha512-VLghIWNM6ELQzo7zwmcg0NmTVyWKYjvIeM83yjp0wRDTmUnrM678fQbcKBo6n2CJEF0szoG//ytg+TKla89ALQ==",
         "dependencies": {}
-      },
-      "jsonfile@6.1.0": {
-        "integrity": "sha512-5dgndWOriYSm5cnYaJNhalLNDKOqFwyDB/rr1E9ZsGciGvKPs8R2xYGCacuf3z6K1YKDz182fd+fY3cn3pMqXQ==",
-        "dependencies": {
-          "graceful-fs": "graceful-fs@4.2.11",
-          "universalify": "universalify@2.0.1"
-        }
       },
       "lazystream@1.0.1": {
         "integrity": "sha512-b94GiNHQNy6JNTrt5w6zNyffMrNkXZb3KTkCZJb2V1xaEGCk093vkZ2jk3tpaeP33/OiXC+WvK9AxUebnf5nbw==",
@@ -222,10 +206,6 @@
           "streamx": "streamx@2.15.6"
         }
       },
-      "universalify@2.0.1": {
-        "integrity": "sha512-gptHNQghINnc/vTGIk0SOFGFNXw7JVrlRUtConJRlvaw6DuX0wO5Jeko9sWrMBhh+PsYAZ7oXAiOnf/UKogyiw==",
-        "dependencies": {}
-      },
       "util-deprecate@1.0.2": {
         "integrity": "sha512-EPD5q1uXyFxJpCrLnCc1nHnq3gOa6DZBocAIiI2TaSCA7VCJ1UJDMagCzIkXNsUYfD1daK//LTEQ8xiIbrHtcw==",
         "dependencies": {}
@@ -243,6 +223,12 @@
         }
       }
     }
+  },
+  "redirects": {
+    "https://esm.sh/v135/@types/capitalize@~2.0/index.d.ts": "https://esm.sh/v135/@types/capitalize@2.0.2/index.d.ts",
+    "https://esm.sh/v135/@types/exif@~0.6/index.d.ts": "https://esm.sh/v135/@types/exif@0.6.5/index.d.ts",
+    "https://esm.sh/v135/@types/js-beautify@~1.14/index.d.ts": "https://esm.sh/v135/@types/js-beautify@1.14.3/index.d.ts",
+    "https://esm.sh/v135/@types/markdown-it@latest/index.d.ts": "https://esm.sh/v135/@types/markdown-it@13.0.7/index.d.ts"
   },
   "remote": {
     "https://deno.land/std@0.210.0/dotenv/mod.ts": "55d51d0c244da70e10ccbbdb68644064ce19c8af1683289d16ac802ceef64c8c",

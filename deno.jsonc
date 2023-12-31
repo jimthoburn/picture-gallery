@@ -17,7 +17,6 @@
     "wasm-vips/lib/vips-es6.js": "./library/wasm-vips@0.0.7/lib/vips-es6.js",
 
     "archiver": "npm:archiver@6.0.1",
-    "fs-extra": "npm:fs-extra@11.2.0",
 
     "htm": "https://esm.sh/v135/htm@3.1.1",
     "lit": "https://esm.sh/v135/lit@3.1.0",
@@ -31,7 +30,7 @@
     "@xstate/react": "https://esm.sh/v135/@xstate/react@4.0.2?external=react,xstate"
   },
   "tasks": {
-    "dev": "deno run --watch --allow-read=./_public,./client.js,./components,./css,./data,./helpers,./machines,./_api,./_archives,./_pictures --allow-net=0.0.0.0:4000 server.js",
+    "dev": "deno run --watch --allow-read=./_public,./client.js,./components,./css,./data,./helpers,./machines,./_api,./_archives,./_pictures --allow-net=0.0.0.0:4000 server.js --dev",
     "start": "deno run --allow-read=./_public,./client.js,./components,./css,./data,./helpers,./machines,./_api,./_archives,./_pictures --allow-net=0.0.0.0:4000 server.js",
 
     "build": "deno run --allow-read=./ --allow-write=./_site --allow-sys=uid build.js",
@@ -42,6 +41,7 @@
     "create:albums": "deno run --allow-env=AZURE_COMPUTER_VISION_API_ENDPOINT,AZURE_COMPUTER_VISION_API_KEY,OPENAI_BASE_URL,OPENAI_ORG_ID,OPENAI_API_KEY --allow-read=./ --allow-write=./_api,./_pictures --allow-net=api.openai.com create/albums.js",
     "create:archives": "deno run --allow-env=__TESTING_MKDIRP_PLATFORM__,__TESTING_MKDIRP_NODE_VERSION__ --allow-read=./ --allow-write=./_archives create/archives.js",
 
+    "cache": "deno cache create/albums.js && deno cache create/archives.js && deno cache create/images.js && deno cache build.js && deno cache file-server.js && deno cache server.js",
     "esm:add": "deno run --allow-read=./deno.json,import_map.json --allow-write=./import_map.json --allow-net=esm.sh https://esm.sh/v135 add",
     "esm:update": "deno run --allow-read=./deno.json,import_map.json --allow-write=./import_map.json --allow-net=esm.sh https://esm.sh/v135 update",
     "esm:remove": "deno run --allow-read=./deno.json,import_map.json --allow-write=./import_map.json --allow-net=esm.sh https://esm.sh/v135 remove"
