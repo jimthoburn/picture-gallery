@@ -1,0 +1,23 @@
+name: Deploy
+
+on: push
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    permissions:
+      id-token: write # This is required to allow the GitHub Action to authenticate with Deno Deploy.
+      contents: read
+
+    steps:
+      - name: Clone repository
+        uses: actions/checkout@v3
+        with:
+          lfs: true
+
+      - name: Deploy to Deno Deploy
+        uses: denoland/deployctl@v1
+        with:
+          project: picture-gallery # the name of the project on Deno Deploy
+          entrypoint: server.js # the entrypoint to deploy
