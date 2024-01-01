@@ -95,16 +95,18 @@ async function getDescriptionAzure({ filePath, env, fetch, readFile }) {
   return responseData.captionResult.text;
 }
 
-async function  getDescriptionOpenAI({ filePath, env, readFile }) {
+
+// https://platform.openai.com/docs/guides/vision
+async function getDescriptionOpenAI({ filePath, env, readFile }) {
 
   const blob = await readFile(filePath);
 
   const base64Image = encodeBase64(blob);
   console.log({ base64Image });
 
-  const clientOpenAI = new OpenAI({ apiKey: env.OPENAI_API_KEY });
+  const client = new OpenAI({ apiKey: env.OPENAI_API_KEY });
 
-  const chatCompletion = await clientOpenAI.chat.completions.create({
+  const chatCompletion = await client.chat.completions.create({
     model: "gpt-4-vision-preview",
     messages: [
       {
@@ -112,18 +114,19 @@ async function  getDescriptionOpenAI({ filePath, env, readFile }) {
         content: [
           {
             type: "text",
-            text: "Write a description of this image, for use within an HTML `img` `alt` attribute"
+            text: "Describe this photograph for someone who is visually impaired"
           },
           {
             type: "image_url",
             image_url: {
-              "url": `data:image/jpeg;base64,${base64Image}`
+              "url": `data:image/jpeg;base64,${base64Image}`,
+              "detail": "high",
             }
           },
         ],
       },
     ],
-    max_tokens: 300,
+    max_tokens: 3000,
   });
 
   console.log({ chatCompletion });
@@ -132,6 +135,7 @@ async function  getDescriptionOpenAI({ filePath, env, readFile }) {
 
   return chatCompletion.choices[0].message.content;
 }
+
 
 // Send a request to the Azure Computer Vision API to
 // get a description of the image located at filePath
@@ -144,7 +148,7 @@ async function getDescription({ filePath, env, fetch, readFile }) {
     // Wait 4 seconds to avoid rate limiting
     await new Promise((resolve, reject) => {
       console.log("Waiting to send request for image description...");
-      setTimeout(resolve, 4 * 1000);
+      setTimeout(resolve, 8 * 1000);
     });
 
     console.log("Sending request for image description...");
@@ -313,7 +317,7 @@ async function processAlbum({ env, fetch, readFile, album, destination }) {
       env, fetch, readFile,
       source: `./_pictures/${album}/original`,
       sourceForPreviewBase64: `./_pictures/${album}/16-wide`,
-      sourceForDescription: `./_pictures/${album}/1536-wide`,
+      sourceForDescription: `./_pictures/${album}/2048-wide`,
       album: {
         uri,
         title: capitalize(uri.replace(/\-/g, " ")),
