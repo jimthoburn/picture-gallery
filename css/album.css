@@ -11,7 +11,7 @@
   padding: 0 1.5em;
 }
 .picture-list article {
-  font-family: "Helvetica Neue", Helvetica, sans-serif;
+  font-family: var(--text);
 }
 .picture-list article h1,
 .picture-list article h2,
@@ -20,7 +20,7 @@
 .picture-list article h5,
 .picture-list article h6 {
   margin-top: 3em;
-  font-family: "Fredericka the Great", "Helvetica Neue", Helvetica, sans-serif;
+  font-family: var(--heading);
 }
 .picture-list article dt {
   font-weight: bold;
@@ -46,32 +46,26 @@
 .picture-list h1 + p {
   margin-top: 0;
   margin-bottom: 1.5em;
-  opacity: 0.5;
+  color: var(--secondary);
 }
 .picture-list a {
-  color: rgb(255, 49, 102); /* @strawberry */
-  color: rgb(101, 156, 247); /* @boysenberry */
-  color: hsl(193, 70%, 60%); /* @aqua */
+  color: var(--highlight);
 }
 .picture-list a:visited {
-  color: rgb(101, 156, 247); /* @boysenberry */
-  color: hsl(193, 70%, 60%); /* @aqua */
+  color: var(--highlight);
 }
 .picture-list .action a {
   display: inline-block;
   padding: 0.5em 1.5em;
-  background: rgb(255, 49, 102); /* @strawberry */
-  background: rgb(101, 156, 247); /* @boysenberry */
-  background: hsl(193, 70%, 60%); /* @aqua */
-  color: white;
+  background: var(--highlight);
+  color: var(--background);
   border-radius: 0.25em;
   text-decoration: none;
   text-transform: lowercase;
 }
 .picture-list .action a:visited {
-  background-color: rgb(101, 156, 247); /* @boysenberry */
-  background-color: hsl(193, 70%, 60%); /* @aqua */
-  color: white;
+  background-color: var(--highlight);
+  color: var(--background);
 }
 .picture-list > ol,
 .picture-list > ol li {
@@ -148,24 +142,16 @@
   top: 0;
   left: 0;
   z-index: 1;
-  background-color: hsl(193, 70%, 60%);
-  color: white;
   padding: 0 0.375em;
 
   margin: 2.25em 0.75em;
   padding: 0.525em 0.875em 0.5em 0.875em;
 
-  background-color: white;
-  color: hsl(193, 70%, 60%);
+  background-color: var(--label);
+  color: var(--highlight);
 }
 @media (max-width: calc(320px + 0.75em)) {
   .picture-list .caption {
     margin-left: 0.75em;
-  }
-}
-
-@media (prefers-color-scheme: dark) {
-  .picture-list .caption {
-    background: black;
   }
 }

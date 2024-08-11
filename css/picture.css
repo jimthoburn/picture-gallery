@@ -1,7 +1,7 @@
 
 .picture-details {
-  background: rgb(25, 25, 25);
-  color: rgb(250, 250, 250);
+  background: var(--background-lightbox);
+  color: var(--foreground-lightbox);
   display: flex;
   justify-content: center;
   align-items: center;
@@ -20,13 +20,14 @@
   margin: 0 0.5em;
 }
 .picture-details .download {
+  background: oklch(from var(--background-lightbox) l c h / 50%);
   position: absolute;
   bottom: 0;
   right: 0;
   z-index: 1;
 }
 .picture-details a {
-  color: hsl(193, 70%, 60%); /* @aqua */
+  color: var(--highlight-lightbox);
 }
 .picture-details .all a {
   /* SHIM: Make close button easier to press */
@@ -36,10 +37,8 @@
   position: relative;
   z-index: 1;
 }
-.picture-details .disabled a:visited {
-  color: hsl(193, 70%, 60%); /* @aqua */
-}
 .picture-details .all {
+  background: oklch(from var(--background-lightbox) l c h / 50%);
   position: absolute;
   z-index: 1;
   top: 0;

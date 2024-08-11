@@ -1,20 +1,67 @@
 
-body {
-  margin: 0;
-  padding: 0;
-  background: rgb(250, 250, 250);
-  color: rgb(51, 51, 51);
-  font-family: "Fredericka the Great", "Helvetica Neue", Helvetica, sans-serif;
-  font-size: 100%;
-  line-height: 1.5;
-  font-size: calc(0.75em + 1vmin);
+:root {
+  --coal:   black;
+  --slate:  black;
+  --silver: gray;
+  --steam:  whitesmoke;
+  --snow:   white;
+  --sky:    deepskyblue;
+
+  /* https://fonts.google.com/specimen/Fredericka+the+Great */
+  --heading: "Fredericka the Great", "Helvetica Neue", Helvetica, sans-serif;
+  --text:    "Helvetica Neue", Helvetica, sans-serif;
+}
+
+/* https://oklch.com */
+/* https://developer.chrome.com/docs/css-ui/migrate-hd-color#putting_the_hardware_and_parsing_checks_together */
+@supports (color: oklch(100% 0 0)) {
+  :root {
+    --coal:   oklch(20% 0 0);
+    --slate:  oklch(30% 0 0);
+    --silver: oklch(70% 0 0);
+    --steam:  oklch(98% 0 0);
+    --snow:   oklch(100% 0 0);
+    --sky:    oklch(76% 0.13 219);
+  }
+}
+@media (dynamic-range: high) {
+  @supports (color: oklch(100% 0 0)) {
+    :root {
+      --sky: oklch(76% 0.14 219);
+    }
+  }
+}
+
+:root {
+  --background: var(--steam);
+  --label: var(--snow);
+  --foreground: var(--slate);
+  --secondary: var(--silver);
+  --highlight:  var(--sky);
+
+  --background-lightbox: var(--coal);
+  --foreground-lightbox: var(--steam);
+  --highlight-lightbox:  var(--steam);
 }
 
 @media (prefers-color-scheme: dark) {
-  body {
-    background: rgb(25, 25, 25);
-    color: rgb(250, 250, 250);
+  :root {
+    --background: var(--coal);
+    --secondary: var(--steam);
+    --foreground: var(--steam);
+    --highlight: var(--steam);
   }
+}
+
+body {
+  margin: 0;
+  padding: 0;
+  background: var(--background);
+  color: var(--foreground);
+  font-family: var(--heading);
+  font-size: 100%;
+  line-height: 1.5; 
+  font-size: calc(0.75em + 1vmin);
 }
 
 /* Make page content fit the size of the viewport */
@@ -36,7 +83,7 @@ body {
 }
 
 h1, h2, h3, h4, h5, h6 {
-  font-weight: normal;
+  font-weight: inherit;
 }
 
 body > section:not([class]) {
@@ -44,5 +91,5 @@ body > section:not([class]) {
 }
 
 a {
-  color: hsl(193, 70%, 60%); /* @aqua */
+  color: var(--highlight);
 }
