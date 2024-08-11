@@ -35,46 +35,60 @@
 }
 
 
-.picture-list[data-state="transitioning_to_details.transitioning"] [data-selected="true"],
-.picture-list[data-state*="showing_details" ] [data-selected="true"],
-.picture-list[data-state*="transitioning_to_list" ] [data-selected="true"] {
+.picture-details:is(
+  [data-state="transitioning_to_details.transitioning"],
+  [data-state*="showing_details"],
+  [data-state*="transitioning_to_list"],
+) [data-selected="true"] {
   opacity: 0;
 }
 
 
 /* Make the details elements invisible */
-.picture-details[data-state="transitioning_to_details.loading_picture"],
-.picture-details[data-state="transitioning_to_details.preparing_transition"] {
+.picture-details:is(
+  [data-state="transitioning_to_details.loading_picture"],
+  [data-state="transitioning_to_details.preparing_transition"],
+) {
   visibility: hidden;
 }
-.picture-details[data-state="transitioning_to_details.loading_picture"],
-.picture-details[data-state="transitioning_to_details.preparing_transition"],
-.picture-details[data-state*="transitioning_to_list"] {
+.picture-details:is(
+  [data-state="transitioning_to_details.loading_picture"],
+  [data-state="transitioning_to_details.preparing_transition"],
+  [data-state*="transitioning_to_list"],
+) {
   background-color: transparent;
 }
-.picture-details[data-state="transitioning_to_details.loading_picture"] header,
-.picture-details[data-state="transitioning_to_details.preparing_transition"] header,
-.picture-details[data-state="showing_details.moving_picture"] header,
-.picture-details[data-state="showing_details.gesturing"] header,
-.picture-details[data-state*="transitioning_to_list"] header {
+.picture-details:is(
+  [data-state="transitioning_to_details.loading_picture"],
+  [data-state="transitioning_to_details.preparing_transition"],
+  [data-state="showing_details.moving_picture"],
+  [data-state="showing_details.gesturing"],
+  [data-state*="transitioning_to_list"],
+) header {
   opacity: 0;
 }
 
 
 /* Make the details elements animatable */
-.picture-details[data-state="transitioning_to_details.transitioning"],
-.picture-details[data-state="showing_details.gesturing"],
-.picture-details[data-state*="transitioning_to_list"] {
+.picture-details:is(
+  [data-state="transitioning_to_details.transitioning"],
+  [data-state="showing_details.gesturing"],
+  [data-state*="transitioning_to_list"],
+) {
   transition: background-color var(--transition-duration);
 }
-.picture-details[data-state="transitioning_to_details.transitioning"] header,
-.picture-details[data-state="showing_details.moving_picture"] header,
-.picture-details[data-state="showing_details.gesturing"] header,
-.picture-details[data-state*="transitioning_to_list"] header {
+.picture-details:is(
+  [data-state="transitioning_to_details.transitioning"],
+  [data-state="showing_details.moving_picture"],
+  [data-state="showing_details.gesturing"],
+  [data-state*="transitioning_to_list"],
+) header {
   transition: opacity var(--transition-duration);
 }
-.picture-details[data-state="transitioning_to_details.transitioning"] responsive-image,
-.picture-details[data-state*="transitioning_to_list"] responsive-image {
+.picture-details:is(
+  [data-state="transitioning_to_details.transitioning"],
+  [data-state*="transitioning_to_list"],
+) responsive-image {
   transition: transform var(--transition-duration);
 }
 
