@@ -24,8 +24,9 @@ export const DefaultLayout = ({ url, title, content, askSearchEnginesNotToIndex,
 
         <link rel="icon" href="${ config.favicon }" />
 
-        <link rel="preconnect" href="https://fonts.gstatic.com" />
-        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Fredericka+the+Great&amp;display=swap" />
+        <link rel="preconnect" href="https://fonts.googleapis.com">
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link href="https://fonts.googleapis.com/css2?family=Fredericka+the+Great&display=swap" rel="stylesheet">
         <link rel="stylesheet" href="/css/shared.css" />
         <link rel="stylesheet" href="/css/album.css" />
         <link rel="stylesheet" href="/css/picture.css" />
