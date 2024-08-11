@@ -4,7 +4,7 @@
   "date": null,
   "zipFileSize": "17.8 MB",
   "coverPicture": null,
-  "askSearchEnginesNotToIndex": null,
+  "askSearchEnginesNotToIndex": true,
   "pictures": [
     {
       "filename": "1.jpeg",
