@@ -33,7 +33,7 @@
     "dev": "deno run --watch --allow-read=./_public,./client.js,./components,./css,./data,./helpers,./machines,./_api,./_archives,./_pictures --allow-net=0.0.0.0:4000 server.js --dev",
     "start": "deno run --allow-read=./_public,./client.js,./components,./css,./data,./helpers,./machines,./_api,./_archives,./_pictures --allow-net=0.0.0.0:4000 server.js",
 
-    "build": "deno run --allow-read=./ --allow-write=./_site --allow-sys=uid build.js",
+    "build": "deno run --allow-env=__TESTING_MKDIRP_PLATFORM__,__TESTING_MKDIRP_NODE_VERSION__ --allow-read=./ --allow-write=./_site --allow-sys=uid build.js",
     "file-server": "cd ./_site && deno run --allow-read=./ --allow-net=0.0.0.0:4000 ../file-server.js",
 
     "create": "deno task create:images && deno task create:albums && deno task create:archives",
