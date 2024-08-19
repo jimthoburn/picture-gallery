@@ -390,5 +390,19 @@
     "https://esm.sh/v135/xstate@5.4.1/denonext/actors.js": "ed7a0811518546ae239fd3e78b89faa52c9c077671864a5547858f34741b1d54",
     "https://esm.sh/v135/xstate@5.4.1/denonext/dev.js": "5801dc3414953b7c325c9d5d43a73dd303ab10344ce337e0fcee62a21546e0a9",
     "https://esm.sh/v135/xstate@5.4.1/denonext/xstate.mjs": "a3f2e4a8a34dccde78f747ab306b904c343dbd940b03a4b9994201b6f534f0c7"
+  },
+  "workspace": {
+    "dependencies": [
+      "npm:archiver@6.0.1"
+    ],
+    "packageJson": {
+      "dependencies": [
+        "npm:@playwright/test@^1.45.3",
+        "npm:is-url@^1.2.4",
+        "npm:node-fetch@^3.3.2",
+        "npm:playwright@^1.45.3",
+        "npm:wasm-vips@^0.0.9"
+      ]
+    }
   }
 }
