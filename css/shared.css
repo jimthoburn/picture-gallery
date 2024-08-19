@@ -16,6 +16,7 @@
 /* https://developer.chrome.com/docs/css-ui/migrate-hd-color#putting_the_hardware_and_parsing_checks_together */
 @supports (color: oklch(100% 0 0)) {
   :root {
+    --night:   oklch(0% 0 0);
     --coal:   oklch(20% 0 0);
     --slate:  oklch(30% 0 0);
     --silver: oklch(70% 0 0);
@@ -47,6 +48,7 @@
 @media (prefers-color-scheme: dark) {
   :root {
     --background: var(--coal);
+    --label: var(--night);
     --secondary: var(--steam);
     --foreground: var(--steam);
     --highlight: var(--steam);
