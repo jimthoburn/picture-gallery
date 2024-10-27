@@ -12,7 +12,7 @@
     "@playwright/test": "^1.47.1",
     "is-url": "^1.2.4",
     "node-fetch": "^3.3.2",
-    "playwright": "^1.47.1",
+    "playwright": "^1.48.2",
     "wasm-vips": "^0.0.10"
   }
 }
