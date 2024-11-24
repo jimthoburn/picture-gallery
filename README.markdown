@@ -34,7 +34,7 @@ To create your own gallery, you can open this project in a [codespace](https://d
 
 1. [Make a copy of this project on GitHub](https://github.com/jimthoburn/picture-gallery/generate) (or download it)
 
-2. Install [Deno](https://deno.com/runtime) (version `1.39.1` or greater).
+2. Install [Deno](https://deno.com/runtime) (version `1.46.3` or greater).
 
 3. From the root of your project, start a server for development...
 
