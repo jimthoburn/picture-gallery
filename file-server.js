@@ -221,9 +221,9 @@ async function serve({ folder, redirectsFilePath, port, hostname }) {
     // Shutdown the server gracefully when the process is interrupted.
     Deno.addSignalListener("SIGINT", () => {
       console.log("");
-      console.log(chalk.cyan("- - - - - - - - - - - - - - - - - - - - - - -"));
-      console.log("💁", chalk.cyan(`Received "SIGINT". Server shutting down...`));
-      console.log(chalk.cyan("- - - - - - - - - - - - - - - - - - - - - - -"));
+      console.log("- - - - - - - - - - - - - - - - - - - - - - -");
+      console.log("💁", `Received "SIGINT". Server shutting down...`);
+      console.log("- - - - - - - - - - - - - - - - - - - - - - -");
       console.log("");
 
       server.shutdown();
