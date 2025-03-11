@@ -23,3 +23,6 @@ jobs:
         with:
           project: picture-gallery # the name of the project on Deno Deploy
           entrypoint: server.js # the entrypoint to deploy
+
+          # The library folder contains large WebAssembly files that are only used locally.
+          exclude: library
