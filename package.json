@@ -13,6 +13,6 @@
     "is-url": "^1.2.4",
     "node-fetch": "^3.3.2",
     "playwright": "^1.50.1",
-    "wasm-vips": "^0.0.11"
+    "wasm-vips": "^0.0.12"
   }
 }
