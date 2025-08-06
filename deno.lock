@@ -398,11 +398,11 @@
     ],
     "packageJson": {
       "dependencies": [
-        "npm:@playwright/test@^1.50.1",
+        "npm:@playwright/test@^1.54.2",
         "npm:is-url@^1.2.4",
         "npm:node-fetch@^3.3.2",
-        "npm:playwright@^1.50.1",
-        "npm:wasm-vips@^0.0.11"
+        "npm:playwright@^1.54.2",
+        "npm:wasm-vips@^0.0.14"
       ]
     }
   }
