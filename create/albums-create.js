@@ -1,6 +1,6 @@
 
 import fs from "node:fs";
-import { encodeBase64 } from "encoding/base64.ts";
+import { encodeBase64 } from "@std/encoding";
 
 // https://stackoverflow.com/questions/46745014/alternative-for-dirname-in-node-when-using-the-experimental-modules-flag
 import { dirname } from "node:path";
@@ -14,7 +14,7 @@ import sizeOf from "image-size";
 
 import { getAlbumNamesFromPicturesFolder } from "../data-file-system/albums-from-pictures-folder.js";
 
-import OpenAI from "openai";
+import OpenAI from "@openai/openai";
 
 const overwriteReadyOnlyFiles = false; // Set this “true” to re-generate existing read-only data files in the “_pictures” folder.
 

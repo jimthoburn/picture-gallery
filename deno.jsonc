@@ -1,33 +1,31 @@
 {
   "imports": {
-    "dotenv/": "https://deno.land/std@0.210.0/dotenv/",
-    "encoding/": "https://deno.land/std@0.210.0/encoding/",
+    "@std/dotenv": "jsr:@std/dotenv@^0.225.5",
+    "@std/encoding": "jsr:@std/encoding@^1.0.10",
+    "@openai/openai": "jsr:@openai/openai@^5.12.0",
 
-    "openai": "https://deno.land/x/openai@v4.24.1/mod.ts",
-    "openai/": "https://deno.land/x/openai@v4.24.1/",
-
-    "capitalize": "https://esm.sh/v135/capitalize@2.0.4",
-    "chalk": "https://esm.sh/v135/chalk@5.3.0",
-    "exif": "https://esm.sh/v135/exif@0.6.0",
-    "image-size": "https://esm.sh/v135/image-size@1.0.2",
-    "js-beautify": "https://esm.sh/v135/js-beautify@1.14.11",
-    "mkdirp": "https://esm.sh/v135/mkdirp@3.0.1",
-    "node-fetch": "https://esm.sh/v135/node-fetch@3.3.2",
+    "capitalize": "https://esm.sh/capitalize@2.0.4",
+    "chalk": "https://esm.sh/chalk@5.3.0",
+    "exif": "https://esm.sh/exif@0.6.0",
+    "image-size": "https://esm.sh/image-size@1.0.2",
+    "js-beautify": "https://esm.sh/js-beautify@1.14.11",
+    "mkdirp": "https://esm.sh/mkdirp@3.0.1",
+    "node-fetch": "https://esm.sh/node-fetch@3.3.2",
 
     "wasm-vips/lib/vips-es6.js": "./library/wasm-vips@0.0.7/lib/vips-es6.js",
 
     "archiver": "npm:archiver@6.0.1",
 
-    "htm": "https://esm.sh/v135/htm@3.1.1",
-    "lit": "https://esm.sh/v135/lit@3.2.1",
-    "markdown-it": "https://esm.sh/v135/markdown-it@14.0.0",
-    "markdown-it-deflist": "https://esm.sh/v135/markdown-it-deflist@3.0.0",
-    "preact": "https://esm.sh/v135/preact@10.26.2",
-    "preact/": "https://esm.sh/v135/preact@10.26.2/",
-    "react": "https://esm.sh/v135/preact@10.26.2/compat",
-    "preact-render-to-string": "https://esm.sh/v135/preact-render-to-string@6.5.13?external=preact",
-    "xstate": "https://esm.sh/v135/xstate@5.19.2",
-    "@xstate/react": "https://esm.sh/v135/@xstate/react@5.0.2?external=react,xstate"
+    "htm": "https://esm.sh/htm@3.1.1",
+    "lit": "https://esm.sh/lit@3.2.1",
+    "markdown-it": "https://esm.sh/markdown-it@14.0.0",
+    "markdown-it-deflist": "https://esm.sh/markdown-it-deflist@3.0.0",
+    "preact": "https://esm.sh/preact@10.26.2",
+    "preact/": "https://esm.sh/preact@10.26.2/",
+    "react": "https://esm.sh/preact@10.26.2/compat",
+    "preact-render-to-string": "https://esm.sh/preact-render-to-string@6.5.13?external=preact",
+    "xstate": "https://esm.sh/xstate@5.19.2",
+    "@xstate/react": "https://esm.sh/@xstate/react@5.0.2?external=react,xstate"
   },
   "tasks": {
     "dev": "deno run --watch --allow-read=./_public,./client.js,./components,./css,./data,./helpers,./machines,./_api,./_archives,./_pictures --allow-net=0.0.0.0:4000 server.js --dev",
@@ -38,12 +36,9 @@
 
     "create": "deno task create:images && deno task create:albums && deno task create:archives",
     "create:images": "deno run --allow-env=__TESTING_MKDIRP_PLATFORM__,__TESTING_MKDIRP_NODE_VERSION__ --allow-read=./ --allow-write=./_pictures create/images.js",
-    "create:albums": "deno run --allow-env=DEBUG,__TESTING_MKDIRP_PLATFORM__,__TESTING_MKDIRP_NODE_VERSION__,AZURE_COMPUTER_VISION_API_ENDPOINT,AZURE_COMPUTER_VISION_API_KEY,OPENAI_BASE_URL,OPENAI_ORG_ID,OPENAI_API_KEY --allow-read=./ --allow-write=./_api,./_pictures --allow-net=api.openai.com create/albums.js",
-    "create:archives": "deno run --allow-env=GRACEFUL_FS_PLATFORM,TEST_GRACEFUL_FS_GLOBAL_PATCH,READABLE_STREAM,__TESTING_MKDIRP_PLATFORM__,__TESTING_MKDIRP_NODE_VERSION__ --allow-read=./ --allow-write=./_archives create/archives.js",
+    "create:albums": "deno run --allow-env --allow-read=./ --allow-write=./_api,./_pictures --allow-net=api.openai.com create/albums.js",
+    "create:archives": "deno run --allow-env=__TESTING_MKDIRP_PLATFORM__,__TESTING_MKDIRP_NODE_VERSION__,GRACEFUL_FS_PLATFORM,TEST_GRACEFUL_FS_GLOBAL_PATCH,READABLE_STREAM --allow-read=./ --allow-write=./_archives create/archives.js",
 
     "cache": "deno cache create/albums.js && deno cache create/archives.js && deno cache create/images.js && deno cache build.js && deno cache file-server.js && deno cache server.js",
-    "esm:add": "deno run --allow-read=./deno.json,import_map.json --allow-write=./import_map.json --allow-net=esm.sh https://esm.sh/v135 add",
-    "esm:update": "deno run --allow-read=./deno.json,import_map.json --allow-write=./import_map.json --allow-net=esm.sh https://esm.sh/v135 update",
-    "esm:remove": "deno run --allow-read=./deno.json,import_map.json --allow-write=./import_map.json --allow-net=esm.sh https://esm.sh/v135 remove"
   }
 }
