@@ -1,4 +1,4 @@
-import { load } from "dotenv/mod.ts";
+import { load } from "@std/dotenv";
 import { createAlbums } from "./albums-create.js";
 
 const readFile = async (filePath) => {
@@ -6,6 +6,6 @@ const readFile = async (filePath) => {
   return blob;
 };
 
-// https://deno.land/std/dotenv/mod.ts
+// https://jsr.io/@std/dotenv/doc
 const env = await load();
 createAlbums({ env, fetch, readFile });
