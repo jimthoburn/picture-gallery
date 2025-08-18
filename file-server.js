@@ -143,6 +143,47 @@ function removeTrailingSlash(url) {
   return url.replace(/\/$/, "");
 }
 
+async function findPictureDetailRedirect(pathname, folder) {
+  // Extract path segments: /japan/37 => ["japan", "37"]
+  const segments = pathname.split("/").filter(segment => segment !== "");
+  
+  if (segments.length !== 2) {
+    return null; // Only handle 2-segment paths like /album/number
+  }
+  
+  const [albumURI, possibleNumber] = segments;
+  
+  // Check if the second segment is numeric
+  if (!/^\d+$/.test(possibleNumber)) {
+    return null;
+  }
+  
+  // Try to load the album data from the API
+  try {
+    const albumData = await Deno.readTextFile(`./api/${albumURI}.json`);
+    const album = JSON.parse(albumData);
+    
+    if (!album || !album.pictures) {
+      return null;
+    }
+    
+    // Find a picture whose filename starts with this number
+    const targetNumber = possibleNumber;
+    const matchingPicture = album.pictures.find(picture => 
+      picture.filename.startsWith(targetNumber + ".")
+    );
+    
+    if (matchingPicture) {
+      return `/${albumURI}/${matchingPicture.uri}/`;
+    }
+  } catch {
+    // Album or picture not found
+    return null;
+  }
+  
+  return null;
+}
+
 async function serve({ folder, redirectsFilePath, port, hostname }) {
   console.log("");
   console.log("- - - - - - - - - - - - - - - - - - - - - - -");
@@ -205,6 +246,12 @@ async function serve({ folder, redirectsFilePath, port, hostname }) {
     } else if (handlers[url.pathname]) {
       return handlers[url.pathname]({ request });
     } else {
+      // Check for incomplete picture detail URLs (e.g., /japan/37 -> /japan/37-tenryū-ji-temple/)
+      const redirectURL = await findPictureDetailRedirect(url.pathname, folder);
+      if (redirectURL) {
+        return Response.redirect(url.origin + redirectURL + url.search + url.hash, 302);
+      }
+      
       for (let key in handlers) {
         if (key.endsWith("*") === false) continue;
         const path = key.replace(/\*$/, "");
