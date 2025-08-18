@@ -3,7 +3,8 @@ import chalk                from "chalk";
 
 import { config }           from "./_config.js";
 
-import { getAlbumsByURL }   from "./data-file-system/albums-by-url.js";
+import { getAlbumsByURL,
+         getAlbum }         from "./data-file-system/albums-by-url.js";
 import { getSourceByURL }   from "./get-source/by-url.js";
 import { getError404HTML,
          getError500HTML }  from "./get-source/error.js";
@@ -195,6 +196,42 @@ function removeTrailingSlash(url) {
   return url.replace(/\/$/, "");
 }
 
+function findPictureDetailRedirect(pathname) {
+  // Extract path segments: /japan/37 => ["japan", "37"]
+  const segments = pathname.split("/").filter(segment => segment !== "");
+  
+  if (segments.length !== 2) {
+    return null; // Only handle 2-segment paths like /album/number
+  }
+  
+  const [albumURI, possibleNumber] = segments;
+  
+  // Check if the second segment is numeric
+  if (!/^\d+$/.test(possibleNumber)) {
+    return null;
+  }
+  
+  // Look for an album with this URI
+  const albumURL = `/${albumURI}/`;
+  const album = getAlbum(albumURL);
+  
+  if (!album || !album.pictures) {
+    return null;
+  }
+  
+  // Find a picture whose filename starts with this number
+  const targetNumber = possibleNumber;
+  const matchingPicture = album.pictures.find(picture => 
+    picture.filename.startsWith(targetNumber + ".")
+  );
+  
+  if (matchingPicture) {
+    return `/${albumURI}/${matchingPicture.uri}/`;
+  }
+  
+  return null;
+}
+
 async function serve() {
   console.log("");
   console.log(chalk.cyan("- - - - - - - - - - - - - - - - - - - - - - -"));
@@ -271,6 +308,12 @@ async function serve() {
     } else if (handlers[url.pathname]) {
       return handlers[url.pathname]({ request });
     } else {
+      // Check for incomplete picture detail URLs (e.g., /japan/37 -> /japan/37-tenryū-ji-temple/)
+      const redirectURL = findPictureDetailRedirect(url.pathname);
+      if (redirectURL) {
+        return Response.redirect(url.origin + redirectURL + url.search + url.hash, 302);
+      }
+      
       for (let key in handlers) {
         if (key.endsWith("*") === false) continue;
         const path = key.replace(/\*$/, "");
