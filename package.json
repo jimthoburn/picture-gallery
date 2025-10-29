@@ -9,10 +9,10 @@
     "test:report": "npm run test && playwright show-report"
   },
   "devDependencies": {
-    "@playwright/test": "^1.54.2",
+    "@playwright/test": "^1.56.1",
     "is-url": "^1.2.4",
     "node-fetch": "^3.3.2",
-    "playwright": "^1.54.2",
+    "playwright": "^1.56.1",
     "wasm-vips": "^0.0.15"
   }
 }
