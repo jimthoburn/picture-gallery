@@ -309,10 +309,10 @@ async function serve() {
       return handlers[url.pathname]({ request });
     } else {
       // Check for incomplete picture detail URLs (e.g., /japan/37 -> /japan/37-tenryū-ji-temple/)
-      const redirectURL = findPictureDetailRedirect(url.pathname);
-      if (redirectURL) {
-        return Response.redirect(url.origin + redirectURL + url.search + url.hash, 302);
-      }
+      // const redirectURL = findPictureDetailRedirect(url.pathname);
+      // if (redirectURL) {
+      //   return Response.redirect(url.origin + redirectURL + url.search + url.hash, 302);
+      // }
       
       for (let key in handlers) {
         if (key.endsWith("*") === false) continue;
