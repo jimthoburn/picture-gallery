@@ -1,7 +1,7 @@
 {
   "name": "picture-gallery",
   "engines": {
-    "node": ">=22.0.0"
+    "node": ">=24.0.0"
   },
   "type": "module",
   "scripts": {
@@ -13,6 +13,6 @@
     "is-url": "^1.2.4",
     "node-fetch": "^3.3.2",
     "playwright": "^1.64.1",
-    "wasm-vips": "^0.0.18"
+    "wasm-vips": "^0.0.19"
   }
 }
