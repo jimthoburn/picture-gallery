@@ -14,7 +14,7 @@
 
     "wasm-vips/lib/vips-es6.js": "./library/wasm-vips@0.0.7/lib/vips-es6.js",
 
-    "archiver": "npm:archiver@6.0.1",
+    "archiver": "npm:archiver@6.0.2",
 
     "htm": "https://esm.sh/htm@3.1.1",
     "lit": "https://esm.sh/lit@3.2.1",
