@@ -16,15 +16,15 @@
     "wasm-vips/lib/vips-es6.js": "./library/wasm-vips@0.0.7/lib/vips-es6.js",
 
     "htm": "https://esm.sh/htm@3.1.1",
-    "lit": "https://esm.sh/lit@3.2.1",
-    "markdown-it": "https://esm.sh/markdown-it@14.0.0",
-    "markdown-it-deflist": "https://esm.sh/markdown-it-deflist@3.0.0",
-    "preact": "https://esm.sh/preact@10.26.2",
-    "preact/": "https://esm.sh/preact@10.26.2/",
-    "react": "https://esm.sh/preact@10.26.2/compat",
-    "preact-render-to-string": "https://esm.sh/preact-render-to-string@6.5.13?external=preact",
-    "xstate": "https://esm.sh/xstate@5.19.2",
-    "@xstate/react": "https://esm.sh/@xstate/react@5.0.2?external=react,xstate"
+    "lit": "https://esm.sh/lit@3.3.3",
+    "markdown-it": "https://esm.sh/markdown-it@15.0.3",
+    "markdown-it-deflist": "https://esm.sh/markdown-it-deflist@3.0.1",
+    "preact": "https://esm.sh/preact@11.0.2",
+    "preact/": "https://esm.sh/preact@11.0.2/",
+    "react": "https://esm.sh/preact@11.0.2/compat",
+    "preact-render-to-string": "https://esm.sh/preact-render-to-string@6.8.1?external=preact",
+    "xstate": "https://esm.sh/xstate@5.33.3",
+    "@xstate/react": "https://esm.sh/@xstate/react@6.1.0?external=react,xstate"
   },
   "tasks": {
     "dev": "deno run --watch --allow-read=./_public,./client.js,./components,./css,./data,./helpers,./machines,./_api,./_archives,./_pictures --allow-net=0.0.0.0:4000 server.js --dev",
