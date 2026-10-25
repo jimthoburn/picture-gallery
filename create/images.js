@@ -1,6 +1,6 @@
 import fs from "node:fs";
 import { mkdirp } from "mkdirp";
-import sizeOf from "image-size";
+import { imageSizeFromFile } from "image-size/fromFile";
 import chalk from "chalk";
 
 import { getAlbumNamesFromPicturesFolder } from "../data-file-system/albums-from-pictures-folder.js";
@@ -32,7 +32,7 @@ async function createOneImage({ sourceFile, destinationFolder }) {
   const fileNameBits = fileName.split(".");
   const fileNameBase = fileNameBits.slice(0, fileNameBits.length - 1).join(".");
 
-  const sourceFileSize = sizeOf(sourceFile); // https://github.com/image-size/image-size
+  const sourceFileSize = await imageSizeFromFile(sourceFile); // https://github.com/image-size/image-size
 
   console.log("");
   console.log(chalk.cyan("- - - - - - - - - - - - - - - - - - - - - - -"));

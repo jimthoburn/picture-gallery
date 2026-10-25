@@ -10,7 +10,7 @@ const __dirname = dirname(fileURLToPath(import.meta.url));
 import { mkdirp } from "mkdirp";
 import exif from "exif";
 import capitalize from "capitalize";
-import sizeOf from "image-size";
+import { imageSizeFromFile } from "image-size/fromFile";
 
 import { getAlbumNamesFromPicturesFolder } from "../data-file-system/albums-from-pictures-folder.js";
 
@@ -137,7 +137,7 @@ async function getDataForFile({ filePath, sourceForPreviewBase64, sourceForDescr
     uri: encodeURIComponent(photoFileName.split(".").shift()),
   };
 
-  const sourceFileSize = sizeOf(filePath); // https://github.com/image-size/image-size
+  const sourceFileSize = await imageSizeFromFile(filePath); // https://github.com/image-size/image-size
 
   const pictureWithDataPreview = {
     ...picture,
