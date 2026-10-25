@@ -29,16 +29,18 @@ function useMoveGesture({ targetRef, onMoveStart, onMove, onRelease }) {
   useEffect(() => {
     if (isBrowser() && targetRef.current) {
 
+      const target = targetRef.current;
+
       // https://developer.mozilla.org/en-US/docs/Web/API/EventTarget/addEventListener
       const options = { passive: false };
 
-      targetRef.current.addEventListener("touchstart", onTouchStart, options);
-      targetRef.current.addEventListener("touchmove", onTouchMove, options);
-      targetRef.current.addEventListener("touchend", onTouchEnd, options);
+      target.addEventListener("touchstart", onTouchStart, options);
+      target.addEventListener("touchmove", onTouchMove, options);
+      target.addEventListener("touchend", onTouchEnd, options);
       return () => {
-        targetRef.current.removeEventListener("touchstart", onTouchStart, options);
-        targetRef.current.removeEventListener("touchmove", onTouchMove, options);
-        targetRef.current.removeEventListener("touchend", onTouchEnd, options);
+        target.removeEventListener("touchstart", onTouchStart, options);
+        target.removeEventListener("touchmove", onTouchMove, options);
+        target.removeEventListener("touchend", onTouchEnd, options);
       };
     }
   }, [targetRef]);

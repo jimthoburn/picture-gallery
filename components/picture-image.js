@@ -82,12 +82,13 @@ function PictureImage({ album, picture, state, config }) {
         onTransitionEnd();
   
       // Otherwise, listen for transition events from the browser
-      } else {
+      } else if (image.current != null) {
+        const target = image.current;
         // console.log("🐶 adding TransitionEventListener");
-        image.current.addEventListener("transitionend", onTransitionEnd, false);
+        target.addEventListener("transitionend", onTransitionEnd, false);
         return () => {
           // console.log("🦁 removing TransitionEventListener");
-          image.current.removeEventListener("transitionend", onTransitionEnd, false);
+          target.removeEventListener("transitionend", onTransitionEnd, false);
           // console.log("done removing");
         };
       }
