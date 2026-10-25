@@ -207,8 +207,10 @@ const galleryMachine = setup({
                 target: "done",
               },
             },
-            transition_timeout_delay: {
-              target: "done"
+            after: {
+              transition_timeout_delay: {
+                target: "done"
+              },
             },
           },
           done: {
