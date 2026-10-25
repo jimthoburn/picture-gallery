@@ -285,14 +285,12 @@ The `caption` will appear as part of the [page title for the image](https://deve
 You can also edit the `uri` to match your caption. This will appear as part of the URL for the image. For example: `https://pictures.tobbi.co/wildflowers/44-mastodon-peak-desert-canterbury-bells/`
 
 If you have a lot of images, you may be able to get a head start writing descriptions by using something like [Azure Computer Vision](
-https://learn.microsoft.com/en-us/azure/cognitive-services/computer-vision/overview-image-analysis) or [OpenAI Vision](https://platform.openai.com/docs/guides/vision).
+https://learn.microsoft.com/en-us/azure/cognitive-services/computer-vision/overview-image-analysis)
 
 The basic steps for this are...
 
 1. Copy the `.env-example` file in your local copy of this repo to a new file named `.env`
-2. Add your API key for Azure or OpenAPI to the `.env` file.
-
-_Using OpenAI Vision may require a [paid account](https://help.openai.com/en/articles/7102672-how-can-i-access-gpt-4)._
+2. Add your API key for Azure to the `.env` file.
 
 If you create a new album, descriptions will be generated and added to the data file for your album. You can improve or make corrections to the descriptions by manually editing the file.
 

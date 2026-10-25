@@ -2,7 +2,7 @@
 import fs from "node:fs";
 
 import { mkdirp } from "mkdirp";
-import archiver from "archiver";
+import { ZipArchive } from "archiver";
 import { getAlbumNamesFromPicturesFolder } from "../data-file-system/albums-from-pictures-folder.js";
 
 const overwrite = false; // Set this “true” to re-generate existing zip files.
@@ -26,7 +26,7 @@ async function createZip(source, destination, callback) {
     await mkdirp(folder);
     // create a file to stream archive data to. 
     let output = fs.createWriteStream(destination)
-    let archive = archiver('zip', {
+    let archive = new ZipArchive({
         zlib: { level: 9 } // Sets the compression level. 
     })
      

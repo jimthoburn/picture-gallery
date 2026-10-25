@@ -14,8 +14,6 @@ import sizeOf from "image-size";
 
 import { getAlbumNamesFromPicturesFolder } from "../data-file-system/albums-from-pictures-folder.js";
 
-import OpenAI from "@openai/openai";
-
 const overwriteReadyOnlyFiles = false; // Set this “true” to re-generate existing read-only data files in the “_pictures” folder.
 
 const [secretAlbums, secretAlbumGroups] = getAlbumNamesFromPicturesFolder();
@@ -96,65 +94,12 @@ async function getDescriptionAzure({ filePath, env, fetch, readFile }) {
 }
 
 
-// https://platform.openai.com/docs/guides/vision
-async function getDescriptionOpenAI({ filePath, env, readFile }) {
-
-  const blob = await readFile(filePath);
-
-  const base64Image = encodeBase64(blob);
-  console.log({ base64Image });
-
-  const client = new OpenAI({ apiKey: env.OPENAI_API_KEY });
-
-  const chatCompletion = await client.chat.completions.create({
-    model: "gpt-4-vision-preview",
-    messages: [
-      {
-        role: "user",
-        content: [
-          {
-            type: "text",
-            text: "Describe this photograph for someone who is visually impaired"
-          },
-          {
-            type: "image_url",
-            image_url: {
-              "url": `data:image/jpeg;base64,${base64Image}`,
-              "detail": "high",
-            }
-          },
-        ],
-      },
-    ],
-    max_tokens: 3000,
-  });
-
-  console.log({ chatCompletion });
-
-  console.log("Received image description: " + chatCompletion.choices[0].message.content);
-
-  return chatCompletion.choices[0].message.content;
-}
-
 
 // Send a request to the Azure Computer Vision API to
 // get a description of the image located at filePath
 async function getDescription({ filePath, env, fetch, readFile }) {
 
-  if (env.OPENAI_API_KEY) {
-
-    console.log("getDescription for " + filePath);
-
-    // Wait 4 seconds to avoid rate limiting
-    await new Promise((resolve, reject) => {
-      console.log("Waiting to send request for image description...");
-      setTimeout(resolve, 8 * 1000);
-    });
-
-    console.log("Sending request for image description...");
-    return getDescriptionOpenAI({ filePath, env, readFile });
-
-  } else if (env.AZURE_COMPUTER_VISION_API_ENDPOINT && env.AZURE_COMPUTER_VISION_API_KEY) {
+  if (env.AZURE_COMPUTER_VISION_API_ENDPOINT && env.AZURE_COMPUTER_VISION_API_KEY) {
 
     console.log("getDescription for " + filePath);
 
